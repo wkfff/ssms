@@ -60,6 +60,13 @@
             <artifactId>fastjson</artifactId>
             <version>1.1.39</version>
         </dependency>
+        
+        <!-- Freemarker -->
+        <dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.22</version>
+		</dependency>
 
         <!-- 日志配置 -->
         <!--SLF4J 基础API-->
