@@ -46,4 +46,8 @@ class ApplicationContext {
         plugins.shutdown();
         container.shutdown();
     }
+
+    public <T extends IAppPlugin> T getPlugin(Class<T> type) {
+        return plugins.getPlugin(type);
+    }
 }
