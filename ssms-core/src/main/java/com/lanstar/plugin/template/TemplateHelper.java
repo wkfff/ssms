@@ -17,7 +17,7 @@ public class TemplateHelper {
         App.getPlugin(ITemplatePlugin.class).render(templatePath, out);
     }
 
-    public static String render(String source){
+    public static String evaluate(String source){
         return App.getPlugin(ITemplatePlugin.class).evaluate(source);
     }
 }
