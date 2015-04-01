@@ -57,7 +57,7 @@ public class App {
         return context.servletContext;
     }
 
-    public static IAppConfiguration getConfig(){
+    public static IAppConfiguration config(){
         return context.config;
     }
 

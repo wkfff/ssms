@@ -20,8 +20,31 @@
         </constructor-arg>
     </bean>
 
-    <!-- Template Plugin-->
-    <bean class="com.lanstar.plugin.template.freemarker.FreemarkerPlugin"/>
+    <!-- 数据方言工厂初始化 -->
+    <bean class="com.lanstar.plugin.db.dialect.DialectFactory">
+        <constructor-arg>
+            <map>
+                <entry key="mysql">
+                    <bean class="com.lanstar.plugin.db.dialect.impl.MySqlDialect"/>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+    <!-- 数据源工厂初始化 -->
+    <bean class="com.lanstar.plugin.db.datasource.DataSourceFactory">
+        <constructor-arg>
+            <map>
+                <entry key="druid">
+                    <bean class="com.lanstar.plugin.db.datasource.impl.DruidDataSourceProvider"/>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
 
+    <!-- 数据源插件 -->
+    <bean class="com.lanstar.plugin.db.SpringDbPlugin"/>
+    <!-- 模板插件 -->
+    <bean class="com.lanstar.plugin.template.freemarker.FreemarkerPlugin"/>
+    <!-- 控制台插件 -->
     <bean class="com.lanstar.plugin.console.ConsolePlugin"/>
 </beans>
