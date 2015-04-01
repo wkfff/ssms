@@ -8,12 +8,13 @@
 
 package com.lanstar.plugin.template.freemarker;
 
+import com.lanstar.plugin.AppPlugin;
 import com.lanstar.plugin.template.ITemplatePlugin;
 
 import java.io.StringWriter;
 import java.io.Writer;
 
-public class FreemarkerPlugin implements ITemplatePlugin {
+public class FreemarkerPlugin extends AppPlugin implements ITemplatePlugin {
 
     private final WebFreemarkerProcessor webFreemarkerProcessor;
     private final StringFreemarkerProcessor stringFreemarkerProcessor;
@@ -21,16 +22,6 @@ public class FreemarkerPlugin implements ITemplatePlugin {
     public FreemarkerPlugin() {
         webFreemarkerProcessor = new WebFreemarkerProcessor();
         stringFreemarkerProcessor = new StringFreemarkerProcessor();
-    }
-
-    @Override
-    public void startup() {
-        System.out.println(evaluate("abc"));
-    }
-
-    @Override
-    public void shutdown() {
-
     }
 
     @Override

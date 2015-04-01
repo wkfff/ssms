@@ -57,6 +57,10 @@ public class App {
         return context.servletContext;
     }
 
+    public static IAppConfiguration getConfig(){
+        return context.config;
+    }
+
     public static <T extends IAppPlugin> T getPlugin(Class<T> type){
         return context.getPlugin(type);
     }

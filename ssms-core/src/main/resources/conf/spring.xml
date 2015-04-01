@@ -11,6 +11,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!-- Application Configuration -->
+    <bean class="com.lanstar.app.AppConfiguration">
+        <constructor-arg>
+            <list>
+                <value>/WEB-INF/system.properties</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
     <!-- Template Plugin-->
     <bean class="com.lanstar.plugin.template.freemarker.FreemarkerPlugin"/>
 

@@ -23,6 +23,7 @@ class ApplicationContext {
     ServletContext servletContext;
     IContainer container;
     AppPlugins plugins = new AppPlugins();
+    IAppConfiguration config;
 
     public ApplicationContext(ServletContext servletContext) {
         this.servletContext = servletContext;
@@ -33,9 +34,10 @@ class ApplicationContext {
     public void startup() {
         // 启动过程：
         // 1. 容器优先启动
-        // 2. 启动其他所有插件
+        // 2. 读取配置文件
+        // 3. 启动其他所有插件
         container.startup();
-
+        config = container.getBean(IAppConfiguration.class);
         // 加载所有插件
         plugins.add(this.container.getBeansByType(IAppPlugin.class).values());
         plugins.startup();
