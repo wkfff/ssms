@@ -8,17 +8,21 @@
 
 package com.lanstar.core.render.impl;
 
-import com.lanstar.core.HandlerContext;
 import com.lanstar.core.RequestContext;
+import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.render.IRender;
 import com.lanstar.core.render.Render;
 import com.lanstar.core.render.RenderHelper;
 import com.lanstar.plugin.template.TemplateBean;
 import com.lanstar.plugin.template.TemplateException;
 import com.lanstar.plugin.template.TemplateHelper;
+import com.lanstar.plugin.template.freemarker.FreemarkerPlugin;
+import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+
+import java.io.Writer;
 
 public class FreemarkerRender extends Render implements IRender {
     @Override
@@ -28,7 +32,10 @@ public class FreemarkerRender extends Render implements IRender {
 
     @Override
     protected void innerRender( HandlerContext context ) throws TemplateException {
-        TemplateBean bean = new TemplateBean( context.getView(), new FreemarkerModel( context ), context.getOutput() );
+        String viewName = context.getViewPath();
+        FreemarkerModel model = new FreemarkerModel( context );
+        Writer output = context.getOutput();
+        TemplateBean bean = new TemplateBean( viewName, model, output );
         TemplateHelper.render( bean );
     }
 
@@ -36,23 +43,22 @@ public class FreemarkerRender extends Render implements IRender {
      * Freemarker模型
      */
     private class FreemarkerModel implements TemplateHashModel {
+        private final BeansWrapper wrapper = new BeansWrapper( FreemarkerPlugin.VERSION );
         private HandlerContext context;
 
         public FreemarkerModel( HandlerContext context ) {
             this.context = context;
+            // 避免使用?keys遍历map中时会获取到混合了自定义方法的数据      by 张铮彬(cnzgray@qq.com)
+            if( !wrapper.isSimpleMapWrapper() ) wrapper.setSimpleMapWrapper( true );
         }
 
         @Override
         public TemplateModel get( String key ) throws TemplateModelException {
-            // TODO: 添加从上下文中取值的代码
-            // context.getValue("");
-            return null;
+            return wrapper.wrap( context.getValue(key) );
         }
 
         @Override
         public boolean isEmpty() throws TemplateModelException {
-            // TODO: 判断上下文是否有数据
-            // context.getViewAndMode().getModel() == null;
             return false;
         }
     }

@@ -18,6 +18,6 @@ import freemarker.cache.WebappTemplateLoader;
 public class WebFreemarkerProcessor extends AbstractFreemarkerProcessor {
     @Override
     protected TemplateLoader getTemplateLoader() {
-        return new WebappTemplateLoader( App.getServletContext() );
+        return new WebappTemplateLoader( App.getServletContext(), App.config().getViewFolder() );
     }
 }

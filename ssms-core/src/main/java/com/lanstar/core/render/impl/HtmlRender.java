@@ -8,7 +8,7 @@
 
 package com.lanstar.core.render.impl;
 
-import com.lanstar.core.HandlerContext;
+import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.render.IRender;
 import com.lanstar.core.render.Render;

@@ -7,21 +7,18 @@
  */
 package com.lanstar.controller;
 
-import com.lanstar.common.log.Logger;
-import com.lanstar.core.Controller;
-import com.lanstar.render.HtmlRender;
+import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.controller.Controller;
+import com.lanstar.core.handle.HandlerContext;
 
 /**
  * @author F
- *
  */
 public class a02Controller extends Controller {
-	private static final Logger log = Logger.getLogger(a02Controller.class);
-	
-	public void index(){
-		log.debug("test", null);
-		HtmlRender hr = new HtmlRender("test....");
-		hr.setContext(this.getRequest(), this.getResponse());
-		hr.render();
-	}
+    public ViewAndModel index(HandlerContext context) {
+        // 业务处理
+
+        // 返回结果
+        return context.returnWith(null);
+    }
 }

@@ -19,18 +19,32 @@ import java.util.Map;
 import java.util.Properties;
 
 public class AppConfiguration implements IAppConfiguration {
+    public static final String TEMPLATE_SUFFIX = "template_suffix";
+    private static final String VIEWS_FOLDER = "views_folder";
+
     private Map<String, String> map;
     private Properties ps = new Properties();
 
-    public AppConfiguration(String... paths) {
-        try{
-            if (paths == null || paths.length == 0) throw new IOException();
-            InputStream stream = ContainerHelper.getResource(paths);
-            ps.load(stream);
-            map = Maps.fromProperties(ps);
-        } catch(IOException e){
-            throw ExceptionHelper.runtimeException(e, "配置文件[%s]不存在或加载错误...", Arrays.toString(paths));
+    private String templateSuffix;
+    private String viewsFolder;
+
+    public AppConfiguration( String... paths ) {
+        try {
+            if ( paths == null || paths.length == 0 ) throw new IOException();
+            InputStream stream = ContainerHelper.getResource( paths );
+            ps.load( stream );
+            map = Maps.fromProperties( ps );
+        } catch ( IOException e ) {
+            throw ExceptionHelper.runtimeException( e, "配置文件[%s]不存在或加载错误...", Arrays.toString( paths ) );
         }
+
+        parse();
+    }
+
+    private void parse() {
+        templateSuffix = getProperty( TEMPLATE_SUFFIX, "ftl" );
+        if ( !templateSuffix.startsWith( "." ) ) templateSuffix = "." + templateSuffix;
+        viewsFolder = getProperty( VIEWS_FOLDER, "views" );
     }
 
     public Map<String, String> getPropertiesMap() {
@@ -41,7 +55,17 @@ public class AppConfiguration implements IAppConfiguration {
         return ps;
     }
 
-    public String getProperty(String propertyName, String defval) {
-        return this.getProperties().getProperty(propertyName, defval);
+    public String getProperty( String propertyName, String defval ) {
+        return this.getProperties().getProperty( propertyName, defval );
+    }
+
+    @Override
+    public String getTemplateSuffix() {
+        return templateSuffix;
+    }
+
+    @Override
+    public String getViewFolder() {
+        return viewsFolder;
     }
 }

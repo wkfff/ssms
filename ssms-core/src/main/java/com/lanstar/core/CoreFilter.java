@@ -7,58 +7,43 @@
  */
 package com.lanstar.core;
 
-import java.io.IOException;
+import com.lanstar.core.handle.impl.ActionMapping;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 过滤器
- *
  */
 public class CoreFilter implements Filter {
-	private String[] expaths;
-//	private ActionMapping actionMapping;
-	private Handler handler;
-	
-	
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		//排除路径 
-		expaths = filterConfig.getInitParameter("exclude-paths").split(",");
-		
-//		ActionMapping actionMapping = new ActionMapping();
-//		actionMapping.buildMapping();
-		ActionMapping.init();
-		
-		handler = new ActionHandler();
-		
-	}
-	
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {				
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;		
-		String uri = req.getRequestURI();					
-		for (String p : expaths){
-			if (uri.startsWith(req.getContextPath() + p.trim())) {
-				chain.doFilter(request, response);
-				return;
-			}
-		}
-		
-		handler.handle(uri, req, res);
-	}
+    private String[] expaths;
+    private Dispatcher dispatcher;
 
-	@Override
-	public void destroy() {
-		
-	}
+    @Override
+    public void init( FilterConfig filterConfig ) throws ServletException {
+        //排除路径
+        expaths = filterConfig.getInitParameter( "exclude-paths" ).split( "," );
+        dispatcher = Dispatcher.me();
+        ActionMapping.init();
+    }
+
+    @Override
+    public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain ) throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        String uri = req.getRequestURI();
+        for ( String p : expaths ) {
+            if ( uri.startsWith( req.getContextPath() + p.trim() ) ) {
+                chain.doFilter( request, response );
+                return;
+            }
+        }
+        dispatcher.dispatch( new RequestContext( uri, req, res ) );
+    }
+
+    @Override
+    public void destroy() {
+    }
 }

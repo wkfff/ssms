@@ -16,8 +16,6 @@ public class TemplateHelper {
      * 根据给定的模板bean对象呈现模板内容。
      *
      * @param templateBean 模板bean对象
-     *
-     * @return 如果返回true则表示输出成功，否则表示呈现过程中出现了问题。
      */
     public static void render( TemplateBean templateBean ) throws TemplateException {
         Asserts.notNull( templateBean, "模型bean不能为空" );

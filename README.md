@@ -87,3 +87,28 @@ else return;
 |SYS          |system，系统
 
 
+# 四、URL规则
+
+## 4.1 资源类
+资源文件以/resource/开头的不参与URL解析。
+
+## 4.2 业务类
+业务类型根据 “/控制器/方法.输出类型?参数”  规则来构造URL，默认字母都为小写。
+例如：	http://localhost/a02/index.html
+		http://localhost/a02/tree.json?sid=1
+
+在此 URL 段一般以如下形式表示：
+
+第一段为模块标识	
+	以达标创建为例子，模块标识为a02
+	后台对应的控制器类名为“模块标识”加上“Controller”，如：a02Controller.java,从Controller基类扩展，包名统一为com.lanstar.controller
+	
+第二段表示调用的控制器类中的方法
+	如：在a02Controller.java中提供index方法
+
+第三段为从“.”到“?”之间，如果没带参数就到结尾，表示输出类型，如html,json等
+
+第四段为“?"之后的内容，表示的是传递给控制器的参数，如 ID 或其它各种变量。
+
+后台通过这个规则解析传入的URL并执行相关操作，不符合规则的直接输出统一的提示页面。
+

@@ -10,23 +10,27 @@ package com.lanstar.core.render;
 
 import com.lanstar.app.container.ContainerHelper;
 import com.lanstar.common.helper.Asserts;
-import com.lanstar.core.HandlerContext;
+import com.lanstar.core.handle.HandlerContext;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class RenderFactory {
+    public static RenderFactory me() {
+        return ContainerHelper.getBean( RenderFactory.class );
+    }
+
     private final Map<String, IRender> renderMap = new HashMap<>();
 
     public RenderFactory( Map<String, IRender> map ) {
         for ( String key : map.keySet() ) {
-            renderMap.put( key.toLowerCase(), renderMap.get( key ) );
+            renderMap.put( key.toLowerCase(), map.get( key ) );
         }
         Asserts.notEmpty( renderMap.keySet(), "无未配置任何的Render" );
     }
 
-    public void render( String renderName, HandlerContext context ) {
-        IRender render = renderMap.get( renderName );
+    public void render( HandlerContext context ) {
+        IRender render = renderMap.get( context.getRender().toLowerCase() );
         Asserts.notNull( render, "无法找到对应的render实现" );
         try {
             render.render( context );
@@ -35,12 +39,4 @@ public class RenderFactory {
         }
     }
 
-    private static volatile RenderFactory singleton;
-
-    public static RenderFactory me() {
-        if ( singleton == null ) synchronized ( RenderFactory.class ) {
-            if ( singleton == null ) singleton = ContainerHelper.getBean( RenderFactory.class );
-        }
-        return singleton;
-    }
 }

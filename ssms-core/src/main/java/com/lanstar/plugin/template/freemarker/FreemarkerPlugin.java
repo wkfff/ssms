@@ -13,11 +13,14 @@ import com.lanstar.plugin.template.ITemplatePlugin;
 import com.lanstar.plugin.template.StringTemplateBean;
 import com.lanstar.plugin.template.TemplateBean;
 import com.lanstar.plugin.template.TemplateException;
+import freemarker.template.Configuration;
+import freemarker.template.Version;
 
 /**
  * Freemarker模板插件
  */
 public class FreemarkerPlugin extends AppPlugin implements ITemplatePlugin {
+    public static final Version VERSION = Configuration.VERSION_2_3_22;
 
     private final WebFreemarkerProcessor webFreemarkerProcessor;
     private final StringFreemarkerProcessor stringFreemarkerProcessor;

@@ -45,7 +45,7 @@
     <bean class="com.lanstar.core.render.RenderFactory">
         <constructor-arg>
             <map>
-                <entry key="html">
+                <!--<entry key="html">
                     <bean class="com.lanstar.core.render.impl.MultiRender">
                         <constructor-arg>
                             <list>
@@ -54,11 +54,23 @@
                             </list>
                         </constructor-arg>
                     </bean>
+                </entry>-->
+                <entry key="html">
+                    <bean class="com.lanstar.core.render.impl.FreemarkerRender"/>
                 </entry>
                 <entry key="json">
                     <bean class="com.lanstar.core.render.impl.JsonRender"/>
                 </entry>
             </map>
+        </constructor-arg>
+    </bean>
+    
+    <!-- Dispatcher初始化 -->
+    <bean class="com.lanstar.core.Dispatcher">
+        <constructor-arg>
+            <list>
+                <bean class="com.lanstar.core.handle.impl.ActionHandler"/>
+            </list>
         </constructor-arg>
     </bean>
 

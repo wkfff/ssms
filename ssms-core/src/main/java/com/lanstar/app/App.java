@@ -58,7 +58,7 @@ public class App {
     }
 
     public static IAppConfiguration config(){
-        return context.config;
+        return context.config();
     }
 
     public static <T extends IAppPlugin> T getPlugin(Class<T> type){

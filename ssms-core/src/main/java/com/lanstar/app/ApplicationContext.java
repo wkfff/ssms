@@ -8,6 +8,7 @@
 
 package com.lanstar.app;
 
+import com.lanstar.app.container.ContainerHelper;
 import com.lanstar.app.container.IContainer;
 import com.lanstar.app.container.XmlWebSpringContainer;
 import com.lanstar.plugin.AppPlugins;
@@ -23,7 +24,7 @@ class ApplicationContext {
     ServletContext servletContext;
     IContainer container;
     AppPlugins plugins = new AppPlugins();
-    IAppConfiguration config;
+    private IAppConfiguration config;
 
     public ApplicationContext(ServletContext servletContext) {
         this.servletContext = servletContext;
@@ -37,7 +38,7 @@ class ApplicationContext {
         // 2. 读取配置文件
         // 3. 启动其他所有插件
         container.startup();
-        config = container.getBean(IAppConfiguration.class);
+        config();
         // 加载所有插件
         plugins.add(this.container.getBeansByType(IAppPlugin.class).values());
         plugins.startup();
@@ -51,5 +52,10 @@ class ApplicationContext {
 
     public <T extends IAppPlugin> T getPlugin(Class<T> type) {
         return plugins.getPlugin(type);
+    }
+
+    public IAppConfiguration config() {
+        if (config == null) config = ContainerHelper.getBean( IAppConfiguration.class );
+        return config;
     }
 }
