@@ -20,9 +20,8 @@ public class a02Controller extends Controller {
 	
 	public void index(){
 		log.debug("test", null);
-		//render....
-//		HtmlRender hr = new HtmlRender("test....");
-//		hr.setContext(this.getRequest(), this.getResponse());
-//		hr.render();
+		HtmlRender hr = new HtmlRender("test....");
+		hr.setContext(this.getRequest(), this.getResponse());
+		hr.render();
 	}
 }

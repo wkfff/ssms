@@ -35,6 +35,7 @@ public class CoreFilter implements Filter {
 		
 //		ActionMapping actionMapping = new ActionMapping();
 //		actionMapping.buildMapping();
+		ActionMapping.init();
 		
 		handler = new ActionHandler();
 		

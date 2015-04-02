@@ -7,10 +7,10 @@
  */
 package com.lanstar.core;
 
-import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.lanstar.common.helper.BeanHelper;
+
+import com.lanstar.common.exception.WebException;
 import com.lanstar.common.log.Logger;
 
 /**
@@ -19,38 +19,14 @@ import com.lanstar.common.log.Logger;
 public class ActionHandler extends Handler {
 	private static final Logger log = Logger.getLogger(ActionHandler.class);
 
-	/*
-	 * 
-	 * url如：/a02/index.html
-	 */
+	
 	public final void handle(String url, HttpServletRequest request, HttpServletResponse response){			
 		try {
-			Action action = getAction(url);
-			Controller controller = action.getControllerClass().newInstance();
-			controller.init(request, response, "");
-			action.getMethod().invoke(controller,new Object[]{});		
-		} catch (Exception e) {
-			log.error(e.getMessage());
+			Action action = ActionMapping.getAction(url);
+			action.setContext(request, response);
+			action.invoke();	
+		} catch (WebException e) {			
+			log.error(e, e.getMessage());
 		}
-	}
-	
-	/*
-	 * 
-	 * url如：/a02/index.html
-	 * 控制器统一放在包com.lanstar.controller下，类名以Controller结尾
-	 */
-	public Action getAction(String url) throws Exception{				
-		String[] urlPara = (url.indexOf("?")==-1?url:url.substring(0, url.indexOf("?"))).replace(".", "/").split("/");		
-		if (urlPara.length!=4)	throw new Exception("无效路径...");
-		
-		String controllerKey = urlPara[1];
-		String methodName = urlPara[2];
-		String view = urlPara[3];
-		String actionKey = "/"+controllerKey+"/"+methodName;
-		
-		Class<? extends Controller> controllerClass = BeanHelper.getClass("com.lanstar.controller."+controllerKey+"Controller");
-		Method method = controllerClass.getMethod(methodName);
-		Action action = new Action(controllerKey,actionKey,controllerClass,method,methodName,view);	
-		return action;			
 	}
 }

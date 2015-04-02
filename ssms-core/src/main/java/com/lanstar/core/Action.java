@@ -9,29 +9,46 @@ package com.lanstar.core;
 
 import java.lang.reflect.Method;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.lanstar.common.exception.WebException;
+
 /**
  * Action
  */
 public class Action {
-	private final Class<? extends Controller> controllerClass;
+	private final Controller controllerClass;
 	private final String controllerKey;
 	private final String actionKey;
 	private final Method method;
 	private final String methodName;
 	private final String view;
 	
-	public Action(String controllerKey, String actionKey, Class<? extends Controller> controllerClass, Method method, String methodName,String view) {
+	protected HttpServletRequest request;
+	protected HttpServletResponse response;
+	
+	public void setContext(HttpServletRequest request, HttpServletResponse response) {
+		this.request = request;
+		this.response = response;
+		this.controllerClass.setContext(request,response);
+	}
+	
+	public void invoke(){
+		try {
+			method.invoke(controllerClass);
+		} catch (Exception e) {
+			throw new WebException(e);
+		} 
+	}
+	public Action(String controllerKey, String actionKey,Controller controllerClass, Method method, String methodName) {
 		this.controllerKey = controllerKey;
 		this.actionKey = actionKey;
 		this.controllerClass = controllerClass;
 		this.method = method;
 		this.methodName = methodName;
-		this.view = view;
+		this.view = "";
 	}		
-	
-	public Class<? extends Controller> getControllerClass() {
-		return controllerClass;
-	}
 	
 	public String getControllerKey() {
 		return controllerKey;

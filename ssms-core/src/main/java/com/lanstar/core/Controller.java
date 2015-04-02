@@ -18,15 +18,12 @@ import javax.servlet.http.HttpSession;
 public abstract class Controller {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	
-	private String urlPara;
-	
-	public void init(HttpServletRequest request, HttpServletResponse response, String urlPara) {
+
+	public void setContext(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
-		this.urlPara = urlPara;
 	}
-	
+
 	/**
 	 * @return the request
 	 */
@@ -47,19 +44,5 @@ public abstract class Controller {
 	
 	public String getPara(String name) {
 		return request.getParameter(name);
-	}
-
-	/**
-	 * @return the urlPara
-	 */
-	public String getUrlPara() {
-		return urlPara;
-	}
-
-	/**
-	 * @param urlPara the urlPara to set
-	 */
-	public void setUrlPara(String urlPara) {
-		this.urlPara = urlPara;
 	}		
 }
