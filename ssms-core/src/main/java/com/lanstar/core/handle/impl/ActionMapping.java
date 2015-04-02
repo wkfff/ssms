@@ -139,10 +139,9 @@ public class ActionMapping {
                 }
             }
             if ( prefix != null && jarEntryName.endsWith( ".class" ) ) {
-//              System.out.println("prefix:" + prefix +" pkgName:" + pkgName);  
                 if ( prefix.equals( pkgName ) ) {
-                    System.out.println( "jar entryName:" + jarEntryName );
-//                    addClassName(clazzName);  
+                    String controllerKey = prefix.replace( CONTROLLERSUFFIX, "" );
+                    addAction( controllerKey, clazzName );
                 }
             }
         }
