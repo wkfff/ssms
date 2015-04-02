@@ -13,18 +13,21 @@ import freemarker.cache.TemplateLoader;
 
 import java.io.Writer;
 
+/**
+ * 基于字符串的Freemarker模板处理器
+ */
 public class StringFreemarkerProcessor extends AbstractFreemarkerProcessor {
     private StringTemplateLoader loader;
 
     protected TemplateLoader getTemplateLoader() {
-        if (loader == null) loader = new StringTemplateLoader();
+        if ( loader == null ) loader = new StringTemplateLoader();
         return loader;
     }
 
     @Override
-    public void process(String source, Writer out) {
+    public boolean process( String source, Object model, Writer out ) {
         String name = "I_" + source.hashCode();
-        loader.putTemplate(name, source);
-        super.process(name, out);
+        loader.putTemplate( name, source );
+        return super.process( name, model, out );
     }
 }

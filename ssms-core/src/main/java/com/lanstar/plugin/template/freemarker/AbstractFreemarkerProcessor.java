@@ -10,47 +10,64 @@ package com.lanstar.plugin.template.freemarker;
 
 import com.lanstar.common.helper.Asserts;
 import com.lanstar.common.log.LogHelper;
+import com.lanstar.plugin.template.TemplateBean;
 import freemarker.cache.TemplateLoader;
-import freemarker.template.*;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateExceptionHandler;
 
 import java.io.IOException;
-import java.io.Writer;
 
+/**
+ * Freemarker处理器抽象类
+ */
 abstract class AbstractFreemarkerProcessor {
     protected final Configuration cfg;
-    protected TemplateHashModel model;
 
     public AbstractFreemarkerProcessor() {
         // Create your Configuration instance, and specify if up to what FreeMarker
         // version (here 2.3.22) do you want to apply the fixes that are not 100%
         // backward-compatible. See the Configuration JavaDoc for details.
-        cfg = new Configuration(Configuration.VERSION_2_3_22);
+        cfg = new Configuration( Configuration.VERSION_2_3_22 );
 
         // Specify the source where the template files come from. Here I set a
         // plain directory for it, but non-file-system sources are possible too:
         TemplateLoader loader = getTemplateLoader();
-        Asserts.notNull(loader, "TempateLoader不能为空!");
-        cfg.setTemplateLoader(loader);
+        Asserts.notNull( loader, "TempateLoader不能为空!" );
+        cfg.setTemplateLoader( loader );
 
         // Set the preferred charset template files are stored in. UTF-8 is
         // a good choice in most applications:
-        cfg.setDefaultEncoding("UTF-8");
+        cfg.setDefaultEncoding( "UTF-8" );
 
         // Sets how errors will appear.
         // During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
-        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        cfg.setTemplateExceptionHandler( TemplateExceptionHandler.RETHROW_HANDLER );
     }
 
+    /**
+     * 获取模板加载器
+     */
     protected abstract TemplateLoader getTemplateLoader();
 
-    public void process(String name,Writer out){
+    /**
+     * 根据给定的模板bean对象处理模板。
+     *
+     * @param templateBean 模板bean对象
+     *
+     * @return 如果返回true则表示处理成功，否则返回false。
+     */
+    public boolean process( TemplateBean templateBean ) {
         try {
-            Template template = cfg.getTemplate(name);
-            template.process(model, out);
-        } catch (IOException e) {
-            LogHelper.error(getClass(), e, "获取模板文件[%s]时出现了异常...", name);
-        } catch (TemplateException e) {
-            LogHelper.error(getClass(), e, "解析模板文件[%s]时出现了异常...", name);
+            Template template = cfg.getTemplate( templateBean.getTemplatePath() );
+            template.process( templateBean.getModel(), templateBean.getOut() );
+            return true;
+        } catch ( IOException e ) {
+            LogHelper.error( getClass(), e, "获取模板文件[%s]时出现了异常...", templateBean.getTemplatePath() );
+        } catch ( TemplateException e ) {
+            LogHelper.error( getClass(), e, "解析模板文件[%s]时出现了异常...", templateBean.getTemplatePath() );
         }
+        return false;
     }
 }

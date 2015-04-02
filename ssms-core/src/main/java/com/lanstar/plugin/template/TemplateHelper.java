@@ -9,15 +9,30 @@
 package com.lanstar.plugin.template;
 
 import com.lanstar.app.App;
-
-import java.io.Writer;
+import com.lanstar.common.helper.Asserts;
 
 public class TemplateHelper {
-    public static void render(String templatePath, Writer out){
-        App.getPlugin(ITemplatePlugin.class).render(templatePath, out);
+    /**
+     * 根据给定的模板bean对象呈现模板内容。
+     *
+     * @param templateBean 模板bean对象
+     *
+     * @return 如果返回true则表示输出成功，否则表示呈现过程中出现了问题。
+     */
+    public static boolean render( TemplateBean templateBean ) {
+        Asserts.notNull( templateBean, "模型bean不能为空" );
+        return App.getPlugin( ITemplatePlugin.class ).render( templateBean );
     }
 
-    public static String evaluate(String source){
-        return App.getPlugin(ITemplatePlugin.class).evaluate(source);
+    /**
+     * 根据给定的模板bean对象计算出对应的结果。
+     *
+     * @param templateBean 模板bean对象
+     *
+     * @return 计算的结果。
+     */
+    public static String evaluate( StringTemplateBean templateBean ) {
+        Asserts.notNull( templateBean, "模型bean不能为空" );
+        return App.getPlugin( ITemplatePlugin.class ).evaluate( templateBean );
     }
 }

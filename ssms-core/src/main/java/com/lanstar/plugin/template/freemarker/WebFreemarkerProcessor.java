@@ -12,9 +12,12 @@ import com.lanstar.app.App;
 import freemarker.cache.TemplateLoader;
 import freemarker.cache.WebappTemplateLoader;
 
+/**
+ * 基于Web上下文的处理器
+ */
 public class WebFreemarkerProcessor extends AbstractFreemarkerProcessor {
     @Override
     protected TemplateLoader getTemplateLoader() {
-        return new WebappTemplateLoader(App.getServletContext());
+        return new WebappTemplateLoader( App.getServletContext() );
     }
 }

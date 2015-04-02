@@ -12,9 +12,13 @@ package com.lanstar.plugin;
  * 平台插件
  */
 public interface IAppPlugin {
-    /** 启动插件运行 */
+    /**
+     * 启动插件运行
+     */
     void startup();
 
-    /** 关闭插件运行 */
+    /**
+     * 关闭插件运行
+     */
     void shutdown();
 }

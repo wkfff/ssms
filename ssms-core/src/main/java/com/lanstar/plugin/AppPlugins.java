@@ -14,17 +14,20 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * 插件容器，通过该容器可以统一的管理插件。
+ */
 public class AppPlugins {
-    final List<IAppPlugin> plugins = new LinkedList<>();
+    private final List<IAppPlugin> plugins = new LinkedList<>();
     private boolean active;
 
-    public AppPlugins add(Collection<IAppPlugin> ps) {
-        plugins.addAll(ps);
+    public AppPlugins add( Collection<IAppPlugin> ps ) {
+        plugins.addAll( ps );
         return this;
     }
 
-    public AppPlugins add(IAppPlugin p) {
-        plugins.add(p);
+    public AppPlugins add( IAppPlugin p ) {
+        plugins.add( p );
         return this;
     }
 
@@ -32,8 +35,8 @@ public class AppPlugins {
      * 启动所有插件
      */
     public void startup() {
-        for (IAppPlugin p : plugins) {
-            LogHelper.info(this.getClass(), "正在启动插件%s....", p.getClass().getName());
+        for ( IAppPlugin p : plugins ) {
+            LogHelper.info( this.getClass(), "正在启动插件%s....", p.getClass().getName() );
             p.startup();
         }
         active = true;
@@ -44,8 +47,8 @@ public class AppPlugins {
      */
     public void shutdown() {
         // 逆序关闭，确保一些依赖关系的插件之间能够正常关闭
-        for (int i = plugins.size() - 1; i>=0; i--){
-            plugins.get(i).shutdown();
+        for ( int i = plugins.size() - 1; i >= 0; i-- ) {
+            plugins.get( i ).shutdown();
         }
         active = false;
     }
@@ -54,10 +57,9 @@ public class AppPlugins {
      * 获得指定类型（严格相等）的插件
      */
     @SuppressWarnings("unchecked")
-    public <T extends IAppPlugin> T getPlugin(Class<T> type) {
-        for (IAppPlugin plugin : this.plugins) {
-            if (type.isAssignableFrom(plugin.getClass()))
-                return (T) plugin;
+    public <T extends IAppPlugin> T getPlugin( Class<T> type ) {
+        for ( IAppPlugin plugin : this.plugins ) {
+            if ( type.isAssignableFrom( plugin.getClass() ) ) return (T) plugin;
         }
         return null;
     }

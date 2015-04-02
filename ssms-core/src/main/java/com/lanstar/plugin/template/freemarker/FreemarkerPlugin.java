@@ -10,10 +10,12 @@ package com.lanstar.plugin.template.freemarker;
 
 import com.lanstar.plugin.AppPlugin;
 import com.lanstar.plugin.template.ITemplatePlugin;
+import com.lanstar.plugin.template.StringTemplateBean;
+import com.lanstar.plugin.template.TemplateBean;
 
-import java.io.StringWriter;
-import java.io.Writer;
-
+/**
+ * Freemarker模板插件
+ */
 public class FreemarkerPlugin extends AppPlugin implements ITemplatePlugin {
 
     private final WebFreemarkerProcessor webFreemarkerProcessor;
@@ -24,16 +26,29 @@ public class FreemarkerPlugin extends AppPlugin implements ITemplatePlugin {
         stringFreemarkerProcessor = new StringFreemarkerProcessor();
     }
 
+    /**
+     * 根据给定的模板bean对象呈现模板内容。
+     *
+     * @param templateBean 模板bean对象
+     *
+     * @return 如果返回true则表示输出成功，否则表示呈现过程中出现了问题。
+     */
     @Override
-    public void render(String templatePath, Writer out) {
-        webFreemarkerProcessor.process(templatePath, out);
+    public boolean render( TemplateBean templateBean ) {
+        return webFreemarkerProcessor.process( templateBean );
     }
 
+    /**
+     * 根据给定的模板bean对象计算出对应的结果。
+     *
+     * @param templateBean 模板bean对象
+     *
+     * @return 计算的结果。
+     */
     @Override
-    public String evaluate(String source) {
-        StringWriter writer = new StringWriter();
-        stringFreemarkerProcessor.process(source, writer);
-        return writer.toString();
+    public String evaluate( StringTemplateBean templateBean ) {
+        stringFreemarkerProcessor.process( templateBean );
+        return templateBean.getStringWriter().toString();
     }
 }
 
