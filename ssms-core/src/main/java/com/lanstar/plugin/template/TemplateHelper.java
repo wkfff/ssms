@@ -19,9 +19,9 @@ public class TemplateHelper {
      *
      * @return 如果返回true则表示输出成功，否则表示呈现过程中出现了问题。
      */
-    public static boolean render( TemplateBean templateBean ) {
+    public static void render( TemplateBean templateBean ) throws TemplateException {
         Asserts.notNull( templateBean, "模型bean不能为空" );
-        return App.getPlugin( ITemplatePlugin.class ).render( templateBean );
+        App.getPlugin( ITemplatePlugin.class ).render( templateBean );
     }
 
     /**
@@ -31,7 +31,7 @@ public class TemplateHelper {
      *
      * @return 计算的结果。
      */
-    public static String evaluate( StringTemplateBean templateBean ) {
+    public static String evaluate( StringTemplateBean templateBean ) throws TemplateException {
         Asserts.notNull( templateBean, "模型bean不能为空" );
         return App.getPlugin( ITemplatePlugin.class ).evaluate( templateBean );
     }

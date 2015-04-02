@@ -12,6 +12,7 @@ import com.lanstar.plugin.AppPlugin;
 import com.lanstar.plugin.template.ITemplatePlugin;
 import com.lanstar.plugin.template.StringTemplateBean;
 import com.lanstar.plugin.template.TemplateBean;
+import com.lanstar.plugin.template.TemplateException;
 
 /**
  * Freemarker模板插件
@@ -30,12 +31,10 @@ public class FreemarkerPlugin extends AppPlugin implements ITemplatePlugin {
      * 根据给定的模板bean对象呈现模板内容。
      *
      * @param templateBean 模板bean对象
-     *
-     * @return 如果返回true则表示输出成功，否则表示呈现过程中出现了问题。
      */
     @Override
-    public boolean render( TemplateBean templateBean ) {
-        return webFreemarkerProcessor.process( templateBean );
+    public void render( TemplateBean templateBean ) throws TemplateException {
+        webFreemarkerProcessor.process( templateBean );
     }
 
     /**
@@ -46,7 +45,7 @@ public class FreemarkerPlugin extends AppPlugin implements ITemplatePlugin {
      * @return 计算的结果。
      */
     @Override
-    public String evaluate( StringTemplateBean templateBean ) {
+    public String evaluate( StringTemplateBean templateBean ) throws TemplateException {
         stringFreemarkerProcessor.process( templateBean );
         return templateBean.getStringWriter().toString();
     }

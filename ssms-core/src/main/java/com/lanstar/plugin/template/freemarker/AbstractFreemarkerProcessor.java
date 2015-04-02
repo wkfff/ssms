@@ -9,12 +9,11 @@
 package com.lanstar.plugin.template.freemarker;
 
 import com.lanstar.common.helper.Asserts;
-import com.lanstar.common.log.LogHelper;
 import com.lanstar.plugin.template.TemplateBean;
+import com.lanstar.plugin.template.TemplateException;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 import java.io.IOException;
@@ -58,16 +57,14 @@ abstract class AbstractFreemarkerProcessor {
      *
      * @return 如果返回true则表示处理成功，否则返回false。
      */
-    public boolean process( TemplateBean templateBean ) {
+    public void process( TemplateBean templateBean ) throws TemplateException {
         try {
-            Template template = cfg.getTemplate( templateBean.getTemplatePath() );
+            Template template = cfg.getTemplate( templateBean.getTemplate() );
             template.process( templateBean.getModel(), templateBean.getOut() );
-            return true;
         } catch ( IOException e ) {
-            LogHelper.error( getClass(), e, "获取模板文件[%s]时出现了异常...", templateBean.getTemplatePath() );
-        } catch ( TemplateException e ) {
-            LogHelper.error( getClass(), e, "解析模板文件[%s]时出现了异常...", templateBean.getTemplatePath() );
+            throw new TemplateException( String.format( "获取模板文件[%s]时出现了异常...", templateBean.getTemplate() ), e );
+        } catch ( freemarker.template.TemplateException e ) {
+            throw new TemplateException( String.format( "解析模板文件[%s]时出现了异常...", templateBean.getTemplate() ), e );
         }
-        return false;
     }
 }

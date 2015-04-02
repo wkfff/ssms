@@ -8,10 +8,10 @@
 
 package com.lanstar.plugin.template.freemarker;
 
+import com.lanstar.plugin.template.TemplateBean;
+import com.lanstar.plugin.template.TemplateException;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.cache.TemplateLoader;
-
-import java.io.Writer;
 
 /**
  * 基于字符串的Freemarker模板处理器
@@ -25,9 +25,10 @@ public class StringFreemarkerProcessor extends AbstractFreemarkerProcessor {
     }
 
     @Override
-    public boolean process( String source, Object model, Writer out ) {
+    public void process( TemplateBean templateBean ) throws TemplateException {
+        String source = templateBean.getTemplate();
         String name = "I_" + source.hashCode();
         loader.putTemplate( name, source );
-        return super.process( name, model, out );
+        super.process( new TemplateBean( name, templateBean.getModel(), templateBean.getOut() ) );
     }
 }

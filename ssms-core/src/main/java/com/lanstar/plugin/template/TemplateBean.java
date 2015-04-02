@@ -11,25 +11,25 @@ package com.lanstar.plugin.template;
 import java.io.Writer;
 
 public class TemplateBean {
-    private final String templatePath;
+    private final String template;
     private final Object model;
     private final Writer out;
 
     /**
      * 根据模板路径，模型对象，输出流构建一个新实例。
      *
-     * @param templatePath 模板路径
+     * @param template 模板路径
      * @param model        模型对象
      * @param out          输出流
      */
-    public TemplateBean( String templatePath, Object model, Writer out ) {
-        this.templatePath = templatePath;
+    public TemplateBean( String template, Object model, Writer out ) {
+        this.template = template;
         this.model = model;
         this.out = out;
     }
 
-    public String getTemplatePath() {
-        return templatePath;
+    public String getTemplate() {
+        return template;
     }
 
     public Object getModel() {
