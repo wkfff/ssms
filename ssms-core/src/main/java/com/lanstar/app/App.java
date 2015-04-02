@@ -13,6 +13,7 @@ import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import com.lanstar.app.container.IContainer;
 import com.lanstar.common.helper.ServletHelper;
+import com.lanstar.plugin.IAppPlugin;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
@@ -54,5 +55,13 @@ public class App {
 
     public static ServletContext getServletContext() {
         return context.servletContext;
+    }
+
+    public static IAppConfiguration config(){
+        return context.config;
+    }
+
+    public static <T extends IAppPlugin> T getPlugin(Class<T> type){
+        return context.getPlugin(type);
     }
 }
