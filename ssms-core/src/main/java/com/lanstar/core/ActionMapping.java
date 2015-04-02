@@ -126,8 +126,7 @@ public class ActionMapping {
 	 */
 	public static void findClassName(String pkgName, URL url) throws IOException {  
         JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();  
-        JarFile jarFile = jarURLConnection.getJarFile();  
-        System.out.println("jarFile:" + jarFile.getName());  
+        JarFile jarFile = jarURLConnection.getJarFile();          
         Enumeration<JarEntry> jarEntries = jarFile.entries();  
         while (jarEntries.hasMoreElements()) {  
             JarEntry jarEntry = jarEntries.nextElement();  
@@ -142,11 +141,10 @@ public class ActionMapping {
                     prefix = prefix_name.substring(0, endIndex);  
                 }  
             }  
-            if (prefix != null && jarEntryName.endsWith(".class")) {  
-//              System.out.println("prefix:" + prefix +" pkgName:" + pkgName);  
-                if(prefix.equals(pkgName)){  
-                    System.out.println("jar entryName:" + jarEntryName);  
-//                    addClassName(clazzName);  
+            if (prefix != null && jarEntryName.endsWith(".class")) {    
+                if(prefix.equals(pkgName)){
+                    String controllerKey = prefix.replace(CONTROLLERSUFFIX, "");                    
+                    addAction(controllerKey,clazzName); 
                 }
             }  
         }  
