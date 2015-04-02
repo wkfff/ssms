@@ -8,4 +8,21 @@
     <listener>
         <listener-class>com.lanstar.app.ApplicationInitializer</listener-class>
     </listener>
+    
+    <filter>
+		<filter-name>CoreFilter</filter-name>
+		<filter-class>com.lanstar.core.CoreFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>GBK</param-value>
+		</init-param>
+		<init-param>
+			<param-name>exclude-paths</param-name>
+			<param-value>/resource/</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CoreFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 </web-app>
