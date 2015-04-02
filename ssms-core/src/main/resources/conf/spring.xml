@@ -41,10 +41,27 @@
         </constructor-arg>
     </bean>
 
-    <!-- 数据源插件 -->
-    <bean class="com.lanstar.plugin.db.SpringDbPlugin"/>
-    <!-- 模板插件 -->
-    <bean class="com.lanstar.plugin.template.freemarker.FreemarkerPlugin"/>
-    <!-- 控制台插件 -->
-    <bean class="com.lanstar.plugin.console.ConsolePlugin"/>
+    <!-- Render 工厂初始化 -->
+    <bean class="com.lanstar.core.render.RenderFactory">
+        <constructor-arg>
+            <map>
+                <entry key="html">
+                    <bean class="com.lanstar.core.render.impl.MultiRender">
+                        <constructor-arg>
+                            <list>
+                                <bean class="com.lanstar.core.render.impl.HtmlRender"/>
+                                <bean class="com.lanstar.core.render.impl.FreemarkerRender"/>
+                            </list>
+                        </constructor-arg>
+                    </bean>
+                </entry>
+                <entry key="json">
+                    <bean class="com.lanstar.core.render.impl.JsonRender"/>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <!-- 导入插件 -->
+    <import resource="plugin.xml"/>
 </beans>

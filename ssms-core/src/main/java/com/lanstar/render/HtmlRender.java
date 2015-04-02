@@ -7,6 +7,8 @@
  */
 package com.lanstar.render;
 
+import com.lanstar.core.render.RenderException;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
