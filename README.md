@@ -87,28 +87,75 @@ else return;
 |SYS          |system，系统
 
 
-# 四、URL规则
+# 四、页面调度规则
 
 ## 4.1 资源类
 资源文件以/resource/开头的不参与URL解析。
 
 ## 4.2 业务类
-业务类型根据 “/控制器/方法.输出类型?参数”  规则来构造URL，默认字母都为小写。
-例如：	http://localhost/a02/index.html
-		http://localhost/a02/tree.json?sid=1
+### 名词表：
+|名称                 |说明
+|---------------------|-----------------------
+|module               |模块
+|controller           |控制器
+|action               |控制器中的行为
+|render               |呈现页面的方法
+|view                 |视图
 
-在此 URL 段一般以如下形式表示：
+### 1) URL规则
+业务类型根据 “模块/控制器/方法.输出类型?参数”  规则来构造URL，**字母必须为小写**。例如：
+```
+http://localhost/e/a02/index.html
+http://localhost/xxx/a02/tree.json?sid=1
+```
+其中实际有效部分为`/e/a02/index.html`，解析结果为：
+```
+e=>大模块[module]
+a02=>a02Controller[controller]
+index=>indexAction[action]
+.html=>HTMLRender[render]
+```
+*URL规则必须严格按照以上规则进行构造，不符合规则则一律不予解析。*
 
-第一段为模块标识	
-	以达标创建为例子，模块标识为a02
-	后台对应的控制器类名为“模块标识”加上“Controller”，如：a02Controller.java,从Controller基类扩展，包名统一为com.lanstar.controller
-	
-第二段表示调用的控制器类中的方法
-	如：在a02Controller.java中提供index方法
 
-第三段为从“.”到“?”之间，如果没带参数就到结尾，表示输出类型，如html,json等
+### 2) View目录结构
+必须按如下结构放置目录:`views/[module]/[controller]/[action].ftl`，如:
+```
+views/e/a02/index.ftl
+```
+1. 所有模板必须放在views目录下
+2. 按"模块/控制器/模板文件"结构放置
+3. 全部小写，不可大写！
 
-第四段为“?"之后的内容，表示的是传递给控制器的参数，如 ID 或其它各种变量。
+### 3) Controller规则
+Controller规则如下:
+1. public
+2. 类名为[name]Controller，其中name必须小写，后面必须跟上Controller。
+3. 继承自Controller类型
+4. 必须放在`com.lanstar.controller`包下。*其下是否可以放子包待定*。
+示例如下：
+```
+public class a02Controller extends Controller {
+    // 添加各种action
+}
+```
 
-后台通过这个规则解析传入的URL并执行相关操作，不符合规则的直接输出统一的提示页面。
-
+### 4) Action规则
+Action规则如下:
+1. public
+2. 返回值为`ViewAndModel`类型或其子类型
+3. 参数有且只有一个，类型为`HandleContext`
+代码示例如下:
+```java
+package com.lanstar.controller;
+import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.controller.Controller;
+import com.lanstar.core.handle.HandlerContext;
+public class a02Controller extends Controller {
+    public ViewAndModel index(HandlerContext context) {
+        // 业务处理
+        // 返回结果
+        return context.returnWith(null);
+    }
+}
+```
