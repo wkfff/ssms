@@ -42,7 +42,7 @@ abstract class AbstractFreemarkerProcessor {
 
         // Sets how errors will appear.
         // During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
-        cfg.setTemplateExceptionHandler( TemplateExceptionHandler.RETHROW_HANDLER );
+        cfg.setTemplateExceptionHandler( TemplateExceptionHandler.HTML_DEBUG_HANDLER );
     }
 
     /**

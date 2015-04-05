@@ -10,6 +10,8 @@ package com.lanstar.core.handle;
 
 import com.lanstar.app.App;
 import com.lanstar.common.exception.WebException;
+import com.lanstar.common.helper.Asserts;
+import com.lanstar.core.ModelBean;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.ViewAndModel;
 
@@ -21,7 +23,7 @@ public abstract class HandlerContext {
 
     private final RequestContext context;
     private String viewName;
-    private Object model;
+    private ModelBean model;
 
     /**
      * 初始化实例。只能在包内初始化，因此请使用{@link com.lanstar.core.handle.HandlerHelper}来实例化。
@@ -69,14 +71,14 @@ public abstract class HandlerContext {
     /**
      * 获取模型
      */
-    Object getModel() {
+    ModelBean getModel() {
         return this.model;
     }
 
     /**
      * 设置模型
      */
-    void setModel( Object model ) {
+    void setModel( ModelBean model ) {
         this.model = model;
     }
 
@@ -90,19 +92,65 @@ public abstract class HandlerContext {
      */
     public abstract String getRender();
 
-    public ViewAndModel returnWith( String viewName, Object model ) {
+    /**
+     * 响应返回结果
+     *
+     * @param viewName 视图名称
+     * @param model    模型名称
+     *
+     * @return {@link ViewAndModel}实例
+     */
+    public ViewAndModel returnWith( String viewName, ModelBean model ) {
+        Asserts.notBlank( viewName, "view不能为空" );
+        Asserts.notNull( model, "Model不能为空" );
         ViewAndModel viewAndModel = new ViewAndModel();
         viewAndModel.setViewName( viewName );
         viewAndModel.setModel( model );
         return viewAndModel;
     }
 
-    public ViewAndModel returnWith( Object model ) {
+    /**
+     * 响应返回结果
+     *
+     * @param model 模型名称
+     *
+     * @return {@link ViewAndModel}实例
+     */
+    public ViewAndModel returnWith( ModelBean model ) {
         return returnWith( getViewName(), model );
     }
 
+    /**
+     * 响应返回结果
+     *
+     * @param viewName 视图名称
+     *
+     * @return {@link ViewAndModel}实例
+     */
+    public ViewAndModel returnWith( String viewName ) {
+        return returnWith( viewName, ModelBean.EMPTY );
+    }
+
+    /**
+     * 响应返回结果
+     *
+     * @return {@link ViewAndModel}实例
+     */
+    public ViewAndModel returnWith() {
+        return returnWith( ModelBean.EMPTY );
+    }
+
+    /**
+     * 从上下文中取值
+     *
+     * @param key key
+     *
+     * @return value
+     */
     public Object getValue( String key ) {
-        // TODO: 添加取值代码
-        return "abc";
+        Object value = null;
+        if ( model != null ) value = model.getValue( key );
+        if ( value == null ) value = context.getValue( key );
+        return value;
     }
 }

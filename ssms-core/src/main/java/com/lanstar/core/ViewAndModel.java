@@ -10,7 +10,7 @@ package com.lanstar.core;
 
 public class ViewAndModel {
     private String viewName;
-    private Object model;
+    private ModelBean model = ModelBean.EMPTY;
 
     public String getViewName() {
         return viewName;
@@ -20,11 +20,25 @@ public class ViewAndModel {
         this.viewName = viewName;
     }
 
-    public Object getModel() {
+    public ModelBean getModel() {
         return model;
     }
 
-    public void setModel( Object model ) {
+    public void setModel( ModelBean model ) {
         this.model = model;
+    }
+
+    public ViewAndModel view(String viewName) {
+        setViewName( viewName );
+        return this;
+    }
+    public ViewAndModel model(ModelBean model) {
+        setModel( model );
+        return this;
+    }
+
+    public ViewAndModel put(String key, Object value){
+        model.put(key, value);
+        return this;
     }
 }

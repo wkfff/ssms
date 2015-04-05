@@ -7,6 +7,7 @@
  */
 package com.lanstar.controller;
 
+import com.lanstar.core.ModelBean;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.controller.Controller;
 import com.lanstar.core.handle.HandlerContext;
@@ -15,10 +16,25 @@ import com.lanstar.core.handle.HandlerContext;
  * @author F
  */
 public class a02Controller extends Controller {
-    public ViewAndModel index(HandlerContext context) {
-        // 业务处理
-
+    public ViewAndModel index( HandlerContext context ) {
         // 返回结果
-        return context.returnWith(null);
+        return context.returnWith()
+                      .put( "abc", "123" );
+    }
+
+    public ViewAndModel index2( HandlerContext context ) {
+        // 返回结果
+        // 这个等同index
+        return context.returnWith( "index" )
+                      .put( "abc", "123" );
+    }
+
+    public ViewAndModel index3( HandlerContext context ) {
+        ModelBean bean = new ModelBean();
+        bean.put( "abc", "234" );
+        // 返回结果
+        return context.returnWith( "index", bean )
+                      .put( "def", "123" )
+                      .put( "aaa", 123 );
     }
 }
