@@ -8,8 +8,16 @@
 
 package com.lanstar.plugin.db;
 
+import com.lanstar.db.DbContext;
 import com.lanstar.plugin.IAppPlugin;
 
 public interface IDbPlugin extends IAppPlugin {
+    /**
+     * 获取默认的数据库上下文
+     *
+     * @return 数据库上下文实例
+     *
+     * @see DbContext
+     */
     DbContext getDbContext();
 }

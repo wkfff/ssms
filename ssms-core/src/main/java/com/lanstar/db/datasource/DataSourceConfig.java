@@ -6,38 +6,58 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.plugin.db.datasource;
+package com.lanstar.db.datasource;
 
 import com.lanstar.common.helper.PropertiesHelper;
-import com.lanstar.plugin.db.dialect.DialectFactory;
-import com.lanstar.plugin.db.dialect.IDialect;
+import com.lanstar.db.dialect.DialectFactory;
+import com.lanstar.db.dialect.IDialect;
 
 import java.util.Properties;
 
-/** 数据源配置（在配置文件中） */
+/**
+ * 数据源配置（在配置文件中）
+ */
 public class DataSourceConfig {
     /** JDBC驱动程序 */
 //    public static final String JDBC_DRIVER = "jdbc_driver";
-    /** JDBC的URL地址 */
+    /**
+     * JDBC的URL地址
+     */
     public static final String JDBC_URL = "jdbc_url";
-    /** JDBC的用户名 */
+    /**
+     * JDBC的用户名
+     */
     public static final String JDBC_USER = "jdbc_user";
-    /** JDBC的连接密码 */
+    /**
+     * JDBC的连接密码
+     */
     public static final String JDBC_PASSWORD = "jdbc_password";
-    /** 连接池最小值 */
+    /**
+     * 连接池最小值
+     */
     public static final String JDBC_POOL_MINSIZE = "jdbc_pool_minsize";
-    /** 连接池最大值 */
+    /**
+     * 连接池最大值
+     */
     public static final String JDBC_POOL_MAXSIZE = "jdbc_pool_maxsize";
-    /** 过滤器定义，在DRUID中应用 */
+    /**
+     * 过滤器定义，在DRUID中应用
+     */
     public static final String JDBC_POOL_FILTERS = "jdbc_pool_filters";
-    /** 数据库连接池类型 */
+    /**
+     * 数据库连接池类型
+     */
     public static final String JDBC_POOL_TYPE = "jdbc_pool_type";
-    /** 数据库方言类 */
+    /**
+     * 数据库方言类
+     */
     public static final String JDBC_DIALECT = "jdbc_dialect";
-    /** 是否必须成功启动后才能做后续的操作 */
+    /**
+     * 是否必须成功启动后才能做后续的操作
+     */
     public static final String JDBC_START_REQUIRED = "jdbc_start_required";
 
-//    final String jdbcDriver;
+    //    final String jdbcDriver;
     final String jdbcUrl;
     final String jdbcUser;
     final String jdbcPassword;
@@ -48,18 +68,18 @@ public class DataSourceConfig {
     final String poolType;
     public IDialect dialect;
 
-    public DataSourceConfig(Properties props) {
+    public DataSourceConfig( Properties props ) {
 
 //        this.jdbcDriver = PropertiesHelper.get(props, JDBC_DRIVER, null);
-        this.jdbcUrl = PropertiesHelper.get(props, JDBC_URL, null);
-        this.jdbcUser = PropertiesHelper.get(props, JDBC_USER, null);
-        this.jdbcPassword = PropertiesHelper.get(props, JDBC_PASSWORD, null);
-        this.poolMaxSize = PropertiesHelper.get(props, JDBC_POOL_MAXSIZE, 250);
-        this.poolMinSize = PropertiesHelper.get(props, JDBC_POOL_MINSIZE, 3);
-        this.poolFilters = PropertiesHelper.get(props, JDBC_POOL_FILTERS, "");
-        this.required = "true".equalsIgnoreCase(PropertiesHelper.get(props, JDBC_START_REQUIRED, "false"));
-        this.dialect = DialectFactory.me().getDialect(PropertiesHelper.get(props, JDBC_DIALECT, "mysql"));
-        this.poolType = PropertiesHelper.get(props, JDBC_POOL_TYPE, "druid");
+        this.jdbcUrl = PropertiesHelper.get( props, JDBC_URL, null );
+        this.jdbcUser = PropertiesHelper.get( props, JDBC_USER, null );
+        this.jdbcPassword = PropertiesHelper.get( props, JDBC_PASSWORD, null );
+        this.poolMaxSize = PropertiesHelper.get( props, JDBC_POOL_MAXSIZE, 250 );
+        this.poolMinSize = PropertiesHelper.get( props, JDBC_POOL_MINSIZE, 3 );
+        this.poolFilters = PropertiesHelper.get( props, JDBC_POOL_FILTERS, "" );
+        this.required = "true".equalsIgnoreCase( PropertiesHelper.get( props, JDBC_START_REQUIRED, "false" ) );
+        this.dialect = DialectFactory.me().getDialect( PropertiesHelper.get( props, JDBC_DIALECT, "mysql" ) );
+        this.poolType = PropertiesHelper.get( props, JDBC_POOL_TYPE, "druid" );
     }
 
     public String getJdbcUrl() {

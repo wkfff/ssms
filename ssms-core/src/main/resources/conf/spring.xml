@@ -21,21 +21,21 @@
     </bean>
 
     <!-- 数据方言工厂初始化 -->
-    <bean class="com.lanstar.plugin.db.dialect.DialectFactory">
+    <bean class="com.lanstar.db.dialect.DialectFactory">
         <constructor-arg>
             <map>
                 <entry key="mysql">
-                    <bean class="com.lanstar.plugin.db.dialect.impl.MySqlDialect"/>
+                    <bean class="com.lanstar.db.dialect.impl.MySqlDialect"/>
                 </entry>
             </map>
         </constructor-arg>
     </bean>
     <!-- 数据源工厂初始化 -->
-    <bean class="com.lanstar.plugin.db.datasource.DataSourceFactory">
+    <bean class="com.lanstar.db.datasource.DataSourceFactory">
         <constructor-arg>
             <map>
                 <entry key="druid">
-                    <bean class="com.lanstar.plugin.db.datasource.impl.DruidDataSourceProvider"/>
+                    <bean class="com.lanstar.db.datasource.impl.DruidDataSourceProvider"/>
                 </entry>
             </map>
         </constructor-arg>
@@ -46,11 +46,11 @@
         <constructor-arg>
             <map>
                 <!--<entry key="html">
-                    <bean class="com.lanstar.core.render.impl.MultiRender">
+                    <bean class="com.lanstar.core.render.action.MultiRender">
                         <constructor-arg>
                             <list>
-                                <bean class="com.lanstar.core.render.impl.HtmlRender"/>
-                                <bean class="com.lanstar.core.render.impl.FreemarkerRender"/>
+                                <bean class="com.lanstar.core.render.action.HtmlRender"/>
+                                <bean class="com.lanstar.core.render.action.FreemarkerRender"/>
                             </list>
                         </constructor-arg>
                     </bean>
@@ -69,7 +69,9 @@
     <bean class="com.lanstar.core.Dispatcher">
         <constructor-arg>
             <list>
-                <bean class="com.lanstar.core.handle.impl.ActionHandler"/>
+                <!--<bean class="com.lanstar.core.handle.statics.StaticHandler"/>-->
+                <bean class="com.lanstar.core.handle.authenticate.AuthHandler"/>
+                <bean class="com.lanstar.core.handle.action.ActionHandler"/>
             </list>
         </constructor-arg>
     </bean>

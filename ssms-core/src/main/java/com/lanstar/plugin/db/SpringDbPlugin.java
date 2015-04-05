@@ -8,12 +8,12 @@
 
 package com.lanstar.plugin.db;
 
-import com.lanstar.app.App;
-import com.lanstar.plugin.db.datasource.DataSourceFactory;
+import com.lanstar.db.DbContext;
+import com.lanstar.db.datasource.DataSourceFactory;
 
 public class SpringDbPlugin implements IDbPlugin {
-    private DbContext dbContext;
     private final DataSourceFactory dataSourceFactory;
+    private DbContext dbContext;
 
     public SpringDbPlugin() {
         dataSourceFactory = DataSourceFactory.me();
@@ -23,8 +23,8 @@ public class SpringDbPlugin implements IDbPlugin {
     @Override
     public void startup() {
         // TODO:获取主数据源
-        dbContext = dataSourceFactory.create(App.config().getProperties());
-        dbContext.startup();
+        //        dbContext = dataSourceFactory.create(App.config().getProperties());
+        //        dbContext.startup();
     }
 
     /** 关闭插件运行 */

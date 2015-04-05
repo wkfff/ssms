@@ -6,11 +6,11 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.plugin.db;
+package com.lanstar.db;
 
 import com.google.common.base.Strings;
 import com.lanstar.common.log.LogHelper;
-import com.lanstar.plugin.db.dialect.IDialect;
+import com.lanstar.db.dialect.IDialect;
 
 import javax.sql.DataSource;
 import java.io.Closeable;
@@ -18,41 +18,64 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * 数据库上下文
+ */
 public class DbContext {
     private final DataSource datasource;
     private final IDialect dialect;
 
-    public DbContext(DataSource datasource, IDialect dialect) {
+    public DbContext( DataSource datasource, IDialect dialect ) {
         this.datasource = datasource;
         this.dialect = dialect;
     }
 
+    /**
+     * 从数据库上下文中获取数据源
+     *
+     * @return 数据源
+     *
+     * @see DataSource
+     */
     public DataSource getDataSource() {
         return datasource;
     }
 
+    /**
+     * 获取数据库方言
+     *
+     * @return 数据库方言
+     *
+     * @see IDialect
+     */
     public IDialect getDialect() {
         return dialect;
     }
 
+    /**
+     * 启动数据库
+     */
     public void startup() {
-        while (true) {
+        while ( true ) {
             Exception e = test();
-            if (e == null)
+            if ( e == null )
                 break;
-            LogHelper.error(this.getClass(), e, "数据源连接错误");
+            LogHelper.error( this.getClass(), e, "数据源连接错误" );
             try {
-                Thread.sleep(30000);
-            } catch (InterruptedException ignored) {
+                Thread.sleep( 30000 );
+            } catch ( InterruptedException ignored ) {
             }
         }
     }
 
+    /**
+     * 关闭数据库
+     */
     public void shutdown() {
-        if (this.datasource instanceof Closeable) {
+        if ( this.datasource instanceof Closeable ) {
             try {
                 ((Closeable) this.datasource).close();
-            } catch (Throwable ignored) {
+            } catch ( Throwable ignored ) {
             }
         }
     }
@@ -62,24 +85,24 @@ public class DbContext {
      */
     private Exception test() {
         String sql = dialect.getHeartbeatSql();
-        if (Strings.isNullOrEmpty(sql))
-            return new IllegalArgumentException("数据源没有配置HBSQL");
+        if ( Strings.isNullOrEmpty( sql ) )
+            return new IllegalArgumentException( "数据源没有配置HBSQL" );
 
         Connection conn;
         try {
             conn = datasource.getConnection();
-        } catch (SQLException e) {
+        } catch ( SQLException e ) {
             return e;
         }
 
         Statement st = null;
         try {
             st = conn.createStatement();
-            st.execute(sql);
-        } catch (SQLException e) {
+            st.execute( sql );
+        } catch ( SQLException e ) {
             return e;
         } finally {
-            JdbcHelper.close(st, conn);
+            JdbcHelper.close( st, conn );
         }
 
         return null;

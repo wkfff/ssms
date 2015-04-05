@@ -8,6 +8,10 @@
 
 package com.lanstar.common.exception;
 
+/**
+ * Web异常基类。
+ * NOTE: 项目中所有自定义异常均继承自该类
+ */
 public class WebException extends RuntimeException {
     public WebException() {
     }

@@ -5,38 +5,40 @@
  * 创建时间：2015-04-01
  * 创建用户：张铮彬
  */
-package com.lanstar.plugin.db.datasource;
+package com.lanstar.db.datasource;
 
 import com.lanstar.app.container.ContainerHelper;
 import com.lanstar.common.helper.Asserts;
-import com.lanstar.plugin.db.DbContext;
+import com.lanstar.db.DbContext;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-/** 数据源创建工厂，根据系统配置文件来定义 */
+/**
+ * 数据源创建工厂，根据系统配置文件来定义
+ */
 public final class DataSourceFactory {
     private Map<String, IDataSourceProvider> providerMap = new HashMap<>();
 
-    public DataSourceFactory(Map<String, IDataSourceProvider> map) {
-        for (String providerName : map.keySet()) {
-            providerMap.put(providerName.toUpperCase(), map.get(providerName));
+    public DataSourceFactory( Map<String, IDataSourceProvider> map ) {
+        for ( String providerName : map.keySet() ) {
+            providerMap.put( providerName.toUpperCase(), map.get( providerName ) );
         }
-        Asserts.notEmpty(providerMap.keySet(), "无法找到任何IDataSourceProvider实现！");
+        Asserts.notEmpty( providerMap.keySet(), "无法找到任何IDataSourceProvider实现！" );
     }
 
     /**
      * 根据数据源名称从配置文件中获得指定的数据源定义
      */
-    public DbContext create(Properties ps) {
-        DataSourceConfig config = new DataSourceConfig(ps);
-        DataSource datasource = providerMap.get(config.poolType.toUpperCase()).createDatasource(config);
-        return new DbContext(datasource, config.dialect);
+    public DbContext create( Properties ps ) {
+        DataSourceConfig config = new DataSourceConfig( ps );
+        DataSource datasource = providerMap.get( config.poolType.toUpperCase() ).createDatasource( config );
+        return new DbContext( datasource, config.dialect );
     }
 
-    public static DataSourceFactory me(){
-        return ContainerHelper.getBean(DataSourceFactory.class);
+    public static DataSourceFactory me() {
+        return ContainerHelper.getBean( DataSourceFactory.class );
     }
 }

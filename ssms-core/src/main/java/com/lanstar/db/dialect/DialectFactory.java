@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.plugin.db.dialect;
+package com.lanstar.db.dialect;
 
 import com.lanstar.app.container.ContainerHelper;
 import com.lanstar.common.helper.Asserts;
@@ -14,21 +14,31 @@ import com.lanstar.common.helper.Asserts;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 方言工厂类
+ */
 public class DialectFactory {
     private final Map<String, IDialect> dialectMap = new HashMap<>();
 
-    public DialectFactory(Map<String, IDialect> map) {
-        for (String s : map.keySet()) {
-            dialectMap.put(s.toUpperCase(), map.get(s));
+    public DialectFactory( Map<String, IDialect> map ) {
+        for ( String s : map.keySet() ) {
+            dialectMap.put( s.toUpperCase(), map.get( s ) );
         }
-        Asserts.notEmpty(dialectMap.keySet(), "无法找到任何IDialect实现！");
+        Asserts.notEmpty( dialectMap.keySet(), "无法找到任何IDialect实现！" );
     }
 
-    public IDialect getDialect(String dialect) {
-        return dialectMap.get(dialect);
+    /**
+     * 根据方言名称获取方言实例
+     *
+     * @param dialect 方言名称
+     *
+     * @return {@link IDialect}实例
+     */
+    public IDialect getDialect( String dialect ) {
+        return dialectMap.get( dialect );
     }
 
-    public static DialectFactory me(){
-        return ContainerHelper.getBean(DialectFactory.class);
+    public static DialectFactory me() {
+        return ContainerHelper.getBean( DialectFactory.class );
     }
 }
