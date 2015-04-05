@@ -7,7 +7,7 @@
  */
 package com.lanstar.core;
 
-import com.lanstar.core.handle.impl.ActionMapping;
+import com.lanstar.core.handle.action.ActionMapping;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -34,13 +34,28 @@ public class CoreFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String uri = req.getRequestURI();
+        RequestContext requestContext = new RequestContext( uri, req, res );
+
+        // 视图目录禁止访问
+        if ( uri.startsWith( requestContext.getViewsFolder( false ) ) )
+        {
+            res.sendError( HttpServletResponse.SC_NOT_FOUND );
+            return;
+        }
+        // 资源目录使用默认调度方式
+        if ( uri.startsWith( requestContext.getResourceFolder( false ) ) ){
+            chain.doFilter( request, response );
+            return;
+        }
+
         for ( String p : expaths ) {
-            if ( uri.startsWith( req.getContextPath() + p.trim() ) ) {
+            String path = requestContext.getPath( p );
+            if ( uri.startsWith( path ) ) {
                 chain.doFilter( request, response );
                 return;
             }
         }
-        dispatcher.dispatch( new RequestContext( uri, req, res ) );
+        dispatcher.dispatch( requestContext );
     }
 
     @Override

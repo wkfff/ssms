@@ -8,7 +8,6 @@
 
 package com.lanstar.core.handle;
 
-import com.google.common.base.Joiner;
 import com.lanstar.app.App;
 import com.lanstar.common.exception.WebException;
 import com.lanstar.core.RequestContext;
@@ -17,10 +16,9 @@ import com.lanstar.core.ViewAndModel;
 import java.io.IOException;
 import java.io.Writer;
 
-public class HandlerContext {
-    private static final String TEMPLATE_SUFFIX = App.config().getTemplateSuffix();
+public abstract class HandlerContext {
+    public static final String TEMPLATE_SUFFIX = App.config().getTemplateSuffix();
 
-    private final HandlerMeta meta;
     private final RequestContext context;
     private String viewName;
     private Object model;
@@ -32,10 +30,8 @@ public class HandlerContext {
      *
      * @see com.lanstar.core.handle.HandlerHelper
      */
-    HandlerContext( RequestContext context ) {
+    protected HandlerContext( RequestContext context ) {
         this.context = context;
-        meta = HandlerHelper.parseUrl( context.getUri() );
-        viewName = meta.getAction();
     }
 
     /**
@@ -43,15 +39,6 @@ public class HandlerContext {
      */
     public RequestContext getRequestContext() {
         return context;
-    }
-
-    /**
-     * 获取请求的元数据信息
-     *
-     * @return 元数据
-     */
-    public HandlerMeta getMeta() {
-        return meta;
     }
 
     /**
@@ -75,12 +62,8 @@ public class HandlerContext {
     /**
      * 覆盖View设置
      */
-    void setViewName( String viewName ) {
+    protected void setViewName( String viewName ) {
         this.viewName = viewName;
-    }
-
-    public String getViewPath() {
-        return Joiner.on( '/' ).join( meta.getModule(), meta.getController(), viewName+TEMPLATE_SUFFIX );
     }
 
     /**
@@ -98,11 +81,14 @@ public class HandlerContext {
     }
 
     /**
+     * 获取View路径
+     */
+    public abstract String getViewPath();
+
+    /**
      * 获取Render
      */
-    public String getRender() {
-        return meta.getRender();
-    }
+    public abstract String getRender();
 
     public ViewAndModel returnWith( String viewName, Object model ) {
         ViewAndModel viewAndModel = new ViewAndModel();

@@ -10,23 +10,53 @@ package com.lanstar.core.handle;
 
 import com.lanstar.core.RequestContext;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Handlers {
-    List<IHandler> handlers = new LinkedList<>();
+    private final VirtualHandleChain handleChain;
 
-    public void add( IHandler handler ) {
-        handlers.add( handler );
+    public Handlers() {
+        handleChain = new VirtualHandleChain();
     }
 
-    public void add( List<IHandler> list ) {
-        handlers.addAll( list );
+    public void add( Handler handler ) {
+        handleChain.add( handler );
+    }
+
+    public void add( List<Handler> list ) {
+        handleChain.add( list );
     }
 
     public void handle( RequestContext context ) {
-        for ( IHandler handler : handlers ) {
-            handler.handle( context );
+        handleChain.doHandle( HandlerHelper.createHandlerContext( context ), true );
+    }
+
+    private static class VirtualHandleChain implements HandleChain {
+        private final List<Handler> additionalHandlers = new LinkedList<>();
+        private int currentPosition = 0;
+
+        void add( Handler handler ) {
+            additionalHandlers.add( handler );
+        }
+
+        void add( Collection<Handler> handlers ) {
+            additionalHandlers.addAll( handlers );
+        }
+
+        @Override
+        public void doHandle( HandlerContext context ) {
+            if ( this.currentPosition == this.additionalHandlers.size() ) return;
+            this.currentPosition++;
+            Handler next = this.additionalHandlers.get( this.currentPosition - 1 );
+            next.handle( context, this );
+        }
+
+        public void doHandle( HandlerContext handlerContext, boolean reset ) {
+            currentPosition = 0;
+            doHandle( handlerContext );
         }
     }
 }
+

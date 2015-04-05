@@ -6,9 +6,13 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.core.handle;
+package com.lanstar.core.handle.action;
 
-public class HandlerMeta {
+import com.google.common.base.Splitter;
+
+import java.util.List;
+
+public class ActionMeta {
     String module;
     String controller;
     String action;
@@ -32,11 +36,39 @@ public class HandlerMeta {
 
     @Override
     public String toString() {
-        return "HandlerMeta{" +
+        return "ActionMeta{" +
                 "module='" + module + '\'' +
                 ", controller='" + controller + '\'' +
                 ", action='" + action + '\'' +
                 ", render='" + render + '\'' +
                 '}';
+    }
+
+
+    /**
+     * 将URL解析为元数据
+     *
+     * @param url URL
+     *
+     * @return 元数据
+     *
+     * @see ActionMeta
+     */
+    public static ActionMeta parseUrl( String url ) {
+        ActionMeta meta = new ActionMeta();
+        // 解析/e/a02/index.html为：
+        //     e=>大模块
+        //     a02=>a02Controller
+        //     index=>Action
+        //     .html=>Render
+        url = url.replace( '.', '/' );
+        List<String> result = Splitter.on( '/' ).omitEmptyStrings().trimResults().splitToList( url );
+        if (result.size() != 4) return null;
+        meta.module = result.get( 0 );
+        meta.controller = result.get( 1 );
+        meta.action = result.get( 2 );
+        meta.render = result.get( 3 );
+
+        return meta;
     }
 }

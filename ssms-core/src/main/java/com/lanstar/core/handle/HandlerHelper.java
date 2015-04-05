@@ -8,11 +8,8 @@
 
 package com.lanstar.core.handle;
 
-import com.google.common.base.Splitter;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.ViewAndModel;
-
-import java.util.List;
 
 public class HandlerHelper {
     public static void setViewAndModel( HandlerContext handlerContext, ViewAndModel viewAndModel ) {
@@ -24,32 +21,22 @@ public class HandlerHelper {
      * 根据请求上下文实例化{@link HandlerContext}
      */
     public static HandlerContext createHandlerContext( RequestContext requestContext ) {
-        return new HandlerContext( requestContext );
-    }
+        return new HandlerContext( requestContext ) {
+            /**
+             * 获取View路径
+             */
+            @Override
+            public String getViewPath() {
+                return null;
+            }
 
-    /**
-     * 将URL解析为元数据
-     *
-     * @param url URL
-     *
-     * @return 元数据
-     *
-     * @see HandlerMeta
-     */
-    public static HandlerMeta parseUrl( String url ) {
-        HandlerMeta meta = new HandlerMeta();
-        // 解析/e/a02/index.html为：
-        //     e=>大模块
-        //     a02=>a02Controller
-        //     index=>Action
-        //     .html=>Render
-        url = url.replace( '.', '/' );
-        List<String> result = Splitter.on( '/' ).omitEmptyStrings().trimResults().splitToList( url );
-        meta.module = result.get( 0 );
-        meta.controller = result.get( 1 );
-        meta.action = result.get( 2 );
-        meta.render = result.get( 3 );
-
-        return meta;
+            /**
+             * 获取Render
+             */
+            @Override
+            public String getRender() {
+                return null;
+            }
+        };
     }
 }

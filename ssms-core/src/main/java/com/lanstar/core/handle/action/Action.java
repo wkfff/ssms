@@ -5,7 +5,7 @@
  * 创建时间：2015年4月1日 下午2:07:30
  * 创建用户：林峰
  */
-package com.lanstar.core.handle.impl;
+package com.lanstar.core.handle.action;
 
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.controller.Controller;

@@ -8,15 +8,20 @@
 
 package com.lanstar.core;
 
+import com.lanstar.app.App;
+import com.lanstar.core.handle.HandleException;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class RequestContext {
     private final String uri;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
 
-    public RequestContext(String uri, HttpServletRequest request, HttpServletResponse responst) {
+    public RequestContext( String uri, HttpServletRequest request, HttpServletResponse responst ) {
         this.uri = uri;
         this.request = request;
         this.response = responst;
@@ -32,5 +37,49 @@ public class RequestContext {
 
     public HttpServletResponse getResponse() {
         return response;
+    }
+
+    public void forward( String path ) {
+        try {
+            request.getRequestDispatcher( path ).forward( request, response );
+        } catch ( ServletException | IOException e ) {
+            throw new HandleException( e );
+        }
+    }
+
+    public String getPath( String path ) {
+        return getPath( path, false );
+    }
+
+    public String getPath( String path, boolean real ) {
+        if ( !path.startsWith( "/" ) ) path = "/" + path;
+        String contextPath = request.getContextPath();
+        if ( !path.startsWith( contextPath ) ) path = contextPath + path;
+        if ( real ) return getRealPath( path );
+        return path;
+    }
+
+    public String getRealPath( String path ) {
+        return App.getServletContext().getRealPath( path );
+    }
+
+    public String getResourceFolder() {
+        return getResourceFolder( true );
+    }
+
+    public String getResourceFolder( boolean real ) {
+        String path = getPath( App.config().getResourceFolder() );
+        if ( real ) return getRealPath( path );
+        return path;
+    }
+
+    public String getViewsFolder() {
+        return getViewsFolder( true );
+    }
+
+    public String getViewsFolder( boolean real ) {
+        String path = getPath( App.config().getViewFolder() );
+        if ( real ) return getRealPath( path );
+        return path;
     }
 }

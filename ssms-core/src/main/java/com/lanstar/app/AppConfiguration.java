@@ -21,12 +21,14 @@ import java.util.Properties;
 public class AppConfiguration implements IAppConfiguration {
     public static final String TEMPLATE_SUFFIX = "template_suffix";
     private static final String VIEWS_FOLDER = "views_folder";
+    private static final String RESOURCE_FOLDER = "resource_folder";
 
     private Map<String, String> map;
     private Properties ps = new Properties();
 
     private String templateSuffix;
     private String viewsFolder;
+    private String resourceFolder;
 
     public AppConfiguration( String... paths ) {
         try {
@@ -45,6 +47,7 @@ public class AppConfiguration implements IAppConfiguration {
         templateSuffix = getProperty( TEMPLATE_SUFFIX, "ftl" );
         if ( !templateSuffix.startsWith( "." ) ) templateSuffix = "." + templateSuffix;
         viewsFolder = getProperty( VIEWS_FOLDER, "views" );
+        resourceFolder = getProperty( RESOURCE_FOLDER, "resource" );
     }
 
     public Map<String, String> getPropertiesMap() {
@@ -67,5 +70,10 @@ public class AppConfiguration implements IAppConfiguration {
     @Override
     public String getViewFolder() {
         return viewsFolder;
+    }
+
+    @Override
+    public String getResourceFolder() {
+        return resourceFolder;
     }
 }

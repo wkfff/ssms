@@ -9,8 +9,8 @@
 package com.lanstar.core;
 
 import com.lanstar.app.container.ContainerHelper;
+import com.lanstar.core.handle.Handler;
 import com.lanstar.core.handle.Handlers;
-import com.lanstar.core.handle.IHandler;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class Dispatcher {
         return ContainerHelper.getBean( Dispatcher.class );
     }
 
-    public Dispatcher(List<IHandler> list ) {
+    public Dispatcher( List<Handler> list ) {
         handlers = new Handlers();
         handlers.add( list );
     }

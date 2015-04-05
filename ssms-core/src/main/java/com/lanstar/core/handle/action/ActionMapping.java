@@ -5,14 +5,13 @@
  * 创建时间：2015年4月2日 上午10:50:29
  * 创建用户：林峰
  */
-package com.lanstar.core.handle.impl;
+package com.lanstar.core.handle.action;
 
 import com.lanstar.common.helper.BeanHelper;
 import com.lanstar.common.log.Logger;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.controller.Controller;
 import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.core.handle.HandlerMeta;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +41,7 @@ public class ActionMapping {
     /**
      * 从元数据中获取Action标识
      */
-    public static String getActionKey( HandlerMeta meta ) {
+    public static String getActionKey( ActionMeta meta ) {
         String controllerKey = meta.getController();
         String methodName = meta.getAction();
         return SLASH + controllerKey + SLASH + methodName;
@@ -51,7 +50,7 @@ public class ActionMapping {
     /**
      * 获取Action
      */
-    public static Action getAction( HandlerMeta meta ) {
+    public static Action getAction( ActionMeta meta ) {
         String actionKey = getActionKey( meta );
         return mapping.get( actionKey );
     }

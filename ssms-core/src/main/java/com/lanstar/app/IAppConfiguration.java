@@ -17,4 +17,6 @@ public interface IAppConfiguration {
     String getTemplateSuffix();
 
     String getViewFolder();
+
+    String getResourceFolder();
 }
