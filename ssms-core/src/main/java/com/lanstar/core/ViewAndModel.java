@@ -10,7 +10,7 @@ package com.lanstar.core;
 
 public class ViewAndModel {
     private String viewName;
-    private ModelBean model = ModelBean.EMPTY;
+    private ModelBean model = ModelBean.newInstance();
 
     public String getViewName() {
         return viewName;

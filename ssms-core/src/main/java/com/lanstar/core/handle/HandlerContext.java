@@ -23,7 +23,7 @@ public abstract class HandlerContext {
 
     private final RequestContext context;
     private String viewName;
-    private ModelBean model = ModelBean.EMPTY;
+    private ModelBean model = ModelBean.newInstance();
     public final DBContext db;
 
     /**
@@ -130,7 +130,7 @@ public abstract class HandlerContext {
      * @return {@link ViewAndModel}实例
      */
     public ViewAndModel returnWith( String viewName ) {
-        return returnWith( viewName, ModelBean.EMPTY );
+        return returnWith( viewName, ModelBean.newInstance() );
     }
 
     /**
@@ -139,7 +139,7 @@ public abstract class HandlerContext {
      * @return {@link ViewAndModel}实例
      */
     public ViewAndModel returnWith() {
-        return returnWith( ModelBean.EMPTY );
+        return returnWith( ModelBean.newInstance() );
     }
 
     /**

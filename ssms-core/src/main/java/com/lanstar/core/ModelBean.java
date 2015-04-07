@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ModelBean implements IJsonable {
-    public static final ModelBean EMPTY = new ModelBean();
     private final Map<String, Object> map = new HashMap<>(  );
 
     public void put( String key, Object value ) {
@@ -32,5 +31,9 @@ public class ModelBean implements IJsonable {
     @Override
     public String toJson() {
         return JsonHelper.toJson( this.map );
+    }
+
+    public static ModelBean newInstance(){
+        return new ModelBean();
     }
 }
