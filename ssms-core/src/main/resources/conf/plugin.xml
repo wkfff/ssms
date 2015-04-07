@@ -13,6 +13,8 @@
     <bean class="com.lanstar.plugin.db.SpringDbPlugin"/>
     <!-- 模板插件 -->
     <bean class="com.lanstar.plugin.template.freemarker.FreemarkerPlugin"/>
+    <!-- JSON插件 -->
+    <bean class="com.lanstar.plugin.json.JsonPlugin"/>
     <!-- 控制台插件 -->
     <bean class="com.lanstar.plugin.console.ConsolePlugin"/>
 </beans>

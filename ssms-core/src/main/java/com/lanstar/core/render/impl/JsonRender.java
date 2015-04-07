@@ -8,20 +8,30 @@
 
 package com.lanstar.core.render.impl;
 
-import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.RequestContext;
+import com.lanstar.core.handle.HandleException;
+import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.render.IRender;
 import com.lanstar.core.render.Render;
 import com.lanstar.core.render.RenderHelper;
 
+import java.io.IOException;
+import java.io.Writer;
+
 public class JsonRender extends Render implements IRender {
     @Override
     protected void setHeader( RequestContext context ) {
-        RenderHelper.setJsonHeader(context);
+        RenderHelper.setJsonHeader( context );
     }
 
     @Override
     protected void innerRender( HandlerContext context ) {
-        // TODO: 解析数据对象，返回为json格式。
+        try {
+            Writer output = context.getOutput();
+            output.write( context.getModel().toJson() );
+            output.flush();
+        } catch ( IOException e ) {
+            throw new HandleException( e );
+        }
     }
 }

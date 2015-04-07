@@ -8,10 +8,13 @@
 
 package com.lanstar.core;
 
+import com.lanstar.common.bean.IJsonable;
+import com.lanstar.plugin.json.JsonHelper;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class ModelBean {
+public class ModelBean implements IJsonable {
     public static final ModelBean EMPTY = new ModelBean();
     private final Map<String, Object> map = new HashMap<>(  );
 
@@ -21,5 +24,13 @@ public class ModelBean {
 
     public Object getValue( String key ) {
         return map.get( key );
+    }
+
+    /**
+     * @return JSON标准字符串, 带“{”...“}”串
+     */
+    @Override
+    public String toJson() {
+        return JsonHelper.toJson( this.map );
     }
 }
