@@ -35,7 +35,7 @@ public class DialectFactory {
      * @return {@link IDialect}实例
      */
     public IDialect getDialect( String dialect ) {
-        return dialectMap.get( dialect );
+        return dialectMap.get( dialect.toUpperCase() );
     }
 
     public static DialectFactory me() {

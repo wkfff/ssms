@@ -11,6 +11,7 @@ import com.lanstar.core.ModelBean;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.controller.Controller;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.db.JdbcRecordSet;
 
 /**
  * @author F
@@ -36,5 +37,29 @@ public class a02Controller extends Controller {
         return context.returnWith( "index", bean )
                       .put( "def", "123" )
                       .put( "aaa", 123 );
+    }
+
+    public ViewAndModel index4( HandlerContext context ) {
+        int insert1 = context.db.withTable( "demo" )
+                                .value( "f1", 1 )
+                                .insert();
+        int insert2 = context.db.withTable( "demo" )
+                                .value( "f1", 2 )
+                                .insert();
+        int delete = context.db.withTable( "demo" )
+                               .where( "f1=?", 1 )
+                               .delete();
+        int update = context.db.withTable( "demo" )
+                               .where( "f1=?", 2 )
+                               .value( "f1", 3 )
+                               .update();
+        JdbcRecordSet list = context.db.withTable( "demo" ).queryList();
+
+        return context.returnWith()
+                      .put( "insert1", insert1 )
+                      .put( "insert2", insert2 )
+                      .put( "update", update )
+                      .put( "delete", delete )
+                      .put( "list", list );
     }
 }

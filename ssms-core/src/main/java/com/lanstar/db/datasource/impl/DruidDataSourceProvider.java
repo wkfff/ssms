@@ -54,11 +54,10 @@ public class DruidDataSourceProvider implements IDataSourceProvider {
 
         // 配置监控统计拦截的filters
         try {
-            ds.setFilters( config.getPoolFilters() );
             // 创建好数据库后先执行一次初始化操作
             ds.init();
         } catch ( SQLException e ) {
-            LogHelper.warn( DataSourceFactory.class, e, "打开连接池的过滤器[%s]错误", config.getPoolFilters() );
+            LogHelper.error( DataSourceFactory.class, e, "数据源无法完成初始化" );
         }
 
         return ds;

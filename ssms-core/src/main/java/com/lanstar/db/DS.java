@@ -18,19 +18,24 @@ import java.sql.SQLException;
 
 public class DS {
     public static DbContext getDbContext() {
-        return App.getPlugin(IDbPlugin.class).getDbContext();
+        return App.getPlugin( IDbPlugin.class ).getDbContext();
     }
 
-    public static DataSource getDataSource() {
-        return getDbContext().getDataSource();
+    public static DataSource getDataSource( DbContext context ) {
+        return context.getDataSource();
     }
 
-    public static Connection getConnection() {
+    public static Connection getConnection( DbContext context ) {
         try {
-            return getDataSource().getConnection();
-        } catch (SQLException e) {
-            LogHelper.error(IDbPlugin.class, e, "无法获取数据源连接!");
+            return getDataSource( context ).getConnection();
+        } catch ( SQLException e ) {
+            LogHelper.error( IDbPlugin.class, e, "无法获取数据源连接!" );
             return null;
         }
+    }
+
+    public static DBSession createDbSession() {
+        DbContext context = getDbContext();
+        return new DBSession( getConnection( context ), context.getDialect() );
     }
 }

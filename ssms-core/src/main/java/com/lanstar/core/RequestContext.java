@@ -11,6 +11,8 @@ package com.lanstar.core;
 import com.google.common.base.Strings;
 import com.lanstar.app.App;
 import com.lanstar.core.handle.HandleException;
+import com.lanstar.db.DBSession;
+import com.lanstar.db.DS;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -151,5 +153,10 @@ public class RequestContext {
         if( Strings.isNullOrEmpty((String)value)) value = request.getAttribute( key );
         if ( value == null) value = request.getSession().getAttribute( key );
         return value;
+    }
+
+    public DBSession getDbSession() {
+        // TODO: 确保每个请求都只有一个DBSession，而不是现在的每次都创建
+        return DS.createDbSession();
     }
 }

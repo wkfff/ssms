@@ -8,12 +8,13 @@
 
 package com.lanstar.db.dialect.impl;
 
+import com.lanstar.db.dialect.AbstDialect;
 import com.lanstar.db.dialect.IDialect;
 
 /**
  * MySQL方言
  */
-public class MySqlDialect implements IDialect {
+public class MySqlDialect extends AbstDialect implements IDialect {
     /**
      * 获取JdbcDriver
      */
