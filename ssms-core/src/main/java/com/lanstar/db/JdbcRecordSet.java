@@ -7,19 +7,10 @@
  */
 package com.lanstar.db;
 
-import com.lanstar.common.bean.IJsonable;
-import com.lanstar.plugin.json.JsonHelper;
-
 import java.util.ArrayList;
-import java.util.List;
 
-/** 数据库记录的基础类 */
-public class JdbcRecordSet extends ArrayList<JdbcRecord> implements IJsonable, List<JdbcRecord>{
-    /**
-     * @return JSON标准字符串, 带“{”...“}”串
-     */
-    @Override
-    public String toJson() {
-        return JsonHelper.toJson( this );
-    }
+/**
+ * 数据库记录的基础类
+ */
+public class JdbcRecordSet extends ArrayList<JdbcRecord> {
 }

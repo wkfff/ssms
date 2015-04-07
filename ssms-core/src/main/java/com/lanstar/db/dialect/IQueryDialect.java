@@ -8,16 +8,14 @@
 
 package com.lanstar.db.dialect;
 
-import com.lanstar.db.DBSession;
-import com.lanstar.db.JdbcRecord;
-import com.lanstar.db.JdbcRecordSet;
+import com.lanstar.db.*;
 
 import java.sql.SQLException;
 
 public interface IQueryDialect {
-    JdbcRecord query( DBSession session, String sql, Object[] params ) throws SQLException;
+    JdbcRecord query( JdbcOperations operations, SqlStatement sqlStatement ) throws SQLException;
 
-    JdbcRecordSet queryList( DBSession session, String sql, Object[] params ) throws SQLException;
+    JdbcRecordSet queryList( JdbcOperations operations, SqlStatement sqlStatement ) throws SQLException;
 
-    void queryList( DBSession session, String sql, Object[] params, IRowCallback row ) throws SQLException;
+    void queryList( JdbcOperations operations, SqlStatement sqlStatement, IRowAction row ) throws SQLException;
 }

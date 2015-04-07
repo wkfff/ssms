@@ -17,7 +17,6 @@ import java.sql.*;
  */
 public final class JdbcHelper {
     public static final int MAX_ROW = -1;
-    public static final MapRowMapper ROW_MAPPER = new MapRowMapper();
     private static Logger log = Logger.getLogger( JdbcHelper.class );
 
     /**
@@ -32,7 +31,11 @@ public final class JdbcHelper {
             if ( object instanceof Connection ) {
                 Connection conn = (Connection) object;
                 if ( !isConnectionValid( conn ) ) return;
-                commit( conn );
+                try {
+                    commit( conn );
+                } catch ( SQLException e ) {
+                    throw new DbException( "关闭连接时发生了异常", e );
+                }
             }
             try {
                 object.close();
@@ -58,17 +61,29 @@ public final class JdbcHelper {
      * 开启事务支持
      *
      * @param conn 要开启事务支持的连接
-     *
-     * @throws DbException
      */
-    public static void beginTransaction( Connection conn ) throws DbException {
+    public static void beginTransaction( Connection conn ) throws SQLException {
         if ( isConnectionValid( conn ) ) {
-            try {
-                if ( !conn.getAutoCommit() )
-                    commit( conn );
-                conn.setAutoCommit( false );
-            } catch ( SQLException e ) {
-                throw new DbException( e );
+            if ( !conn.getAutoCommit() )
+                commit( conn );
+            conn.setAutoCommit( false );
+        }
+    }
+
+    /**
+     * 提交当前事务
+     *
+     * @param conn 数据库连接
+     */
+    public static void commit( Connection conn ) throws SQLException {
+        if ( isConnectionValid( conn ) ) {
+            if ( !conn.getAutoCommit() ) {
+                try {
+                    conn.commit();
+                } catch ( SQLException e ) {
+                    conn.rollback(); // 提交失败则自动回滚
+                    throw e;
+                }
             }
         }
     }
@@ -78,78 +93,46 @@ public final class JdbcHelper {
      *
      * @param conn 数据库连接
      */
-    public static void rollback( Connection conn ) {
+    public static void rollback( Connection conn ) throws SQLException {
         if ( isConnectionValid( conn ) ) {
-            try {
-                if ( !conn.getAutoCommit() ) conn.rollback();
-            } catch ( SQLException e ) {
-                log.warn( "回滚事务时候发现异常：", e.getLocalizedMessage() );
-                throw new DbException( e );
-            }
+            if ( !conn.getAutoCommit() ) conn.rollback();
         }
     }
 
-    /**
-     * 提交当前事务
-     *
-     * @param conn 数据库连接
-     */
-    public static void commit( Connection conn ) {
-        if ( isConnectionValid( conn ) ) {
-            try {
-                if ( !conn.getAutoCommit() ) {
-                    try {
-                        conn.commit();
-                    } catch ( SQLException e ) {
-                        conn.rollback(); // 提交失败则自动回滚
-                        throw e;
-                    }
-                }
-            } catch ( SQLException e ) {
-                log.warn( "提交事务时候发现异常：", e.getLocalizedMessage() );
-                throw new DbException( e );
-            }
-        }
-    }
-
-    public static String lookupColumnName(ResultSetMetaData resultSetMetaData, int columnIndex) throws SQLException {
-        String name = resultSetMetaData.getColumnLabel(columnIndex);
-        if (name == null || name.length() < 1) {
-            name = resultSetMetaData.getColumnName(columnIndex);
+    public static String lookupColumnName( ResultSetMetaData resultSetMetaData, int columnIndex ) throws SQLException {
+        String name = resultSetMetaData.getColumnLabel( columnIndex );
+        if ( name == null || name.length() < 1 ) {
+            name = resultSetMetaData.getColumnName( columnIndex );
         }
         return name;
     }
 
     // 抽取自Spring JdbcTempate
-    public static Object getResultSetValue(ResultSet rs, int index) throws SQLException {
-        Object obj = rs.getObject(index);
+    public static Object getResultSetValue( ResultSet rs, int index ) throws SQLException {
+        Object obj = rs.getObject( index );
         String className = null;
-        if (obj != null) {
+        if ( obj != null ) {
             className = obj.getClass().getName();
         }
-        if (obj instanceof Blob ) {
+        if ( obj instanceof Blob ) {
             Blob blob = (Blob) obj;
-            obj = blob.getBytes(1, (int) blob.length());
-        }
-        else if (obj instanceof Clob) {
+            obj = blob.getBytes( 1, (int) blob.length() );
+        } else if ( obj instanceof Clob ) {
             Clob clob = (Clob) obj;
-            obj = clob.getSubString(1, (int) clob.length());
-        }
-        else if ("oracle.sql.TIMESTAMP".equals(className) || "oracle.sql.TIMESTAMPTZ".equals(className)) {
-            obj = rs.getTimestamp(index);
-        }
-        else if (className != null && className.startsWith("oracle.sql.DATE")) {
-            String metaDataClassName = rs.getMetaData().getColumnClassName(index);
-            if ("java.sql.Timestamp".equals(metaDataClassName) || "oracle.sql.TIMESTAMP".equals(metaDataClassName)) {
-                obj = rs.getTimestamp(index);
+            obj = clob.getSubString( 1, (int) clob.length() );
+        } else if ( "oracle.sql.TIMESTAMP".equals( className ) || "oracle.sql.TIMESTAMPTZ".equals( className ) ) {
+            obj = rs.getTimestamp( index );
+        } else if ( className != null && className.startsWith( "oracle.sql.DATE" ) ) {
+            String metaDataClassName = rs.getMetaData().getColumnClassName( index );
+            if ( "java.sql.Timestamp".equals( metaDataClassName ) || "oracle.sql.TIMESTAMP"
+                    .equals( metaDataClassName ) ) {
+                obj = rs.getTimestamp( index );
+            } else {
+                obj = rs.getDate( index );
             }
-            else {
-                obj = rs.getDate(index);
-            }
-        }
-        else if (obj != null && obj instanceof java.sql.Date) {
-            if ("java.sql.Timestamp".equals(rs.getMetaData().getColumnClassName(index))) {
-                obj = rs.getTimestamp(index);
+        } else if ( obj != null && obj instanceof java.sql.Date ) {
+            if ( "java.sql.Timestamp".equals( rs.getMetaData().getColumnClassName( index ) ) ) {
+                obj = rs.getTimestamp( index );
             }
         }
         return obj;

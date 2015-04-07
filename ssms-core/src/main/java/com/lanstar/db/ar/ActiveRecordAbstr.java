@@ -8,6 +8,7 @@
 package com.lanstar.db.ar;
 
 import com.lanstar.db.DBSession;
+import com.lanstar.db.JdbcOperations;
 import com.lanstar.db.dialect.IDialect;
 
 import java.util.Collection;
@@ -17,7 +18,7 @@ public abstract class ActiveRecordAbstr {
      * SQL的空参数
      */
     public static final Object[] EMPTY_PARA = new Object[] {};
-    final DBSession session;
+    final JdbcOperations session;
     final IDialect dialect;
 
     public ActiveRecordAbstr( DBSession session ) {

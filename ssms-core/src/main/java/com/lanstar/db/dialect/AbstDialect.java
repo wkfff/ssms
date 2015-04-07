@@ -10,32 +10,26 @@ package com.lanstar.db.dialect;
 
 import com.lanstar.db.*;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public abstract class AbstDialect implements IDialect {
     @Override
-    public JdbcRecord query( DBSession session, String sql, Object[] params ) throws SQLException {
-        return session.query( sql, params );
+    public JdbcRecord query( JdbcOperations operations, SqlStatement sqlStatement ) {
+        return operations.first( sqlStatement );
     }
 
     @Override
-    public JdbcRecordSet queryList( DBSession session, String sql, Object[] params ) throws SQLException {
-        return session.queryList( session, sql, params );
+    public JdbcRecordSet queryList( JdbcOperations operations, SqlStatement sqlStatement ) throws SQLException {
+        return operations.query( sqlStatement );
     }
 
     @Override
-    public void queryList( DBSession session, String sql, Object[] params, final IRowCallback rowcb ) throws SQLException {
-        session.query( sql, params, new IRowAction() {
-            @Override
-            public void process( ResultSet rs, int i ) throws Exception {
-                rowcb.execute( rs, i );
-            }
-        }, JdbcHelper.MAX_ROW );
+    public void queryList( JdbcOperations operations, SqlStatement sqlStatement, final IRowAction rowcb ) throws SQLException {
+        operations.query( sqlStatement, rowcb );
     }
 
     @Override
-    public int executeUpdate( DBSession session, String sql, Object[] params ) throws SQLException {
-         return session.execute( sql, params );
+    public int executeUpdate( JdbcOperations operations, SqlStatement sqlStatement ) throws SQLException {
+        return operations.execute( sqlStatement );
     }
 }

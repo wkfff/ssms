@@ -14,6 +14,8 @@ import com.lanstar.common.exception.WebException;
  * 数据库异常基类
  */
 public class DbException extends WebException {
+    private SqlStatement sqlStatement;
+
     public DbException() {
     }
 
@@ -31,5 +33,10 @@ public class DbException extends WebException {
 
     public DbException( String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace ) {
         super( message, cause, enableSuppression, writableStackTrace );
+    }
+
+    public DbException setSqlStatement( SqlStatement sqlStatement ) {
+        this.sqlStatement = sqlStatement;
+        return this;
     }
 }

@@ -8,11 +8,11 @@
 
 package com.lanstar.db.dialect;
 
-import com.lanstar.db.DBSession;
+import com.lanstar.db.JdbcOperations;
+import com.lanstar.db.SqlStatement;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 public interface IExecuteDialiect {
-    int executeUpdate( DBSession session, String sql, Object[] params ) throws SQLException;
+    int executeUpdate( JdbcOperations operations, SqlStatement sqlStatement ) throws SQLException;
 }

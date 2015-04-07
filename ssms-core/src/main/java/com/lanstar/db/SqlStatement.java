@@ -6,12 +6,9 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.db.ar;
+package com.lanstar.db;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,5 +66,9 @@ public class SqlStatement {
         return nparams;
     }
 
+    @Override
+    public String toString() {
+        return String.format( "{sql='%s', params=%s}", sql, Arrays.toString( params ) );
+    }
 }
 

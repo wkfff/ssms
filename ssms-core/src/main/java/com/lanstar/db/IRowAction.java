@@ -9,7 +9,8 @@
 package com.lanstar.db;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public interface IRowAction {
-    void process( ResultSet rs, int i ) throws Exception;
+    void process( ResultSet rs, int i ) throws SQLException;
 }

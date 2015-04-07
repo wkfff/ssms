@@ -8,15 +8,18 @@
 
 package com.lanstar.db;
 
+import com.lanstar.common.helper.Asserts;
 import com.lanstar.common.log.LogHelper;
+import com.lanstar.common.log.Logger;
 import com.lanstar.db.dialect.IDialect;
 
 import java.sql.*;
 import java.util.List;
 
-public class DBSession {
+public class DBSession implements JdbcOperations {
     protected final Connection conn;
     private final IDialect dialect;
+    private static final Logger log = new Logger( DBSession.class );
 
     DBSession( Connection conn, IDialect dialect ) {
         this.conn = conn;
@@ -29,29 +32,151 @@ public class DBSession {
 
     /**
      * 开始事务处理,启动的事务会引起以前有的事务的自动提交
-     *
-     * @throws DbException
      */
     public void beginTransaction() {
-        JdbcHelper.beginTransaction( conn );
+        try {
+            JdbcHelper.beginTransaction( conn );
+        } catch ( SQLException e ) {
+            throw new DbException( "开启事务时发生异常", e );
+        }
     }
 
     /**
      * 提交事务
-     *
-     * @throws DbException
      */
     public void commitTransaction() {
-        JdbcHelper.commit( conn );
+        try {
+            JdbcHelper.commit( conn );
+        } catch ( SQLException e ) {
+            throw new DbException( "提交事务时发生异常", e );
+        }
     }
 
     /**
      * 当发现有失败的事务时候自动进行回滚
-     *
-     * @throws DbException
      */
     public void rollbackTransaction() {
-        JdbcHelper.rollback( conn );
+        try {
+            JdbcHelper.rollback( conn );
+        } catch ( SQLException e ) {
+            throw new DbException( "回滚事务时发生异常", e );
+        }
+    }
+
+    @Override
+    public <T> T execute( SqlStatement sqlStatement, PreparedStatementCallback<T> callback ) throws SQLException {
+        Asserts.notNull( sqlStatement, "必须提供SQL片段" );
+        Asserts.notNull( callback, "回调必须提供" );
+        log.debug( "执行SQL:%s", sqlStatement );
+        PreparedStatement preparedStatement = conn.prepareStatement( sqlStatement.getSql() );
+        fillStatement( preparedStatement, sqlStatement.getParams() );
+        try {
+            return callback.doInPreparedStatement( preparedStatement );
+        } catch ( SQLException e ) {
+            rollbackTransaction();
+            JdbcHelper.close( preparedStatement );
+            throw e;
+        }
+    }
+
+    @Override
+    public int execute( SqlStatement sqlStatement ) {
+        try {
+            return execute( sqlStatement, new PreparedStatementCallback<Integer>() {
+                @Override
+                public Integer doInPreparedStatement( PreparedStatement preparedStatement ) throws SQLException {
+                    return preparedStatement.executeUpdate();
+                }
+            } );
+        } catch ( SQLException e ) {
+            throw new DbException( "执行SQL语句的时候发生了异常", e ).setSqlStatement( sqlStatement );
+        }
+    }
+
+    @Override
+    public <T> T query( SqlStatement sqlStatement, final ResultSetExtractor<T> extractor, final int maxRows ) {
+        try {
+            return execute( sqlStatement, new PreparedStatementCallback<T>() {
+                @Override
+                public T doInPreparedStatement( PreparedStatement preparedStatement ) throws SQLException {
+                    if ( maxRows > 0 ) preparedStatement.setMaxRows( maxRows );
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    return extractor.extractData( resultSet );
+                }
+            } );
+        } catch ( SQLException e ) {
+            throw new DbException( "执行SQL查询的时候发生了异常", e ).setSqlStatement( sqlStatement );
+        }
+    }
+
+    @Override
+    public <T> T query( SqlStatement sqlStatement, final ResultSetExtractor<T> extractor ) {
+        return query( sqlStatement, extractor, -1 );
+    }
+
+    @Override
+    public <T> T first( SqlStatement sqlStatement, final ResultSetExtractor<T> extractor ) {
+        return query( sqlStatement, extractor, 1 );
+    }
+
+    @Override
+    public <T> List<T> query( SqlStatement sqlStatement, final RowMapper<T> rowMapper ) {
+        return query( sqlStatement, new RowMapperResultSetExtractor<>( rowMapper ) );
+    }
+
+    @Override
+    public <T> T first( SqlStatement sqlStatement, final RowMapper<T> rowMapper ) {
+        return first( sqlStatement, new ResultSetExtractor<T>() {
+            @Override
+            public T extractData( ResultSet resultSet ) throws SQLException {
+                return rowMapper.mapRow( resultSet, 1 );
+            }
+        } );
+    }
+
+    @Override
+    public void query( SqlStatement sqlStatement, final IRowAction rowAction ) {
+        query( sqlStatement, new ResultSetExtractor() {
+            @Override
+            public Object extractData( ResultSet resultSet ) throws SQLException {
+                int rowNum = 0;
+                while ( resultSet.next() ) {
+                    rowAction.process( resultSet, rowNum++ );
+                }
+                return null;
+            }
+        } );
+    }
+
+    @Override
+    public JdbcRecordSet query( SqlStatement sqlStatement ) {
+        final JdbcRecordRowMapper rowMapper = new JdbcRecordRowMapper();
+        return query( sqlStatement, new ResultSetExtractor<JdbcRecordSet>() {
+            @Override
+            public JdbcRecordSet extractData( ResultSet resultSet ) throws SQLException {
+                JdbcRecordSet jdbcRecords = new JdbcRecordSet();
+                int rowNum = 0;
+                while ( resultSet.next() ) {
+                    jdbcRecords.add( rowMapper.mapRow( resultSet, rowNum++ ) );
+                }
+                return jdbcRecords;
+            }
+        } );
+    }
+
+    @Override
+    public JdbcRecord first( SqlStatement sqlStatement ) {
+        return first( sqlStatement, new JdbcRecordRowMapper() );
+    }
+
+    @Override
+    public JdbcRecordSet query( String sql, Object[] params ) {
+        return query( new SqlStatement( sql, params ) );
+    }
+
+    @Override
+    public JdbcRecord first( String sql, Object[] params ) {
+        return first( new SqlStatement( sql, params ), new JdbcRecordRowMapper() );
     }
 
     /**
@@ -64,25 +189,9 @@ public class DBSession {
      *
      * @throws DbException
      */
+    @Override
     public int execute( String sql, Object[] params ) {
-        int rows = 0;
-        PreparedStatement stmt = null;
-        try {
-            stmt = conn.prepareStatement( sql );
-            fillStatement( stmt, params );
-            rows = stmt.executeUpdate();
-        } catch ( SQLException e ) {
-            String msg = "[";
-            if ( params != null ) for ( Object o : params ) {
-                msg += o.toString() + ",";
-            }
-            msg += "]";
-            throw new DbException( "执行SQL指令" + sql + ":参数=" + msg + "发生错误。\n" + e.getMessage(), e );
-        } finally {
-            if ( stmt != null ) try { stmt.close(); } catch ( SQLException ignored ) {}
-        }
-
-        return rows;
+        return execute( new SqlStatement( sql, params ) );
     }
 
     /**
@@ -94,6 +203,7 @@ public class DBSession {
      *
      * @throws DbException
      */
+    @Override
     public int executeBatch( List<String> sqls ) {
         try {
             final Statement ps = this.conn.createStatement();
@@ -115,79 +225,6 @@ public class DBSession {
     }
 
     /**
-     * 查询记录，带入行的处理类
-     *
-     * @param sql     SQL指令
-     * @param params  参数
-     * @param rower   记录行处理器
-     * @param maxRows 返回最大行数，如果<1则是不设置
-     *
-     * @return 返回处理的行数
-     *
-     * @throws DbException
-     */
-    public int query( String sql, Object[] params, IRowAction rower, int maxRows ) throws DbException {
-
-        ResultSet rs = null;
-        PreparedStatement stmt = null;
-        int i = 0;
-        try {
-            stmt = conn.prepareStatement( sql );
-            fillStatement( stmt, params );
-            if ( maxRows > 0 ) stmt.setMaxRows( maxRows ); // 设置返回的最多记录
-            rs = stmt.executeQuery();
-            while ( rs.next() ) {
-                try {
-                    rower.process( rs, i );
-                    i++;
-                } catch ( Exception e ) {
-                    throw new DbException( "记录行转换发生异常:" + e.getMessage(), e );
-                }
-            }
-        } catch ( SQLException e ) {
-            throw new DbException( e );
-        } finally {
-            try {
-                if ( rs != null ) {
-                    rs.close();
-                }
-            } catch ( Exception ignored ) {}
-            try {
-                if ( stmt != null ) {
-                    stmt.close();
-                }
-            } catch ( Exception ignored ) {}
-        }
-
-        return i;
-    }
-
-    private void logSQL( String sql, Object[] params ) {
-        LogHelper.debug( getClass(), "执行SQL指令:%s\n", sql );
-
-        String msg = "[";
-        if ( params != null )
-            for ( Object o : params ) {
-                msg += o.toString() + ",";
-            }
-        msg += "]";
-
-        LogHelper.debug( getClass(), "参数: %s", msg );
-    }
-
-    public JdbcRecord query( String sql, Object[] params ) {
-        JdbcRecordExtractor extractor = new JdbcRecordExtractor();
-        query( sql, params, extractor, 1 );
-        return extractor.record;
-    }
-
-    public JdbcRecordSet queryList( DBSession session, String sql, Object[] params ) {
-        JdbcRecordSetExtractor extractor = new JdbcRecordSetExtractor();
-        query( sql, params, extractor, 1 );
-        return extractor.set;
-    }
-
-    /**
      * 自动计算当前SQL的记录数
      *
      * @param sql 执行的SQL
@@ -196,14 +233,14 @@ public class DBSession {
      *
      * @throws DbException
      */
-    public int getRecordsetSize( String sql, Object[] params ) throws DbException {
-        final int[] val = { 0 };
-        query( "select count(*) from (" + sql + ")", params, new IRowAction() {
-            public void process( ResultSet rs, int index ) throws Exception {
-                val[0] = rs.getInt( 1 );
+    @Override
+    public int getRecordsetSize( String sql, Object[] params ) {
+        return first( new SqlStatement( "select count(*) from (" + sql + ")", params ), new RowMapper<Integer>() {
+            @Override
+            public Integer mapRow( ResultSet rs, int rowNum ) throws SQLException {
+                return rs.getInt( 1 );
             }
-        }, 1 );
-        return val[0];
+        } );
     }
 
     /**
@@ -217,3 +254,4 @@ public class DBSession {
         }
     }
 }
+

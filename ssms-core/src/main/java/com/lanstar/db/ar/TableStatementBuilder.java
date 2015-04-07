@@ -11,6 +11,7 @@ package com.lanstar.db.ar;
 import com.lanstar.common.helper.Asserts;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.common.log.Logger;
+import com.lanstar.db.SqlStatement;
 
 import java.util.ArrayList;
 import java.util.List;
