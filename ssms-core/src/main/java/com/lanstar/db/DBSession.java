@@ -18,7 +18,7 @@ public class DBSession {
     protected final Connection conn;
     private final IDialect dialect;
 
-    DBSession(Connection conn, IDialect dialect) {
+    DBSession( Connection conn, IDialect dialect ) {
         this.conn = conn;
         this.dialect = dialect;
     }
@@ -127,7 +127,7 @@ public class DBSession {
      * @throws DbException
      */
     public int query( String sql, Object[] params, IRowAction rower, int maxRows ) throws DbException {
-        LogHelper.debug( getClass(), "执行SQL:%s \n 参数: %s", sql, params );
+
         ResultSet rs = null;
         PreparedStatement stmt = null;
         int i = 0;
@@ -162,7 +162,20 @@ public class DBSession {
         return i;
     }
 
-    public JdbcRecord query(String sql, Object[] params){
+    private void logSQL( String sql, Object[] params ) {
+        LogHelper.debug( getClass(), "执行SQL指令:%s\n", sql );
+
+        String msg = "[";
+        if ( params != null )
+            for ( Object o : params ) {
+                msg += o.toString() + ",";
+            }
+        msg += "]";
+
+        LogHelper.debug( getClass(), "参数: %s", msg );
+    }
+
+    public JdbcRecord query( String sql, Object[] params ) {
         JdbcRecordExtractor extractor = new JdbcRecordExtractor();
         query( sql, params, extractor, 1 );
         return extractor.record;

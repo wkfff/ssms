@@ -9,36 +9,42 @@
 package com.lanstar.core;
 
 public class ViewAndModel {
-    private String viewName;
-    private ModelBean model = ModelBean.newInstance();
+    protected String viewName;
+    protected ModelBean model;
+
+    public ViewAndModel() {
+    }
+
+    ViewAndModel( ViewAndModel parent ) {
+        view( parent.viewName ).model( parent.model );
+    }
 
     public String getViewName() {
         return viewName;
-    }
-
-    public void setViewName( String viewName ) {
-        this.viewName = viewName;
     }
 
     public ModelBean getModel() {
         return model;
     }
 
-    public void setModel( ModelBean model ) {
+    public ViewAndModel view( String viewName ) {
+        this.viewName = viewName;
+        return this;
+    }
+
+    public ViewAndModel model( ModelBean model ) {
         this.model = model;
-    }
-
-    public ViewAndModel view(String viewName) {
-        setViewName( viewName );
-        return this;
-    }
-    public ViewAndModel model(ModelBean model) {
-        setModel( model );
         return this;
     }
 
-    public ViewAndModel put(String key, Object value){
-        model.put(key, value);
-        return this;
+    public ViewAndMapModel put( String key, Object value ) {
+        ViewAndMapModel map = new ViewAndMapModel( this );
+        return map.put( key, value );
+    }
+
+    public ViewAndObjectModel set( Object value ) {
+        ViewAndObjectModel vm = new ViewAndObjectModel( this );
+        return vm.value( value );
     }
 }
+

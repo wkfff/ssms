@@ -12,6 +12,9 @@ import com.lanstar.core.RequestContext;
 import com.lanstar.db.DBSession;
 import com.lanstar.db.ar.ARTable;
 
+/**
+ * 数据库操作上下文
+ */
 public class DBContext {
     private RequestContext context;
 
@@ -19,6 +22,15 @@ public class DBContext {
         this.context = context;
     }
 
+    /**
+     * 根据表名返回一个{@link ARTable}对象，通过该对象可以快速的对表进行操作。
+     *
+     * @param tableName 表名
+     *
+     * @return {@link ARTable}对象
+     *
+     * @see ARTable
+     */
     public ARTable withTable( String tableName ) {
         DBSession session = context.getDbSession();
         return new ARTable( session ).table( tableName );

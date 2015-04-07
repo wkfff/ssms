@@ -7,7 +7,7 @@
  */
 package com.lanstar.controller;
 
-import com.lanstar.core.ModelBean;
+import com.lanstar.core.MapModelBean;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.controller.Controller;
 import com.lanstar.core.handle.HandlerContext;
@@ -31,7 +31,7 @@ public class a02Controller extends Controller {
     }
 
     public ViewAndModel index3( HandlerContext context ) {
-        ModelBean bean = new ModelBean();
+        MapModelBean bean = new MapModelBean();
         bean.put( "abc", "234" );
         // 返回结果
         return context.returnWith( "index", bean )
@@ -61,5 +61,9 @@ public class a02Controller extends Controller {
                       .put( "update", update )
                       .put( "delete", delete )
                       .put( "list", list );
+    }
+
+    public ViewAndModel user(HandlerContext context){
+        return context.returnWith().set( 1 );
     }
 }

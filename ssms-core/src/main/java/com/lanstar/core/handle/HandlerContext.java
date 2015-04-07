@@ -11,6 +11,7 @@ package com.lanstar.core.handle;
 import com.lanstar.app.App;
 import com.lanstar.common.exception.WebException;
 import com.lanstar.common.helper.Asserts;
+import com.lanstar.core.MapModelBean;
 import com.lanstar.core.ModelBean;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.ViewAndModel;
@@ -23,7 +24,7 @@ public abstract class HandlerContext {
 
     private final RequestContext context;
     private String viewName;
-    private ModelBean model = ModelBean.newInstance();
+    private ModelBean model;
     public final DBContext db;
 
     /**
@@ -35,7 +36,7 @@ public abstract class HandlerContext {
      */
     protected HandlerContext( RequestContext context ) {
         this.context = context;
-        db = new DBContext(context);
+        db = new DBContext( context );
     }
 
     /**
@@ -104,11 +105,7 @@ public abstract class HandlerContext {
      */
     public ViewAndModel returnWith( String viewName, ModelBean model ) {
         Asserts.notBlank( viewName, "view不能为空" );
-        Asserts.notNull( model, "Model不能为空" );
-        ViewAndModel viewAndModel = new ViewAndModel();
-        viewAndModel.setViewName( viewName );
-        viewAndModel.setModel( model );
-        return viewAndModel;
+        return new ViewAndModel().view( viewName ).model( model );
     }
 
     /**
@@ -130,7 +127,7 @@ public abstract class HandlerContext {
      * @return {@link ViewAndModel}实例
      */
     public ViewAndModel returnWith( String viewName ) {
-        return returnWith( viewName, ModelBean.newInstance() );
+        return returnWith( viewName, ModelBean.EMPTY );
     }
 
     /**
@@ -139,7 +136,7 @@ public abstract class HandlerContext {
      * @return {@link ViewAndModel}实例
      */
     public ViewAndModel returnWith() {
-        return returnWith( ModelBean.newInstance() );
+        return returnWith( ModelBean.EMPTY );
     }
 
     /**
@@ -151,7 +148,9 @@ public abstract class HandlerContext {
      */
     public Object getValue( String key ) {
         Object value = null;
-        if ( model != null ) value = model.getValue( key );
+        if ( model != null && MapModelBean.class.isAssignableFrom( model.getClass() ) ) {
+            value = ((MapModelBean) model).getValue( key );
+        }
         if ( value == null ) value = context.getValue( key );
         return value;
     }
