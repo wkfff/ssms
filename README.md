@@ -159,3 +159,8 @@ public class a02Controller extends Controller {
     }
 }
 ```
+
+### 5) Render规约
+目前只支持两种规约输出格式：
+1. html，采用Freemarker视图模板文件输出内容
+2. json，输出为json格式
