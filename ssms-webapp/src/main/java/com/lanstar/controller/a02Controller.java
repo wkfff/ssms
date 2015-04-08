@@ -40,20 +40,20 @@ public class a02Controller extends Controller {
     }
 
     public ViewAndModel index4( HandlerContext context ) {
-        int insert1 = context.db.withTable( "demo" )
+        int insert1 = context.DB.withTable( "demo" )
                                 .value( "f1", 1 )
                                 .insert();
-        int insert2 = context.db.withTable( "demo" )
+        int insert2 = context.DB.withTable( "demo" )
                                 .value( "f1", 2 )
                                 .insert();
-        int delete = context.db.withTable( "demo" )
+        int delete = context.DB.withTable( "demo" )
                                .where( "f1=?", 1 )
                                .delete();
-        int update = context.db.withTable( "demo" )
+        int update = context.DB.withTable( "demo" )
                                .where( "f1=?", 2 )
                                .value( "f1", 3 )
                                .update();
-        JdbcRecordSet list = context.db.withTable( "demo" ).queryList();
+        JdbcRecordSet list = context.DB.withTable( "demo" ).queryList();
 
         return context.returnWith()
                       .put( "insert1", insert1 )

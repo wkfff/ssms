@@ -25,7 +25,18 @@ public abstract class HandlerContext {
     private final RequestContext context;
     private String viewName;
     private ModelBean model;
-    public final DBContext db;
+    /**
+     * 租户库上下文
+     */
+    public final HandlerDbContext CLIENT_DB;
+    /**
+     * 租户库上下文(只是CLENT_DB的别名字段)
+     */
+    public final HandlerDbContext DB;
+    /**
+     * 系统公用库上下文
+     */
+    public final HandlerDbContext SYSTEM_DB;
 
     /**
      * 初始化实例。只能在包内初始化，因此请使用{@link com.lanstar.core.handle.HandlerHelper}来实例化。
@@ -36,7 +47,9 @@ public abstract class HandlerContext {
      */
     protected HandlerContext( RequestContext context ) {
         this.context = context;
-        db = new DBContext( context );
+        CLIENT_DB = new HandlerDbContext( context.getDbSession() );
+        SYSTEM_DB = new HandlerDbContext( context.getSystemDbSession() );
+        DB = CLIENT_DB;
     }
 
     /**

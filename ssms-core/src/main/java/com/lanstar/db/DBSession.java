@@ -253,5 +253,9 @@ public class DBSession implements JdbcOperations {
             else stmt.setNull( i + 1, Types.VARCHAR );
         }
     }
+
+    public boolean isValid() {
+        return JdbcHelper.isConnectionValid( conn );
+    }
 }
 

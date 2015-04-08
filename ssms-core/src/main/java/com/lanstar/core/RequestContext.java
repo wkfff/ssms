@@ -13,6 +13,7 @@ import com.lanstar.app.App;
 import com.lanstar.core.handle.HandleException;
 import com.lanstar.db.DBSession;
 import com.lanstar.db.DS;
+import com.lanstar.db.DbException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,8 @@ public class RequestContext {
     private final String uri;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
+    private DBSession systemDb;
+    private DBSession clientDb;
 
     public RequestContext( String uri, HttpServletRequest request, HttpServletResponse responst ) {
         this.uri = uri;
@@ -150,13 +153,30 @@ public class RequestContext {
         // 2. Attr
         // 3. Session
         Object value = request.getParameter( key );
-        if( Strings.isNullOrEmpty((String)value)) value = request.getAttribute( key );
-        if ( value == null) value = request.getSession().getAttribute( key );
+        if ( Strings.isNullOrEmpty( (String) value ) ) value = request.getAttribute( key );
+        if ( value == null ) value = request.getSession().getAttribute( key );
         return value;
     }
 
+    /**
+     * 获取租户数据库会话
+     *
+     * @return 租户数据库会话
+     */
     public DBSession getDbSession() {
-        // TODO: 确保每个请求都只有一个DBSession，而不是现在的每次都创建
-        return DS.createDbSession();
+        if ( clientDb == null ) clientDb = DS.createDbSession();
+        if ( !clientDb.isValid() ) throw new DbException( "租户数据库会话在当前请求上下文中已失效" );
+        return clientDb;
+    }
+
+    /**
+     * 获取系统数据库会话
+     *
+     * @return 系统数据库会话
+     */
+    public DBSession getSystemDbSession() {
+        if ( systemDb == null ) systemDb = DS.createDbSession();
+        if ( !systemDb.isValid() ) throw new DbException( "系统数据库会话在当前请求上下文中已失效" );
+        return systemDb;
     }
 }

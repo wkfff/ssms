@@ -8,18 +8,17 @@
 
 package com.lanstar.core.handle;
 
-import com.lanstar.core.RequestContext;
 import com.lanstar.db.DBSession;
 import com.lanstar.db.ar.ARTable;
 
 /**
  * 数据库操作上下文
  */
-public class DBContext {
-    private RequestContext context;
+public class HandlerDbContext {
+    private final DBSession session;
 
-    public DBContext( RequestContext context ) {
-        this.context = context;
+    public HandlerDbContext( DBSession session ) {
+        this.session = session;
     }
 
     /**
@@ -32,7 +31,6 @@ public class DBContext {
      * @see ARTable
      */
     public ARTable withTable( String tableName ) {
-        DBSession session = context.getDbSession();
         return new ARTable( session ).table( tableName );
     }
 }
