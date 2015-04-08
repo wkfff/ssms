@@ -8,13 +8,11 @@
 
 package com.lanstar.core.render;
 
-import com.lanstar.core.handle.HandlerContext;
-
 public interface IRender {
     /**
      * 呈现页面。
      *
      * @param context 上下文
      */
-    void render(HandlerContext context) throws Exception;
+    void render(Renderable context) throws Exception;
 }

@@ -9,10 +9,10 @@
 package com.lanstar.core.render.impl;
 
 import com.lanstar.core.RequestContext;
-import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.render.IRender;
 import com.lanstar.core.render.Render;
 import com.lanstar.core.render.RenderHelper;
+import com.lanstar.core.render.Renderable;
 import com.lanstar.plugin.template.TemplateBean;
 import com.lanstar.plugin.template.TemplateException;
 import com.lanstar.plugin.template.TemplateHelper;
@@ -31,7 +31,7 @@ public class FreemarkerRender extends Render implements IRender {
     }
 
     @Override
-    protected void innerRender( HandlerContext context ) throws TemplateException {
+    protected void innerRender( Renderable context ) throws TemplateException {
         String viewName = context.getViewPath();
         FreemarkerModel model = new FreemarkerModel( context );
         Writer output = context.getOutput();
@@ -44,17 +44,17 @@ public class FreemarkerRender extends Render implements IRender {
      */
     private class FreemarkerModel implements TemplateHashModel {
         private final BeansWrapper wrapper = new BeansWrapper( FreemarkerPlugin.VERSION );
-        private final HandlerContext context;
+        private final Renderable context;
 
-        public FreemarkerModel( HandlerContext context ) {
+        public FreemarkerModel( Renderable context ) {
             this.context = context;
             // 避免使用?keys遍历map中时会获取到混合了自定义方法的数据      by 张铮彬(cnzgray@qq.com)
-            if( !wrapper.isSimpleMapWrapper() ) wrapper.setSimpleMapWrapper( true );
+            if ( !wrapper.isSimpleMapWrapper() ) wrapper.setSimpleMapWrapper( true );
         }
 
         @Override
         public TemplateModel get( String key ) throws TemplateModelException {
-            return wrapper.wrap( context.getValue(key) );
+            return wrapper.wrap( context.getValue( key ) );
         }
 
         @Override

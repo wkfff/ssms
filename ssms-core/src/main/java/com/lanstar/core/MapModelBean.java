@@ -14,7 +14,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class MapModelBean implements ModelBean {
-    private final Map<String, Object> map = new LinkedHashMap<>();
+    private final Map<String, Object> map;
+
+    public MapModelBean() {
+        this( new LinkedHashMap<String, Object>() );
+    }
+
+    public MapModelBean( Map<String, Object> map ) {
+        this.map = map;
+    }
 
     /**
      * @return JSON标准字符串, 带“{”...“}”串
@@ -28,6 +36,7 @@ public final class MapModelBean implements ModelBean {
         map.put( key, value );
     }
 
+    @Override
     public Object getValue( String key ) {
         return map.get( key );
     }

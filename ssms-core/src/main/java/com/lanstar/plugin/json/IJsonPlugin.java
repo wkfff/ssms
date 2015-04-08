@@ -10,6 +10,13 @@ package com.lanstar.plugin.json;
 
 import com.lanstar.plugin.IAppPlugin;
 
+import java.util.List;
+import java.util.Map;
+
 public interface IJsonPlugin extends IAppPlugin {
     String toJson(Object object);
+
+    Map<String, Object> parseObject( String text );
+
+    List<Object> parseArray( String text );
 }

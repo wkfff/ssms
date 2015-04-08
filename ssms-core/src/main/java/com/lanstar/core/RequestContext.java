@@ -8,9 +8,9 @@
 
 package com.lanstar.core;
 
-import com.google.common.base.Strings;
 import com.lanstar.app.App;
 import com.lanstar.core.handle.HandleException;
+import com.lanstar.core.handle.identity.IdentityContext;
 import com.lanstar.db.DBSession;
 import com.lanstar.db.DS;
 import com.lanstar.db.DbException;
@@ -19,11 +19,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RequestContext {
+    public static final String LANSTAR_IDENTITY = "LANSTAR_IDENTITY";
+
     private final String uri;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
+    private final Map<String, Object> localVars = new HashMap<>();
+
     private DBSession systemDb;
     private DBSession clientDb;
 
@@ -43,6 +49,11 @@ public class RequestContext {
 
     public HttpServletResponse getResponse() {
         return response;
+    }
+
+    private Object getParameter( String name ) {
+        // TODO: 解码处理
+        return request.getParameter( name );
     }
 
     /**
@@ -141,21 +152,75 @@ public class RequestContext {
     }
 
     /**
-     * 从上下文中取值
-     *
-     * @param key 值的key
-     *
-     * @return 值
+     * 从局部上下文中取值
      */
-    public Object getValue( String key ) {
-        // 顺序：
-        // 1. Param
-        // 2. Attr
-        // 3. Session
-        Object value = request.getParameter( key );
-        if ( Strings.isNullOrEmpty( (String) value ) ) value = request.getAttribute( key );
-        if ( value == null ) value = request.getSession().getAttribute( key );
+    public Object getValue( String name ) {
+        // 取值的顺序：本地变量 --> request --> url参数 --> session --> servletContext
+        Object v = localVars.get( name );
+        if ( v == null ) v = request.getAttribute( name );
+        if ( v == null ) v = getParameter( name );
+        if ( v == null ) v = request.getSession().getAttribute( name );
+        if ( v == null ) v = App.getServletContext().getAttribute( name );
+        return v;
+    }
+
+    /**
+     * 从指定的范围中取值
+     *
+     * @see VAR_SCOPE
+     */
+    public Object getValue( String name, VAR_SCOPE scope ) {
+        Object value = null;
+        switch ( scope ) {
+            case LOCAL:
+                value = localVars.get( name );
+                break;
+            case REQUEST:
+                value = request.getAttribute( name );
+                if ( value == null ) value = getParameter( name );
+                break;
+            case SESSION:
+                value = request.getSession().getAttribute( name );
+                break;
+            case APPLICATION:
+                value = App.getServletContext().getAttribute( name );
+                break;
+        }
         return value;
+    }
+
+    public Map<String, Object> getValues() {
+        return localVars;
+    }
+
+    /**
+     * 将值设置到上下文中
+     */
+    public RequestContext setValue( String name, Object value ) {
+        return setValue( name, value, VAR_SCOPE.LOCAL );
+    }
+
+    /**
+     * 将值设置到指定范围中
+     *
+     * @see VAR_SCOPE
+     */
+    public RequestContext setValue( String name, Object value, VAR_SCOPE scope ) {
+        switch ( scope ) {
+            case LOCAL:
+                localVars.put( name, value );
+                break;
+            case REQUEST:
+                request.setAttribute( name, value );
+                break;
+            case SESSION:
+                request.getSession().setAttribute( name, value );
+                break;
+            case APPLICATION:
+                App.getServletContext().setAttribute( name, value );
+                break;
+        }
+        return this;
     }
 
     /**
@@ -178,5 +243,17 @@ public class RequestContext {
         if ( systemDb == null ) systemDb = DS.createDbSession();
         if ( !systemDb.isValid() ) throw new DbException( "系统数据库会话在当前请求上下文中已失效" );
         return systemDb;
+    }
+
+    public void bindIdentity( IdentityContext context ) {
+        request.getSession().setAttribute( LANSTAR_IDENTITY, context );
+    }
+
+    public boolean hasIdentityContext() {
+        return getIdentityContxt() != null;
+    }
+
+    public IdentityContext getIdentityContxt() {
+        return (IdentityContext) request.getSession().getAttribute( LANSTAR_IDENTITY );
     }
 }

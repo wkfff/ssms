@@ -9,5 +9,5 @@
 package com.lanstar.core.handle;
 
 public interface Handler {
-    void handle( HandlerContext context, HandleChain nextHandle) ;
+    void handle( HandlerContext context, HandleChain next ) ;
 }

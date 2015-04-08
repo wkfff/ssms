@@ -8,23 +8,16 @@
 
 package com.lanstar.core.handle;
 
-import com.lanstar.app.App;
-import com.lanstar.common.exception.WebException;
 import com.lanstar.common.helper.Asserts;
-import com.lanstar.core.MapModelBean;
 import com.lanstar.core.ModelBean;
 import com.lanstar.core.RequestContext;
+import com.lanstar.core.VAR_SCOPE;
 import com.lanstar.core.ViewAndModel;
 
-import java.io.IOException;
-import java.io.Writer;
+import java.util.Map;
 
-public abstract class HandlerContext {
-    public static final String TEMPLATE_SUFFIX = App.config().getTemplateSuffix();
-
+public class HandlerContext {
     private final RequestContext context;
-    private String viewName;
-    private ModelBean model;
     /**
      * 租户库上下文
      */
@@ -39,13 +32,11 @@ public abstract class HandlerContext {
     public final HandlerDbContext SYSTEM_DB;
 
     /**
-     * 初始化实例。只能在包内初始化，因此请使用{@link com.lanstar.core.handle.HandlerHelper}来实例化。
+     * 初始化实例。
      *
      * @param context 请求上下文
-     *
-     * @see com.lanstar.core.handle.HandlerHelper
      */
-    protected HandlerContext( RequestContext context ) {
+    HandlerContext( RequestContext context ) {
         this.context = context;
         CLIENT_DB = new HandlerDbContext( context.getDbSession() );
         SYSTEM_DB = new HandlerDbContext( context.getSystemDbSession() );
@@ -59,54 +50,27 @@ public abstract class HandlerContext {
         return context;
     }
 
-    /**
-     * 获取输出流
-     */
-    public Writer getOutput() {
-        try {
-            return context.getResponse().getWriter();
-        } catch ( IOException e ) {
-            throw new WebException( e );
-        }
+    public Object getValue( String name ) {
+        return getRequestContext().getValue( name );
     }
 
-    /**
-     * 获取View
-     */
-    public String getViewName() {
-        return viewName;
+    public Object getValue( String name, VAR_SCOPE scope ) {
+        return getRequestContext().getValue( name, scope );
     }
 
-    /**
-     * 覆盖View设置
-     */
-    protected void setViewName( String viewName ) {
-        this.viewName = viewName;
+    public Map<String, Object> getValues() {
+        return getRequestContext().getValues();
     }
 
-    /**
-     * 获取模型
-     */
-    public ModelBean getModel() {
-        return this.model;
+    public HandlerContext setValue( String name, Object value, VAR_SCOPE scope ) {
+        getRequestContext().setValue( name, value, scope );
+        return this;
     }
 
-    /**
-     * 设置模型
-     */
-    void setModel( ModelBean model ) {
-        this.model = model;
+    public HandlerContext setValue( String name, Object value ) {
+        getRequestContext().setValue( name, value );
+        return this;
     }
-
-    /**
-     * 获取View路径
-     */
-    public abstract String getViewPath();
-
-    /**
-     * 获取Render
-     */
-    public abstract String getRender();
 
     /**
      * 响应返回结果
@@ -117,7 +81,6 @@ public abstract class HandlerContext {
      * @return {@link ViewAndModel}实例
      */
     public ViewAndModel returnWith( String viewName, ModelBean model ) {
-        Asserts.notBlank( viewName, "view不能为空" );
         return new ViewAndModel().view( viewName ).model( model );
     }
 
@@ -129,7 +92,7 @@ public abstract class HandlerContext {
      * @return {@link ViewAndModel}实例
      */
     public ViewAndModel returnWith( ModelBean model ) {
-        return returnWith( getViewName(), model );
+        return returnWith( null, model );
     }
 
     /**
@@ -140,6 +103,7 @@ public abstract class HandlerContext {
      * @return {@link ViewAndModel}实例
      */
     public ViewAndModel returnWith( String viewName ) {
+        Asserts.notBlank( viewName, "ViewName不能为空" );
         return returnWith( viewName, ModelBean.EMPTY );
     }
 
@@ -150,21 +114,5 @@ public abstract class HandlerContext {
      */
     public ViewAndModel returnWith() {
         return returnWith( ModelBean.EMPTY );
-    }
-
-    /**
-     * 从上下文中取值
-     *
-     * @param key key
-     *
-     * @return value
-     */
-    public Object getValue( String key ) {
-        Object value = null;
-        if ( model != null && MapModelBean.class.isAssignableFrom( model.getClass() ) ) {
-            value = ((MapModelBean) model).getValue( key );
-        }
-        if ( value == null ) value = context.getValue( key );
-        return value;
     }
 }

@@ -7,7 +7,7 @@
  */
 package com.lanstar.core;
 
-import com.lanstar.core.handle.action.ActionMapping;
+import com.lanstar.core.handle.Dispatcher;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,6 @@ public class CoreFilter implements Filter {
         //排除路径
         expaths = filterConfig.getInitParameter( "exclude-paths" ).split( "," );
         dispatcher = Dispatcher.me();
-        ActionMapping.init();
     }
 
     @Override

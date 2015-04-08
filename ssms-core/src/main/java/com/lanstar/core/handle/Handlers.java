@@ -10,39 +10,31 @@ package com.lanstar.core.handle;
 
 import com.lanstar.core.RequestContext;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Handlers {
-    private final VirtualHandleChain handleChain;
-
-    public Handlers() {
-        handleChain = new VirtualHandleChain();
-    }
+    private final List<Handler> handlers = new LinkedList<>();
 
     public void add( Handler handler ) {
-        handleChain.add( handler );
+        handlers.add( handler );
     }
 
     public void add( List<Handler> list ) {
-        handleChain.add( list );
+        handlers.addAll( list );
     }
 
     public void handle( RequestContext context ) {
-        handleChain.doHandle( HandlerHelper.createHandlerContext( context ), true );
+        // 每次都是一个新的调用链
+        new VirtualHandleChain( handlers ).doHandle( new HandlerContext( context ) );
     }
 
     private static class VirtualHandleChain implements HandleChain {
         private final List<Handler> additionalHandlers = new LinkedList<>();
         private int currentPosition = 0;
 
-        void add( Handler handler ) {
-            additionalHandlers.add( handler );
-        }
-
-        void add( Collection<Handler> handlers ) {
-            additionalHandlers.addAll( handlers );
+        public VirtualHandleChain( List<Handler> additionalHandlers ) {
+            this.additionalHandlers.addAll( additionalHandlers );
         }
 
         @Override
@@ -51,11 +43,6 @@ public class Handlers {
             this.currentPosition++;
             Handler next = this.additionalHandlers.get( this.currentPosition - 1 );
             next.handle( context, this );
-        }
-
-        public void doHandle( HandlerContext handlerContext, boolean reset ) {
-            if ( reset ) currentPosition = 0;
-            doHandle( handlerContext );
         }
     }
 }

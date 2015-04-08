@@ -10,7 +10,11 @@ package com.lanstar.plugin.json;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.lanstar.common.log.LogHelper;
 import com.lanstar.plugin.AppPlugin;
+
+import java.util.List;
+import java.util.Map;
 
 public class JsonPlugin extends AppPlugin implements IJsonPlugin {
     @Override
@@ -20,6 +24,26 @@ public class JsonPlugin extends AppPlugin implements IJsonPlugin {
 
     @Override
     public String toJson( Object object ) {
-        return JSON.toJSONString( object, SerializerFeature.WriteDateUseDateFormat );
+        return JSON.toJSONString( object, SerializerFeature.WriteDateUseDateFormat, SerializerFeature.SortField );
+    }
+
+    @Override
+    public Map<String, Object> parseObject( String text ) {
+        try {
+            return JSON.parseObject( text );
+        } catch ( Exception e ) {
+            LogHelper.warn( getClass(), e, "解析过程发生异常" );
+            return null;
+        }
+    }
+
+    @Override
+    public List<Object> parseArray( String text ) {
+        try {
+            return JSON.parseArray( text );
+        } catch ( Exception e ) {
+            LogHelper.warn( getClass(), e, "解析过程发生异常" );
+            return null;
+        }
     }
 }

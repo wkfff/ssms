@@ -66,11 +66,11 @@
     </bean>
     
     <!-- Dispatcher初始化 -->
-    <bean class="com.lanstar.core.Dispatcher">
+    <bean class="com.lanstar.core.handle.Dispatcher">
         <constructor-arg>
             <list>
                 <!--<bean class="com.lanstar.core.handle.statics.StaticHandler"/>-->
-                <bean class="com.lanstar.core.handle.authenticate.AuthHandler"/>
+                <bean class="com.lanstar.core.handle.identity.IdentityHandler"/>
                 <bean class="com.lanstar.core.handle.action.ActionHandler"/>
             </list>
         </constructor-arg>

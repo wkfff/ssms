@@ -10,7 +10,6 @@ package com.lanstar.core.render;
 
 import com.lanstar.app.container.ContainerHelper;
 import com.lanstar.common.helper.Asserts;
-import com.lanstar.core.handle.HandlerContext;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class RenderFactory {
         Asserts.notEmpty( renderMap.keySet(), "无未配置任何的Render" );
     }
 
-    public void render( HandlerContext context ) {
+    public void render( Renderable context ) {
         IRender render = renderMap.get( context.getRender().toLowerCase() );
         Asserts.notNull( render, "无法找到对应的render实现" );
         try {

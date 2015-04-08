@@ -9,11 +9,10 @@
 package com.lanstar.core.render;
 
 import com.lanstar.core.RequestContext;
-import com.lanstar.core.handle.HandlerContext;
 
 public abstract class Render implements IRender {
     @Override
-    public final void render( HandlerContext context ) throws Exception {
+    public final void render( Renderable context ) throws Exception {
         setHeader( context.getRequestContext() );
         innerRender( context );
     }
@@ -30,5 +29,5 @@ public abstract class Render implements IRender {
      *
      * @param context 请求上下文
      */
-    protected abstract void innerRender( HandlerContext context ) throws Exception;
+    protected abstract void innerRender( Renderable context ) throws Exception;
 }

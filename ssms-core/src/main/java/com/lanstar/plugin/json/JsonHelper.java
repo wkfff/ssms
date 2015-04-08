@@ -10,8 +10,19 @@ package com.lanstar.plugin.json;
 
 import com.lanstar.app.App;
 
+import java.util.List;
+import java.util.Map;
+
 public class JsonHelper {
     public static String toJson( Object object ) {
         return App.getPlugin( IJsonPlugin.class ).toJson( object );
+    }
+
+    public static Map<String, Object> parseObject( String text ) {
+        return App.getPlugin( IJsonPlugin.class ).parseObject( text );
+    }
+
+    public static List<Object> parseArray( String text ) {
+        return App.getPlugin( IJsonPlugin.class ).parseArray( text );
     }
 }

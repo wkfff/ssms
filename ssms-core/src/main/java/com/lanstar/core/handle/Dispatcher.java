@@ -6,11 +6,10 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.core;
+package com.lanstar.core.handle;
 
 import com.lanstar.app.container.ContainerHelper;
-import com.lanstar.core.handle.Handler;
-import com.lanstar.core.handle.Handlers;
+import com.lanstar.core.RequestContext;
 
 import java.util.List;
 
@@ -22,6 +21,7 @@ public class Dispatcher {
     }
 
     private Dispatcher( List<Handler> list ) {
+        // 加载所有的handler
         handlers = new Handlers();
         handlers.add( list );
     }

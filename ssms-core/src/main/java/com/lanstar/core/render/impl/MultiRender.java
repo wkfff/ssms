@@ -8,8 +8,8 @@
 
 package com.lanstar.core.render.impl;
 
-import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.render.IRender;
+import com.lanstar.core.render.Renderable;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class MultiRender implements IRender {
      * @param context 上下文
      */
     @Override
-    public void render( HandlerContext context ) throws Exception {
+    public void render( Renderable context ) throws Exception {
         Exception lastException = null;
         for ( IRender render : renders ) {
             try {

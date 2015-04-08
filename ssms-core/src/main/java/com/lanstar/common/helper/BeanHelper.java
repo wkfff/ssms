@@ -8,7 +8,13 @@
 
 package com.lanstar.common.helper;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.*;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("unchecked")
 public class BeanHelper {
@@ -16,19 +22,19 @@ public class BeanHelper {
     /**
      * 创建指定类名的实例
      */
-    public static <T> T newInstance(String className, Class<T> target) {
+    public static <T> T newInstance( String className, Class<T> target ) {
         try {
-            Class<?> tmp = Class.forName(className);
-            if (target.isAssignableFrom(tmp)) {
+            Class<?> tmp = Class.forName( className );
+            if ( target.isAssignableFrom( tmp ) ) {
                 return (T) tmp.newInstance();
             } else
-                throw new IllegalArgumentException("错误的系统配置类:" + className);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("无法找到系统配置类:" + className, e);
-        } catch (InstantiationException e) {
-            throw new IllegalArgumentException("无法创建系统配置类:" + className, e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException("无法访问系统配置类:" + className, e);
+                throw new IllegalArgumentException( "错误的系统配置类:" + className );
+        } catch ( ClassNotFoundException e ) {
+            throw new IllegalArgumentException( "无法找到系统配置类:" + className, e );
+        } catch ( InstantiationException e ) {
+            throw new IllegalArgumentException( "无法创建系统配置类:" + className, e );
+        } catch ( IllegalAccessException e ) {
+            throw new IllegalArgumentException( "无法访问系统配置类:" + className, e );
         }
     }
 
@@ -37,16 +43,21 @@ public class BeanHelper {
      *
      * @param type 类
      * @param <T>  转换的目标类
+     *
      * @return 类对应的实例
      */
-    public static <T> T newInstance(Class<?> type) {
-        if (type == null)
+    public static <T> T newInstance( Class<?> type ) {
+        if ( type == null )
             return null;
         try {
             return (T) type.newInstance();
-        } catch (Throwable e) {
-            throw new IllegalArgumentException("无法实例化类:" + type.getName(), e);
+        } catch ( Throwable e ) {
+            throw new IllegalArgumentException( "无法实例化类:" + type.getName(), e );
         }
+    }
+
+    public static Object newInstance( String typeName ) {
+        return newInstance( typeName, Object.class );
     }
 
     /**
@@ -54,12 +65,13 @@ public class BeanHelper {
      *
      * @param type 类名称
      * @param <T>  转换的目标类
+     *
      * @return 类对应的实例
      */
-    public static <T> T newInstance(String type, T defval) {
+    public static <T> T newInstance( String type, T defval ) {
         try {
-            return (T) Class.forName(type).newInstance();
-        } catch (Throwable e) {
+            return (T) Class.forName( type ).newInstance();
+        } catch ( Throwable e ) {
             return defval;
         }
     }
@@ -69,32 +81,58 @@ public class BeanHelper {
      *
      * @param source 要拷贝的源对象
      * @param <T>    类型，必须继承Serializable才行
+     *
      * @return 新的JAVA对象，深度复制，与原有的没有关系
      */
-    public static <T extends Serializable> T clone(T source) {
+    public static <T extends Serializable> T clone( T source ) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(bos);
-            oos.writeObject(source);
+            ObjectOutputStream oos = new ObjectOutputStream( bos );
+            oos.writeObject( source );
             // 反序列化
-            ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());
-            ObjectInputStream ois = new ObjectInputStream(bis);
+            ByteArrayInputStream bis = new ByteArrayInputStream( bos.toByteArray() );
+            ObjectInputStream ois = new ObjectInputStream( bis );
 
             return (T) ois.readObject();
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
+        } catch ( Throwable e ) {
+            throw new RuntimeException( e );
         }
     }
 
     /**
      * 获得类
      */
-    public static <T> Class<T> getClass(String typeName) {
+    public static <T> Class<T> getClass( String typeName ) {
         try {
-            return (Class<T>) Class.forName(typeName);
-        } catch (Throwable e) {
+            return (Class<T>) Class.forName( typeName );
+        } catch ( Throwable e ) {
             return null;
         }
+    }
+
+    public static Map<String, Object> transToMap( Object obj ) {
+        if ( obj == null ) return null;
+        Map<String, Object> map = new HashMap<>();
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo( obj.getClass() );
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+            for ( PropertyDescriptor property : propertyDescriptors ) {
+                String key = property.getName();
+
+                // 过滤class属性
+                if ( !key.equals( "class" ) ) {
+                    // 得到property对应的getter方法
+                    Method getter = property.getReadMethod();
+                    Object value = getter.invoke( obj );
+
+                    map.put( key, value );
+                }
+
+            }
+        } catch ( Exception ignored ) {
+        }
+
+        return map;
     }
 }

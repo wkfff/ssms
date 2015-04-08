@@ -8,10 +8,14 @@
 
 package com.lanstar.core;
 
+import com.lanstar.common.helper.BeanHelper;
 import com.lanstar.plugin.json.JsonHelper;
 
-public final class ObjectModelBean implements ModelBean{
+import java.util.Map;
+
+public final class ObjectModelBean implements ModelBean {
     private Object value;
+    private Map<String, Object> map;
 
     /**
      * @return JSON标准字符串, 带“{”...“}”串
@@ -23,5 +27,12 @@ public final class ObjectModelBean implements ModelBean{
 
     public void set( Object value ) {
         this.value = value;
+        map = BeanHelper.transToMap( value );
+    }
+
+    @Override
+    public Object getValue( String name ) {
+        if ( map == null ) return null;
+        return map.get( name );
     }
 }

@@ -9,23 +9,31 @@
 package com.lanstar.core.handle.action;
 
 import com.google.common.base.Joiner;
+import com.lanstar.app.App;
+import com.lanstar.common.exception.WebException;
+import com.lanstar.common.helper.StringHelper;
+import com.lanstar.core.MapModelBean;
+import com.lanstar.core.ModelBean;
+import com.lanstar.core.RequestContext;
+import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.core.handle.HandlerHelper;
+import com.lanstar.core.render.RenderFactory;
+import com.lanstar.core.render.Renderable;
 
-public class ActionContext extends HandlerContext {
+import java.io.IOException;
+import java.io.Writer;
+
+class ActionContext implements Renderable {
+    public static final String TEMPLATE_SUFFIX = App.config().getTemplateSuffix();
     private final ActionMeta meta;
+    private HandlerContext context;
+    private String viewName;
+    private ModelBean model;
 
-    /**
-     * 初始化实例。只能在包内初始化，因此请使用{@link HandlerHelper}来实例化。
-     *
-     * @param context 请求上下文
-     *
-     * @see HandlerHelper
-     */
-    private ActionContext( HandlerContext context ) {
-        super( context.getRequestContext() );
+    public ActionContext( HandlerContext context ) {
+        this.context = context;
         this.meta = ActionMeta.parseUrl( context.getRequestContext().getUri() );
-        setViewName( meta != null ? meta.getAction() : null );
+        viewName = (meta != null ? meta.getAction() : null);
     }
 
     /**
@@ -37,12 +45,73 @@ public class ActionContext extends HandlerContext {
         return meta;
     }
 
+    public void setViewAndModel( ViewAndModel bag ) {
+        if ( bag == null ) return;
+        if ( !StringHelper.isBlank( bag.getViewName() ) ) this.viewName = bag.getViewName();
+        this.model = bag.getModel();
+    }
+
+    public boolean isActionRequest() {
+        return meta != null;
+    }
+
+    public void render() {
+        RenderFactory.me().render( this );
+    }
+
     /**
      * 获取View路径
      */
     @Override
     public String getViewPath() {
-        return Joiner.on( '/' ).join( meta.getModule(), meta.getController(), getViewName() + TEMPLATE_SUFFIX );
+        return Joiner.on( '/' ).join( meta.getModule(), meta.getController(), viewName + TEMPLATE_SUFFIX );
+    }
+
+    /**
+     * 从上下文中取值
+     *
+     * @param key key
+     *
+     * @return value
+     */
+    @Override
+    public Object getValue( String key ) {
+        Object value = null;
+        if ( model != null ) {
+            value = model.getValue( key );
+        }
+        if ( value == null ) value = context.getRequestContext().getValue( key );
+        return value;
+    }
+
+    /**
+     * 获取模型
+     */
+    @Override
+    public ModelBean getModel() {
+        // 如果模型为空白，则获取上下文中的所有本地变量作为输出
+        if ( model == null ) return new MapModelBean( context.getValues() );
+        return this.model;
+    }
+
+    /**
+     * 获取请求上下文
+     */
+    @Override
+    public RequestContext getRequestContext() {
+        return context.getRequestContext();
+    }
+
+    /**
+     * 获取输出流
+     */
+    @Override
+    public Writer getOutput() {
+        try {
+            return context.getRequestContext().getResponse().getWriter();
+        } catch ( IOException e ) {
+            throw new WebException( e );
+        }
     }
 
     /**
@@ -51,13 +120,5 @@ public class ActionContext extends HandlerContext {
     @Override
     public String getRender() {
         return meta.getRender();
-    }
-
-    public static ActionContext newInstance(HandlerContext context) {
-        return new ActionContext( context );
-    }
-
-    public boolean isActionRequest() {
-        return meta != null;
     }
 }

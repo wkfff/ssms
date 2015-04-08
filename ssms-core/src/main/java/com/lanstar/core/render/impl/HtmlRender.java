@@ -8,10 +8,10 @@
 
 package com.lanstar.core.render.impl;
 
-import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.render.IRender;
 import com.lanstar.core.render.Render;
+import com.lanstar.core.render.Renderable;
 import com.lanstar.core.render.RenderHelper;
 
 public class HtmlRender extends Render implements IRender {
@@ -21,7 +21,7 @@ public class HtmlRender extends Render implements IRender {
     }
 
     @Override
-    protected void innerRender( HandlerContext context ) {
+    protected void innerRender( Renderable context ) {
         // TODO: 处理HTML静态文件的Render
     }
 }

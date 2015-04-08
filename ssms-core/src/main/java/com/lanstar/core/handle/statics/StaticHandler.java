@@ -18,7 +18,7 @@ import java.io.File;
 
 public class StaticHandler implements Handler {
     @Override
-    public void handle( HandlerContext context, HandleChain nextHandle ) {
+    public void handle( HandlerContext context, HandleChain next ) {
         RequestContext requestContext = context.getRequestContext();
         // 获取资源目录
         String resourceFolder = requestContext.getResourceFolder( false );
@@ -33,6 +33,6 @@ public class StaticHandler implements Handler {
                 return;
             }
         }
-        nextHandle.doHandle( context );
+        next.doHandle( context );
     }
 }

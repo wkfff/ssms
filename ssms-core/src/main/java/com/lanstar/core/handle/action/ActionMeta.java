@@ -8,6 +8,7 @@
 
 package com.lanstar.core.handle.action;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 
 import java.util.List;
@@ -42,6 +43,10 @@ public class ActionMeta {
                 ", action='" + action + '\'' +
                 ", render='" + render + '\'' +
                 '}';
+    }
+
+    public String getClassName() {
+        return Joiner.on( '.' ).join( "com.lanstar.controller", module, controller+"Controller");
     }
 
 

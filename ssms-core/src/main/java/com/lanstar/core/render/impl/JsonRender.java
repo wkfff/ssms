@@ -10,9 +10,9 @@ package com.lanstar.core.render.impl;
 
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.handle.HandleException;
-import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.render.IRender;
 import com.lanstar.core.render.Render;
+import com.lanstar.core.render.Renderable;
 import com.lanstar.core.render.RenderHelper;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class JsonRender extends Render implements IRender {
     }
 
     @Override
-    protected void innerRender( HandlerContext context ) {
+    protected void innerRender( Renderable context ) {
         try {
             Writer output = context.getOutput();
             output.write( context.getModel().toJson() );
