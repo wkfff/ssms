@@ -14,6 +14,7 @@ import com.lanstar.common.exception.WebException;
  * 数据库异常基类
  */
 public class DbException extends WebException {
+    private static final long serialVersionUID = -5595719816632897923L;
     private SqlStatement sqlStatement;
 
     public DbException() {

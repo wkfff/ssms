@@ -11,6 +11,8 @@ package com.lanstar.db.ar;
 import com.lanstar.common.exception.WebException;
 
 public class ActiveRecordException extends WebException {
+    private static final long serialVersionUID = -362062674286207582L;
+
     public ActiveRecordException() {
     }
 

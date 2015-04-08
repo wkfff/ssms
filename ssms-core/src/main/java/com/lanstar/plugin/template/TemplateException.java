@@ -9,6 +9,8 @@
 package com.lanstar.plugin.template;
 
 public class TemplateException extends Exception {
+    private static final long serialVersionUID = -8407633010442714054L;
+
     public TemplateException() {
     }
 

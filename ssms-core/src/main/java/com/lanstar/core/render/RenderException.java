@@ -14,21 +14,21 @@ import com.lanstar.common.exception.WebException;
  */
 public class RenderException extends WebException {
 
-    private static final long serialVersionUID = -6448434551667513804L;
+    private static final long serialVersionUID = 5232986371619263413L;
 
     public RenderException() {
         super();
     }
 
-    public RenderException(String message) {
-        super(message);
+    public RenderException( String message ) {
+        super( message );
     }
 
-    public RenderException(Throwable cause) {
-        super(cause);
+    public RenderException( Throwable cause ) {
+        super( cause );
     }
 
-    public RenderException(String message, Throwable cause) {
-        super(message, cause);
+    public RenderException( String message, Throwable cause ) {
+        super( message, cause );
     }
 }

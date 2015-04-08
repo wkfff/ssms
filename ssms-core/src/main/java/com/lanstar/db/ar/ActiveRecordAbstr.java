@@ -11,13 +11,7 @@ import com.lanstar.db.DBSession;
 import com.lanstar.db.JdbcOperations;
 import com.lanstar.db.dialect.IDialect;
 
-import java.util.Collection;
-
 abstract class ActiveRecordAbstr {
-    /**
-     * SQL的空参数
-     */
-    public static final Object[] EMPTY_PARA = new Object[] {};
     final JdbcOperations session;
     final IDialect dialect;
 
@@ -28,20 +22,5 @@ abstract class ActiveRecordAbstr {
 
     String trimString( String text ) {
         return (text == null || text.length() == 0) ? null : text.trim();
-    }
-
-    protected Object[] toParams( Object[] ps ) {
-        if ( ps == null || ps.length == 0 ) return EMPTY_PARA;
-        if ( ps.length == 1 && ps[0] != null ) {
-            if ( ps[0] instanceof Object[] ) return (Object[]) ps[0];
-            else if ( ps[0] instanceof Collection ) {
-                Collection cl = (Collection) ps[0];
-                Object[] ts = new Object[cl.size()];
-                int i = 0;
-                for ( Object o : ts ) ts[i++] = o;
-                return ts;
-            }
-        }
-        return ps;
     }
 }

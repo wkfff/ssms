@@ -136,7 +136,7 @@ public class DBSession implements JdbcOperations {
 
     @Override
     public void query( SqlStatement sqlStatement, final IRowAction rowAction ) {
-        query( sqlStatement, new ResultSetExtractor() {
+        query( sqlStatement, new ResultSetExtractor<Object>() {
             @Override
             public Object extractData( ResultSet resultSet ) throws SQLException {
                 int rowNum = 0;

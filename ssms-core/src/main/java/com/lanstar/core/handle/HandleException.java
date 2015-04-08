@@ -11,6 +11,8 @@ package com.lanstar.core.handle;
 import com.lanstar.common.exception.WebException;
 
 public class HandleException extends WebException {
+    private static final long serialVersionUID = -1278507682263851953L;
+
     public HandleException() {
     }
 

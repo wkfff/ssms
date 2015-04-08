@@ -13,4 +13,5 @@ import java.util.ArrayList;
  * 数据库记录的基础类
  */
 public class JdbcRecordSet extends ArrayList<JdbcRecord> {
+    private static final long serialVersionUID = -660397472192306649L;
 }

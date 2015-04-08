@@ -11,6 +11,8 @@ package com.lanstar.db;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
 public class JdbcRecord extends LinkedCaseInsensitiveMap<Object> {
+    private static final long serialVersionUID = 3629559736555206157L;
+
     public String getString( String key ) {
         return String.valueOf( get( key ) );
     }
