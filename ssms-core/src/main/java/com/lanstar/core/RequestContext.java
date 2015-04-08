@@ -246,14 +246,14 @@ public class RequestContext {
     }
 
     public void bindIdentity( IdentityContext context ) {
-        request.getSession().setAttribute( LANSTAR_IDENTITY, context );
+        setValue( LANSTAR_IDENTITY, context, VAR_SCOPE.SESSION );
+    }
+
+    public IdentityContext getIdentityContxt() {
+        return (IdentityContext) getValue( LANSTAR_IDENTITY, VAR_SCOPE.SESSION );
     }
 
     public boolean hasIdentityContext() {
         return getIdentityContxt() != null;
-    }
-
-    public IdentityContext getIdentityContxt() {
-        return (IdentityContext) request.getSession().getAttribute( LANSTAR_IDENTITY );
     }
 }

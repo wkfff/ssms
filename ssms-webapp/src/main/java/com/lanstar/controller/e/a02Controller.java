@@ -11,6 +11,7 @@ import com.lanstar.core.MapModelBean;
 import com.lanstar.core.VAR_SCOPE;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.core.handle.identity.IdentityContext;
 import com.lanstar.core.handle.identity.impl.CompanyIdentity;
 import com.lanstar.db.JdbcRecordSet;
 
@@ -67,7 +68,11 @@ public class a02Controller {
 
     public ViewAndModel user( HandlerContext context ) {
         // 判定身份
-        if ( context.getRequestContext().getIdentityContxt().is( CompanyIdentity.class ) ) {
+        IdentityContext identityContxt = context.getRequestContext().getIdentityContxt();
+        if ( identityContxt.is( CompanyIdentity.class ) ) {
+            // 获取企业身份实例，并从实例中获取企业特有的信息
+            // CompanyIdentity companyIdentity = identityContxt.getIdentity( CompanyIdentity.class );
+            // companyIdentity.getCompany()
             return context.returnWith().set( 2 );
         }
         return context.returnWith().set( 1 );
