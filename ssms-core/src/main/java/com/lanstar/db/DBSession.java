@@ -129,8 +129,8 @@ public class DBSession implements JdbcOperations {
         return first( sqlStatement, new ResultSetExtractor<T>() {
             @Override
             public T extractData( ResultSet resultSet ) throws SQLException {
-            	resultSet.next();
-                return rowMapper.mapRow( resultSet, 1 );
+                if ( resultSet.next() ) return rowMapper.mapRow( resultSet, 1 );
+                return null;
             }
         } );
     }
