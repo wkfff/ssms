@@ -54,7 +54,7 @@ public class Handlers {
         }
 
         public void doHandle( HandlerContext handlerContext, boolean reset ) {
-            currentPosition = 0;
+            if ( reset ) currentPosition = 0;
             doHandle( handlerContext );
         }
     }

@@ -14,7 +14,7 @@ import com.lanstar.core.render.IRender;
 import java.util.List;
 
 public class MultiRender implements IRender {
-    private List<IRender> renders;
+    private final List<IRender> renders;
 
     public MultiRender( List<IRender> renders ) {
         this.renders = renders;

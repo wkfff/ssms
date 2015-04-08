@@ -27,9 +27,6 @@ public final class FileHelper {
 
     /**
      * 遍历目录，如果是文件的话就处理当前文件
-     *
-     * @param file
-     * @param filer
      */
     public static void each(final File file, final IFileProcessor filer) {
         if (!file.exists())
@@ -47,9 +44,6 @@ public final class FileHelper {
 
     /**
      * 判断文件是否由指定后缀名构成
-     * @param f
-     * @param extname
-     * @return
      */
     public static boolean withExtname(File f, String... extname) {
         String fname = f.getName().toUpperCase();
@@ -62,9 +56,6 @@ public final class FileHelper {
 
     /**
      * 根据编码方式读文本文件内容
-     * @param fs
-     * @param encoding
-     * @return
      */
     public static String getTextContent(InputStream fs, String encoding) {
         if (fs == null)
@@ -73,7 +64,7 @@ public final class FileHelper {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(fs, encoding));
             try {
-                String data = "";
+                String data;
                 while ((data = br.readLine()) != null) {
                     str.append(data).append("\n");
                 }
@@ -92,7 +83,7 @@ public final class FileHelper {
     }
 
     /** 文件处理器，用于FileHelper.each()使用 */
-    public static interface IFileProcessor {
+    public interface IFileProcessor {
         void process(File file);
     }
 

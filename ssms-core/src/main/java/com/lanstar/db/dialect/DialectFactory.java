@@ -20,7 +20,7 @@ import java.util.Map;
 public class DialectFactory {
     private final Map<String, IDialect> dialectMap = new HashMap<>();
 
-    public DialectFactory( Map<String, IDialect> map ) {
+    private DialectFactory( Map<String, IDialect> map ) {
         for ( String s : map.keySet() ) {
             dialectMap.put( s.toUpperCase(), map.get( s ) );
         }

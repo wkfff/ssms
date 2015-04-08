@@ -44,7 +44,7 @@ public class FreemarkerRender extends Render implements IRender {
      */
     private class FreemarkerModel implements TemplateHashModel {
         private final BeansWrapper wrapper = new BeansWrapper( FreemarkerPlugin.VERSION );
-        private HandlerContext context;
+        private final HandlerContext context;
 
         public FreemarkerModel( HandlerContext context ) {
             this.context = context;

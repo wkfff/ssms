@@ -13,7 +13,7 @@ import com.lanstar.db.dialect.IDialect;
 
 import java.util.Collection;
 
-public abstract class ActiveRecordAbstr {
+abstract class ActiveRecordAbstr {
     /**
      * SQL的空参数
      */
@@ -21,12 +21,12 @@ public abstract class ActiveRecordAbstr {
     final JdbcOperations session;
     final IDialect dialect;
 
-    public ActiveRecordAbstr( DBSession session ) {
+    ActiveRecordAbstr( DBSession session ) {
         this.session = session;
         this.dialect = session.getDialect();
     }
 
-    protected String trimString( String text ) {
+    String trimString( String text ) {
         return (text == null || text.length() == 0) ? null : text.trim();
     }
 

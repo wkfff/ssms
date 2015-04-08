@@ -16,7 +16,7 @@ import javax.servlet.ServletContext;
 
 public abstract class AnnotationWebSpringContainer extends SpringContainer {
     private AnnotationConfigWebApplicationContext applicationContext;
-    private ServletContext servletContext;
+    private final ServletContext servletContext;
 
     public AnnotationWebSpringContainer(ServletContext servletContext) {
         this.servletContext = servletContext;

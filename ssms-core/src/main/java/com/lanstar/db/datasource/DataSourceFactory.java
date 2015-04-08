@@ -20,7 +20,7 @@ import java.util.Properties;
  * 数据源创建工厂，根据系统配置文件来定义
  */
 public final class DataSourceFactory {
-    private Map<String, IDataSourceProvider> providerMap = new HashMap<>();
+    private final Map<String, IDataSourceProvider> providerMap = new HashMap<>();
 
     public DataSourceFactory( Map<String, IDataSourceProvider> map ) {
         for ( String providerName : map.keySet() ) {

@@ -22,8 +22,8 @@ public class SqlStatement {
     public final static Object[] NONE_PARAM = new Object[] {};
     private final static Pattern REGEX_NAMED_PARAMS = Pattern.compile( ":[\\w]+", Pattern.MULTILINE );
 
-    String sql;
-    Object[] params = NONE_PARAM;
+    private String sql;
+    private Object[] params = NONE_PARAM;
 
     public SqlStatement() {}
 

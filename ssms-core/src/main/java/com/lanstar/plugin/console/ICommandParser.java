@@ -12,5 +12,5 @@ package com.lanstar.plugin.console;
  * Zgray创建于2015/2/15.
  */
 public interface ICommandParser {
-    public String parser(String cmd);
+    String parser( String cmd );
 }

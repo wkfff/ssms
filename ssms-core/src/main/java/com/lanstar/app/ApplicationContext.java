@@ -21,9 +21,9 @@ import javax.servlet.ServletContext;
  */
 class ApplicationContext {
     public static final String CLASSPATH_CONF_SPRING_XML = "classpath:/conf/spring.xml";
-    ServletContext servletContext;
-    IContainer container;
-    AppPlugins plugins = new AppPlugins();
+    final ServletContext servletContext;
+    final IContainer container;
+    final AppPlugins plugins = new AppPlugins();
     private IAppConfiguration config;
 
     public ApplicationContext(ServletContext servletContext) {

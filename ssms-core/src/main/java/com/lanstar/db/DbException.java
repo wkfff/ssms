@@ -39,4 +39,8 @@ public class DbException extends WebException {
         this.sqlStatement = sqlStatement;
         return this;
     }
+
+    public SqlStatement getSqlStatement() {
+        return sqlStatement;
+    }
 }

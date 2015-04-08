@@ -66,7 +66,7 @@ public class DataSourceConfig {
     final String poolFilters;
     final boolean required;
     final String poolType;
-    public IDialect dialect;
+    public final IDialect dialect;
 
     public DataSourceConfig( Properties props ) {
 

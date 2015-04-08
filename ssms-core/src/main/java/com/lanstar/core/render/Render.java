@@ -8,8 +8,8 @@
 
 package com.lanstar.core.render;
 
-import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.RequestContext;
+import com.lanstar.core.handle.HandlerContext;
 
 public abstract class Render implements IRender {
     @Override
@@ -28,7 +28,7 @@ public abstract class Render implements IRender {
     /**
      * 内部Render过程
      *
-     * @param context
+     * @param context 请求上下文
      */
     protected abstract void innerRender( HandlerContext context ) throws Exception;
 }

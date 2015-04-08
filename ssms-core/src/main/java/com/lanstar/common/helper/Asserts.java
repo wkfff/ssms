@@ -74,9 +74,6 @@ public class Asserts{
 
     /**
      * 抛出错误的BO对象的命令错误异常
-     *
-     * @param boId
-     * @param cmdId
      */
     public static void illegalCommand( String boId, String cmdId ){
         throw new IllegalArgumentException( "错误的业务对象[" + boId + "]命令名[" + cmdId + "]" );

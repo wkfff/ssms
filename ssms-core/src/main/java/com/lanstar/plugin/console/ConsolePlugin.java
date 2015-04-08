@@ -25,7 +25,7 @@ public class ConsolePlugin implements IAppPlugin {
         thread.interrupt();
     }
 
-    private ICommandParser parser = new CommandParser();
+    private final ICommandParser parser = new CommandParser();
 
     private final Thread thread = new Thread(){
         @Override
@@ -52,13 +52,13 @@ public class ConsolePlugin implements IAppPlugin {
     };
 
     /* 输出信息 */
-    public void infor( String msg ){
+    private void infor( String msg ){
         System.out.println( msg );
         System.out.flush();
     }
 
     /* 处理命令行输入 */
-    public String readLine( String msg ){
+    private String readLine( String msg ){
         System.out.print( msg );
         System.out.flush();
         String val = "";

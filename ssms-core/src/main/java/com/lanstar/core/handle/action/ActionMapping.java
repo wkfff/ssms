@@ -27,7 +27,7 @@ import java.util.jar.JarFile;
 /**
  * Action集合
  */
-public class ActionMapping {
+public final class ActionMapping {
     private final static String CONTROLLERPACKAGENAME = "com.lanstar.controller";
     private final static String CONTROLLERSUFFIX = "Controller";
     private static final String SLASH = "/";
@@ -39,15 +39,6 @@ public class ActionMapping {
     }
 
     /**
-     * 从元数据中获取Action标识
-     */
-    public static String getActionKey( ActionMeta meta ) {
-        String controllerKey = meta.getController();
-        String methodName = meta.getAction();
-        return SLASH + controllerKey + SLASH + methodName;
-    }
-
-    /**
      * 获取Action
      */
     public static Action getAction( ActionMeta meta ) {
@@ -56,13 +47,18 @@ public class ActionMapping {
     }
 
     /**
-     * 构造所有控制器中的Action集合
-     *
-     * @param pkgName
-     *
-     * @return
+     * 从元数据中获取Action标识
      */
-    public static void buildActionMapping( String pkgName ) {
+    private static String getActionKey( ActionMeta meta ) {
+        String controllerKey = meta.getController();
+        String methodName = meta.getAction();
+        return SLASH + controllerKey + SLASH + methodName;
+    }
+
+    /**
+     * 构造所有控制器中的Action集合
+     */
+    private static void buildActionMapping( String pkgName ) {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         try {
             // 按文件的形式去查找  
@@ -89,11 +85,8 @@ public class ActionMapping {
 
     /**
      * 直接找类文件
-     *
-     * @param pkgName
-     * @param pkgPath
      */
-    public static void findClassName( String pkgName, String pkgPath ) {
+    private static void findClassName( String pkgName, String pkgPath ) {
         File[] files = new File( pkgPath ).listFiles();
         if ( files != null ) {
             for ( File f : files ) {
@@ -114,12 +107,9 @@ public class ActionMapping {
     /**
      * 从jar包里查找类
      *
-     * @param pkgName
-     * @param url
-     *
      * @throws IOException
      */
-    public static void findClassName( String pkgName, URL url ) throws IOException {
+    private static void findClassName( String pkgName, URL url ) throws IOException {
         JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
         JarFile jarFile = jarURLConnection.getJarFile();
         log.debug( "jarFile:%s", jarFile.getName() );

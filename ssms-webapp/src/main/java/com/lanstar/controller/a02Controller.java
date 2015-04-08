@@ -46,14 +46,13 @@ public class a02Controller extends Controller {
         int insert2 = context.DB.withTable( "demo" )
                                 .value( "f1", 2 )
                                 .insert();
-        int delete = context.DB.withTable( "demo" )
-                               .where( "f1=?", 1 )
-                               .delete();
         int update = context.DB.withTable( "demo" )
                                .where( "f1=?", 2 )
                                .value( "f1", 3 )
                                .update();
         JdbcRecordSet list = context.DB.withTable( "demo" ).queryList();
+        int delete = context.DB.withTable( "demo" )
+                               .delete();
 
         return context.returnWith()
                       .put( "insert1", insert1 )

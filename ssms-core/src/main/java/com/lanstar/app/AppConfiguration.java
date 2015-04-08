@@ -24,7 +24,7 @@ public class AppConfiguration implements IAppConfiguration {
     private static final String RESOURCE_FOLDER = "resource_folder";
 
     private Map<String, String> map;
-    private Properties ps = new Properties();
+    private final Properties ps = new Properties();
 
     private String templateSuffix;
     private String viewsFolder;

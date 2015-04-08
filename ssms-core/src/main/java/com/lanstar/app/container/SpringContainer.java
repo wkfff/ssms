@@ -25,9 +25,9 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public abstract class SpringContainer implements IContainer {
     private static final Logger log = Logger.getLogger(SpringContainer.class);
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
-    public SpringContainer() {
+    SpringContainer() {
         applicationContext = createRootApplicationContext();
     }
 

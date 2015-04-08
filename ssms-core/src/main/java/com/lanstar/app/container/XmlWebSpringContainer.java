@@ -18,8 +18,8 @@ public class XmlWebSpringContainer extends SpringContainer {
     private XmlWebApplicationContext applicationContext;
     private ContextLoader loader;
 
-    private ServletContext servletContext;
-    private String configLocation;
+    private final ServletContext servletContext;
+    private final String configLocation;
 
     public XmlWebSpringContainer(ServletContext servletContext, String configLocation) {
         this.servletContext = servletContext;

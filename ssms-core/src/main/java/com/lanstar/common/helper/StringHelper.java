@@ -18,23 +18,22 @@ import java.util.Date;
 /**
  * 字符串工具类
  */
-public final class StringHelper{
+public final class StringHelper {
     /**
      * 将首字母设置成大写
      */
-    public static String capitalize( String str ){
-        int strLen;
-        if( str == null || ( strLen = str.length() ) == 0 ){
+    public static String capitalize( String str ) {
+        if ( str == null || (str.length()) == 0 ) {
             return str;
         }
-        return String.valueOf(Character.toTitleCase(str.charAt(0))) + str.substring(1);
+        return String.valueOf( Character.toTitleCase( str.charAt( 0 ) ) ) + str.substring( 1 );
     }
 
     /**
      * 是否包含子串
      */
     public static boolean contains( String str, char searchChar ) {
-        return !isEmpty(str) && str.indexOf(searchChar) >= 0;
+        return !isEmpty( str ) && str.indexOf( searchChar ) >= 0;
     }
 
     /**
@@ -42,32 +41,33 @@ public final class StringHelper{
      *
      * @param str        要处理的字符串
      * @param defaultStr 默认字符串
+     *
      * @return 结果字符串
      */
-    public static String empty( String str, String defaultStr ){
+    public static String empty( String str, String defaultStr ) {
         return str == null || str.length() < 1 ? defaultStr : str;
     }
 
     /**
      * MD5加密字符串
      */
-    public static String toMD5( String src ){
-        MessageDigest messageDigest = null;
+    public static String toMD5( String src ) {
+        MessageDigest messageDigest;
         StringBuilder md5StrBuff = new StringBuilder();
 
-        try{
+        try {
             messageDigest = MessageDigest.getInstance( "MD5" );
             messageDigest.reset();
             messageDigest.update( src.getBytes( "UTF-8" ) );
 
             byte[] byteArray = messageDigest.digest();
-            for (byte aByteArray : byteArray) {
-                if (Integer.toHexString(0xFF & aByteArray).length() == 1)
-                    md5StrBuff.append("0").append(Integer.toHexString(0xFF & aByteArray));
+            for ( byte aByteArray : byteArray ) {
+                if ( Integer.toHexString( 0xFF & aByteArray ).length() == 1 )
+                    md5StrBuff.append( "0" ).append( Integer.toHexString( 0xFF & aByteArray ) );
                 else
-                    md5StrBuff.append(Integer.toHexString(0xFF & aByteArray));
+                    md5StrBuff.append( Integer.toHexString( 0xFF & aByteArray ) );
             }
-        } catch(NoSuchAlgorithmException | UnsupportedEncodingException e){
+        } catch ( NoSuchAlgorithmException | UnsupportedEncodingException e ) {
             e.printStackTrace();
         }
 
@@ -76,123 +76,96 @@ public final class StringHelper{
 
     /**
      * 检查是否为空白字符串，NULL，长度为0，空格等
-     *
-     * @param str
-     * @return
      */
-    public static boolean isBlank( String str ){
-        if( str == null ) return true;
+    public static boolean isBlank( String str ) {
+        if ( str == null ) return true;
         int strLen = str.length();
-        if( strLen < 1 ) return true;
-        for( int i = 0; i < strLen; i++ )
-            if( (!Character.isWhitespace(str.charAt(i))) ) return false;
+        if ( strLen < 1 ) return true;
+        for ( int i = 0; i < strLen; i++ )
+            if ( (!Character.isWhitespace( str.charAt( i ) )) ) return false;
         return true;
     }
 
     /**
      * 任何一个地方存在空串都返回true;
-     *
-     * @param str
-     * @param args
-     * @return
      */
-    public static boolean isBlank( String str, String... args ){
-        if( isBlank( str ) ) return true;
-        for( String o : args )
-            if( isBlank( o ) ) return true;
+    public static boolean isBlank( String str, String... args ) {
+        if ( isBlank( str ) ) return true;
+        for ( String o : args )
+            if ( isBlank( o ) ) return true;
         return false;
     }
 
     /**
      * 检查字符串是否为空
-     *
-     * @param str
-     * @return
      */
-    public static boolean isEmpty( String str ){
+    public static boolean isEmpty( String str ) {
         return str == null || str.length() == 0;
     }
 
     /*
      * 是否是数字类型
      */
-    public static boolean isNumeric( String str ){
-        if( str == null ) return false;
+    public static boolean isNumeric( String str ) {
+        if ( str == null ) return false;
 
         int sz = str.length();
-        for( int i = 0; i < sz; i++ )
-            if(!Character.isDigit(str.charAt(i))) return false;
+        for ( int i = 0; i < sz; i++ )
+            if ( !Character.isDigit( str.charAt( i ) ) ) return false;
         return true;
     }
 
     /**
      * 删除字符串中的空白字符
-     *
-     * @param src
-     * @return
      */
-    public static String removeBlank( String src ){
-        if( src == null ) return null;
+    public static String removeBlank( String src ) {
+        if ( src == null ) return null;
         StringBuilder s = new StringBuilder();
         char[] text = src.toCharArray();
-        for( int i = 0; i < text.length; i++ )
-            if( !Character.isWhitespace( text[i] ) ) s.append( text[i] );
+        for ( char aText : text ) if ( !Character.isWhitespace( aText ) ) s.append( aText );
         return s.toString();
     }
 
     /**
      * 用指定的字符来替换空白字符
-     *
-     * @param src
-     * @param ch
-     * @return
      */
-    public static String replaceBlank( String src, char ch ){
-        if( src == null ) return null;
+    public static String replaceBlank( String src, char ch ) {
+        if ( src == null ) return null;
         char[] text = src.toCharArray();
-        for( int i = 0; i < text.length; i++ )
-            if( Character.isWhitespace( text[i] ) ) text[i] = ch;
+        for ( int i = 0; i < text.length; i++ )
+            if ( Character.isWhitespace( text[i] ) ) text[i] = ch;
         return String.copyValueOf( text );
     }
 
     /**
      * 根据分隔字符来分隔字符串到字符串数组
-     *
-     * @param text
-     * @param split
-     * @return
      */
-    public static String[] split( String text, String split ){
-        if( isBlank( text ) ) return new String[]{};
+    public static String[] split( String text, String split ) {
+        if ( isBlank( text ) ) return new String[] {};
         return text.split( split );
     }
-
 
     /**
      * 将字符串转化为SQL的in( ... )中的使用的字符串
      *
-     * @param ids
      * @param quote 是否需要用'包含起来声明为字符串
      */
-    public static String toSqlInCase( Collection<String> ids, boolean quote ){
+    public static String toSqlInCase( Collection<String> ids, boolean quote ) {
         StringBuilder sb = new StringBuilder();
 
-        for( String o : ids ){
-            if( o == null ) continue;
+        for ( String o : ids ) {
+            if ( o == null ) continue;
             sb.append( "," ).append( quote ? "'" : "" ).append( o ).append( quote ? "'" : "" );
         }
-        if( sb.length() > 1 ) sb.deleteCharAt( 0 );
+        if ( sb.length() > 1 ) sb.deleteCharAt( 0 );
 
         return sb.toString();
     }
 
     /**
      * 清楚空白字符，加了空串的判断
-     *
-     * @param str
-     * @return
      */
-    public static String trim( String str ){
+    public static String trim( String str ) {
         return str == null ? null : str.trim();
     }
 
@@ -201,41 +174,36 @@ public final class StringHelper{
      *
      * @param str 要处理的字符串
      * @param def 默认的字符串
-     * @return
      */
-    public static String trim( String str, String def ){
+    public static String trim( String str, String def ) {
         return str == null ? def : str.trim();
     }
 
     /**
      * 将字符串转化为特定类型的值，除了日期以外
-     *
-     * @param s
-     * @param type
-     * @return
      */
-    public static final Object stringToType( String s, Class<?> type ){
-        if( type == Integer.class ){
+    public static Object stringToType( String s, Class<?> type ) {
+        if ( type == Integer.class ) {
             return Integer.valueOf( s );
-        } else if( type == int.class ){
+        } else if ( type == int.class ) {
             return Integer.parseInt( s );
-        } else if( type == Long.class ){
+        } else if ( type == Long.class ) {
             return Long.valueOf( s );
-        } else if( type == long.class ){
+        } else if ( type == long.class ) {
             return Long.parseLong( s );
-        } else if( type == Double.class ){
+        } else if ( type == Double.class ) {
             return Double.valueOf( s );
-        } else if( type == double.class ){
+        } else if ( type == double.class ) {
             return Double.parseDouble( s );
-        } else if( type == Float.class ){
+        } else if ( type == Float.class ) {
             return Float.valueOf( s );
-        } else if( type == float.class ){
+        } else if ( type == float.class ) {
             return Float.parseFloat( s );
-        } else if( type == Character.class ){
-            return s.charAt(0);
-        } else if( type == char.class ){
+        } else if ( type == Character.class ) {
             return s.charAt( 0 );
-        } else{
+        } else if ( type == char.class ) {
+            return s.charAt( 0 );
+        } else {
             return s;
         }
     }
@@ -243,20 +211,18 @@ public final class StringHelper{
     /**
      * 将数组转化成字符串
      *
-     * @param list
      * @param split 分隔符
      * @param quote 是否加单引号
-     * @return
      */
-    public static String join( Object[] list, String split, boolean quote ){
-        if( list == null ) return "";
-        if( split == null ) split = "";
+    public static String join( Object[] list, String split, boolean quote ) {
+        if ( list == null ) return "";
+        if ( split == null ) split = "";
         StringBuilder sb = new StringBuilder();
-        for( int i = 0; i < list.length; i++ ){
-            if( i > 0 ) sb.append( split );
-            if( quote ) sb.append( "'" );
+        for ( int i = 0; i < list.length; i++ ) {
+            if ( i > 0 ) sb.append( split );
+            if ( quote ) sb.append( "'" );
             sb.append( list[i].toString() );
-            if( quote ) sb.append( "'" );
+            if ( quote ) sb.append( "'" );
         }
         return sb.toString();
     }
@@ -264,21 +230,19 @@ public final class StringHelper{
     /**
      * 将对象集合转化成字符串
      *
-     * @param list
      * @param split 分隔符
      * @param quote 是否加单引号
-     * @return
      */
-    public static String join( Collection<?> list, String split, boolean quote ){
-        if( list == null ) return "";
-        if( split == null ) split = "";
+    public static String join( Collection<?> list, String split, boolean quote ) {
+        if ( list == null ) return "";
+        if ( split == null ) split = "";
         StringBuilder sb = new StringBuilder();
         int i = 0;
-        for( Object o : list ){
-            if( i > 0 ) sb.append( split );
-            if( quote ) sb.append( "'" );
+        for ( Object o : list ) {
+            if ( i > 0 ) sb.append( split );
+            if ( quote ) sb.append( "'" );
             sb.append( o );
-            if( quote ) sb.append( "'" );
+            if ( quote ) sb.append( "'" );
             i++;
         }
 
@@ -287,40 +251,32 @@ public final class StringHelper{
 
     /**
      * 相加字符串
-     *
-     * @param src
-     * @param args
-     * @return
      */
-    public static String concat( String src, String... args ){
+    public static String concat( String src, String... args ) {
         StringBuilder result = new StringBuilder();
-        if( src != null ) result.append( src == null ? null : src );
-        if( args != null ) for( String s : args ){
-            if( s != null ) result.append( s );
+        if ( src != null ) result.append( src );
+        if ( args != null ) for ( String s : args ) {
+            if ( s != null ) result.append( s );
         }
         return result.length() < 1 ? null : result.toString();
     }
 
-    private StringHelper(){
+    private StringHelper() {
     }
 
     /**
      * 简单的格式化文本,从GOOGLE的GUAVA中复制出来，实现%s的简单替换
-     *
-     * @param template
-     * @param args
-     * @return
      */
-    public static String format( String template, Object... args ){
+    public static String format( String template, Object... args ) {
         template = String.valueOf( template );
 
         // start substituting the arguments into the '%s' placeholders
         StringBuilder builder = new StringBuilder( template.length() + 16 * args.length );
         int templateStart = 0;
         int i = 0;
-        while( i < args.length ){
+        while ( i < args.length ) {
             int placeholderStart = template.indexOf( "%s", templateStart );
-            if( placeholderStart == -1 ){
+            if ( placeholderStart == -1 ) {
                 break;
             }
             builder.append( template.substring( templateStart, placeholderStart ) );
@@ -330,10 +286,10 @@ public final class StringHelper{
         builder.append( template.substring( templateStart ) );
 
         // if we run out of placeholders, append the extra args in square braces
-        if( i < args.length ){
+        if ( i < args.length ) {
             builder.append( " [" );
             builder.append( args[i++] );
-            while( i < args.length ){
+            while ( i < args.length ) {
                 builder.append( ", " );
                 builder.append( args[i++] );
             }
@@ -349,14 +305,16 @@ public final class StringHelper{
      * @param text   要检查的字符串
      * @param prefix 匹配头部的字符串
      * @param begin  起始比较位置
+     *
      * @return TRUE = 符合，FALSE = 不符合
      */
-    public static boolean startsWithIgnoreCase( String text, String prefix, int begin ){
+    public static boolean startsWithIgnoreCase( String text, String prefix, int begin ) {
         int to = begin, po = 0;
         int pc = prefix.length();
-        if( ( begin < 0 ) || ( begin > text.length() - pc ) ) return false;
-        while( --pc >= 0 ){
-            if( Character.toUpperCase( text.charAt( to++ ) ) != Character.toUpperCase( prefix.charAt( po++ ) ) ) return false;
+        if ( (begin < 0) || (begin > text.length() - pc) ) return false;
+        while ( --pc >= 0 ) {
+            if ( Character.toUpperCase( text.charAt( to++ ) ) != Character.toUpperCase( prefix.charAt( po++ ) ) )
+                return false;
         }
         return true;
     }
@@ -366,23 +324,21 @@ public final class StringHelper{
      *
      * @param text   要检查的字符串
      * @param prefix 匹配头部的字符串
+     *
      * @return TRUE = 符合，FALSE = 不符合
      */
-    public static boolean startsWithIgnoreCase( String text, String prefix ){
+    public static boolean startsWithIgnoreCase( String text, String prefix ) {
         return startsWithIgnoreCase( text, prefix, 0 );
     }
 
     /**
      * 字符串转换为整数
-     *
-     * @param text
-     * @return
      */
-    public static int toInteger( String text, int defvalue ){
-        if( text == null || text.length() == 0 ) return defvalue;
-        try{
+    public static int toInteger( String text, int defvalue ) {
+        if ( text == null || text.length() == 0 ) return defvalue;
+        try {
             return Integer.parseInt( text );
-        } catch(Throwable e){
+        } catch ( Throwable e ) {
             return defvalue;
         }
     }
@@ -392,29 +348,30 @@ public final class StringHelper{
      *
      * @param str    字符串
      * @param defval 默认值
+     *
      * @return 值
      */
-    public static Date toDate( String str, Date defval ){
-        try{
-            if( isBlank( str ) ) return defval;
+    public static Date toDate( String str, Date defval ) {
+        try {
+            if ( isBlank( str ) ) return defval;
 
             StringBuilder tmp = new StringBuilder();
-            for( int i = 0; i < str.length(); i++ ){
+            for ( int i = 0; i < str.length(); i++ ) {
                 char c = str.charAt( i );
-                if( c >= '0' && c <= '9' ) tmp.append( c );
+                if ( c >= '0' && c <= '9' ) tmp.append( c );
             }
             String val = tmp.toString();
             int ilen = val.length();
-            String format = null;
-            if( ilen == 4 ) format = "MMdd";
-            else if( ilen == 8 ) format = "yyyyMMdd";
-            else if( ilen == 10 ) format = "yyyyMMddHH";
-            else if( ilen == 12 ) format = "yyyyMMddHHmm";
-            else if( ilen == 14 ) format = "yyyyMMddHHmmss";
+            String format;
+            if ( ilen == 4 ) format = "MMdd";
+            else if ( ilen == 8 ) format = "yyyyMMdd";
+            else if ( ilen == 10 ) format = "yyyyMMddHH";
+            else if ( ilen == 12 ) format = "yyyyMMddHHmm";
+            else if ( ilen == 14 ) format = "yyyyMMddHHmmss";
             else format = "yyyyMMdd"; // 非正常长度分析到day
 
             return new SimpleDateFormat( format ).parse( str );
-        } catch(Throwable e){
+        } catch ( Throwable e ) {
             return defval;
         }
     }
@@ -424,12 +381,13 @@ public final class StringHelper{
      *
      * @param text 待转换字符串
      * @param v    转换失败的默认值
+     *
      * @return 结果
      */
-    public static double toDouble( String text, double v ){
-        try{
+    public static double toDouble( String text, double v ) {
+        try {
             return Double.parseDouble( text );
-        } catch(Throwable e){
+        } catch ( Throwable e ) {
             return v;
         }
     }

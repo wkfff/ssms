@@ -10,8 +10,7 @@ package com.lanstar.core;
 
 public final class ViewAndObjectModel extends ViewAndModel {
     private final ObjectModelBean objectModelBean;
-    private Object value;
-
+    
     public ViewAndObjectModel( ViewAndModel parent ) {
         super( parent );
         if ( parent.model == null || !ObjectModelBean.class.isAssignableFrom( parent.model.getClass() ) ) {

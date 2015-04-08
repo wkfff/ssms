@@ -13,10 +13,10 @@ import com.google.common.base.Splitter;
 import java.util.List;
 
 public class ActionMeta {
-    String module;
-    String controller;
-    String action;
-    String render;
+    private String module;
+    private String controller;
+    private String action;
+    private String render;
 
     public String getModule() {
         return module;

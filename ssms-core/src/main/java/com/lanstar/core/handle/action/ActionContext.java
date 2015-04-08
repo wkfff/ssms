@@ -22,7 +22,7 @@ public class ActionContext extends HandlerContext {
      *
      * @see HandlerHelper
      */
-    ActionContext( HandlerContext context ) {
+    private ActionContext( HandlerContext context ) {
         super( context.getRequestContext() );
         this.meta = ActionMeta.parseUrl( context.getRequestContext().getUri() );
         setViewName( meta != null ? meta.getAction() : null );

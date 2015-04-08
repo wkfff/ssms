@@ -21,7 +21,7 @@ public class Dispatcher {
         return ContainerHelper.getBean( Dispatcher.class );
     }
 
-    public Dispatcher( List<Handler> list ) {
+    private Dispatcher( List<Handler> list ) {
         handlers = new Handlers();
         handlers.add( list );
     }

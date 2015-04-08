@@ -19,9 +19,6 @@ import java.util.Properties;
 public class PropertiesHelper {
     /**
      * 从文件中装载属性值
-     *
-     * @param fname
-     * @return
      */
     public static Properties load(String fname) {
         Asserts.notBlank(fname, "属性文件必须指定名称");
@@ -47,9 +44,6 @@ public class PropertiesHelper {
 
     /**
      * 从指定的类获取资源
-     *
-     * @param className
-     * @param path
      */
     public static Properties load(Class<?> className, String path) {
         Properties ps = new Properties();

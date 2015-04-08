@@ -15,9 +15,9 @@ import java.sql.*;
 /**
  * JDBC的帮助类
  */
-public final class JdbcHelper {
+final class JdbcHelper {
     public static final int MAX_ROW = -1;
-    private static Logger log = Logger.getLogger( JdbcHelper.class );
+    private static final Logger log = Logger.getLogger( JdbcHelper.class );
 
     /**
      * 安静的关闭所有可关闭对象

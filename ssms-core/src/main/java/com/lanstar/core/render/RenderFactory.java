@@ -22,7 +22,7 @@ public class RenderFactory {
 
     private final Map<String, IRender> renderMap = new HashMap<>();
 
-    public RenderFactory( Map<String, IRender> map ) {
+    private RenderFactory( Map<String, IRender> map ) {
         for ( String key : map.keySet() ) {
             renderMap.put( key.toLowerCase(), map.get( key ) );
         }

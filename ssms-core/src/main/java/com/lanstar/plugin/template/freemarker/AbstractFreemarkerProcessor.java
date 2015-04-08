@@ -54,8 +54,6 @@ abstract class AbstractFreemarkerProcessor {
      * 根据给定的模板bean对象处理模板。
      *
      * @param templateBean 模板bean对象
-     *
-     * @return 如果返回true则表示处理成功，否则返回false。
      */
     public void process( TemplateBean templateBean ) throws TemplateException {
         try {
