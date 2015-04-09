@@ -1,9 +1,9 @@
 系统开发启动方式：
 以ssms工作目录为根目录，在ide中创建一个maven配置，命令填写“tomcat7:run”即可。
 
-|名词         |对应英文
-|-------------|---------------------
-|租户         |tanent
+|名词         |对应英文       |说明
+|-------------|---------------|-----------------------
+|租户         |tanent         |企业、评审、政府统称为租户
 
 # 一、数据库规约
 
@@ -44,12 +44,12 @@
 每个文件应带有固定的文件头，格式如下：
 ```
 /*
- * 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
- * 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
- * 文件名称：Config.java
- * 创建时间：2015-03-09
- * 创建用户：张铮彬
- */
+* 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
+* 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
+* 文件名称：Config.java
+* 创建时间：2015-03-09
+* 创建用户：张铮彬
+*/
 ```
 
 对于主要的代码块，应有详细的步骤注释。当逻辑调整时应修改相应的注释内容。如：
@@ -135,19 +135,23 @@ views/e/a02/index.ftl
 Controller规则如下:
 1. public
 2. 类名为[name]Controller，其中name必须小写，后面必须跟上Controller。
-3. 继承自Controller类型
-4. 必须放在`com.lanstar.controller`包下。*其下是否可以放子包待定*。
-示例如下：
-```
-public class a02Controller extends Controller {
+3. 必须放在`com.lanstar.controller`包下。
+4. 控制器必须放在在请求的[module]下。
+Url为`/e/a02/index.html`的控制器定义示例如下：
+```java
+package com.lanstar.controller.e;
+public class a02Controller {
     // 添加各种action
+    public void index(HandleContext context){
+
+    }
 }
 ```
 
 ### 4) Action规则
 Action规则如下:
 1. public
-2. 返回值为`ViewAndModel`类型或其子类型
+2. 返回值为`ViewAndModel`类型或其子类型，或者为void。
 3. 参数有且只有一个，类型为`HandleContext`
 代码示例如下:
 ```java
@@ -155,12 +159,34 @@ package com.lanstar.controller;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.controller.Controller;
 import com.lanstar.core.handle.HandlerContext;
-public class a02Controller extends Controller {
+public class a02Controller {
     public ViewAndModel index(HandlerContext context) {
         // 业务处理
         // 返回结果
-        return context.returnWith(null);
+        return context.returnWith();
     }
+
+    public void index(HandlerContext context) {
+        // 业务处理
+        context.setValue(...);
+    }
+}
+```
+
+**以下情形必须使用ViewAndModel返回值方式:**
+1. 使用的模板与方法名不一致时。如
+```java
+public ViewAndModel index2(HandlerContext context) {
+    // 业务处理
+    // 返回结果
+    return context.returnWith("index");
+}
+```
+2. 值是一个非map对象时。如：
+```java
+public ViewAndModel index2(HandlerContext context) {
+    User user = new User();
+    return context.returnWith().set(user);
 }
 ```
 
@@ -168,3 +194,6 @@ public class a02Controller extends Controller {
 目前只支持两种规约输出格式：
 1. html，采用Freemarker视图模板文件输出内容
 2. json，输出为json格式
+
+值搜索顺序：
+Model变量->本地变量 --> request --> url参数 --> session --> servletContext
