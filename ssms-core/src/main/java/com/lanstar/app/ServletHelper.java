@@ -6,25 +6,27 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.common.helper;
-
-import com.lanstar.app.App;
+package com.lanstar.app;
 
 import javax.servlet.ServletContext;
 import java.io.InputStream;
 
 public class ServletHelper {
-    public static InputStream getResource(String... paths) {
-        return getResource(App.getServletContext(), paths);
+    public static InputStream getResource( String... paths ) {
+        return getResource( App.getServletContext(), paths );
     }
 
-    public static InputStream getResource(ServletContext context, String... paths) {
-        if (paths == null) return null;
-        for (String path : paths) {
-            InputStream stream = context.getResourceAsStream(path);
-            if (stream == null) continue;
+    public static InputStream getResource( ServletContext context, String... paths ) {
+        if ( paths == null ) return null;
+        for ( String path : paths ) {
+            InputStream stream = context.getResourceAsStream( path );
+            if ( stream == null ) continue;
             return stream;
         }
         return null;
+    }
+
+    public static String getRealPath( String path ) {
+        return App.getServletContext().getRealPath( path );
     }
 }

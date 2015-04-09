@@ -12,7 +12,6 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import com.lanstar.app.container.IContainer;
-import com.lanstar.common.helper.ServletHelper;
 import com.lanstar.plugin.IAppPlugin;
 import org.slf4j.LoggerFactory;
 

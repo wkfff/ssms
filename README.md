@@ -197,3 +197,9 @@ public ViewAndModel index2(HandlerContext context) {
 
 值搜索顺序：
 Model变量->本地变量 --> request --> url参数 --> session --> servletContext
+
+
+## 五、租户数据库配置方式
+1. 租户数据库配置信息放置于: `webapp/WEB-INF/db`
+2. 使用properties文件进行配置（支持xml？）
+3. 每个文件表示一个数据库配置

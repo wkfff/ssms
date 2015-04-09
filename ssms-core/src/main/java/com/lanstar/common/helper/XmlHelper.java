@@ -10,8 +10,10 @@ package com.lanstar.common.helper;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -20,6 +22,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
@@ -31,13 +34,14 @@ public class XmlHelper {
     /**
      * 获取指定输入流的XML的根节点
      */
-    public static Element getDocumentElement( InputStream stream ) {
+    public static Element getDocumentElement( InputStream stream ) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        try {
-            return factory.newDocumentBuilder().parse( stream ).getDocumentElement();
-        } catch ( Exception e ) {
-            throw new RuntimeException( e );
-        }
+        return factory.newDocumentBuilder().parse( stream ).getDocumentElement();
+    }
+
+    public static Element getDocumentElement( File file ) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        return factory.newDocumentBuilder().parse( file ).getDocumentElement();
     }
 
     /**
