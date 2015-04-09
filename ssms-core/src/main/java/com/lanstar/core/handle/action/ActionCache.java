@@ -1,62 +1,47 @@
 /*
  * 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
  * 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
- * 文件名称：ActionCache.java
- * 创建时间：2015-04-08
+ * 文件名称：ControllerBean.java
+ * 创建时间：2015-04-09
  * 创建用户：张铮彬
  */
 
 package com.lanstar.core.handle.action;
 
-import com.lanstar.common.helper.BeanHelper;
-import com.lanstar.core.handle.HandlerContext;
+import com.google.common.base.Joiner;
+import com.lanstar.common.log.LogHelper;
+import com.lanstar.plugin.staticcache.Cache;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 
-public class ActionCache {
-    private final Map<String, ControllerBean> controllerMap = new HashMap<>();
+public class ActionCache extends Cache<Action> {
+    private final ControllerCache controllerCache = new ControllerCache();
 
-    public Action getAction( ActionMeta meta ) throws NoSuchMethodException {
-        return getController( meta ).getAction( meta.getAction() );
+    @Override
+    protected void load( Map<String, Action> pools ) {}
+
+    public synchronized Action getValue( ActionMeta meta ) {
+        String key = getActionKey( meta );
+        Action action = getValue( key );
+        if ( action == null ) {
+            LogHelper.debug( ActionCache.class, "加载Action[%s]", key );
+            Controller controller = controllerCache.getValue( meta );
+            action = controller.getValue( meta.getAction() );
+            put( key, action );
+        }
+
+        return action;
     }
 
-    private ControllerBean getController( ActionMeta meta ) throws NoSuchMethodException {
-        String controllerName = meta.getClassName();
-        ControllerBean controller = controllerMap.get( controllerName );
-        if ( controller == null ) {
-            Object instance;
-            try {
-                instance = BeanHelper.newInstance( controllerName );
-            } catch ( IllegalArgumentException e ) {
-                throw new NoSuchMethodException();
-            }
-            controller = new ControllerBean( instance );
-            controllerMap.put( controllerName, controller );
-        }
-        return controller;
+    private String getActionKey( ActionMeta meta ) {
+        return Joiner.on( '.' ).join( meta.getClassName(), meta.getAction() );
     }
 
-    private static class ControllerBean {
-        private final Map<String, Action> actionMap = new HashMap<>();
-        private final Class<?> clazz;
-        private Object controller;
-
-        public ControllerBean( Object controller ) {
-            this.controller = controller;
-            clazz = this.controller.getClass();
-        }
-
-        public Action getAction( String actionName ) throws NoSuchMethodException {
-            Action action = actionMap.get( actionName );
-            if ( action == null ) {
-                Method method = clazz.getMethod( actionName, HandlerContext.class );
-                action = new Action( method, controller );
-                actionMap.put( actionName, action );
-            }
-
-            return action;
-        }
+    /**
+     * 获取缓存名称
+     */
+    @Override
+    public String getName() {
+        return "Action Cache";
     }
 }

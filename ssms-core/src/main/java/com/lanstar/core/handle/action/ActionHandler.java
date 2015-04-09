@@ -37,8 +37,8 @@ public class ActionHandler implements Handler {
         // 获取Action
         Action action;
         try {
-            action = actionCache.getAction( context.getMeta() );
-        } catch ( NoSuchMethodException e ) {
+            action = actionCache.getValue( context.getMeta() );
+        } catch ( NoSuchActionException e ) {
             LogHelper.error( getClass(), e, "无法找到相应的Action" );
             try {
                 handlerContext.getRequestContext().getResponse().sendError( HttpServletResponse.SC_NOT_FOUND );

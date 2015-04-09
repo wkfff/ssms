@@ -46,9 +46,8 @@ public class ActionMeta {
     }
 
     public String getClassName() {
-        return Joiner.on( '.' ).join( "com.lanstar.controller", module, controller+"Controller");
+        return Joiner.on( '.' ).join( "com.lanstar.controller", module, controller + "Controller" );
     }
-
 
     /**
      * 将URL解析为元数据
@@ -68,7 +67,7 @@ public class ActionMeta {
         //     .html=>Render
         url = url.replace( '.', '/' );
         List<String> result = Splitter.on( '/' ).omitEmptyStrings().trimResults().splitToList( url );
-        if (result.size() != 4) return null;
+        if ( result.size() != 4 ) return null;
         meta.module = result.get( 0 );
         meta.controller = result.get( 1 );
         meta.action = result.get( 2 );

@@ -13,8 +13,8 @@ import com.lanstar.common.log.LogHelper;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class Cache<T> implements ICache<T> {
-    private Map<String, T> pools = new ConcurrentHashMap<>();
+public abstract class Cache<V> implements ICache<V> {
+    private Map<String, V> pools = new ConcurrentHashMap<>();
 
     @Override
     public void refresh() {
@@ -28,7 +28,7 @@ public abstract class Cache<T> implements ICache<T> {
         }
     }
 
-    protected abstract void load( Map<String, T> pools );
+    protected abstract void load( Map<String, V> pools );
 
     @Override
     public void clear() {
@@ -36,7 +36,18 @@ public abstract class Cache<T> implements ICache<T> {
     }
 
     @Override
-    public T getValue( String key ) {
+    public V getValue( String key ) {
         return pools.get( key );
+    }
+
+    /**
+     * 设置值
+     *
+     * @param key
+     * @param value
+     */
+    @Override
+    public void put( String key, V value ) {
+        pools.put( key, value );
     }
 }

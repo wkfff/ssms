@@ -8,7 +8,7 @@
 
 package com.lanstar.plugin.staticcache;
 
-public interface ICache<T> {
+public interface ICache<V> {
     /**
      * 获取缓存名称
      */
@@ -27,5 +27,10 @@ public interface ICache<T> {
     /**
      * 从缓存里面取值
      */
-    T getValue( String key );
+    V getValue( String key );
+
+    /**
+     * 设置值
+     */
+    void put(String key, V value);
 }

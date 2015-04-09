@@ -56,10 +56,6 @@ public class BeanHelper {
         }
     }
 
-    public static Object newInstance( String typeName ) {
-        return newInstance( typeName, Object.class );
-    }
-
     /**
      * 实例化类
      *
