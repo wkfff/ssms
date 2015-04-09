@@ -18,7 +18,9 @@ public class ActionCache extends Cache<Action> {
     private final ControllerCache controllerCache = new ControllerCache();
 
     @Override
-    protected void load( Map<String, Action> pools ) {}
+    protected void load( Map<String, Action> pools ) {
+        // 直接静态化？延迟加载？
+    }
 
     public synchronized Action getValue( ActionMeta meta ) {
         String key = getActionKey( meta );

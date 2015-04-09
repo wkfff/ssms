@@ -67,15 +67,27 @@ public class a02Controller {
     }
 
     public ViewAndModel user( HandlerContext context ) {
+        Object user = new Object(){
+            String username = "USER NAME";
+            String password = "PASSWORD!";
+
+            public String getUsername() {
+                return username;
+            }
+
+            public String getPassword() {
+                return password;
+            }
+        };
         // 判定身份
         IdentityContext identityContxt = context.getRequestContext().getIdentityContxt();
         if ( identityContxt.is( CompanyIdentity.class ) ) {
             // 获取企业身份实例，并从实例中获取企业特有的信息
             // CompanyIdentity companyIdentity = identityContxt.getIdentity( CompanyIdentity.class );
             // companyIdentity.getCompany()
-            return context.returnWith().set( 2 );
+            return context.returnWith().set( user );
         }
-        return context.returnWith().set( 1 );
+        return context.returnWith().set( user );
     }
 
     public void index5( HandlerContext context ) {

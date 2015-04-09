@@ -13,6 +13,7 @@
         <constructor-arg>
             <list>
                 <bean class="com.lanstar.plugin.staticcache.impl.TanentDbCache"/>
+                <bean class="com.lanstar.core.handle.action.ActionCache"/>
             </list>
         </constructor-arg>
     </bean>

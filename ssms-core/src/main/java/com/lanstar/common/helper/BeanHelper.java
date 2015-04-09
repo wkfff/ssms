@@ -120,6 +120,7 @@ public class BeanHelper {
                 if ( !key.equals( "class" ) ) {
                     // 得到property对应的getter方法
                     Method getter = property.getReadMethod();
+                    if ( !getter.isAccessible() ) getter.setAccessible( true );
                     Object value = getter.invoke( obj );
 
                     map.put( key, value );

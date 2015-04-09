@@ -1,6 +1,6 @@
 <#import "/layout/_layout.ftl" as layout/>
 
 <@layout.layout>
-USERNAME:${username}
-PASSWORD:${password}
+<p>USERNAME:${username}</p>
+<p>PASSWORD:${password}</p>
 </@layout.layout>
