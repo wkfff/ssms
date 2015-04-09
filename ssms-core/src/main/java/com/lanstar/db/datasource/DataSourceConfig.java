@@ -67,9 +67,10 @@ public class DataSourceConfig {
     final boolean required;
     final String poolType;
     public final IDialect dialect;
+    private final String id;
 
     public DataSourceConfig( Properties props ) {
-
+        this.id = PropertiesHelper.get( props, "id", null );
 //        this.jdbcDriver = PropertiesHelper.get(props, JDBC_DRIVER, null);
         this.jdbcUrl = PropertiesHelper.get( props, JDBC_URL, null );
         this.jdbcUser = PropertiesHelper.get( props, JDBC_USER, null );
@@ -116,5 +117,9 @@ public class DataSourceConfig {
 
     public IDialect getDialect() {
         return dialect;
+    }
+
+    public String getId() {
+        return id;
     }
 }

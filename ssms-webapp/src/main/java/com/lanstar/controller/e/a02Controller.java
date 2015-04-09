@@ -67,7 +67,7 @@ public class a02Controller {
     }
 
     public ViewAndModel user( HandlerContext context ) {
-        Object user = new Object(){
+        Object user = new Object() {
             String username = "USER NAME";
             String password = "PASSWORD!";
 

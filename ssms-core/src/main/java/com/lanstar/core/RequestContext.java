@@ -11,9 +11,6 @@ package com.lanstar.core;
 import com.lanstar.app.App;
 import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.identity.IdentityContext;
-import com.lanstar.db.DBSession;
-import com.lanstar.db.DS;
-import com.lanstar.db.DbException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,9 +26,6 @@ public class RequestContext {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
     private final Map<String, Object> localVars = new HashMap<>();
-
-    private DBSession systemDb;
-    private DBSession clientDb;
 
     public RequestContext( String uri, HttpServletRequest request, HttpServletResponse responst ) {
         this.uri = uri;
@@ -221,28 +215,6 @@ public class RequestContext {
                 break;
         }
         return this;
-    }
-
-    /**
-     * 获取租户数据库会话
-     *
-     * @return 租户数据库会话
-     */
-    public DBSession getDbSession() {
-        if ( clientDb == null ) clientDb = DS.createDbSession();
-        if ( !clientDb.isValid() ) throw new DbException( "租户数据库会话在当前请求上下文中已失效" );
-        return clientDb;
-    }
-
-    /**
-     * 获取系统数据库会话
-     *
-     * @return 系统数据库会话
-     */
-    public DBSession getSystemDbSession() {
-        if ( systemDb == null ) systemDb = DS.createDbSession();
-        if ( !systemDb.isValid() ) throw new DbException( "系统数据库会话在当前请求上下文中已失效" );
-        return systemDb;
     }
 
     public void bindIdentity( IdentityContext context ) {

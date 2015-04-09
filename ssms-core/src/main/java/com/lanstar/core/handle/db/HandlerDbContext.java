@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.core.handle;
+package com.lanstar.core.handle.db;
 
 import com.lanstar.db.DBSession;
 import com.lanstar.db.ar.ARTable;
@@ -14,13 +14,7 @@ import com.lanstar.db.ar.ARTable;
 /**
  * 数据库操作上下文
  */
-public class HandlerDbContext {
-    private final DBSession session;
-
-    public HandlerDbContext( DBSession session ) {
-        this.session = session;
-    }
-
+public abstract class HandlerDbContext extends DBSessionHolder {
     /**
      * 根据表名返回一个{@link ARTable}对象，通过该对象可以快速的对表进行操作。
      *
@@ -30,7 +24,26 @@ public class HandlerDbContext {
      *
      * @see ARTable
      */
-    public ARTable withTable( String tableName ) {
-        return new ARTable( session ).table( tableName );
+    public final ARTable withTable( String tableName ) {
+        return new ARTable( getDbSession() ).table( tableName );
+    }
+
+    /**
+     * 在事务上下文中执行。
+     *
+     * @param trans 事务上下文
+     */
+    public final void transaction( TransactionContext trans ) {
+        DBSession session = getDbSession();
+        try {
+            session.beginTransaction();
+            trans.execute( this );
+        } finally {
+            session.endTransaction();
+        }
+    }
+
+    public interface TransactionContext {
+        void execute( HandlerDbContext dbContext );
     }
 }

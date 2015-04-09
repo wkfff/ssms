@@ -34,6 +34,10 @@ public final class DataSourceFactory {
      */
     public DbContext create( Properties ps ) {
         DataSourceConfig config = new DataSourceConfig( ps );
+        return create( config );
+    }
+
+    public DbContext create( DataSourceConfig config ) {
         DataSource datasource = providerMap.get( config.poolType.toUpperCase() ).createDatasource( config );
         return new DbContext( datasource, config.dialect );
     }

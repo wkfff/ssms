@@ -53,6 +53,26 @@ public class DbContext {
     }
 
     /**
+     * 获取数据库连接
+     *
+     * @return 数据库连接
+     */
+    public Connection getConnection() throws SQLException {
+        return getDataSource().getConnection();
+    }
+
+    /**
+     * 创建数据库会话
+     *
+     * @return {@code DBSession}实例
+     *
+     * @throws SQLException
+     */
+    public DBSession createDbSession() throws SQLException {
+        return new DBSession( getConnection(), dialect );
+    }
+
+    /**
      * 启动数据库
      */
     public void startup() {

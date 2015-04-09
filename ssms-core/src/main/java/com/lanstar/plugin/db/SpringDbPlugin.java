@@ -9,12 +9,21 @@
 package com.lanstar.plugin.db;
 
 import com.lanstar.app.App;
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.db.DbContext;
+import com.lanstar.db.datasource.DataSourceConfig;
 import com.lanstar.db.datasource.DataSourceFactory;
+import com.lanstar.plugin.staticcache.CacheManager;
+import com.lanstar.plugin.staticcache.impl.TanentDbCache;
+
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SpringDbPlugin implements IDbPlugin {
     private final DataSourceFactory dataSourceFactory;
     private DbContext dbContext;
+    private Map<String, DbContext> dbContextMap = new ConcurrentHashMap<>();
 
     public SpringDbPlugin() {
         dataSourceFactory = DataSourceFactory.me();
@@ -25,9 +34,17 @@ public class SpringDbPlugin implements IDbPlugin {
      */
     @Override
     public void startup() {
-        // TODO:获取主数据源
         dbContext = dataSourceFactory.create( App.config().getProperties() );
         dbContext.startup();
+
+        Iterator<DataSourceConfig> iterator = CacheManager.me().getCache( TanentDbCache.class ).getValues();
+        while ( iterator.hasNext() ) {
+            DataSourceConfig config = iterator.next();
+            String id = config.getId();
+            if ( StringHelper.isBlank( id ) ) continue;
+            DbContext dbContext = dataSourceFactory.create( config );
+            dbContextMap.put( id, dbContext );
+        }
     }
 
     /**
@@ -41,5 +58,17 @@ public class SpringDbPlugin implements IDbPlugin {
     @Override
     public DbContext getDbContext() {
         return dbContext;
+    }
+
+    /**
+     * 获取指定的数据库上下文
+     *
+     * @return 数据库上下文实例
+     *
+     * @see DbContext
+     */
+    @Override
+    public DbContext getDbContext( String dbName ) {
+        return dbContextMap.get( dbName );
     }
 }

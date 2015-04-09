@@ -71,6 +71,17 @@ final class JdbcHelper {
     }
 
     /**
+     * 关闭事务。（先提交，如果失败就回滚，然后关闭事务）
+     */
+    public static void endTransaction(Connection conn) throws SQLException{
+        if ( isConnectionValid( conn ) ) {
+            if ( !conn.getAutoCommit() )
+                commit( conn );
+            conn.setAutoCommit( true );
+        }
+    }
+
+    /**
      * 提交当前事务
      *
      * @param conn 数据库连接

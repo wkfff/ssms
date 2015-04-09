@@ -29,7 +29,7 @@ class Action {
         try {
             return (ViewAndModel) method.invoke( controller, context );
         } catch ( ReflectiveOperationException e ) {
-            throw new HandleException( "处理调度时发生异常", e );
+            throw new HandleException( "处理调度时发生异常", e.getCause() );
         }
     }
 }

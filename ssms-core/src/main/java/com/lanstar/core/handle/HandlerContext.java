@@ -13,6 +13,9 @@ import com.lanstar.core.ModelBean;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.VAR_SCOPE;
 import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.handle.db.HandlerDbContext;
+import com.lanstar.core.handle.db.impl.SystemDbContext;
+import com.lanstar.core.handle.db.impl.TanentDbContext;
 
 import java.util.Map;
 
@@ -21,7 +24,7 @@ public class HandlerContext {
     /**
      * 租户库上下文
      */
-    public final HandlerDbContext CLIENT_DB;
+    public final HandlerDbContext TANENT_DB;
     /**
      * 租户库上下文(只是CLENT_DB的别名字段)
      */
@@ -38,9 +41,9 @@ public class HandlerContext {
      */
     HandlerContext( RequestContext context ) {
         this.context = context;
-        CLIENT_DB = new HandlerDbContext( context.getDbSession() );
-        SYSTEM_DB = new HandlerDbContext( context.getSystemDbSession() );
-        DB = CLIENT_DB;
+        TANENT_DB = new TanentDbContext( context );
+        SYSTEM_DB = new SystemDbContext();
+        DB = TANENT_DB;
     }
 
     /**

@@ -8,8 +8,12 @@
 
 package com.lanstar.core.handle.identity;
 
+import com.lanstar.db.DbContext;
+
 public interface IdentityContext {
     <T extends Identity> T getIdentity( Class<T> type );
 
     <T extends Identity> boolean is( Class<T> type );
+
+    DbContext getDbContext();
 }

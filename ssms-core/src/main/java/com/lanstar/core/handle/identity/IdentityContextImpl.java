@@ -9,6 +9,8 @@
 package com.lanstar.core.handle.identity;
 
 import com.lanstar.common.helper.Asserts;
+import com.lanstar.db.DS;
+import com.lanstar.db.DbContext;
 
 class IdentityContextImpl implements IdentityContext {
     private Identity identity;
@@ -29,5 +31,11 @@ class IdentityContextImpl implements IdentityContext {
     public <T extends Identity> boolean is( Class<T> type ) {
         Asserts.notNull( type, "TYPE NOT NULL" );
         return type.isAssignableFrom( identity.getClass() );
+    }
+
+    @Override
+    public DbContext getDbContext() {
+        // TODO 根据Identity来获取DbContext
+        return DS.getDbContext();
     }
 }

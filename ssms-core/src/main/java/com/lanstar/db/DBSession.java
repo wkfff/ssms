@@ -42,6 +42,17 @@ public class DBSession implements JdbcOperations {
     }
 
     /**
+     * 关闭事务。（先提交，如果失败就回滚，然后关闭事务）
+     */
+    public void endTransaction() {
+        try {
+            JdbcHelper.endTransaction( conn );
+        } catch ( SQLException e ) {
+            throw new DbException( "关闭事务时发生异常", e );
+        }
+    }
+
+    /**
      * 提交事务
      */
     public void commitTransaction() {

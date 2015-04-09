@@ -20,4 +20,13 @@ public interface IDbPlugin extends IAppPlugin {
      * @see DbContext
      */
     DbContext getDbContext();
+
+    /**
+     * 获取指定的数据库上下文
+     *
+     * @return 数据库上下文实例
+     *
+     * @see DbContext
+     */
+    DbContext getDbContext( String dbName );
 }

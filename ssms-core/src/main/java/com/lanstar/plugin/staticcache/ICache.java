@@ -8,6 +8,8 @@
 
 package com.lanstar.plugin.staticcache;
 
+import java.util.Iterator;
+
 public interface ICache<V> {
     /**
      * 获取缓存名称
@@ -33,4 +35,9 @@ public interface ICache<V> {
      * 设置值
      */
     void put(String key, V value);
+
+    /**
+     * 获取所有值
+     */
+    Iterator<V> getValues();
 }
