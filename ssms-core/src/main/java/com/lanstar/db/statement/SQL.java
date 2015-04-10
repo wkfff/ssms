@@ -8,6 +8,9 @@
 
 package com.lanstar.db.statement;
 
+/**
+ * 具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
+ */
 public class SQL {
     public static SqlBuilder WITH( String body ) {
         return new SqlBuilder().WITH( body );

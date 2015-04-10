@@ -46,14 +46,23 @@ public abstract class HandlerDbContext extends DBSessionHolder {
         }
     }
 
+    /**
+     * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
+     */
     public final int execute( SqlBuilder sqlBuilder ) {
         return getDbSession().execute( sqlBuilder.toSqlStatement() );
     }
 
+    /**
+     * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
+     */
     public final JdbcRecord first( SqlBuilder sqlBuilder ) {
         return getDbSession().first( sqlBuilder.toSqlStatement() );
     }
 
+    /**
+     * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
+     */
     public final JdbcRecordSet query( SqlBuilder sqlBuilder ) {
         return getDbSession().query( sqlBuilder.toSqlStatement() );
     }
