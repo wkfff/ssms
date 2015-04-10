@@ -31,6 +31,6 @@ public class RenderHelper {
         response.setHeader( "Pragma", "no-cache" );
         response.setHeader( "Cache-Control", "no-cache" );
         response.setDateHeader( "Expires", 0 );
-        response.setContentType( HTML_CONTENT_TYPE );
+        response.setContentType( JSON_CONTENT_TYPE );
     }
 }

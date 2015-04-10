@@ -10,6 +10,8 @@ package com.lanstar.core.handle;
 
 import com.lanstar.core.RequestContext;
 
+import javax.servlet.ServletException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class Handlers {
         handlers.addAll( list );
     }
 
-    public void handle( RequestContext context ) {
+    public void handle( RequestContext context ) throws ServletException, IOException {
         // 每次都是一个新的调用链
         new VirtualHandleChain( handlers ).doHandle( new HandlerContext( context ) );
     }
@@ -38,7 +40,7 @@ public class Handlers {
         }
 
         @Override
-        public void doHandle( HandlerContext context ) {
+        public void doHandle( HandlerContext context ) throws ServletException, IOException {
             if ( this.currentPosition == this.additionalHandlers.size() ) return;
             this.currentPosition++;
             Handler next = this.additionalHandlers.get( this.currentPosition - 1 );

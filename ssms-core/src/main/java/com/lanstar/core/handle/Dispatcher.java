@@ -11,6 +11,8 @@ package com.lanstar.core.handle;
 import com.lanstar.app.container.ContainerHelper;
 import com.lanstar.core.RequestContext;
 
+import javax.servlet.ServletException;
+import java.io.IOException;
 import java.util.List;
 
 public class Dispatcher {
@@ -24,9 +26,11 @@ public class Dispatcher {
         // 加载所有的handler
         handlers = new Handlers();
         handlers.add( list );
+        // 一定要加上默认的处理器用户处理默认资源，而且这个处理器是最后一个处理器。
+        handlers.add( new DefaultHandler() );
     }
 
-    public void dispatch( RequestContext requestContext ) {
+    public void dispatch( RequestContext requestContext ) throws ServletException, IOException {
         handlers.handle( requestContext );
     }
 }

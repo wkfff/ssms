@@ -36,24 +36,16 @@ public class CoreFilter implements Filter {
         RequestContext requestContext = new RequestContext( uri, req, res );
 
         // 视图目录禁止访问
-        if ( uri.startsWith( requestContext.getViewsFolder( false ) ) )
-        {
+        if ( uri.startsWith( requestContext.getViewsFolder( false ) ) ) {
             res.sendError( HttpServletResponse.SC_NOT_FOUND );
             return;
         }
         // 资源目录使用默认调度方式
-        if ( uri.startsWith( requestContext.getResourceFolder( false ) ) ){
+        if ( uri.startsWith( requestContext.getResourceFolder( false ) ) ) {
             chain.doFilter( request, response );
             return;
         }
 
-        for ( String p : expaths ) {
-            String path = requestContext.getPath( p );
-            if ( uri.startsWith( path ) ) {
-                chain.doFilter( request, response );
-                return;
-            }
-        }
         dispatcher.dispatch( requestContext );
     }
 

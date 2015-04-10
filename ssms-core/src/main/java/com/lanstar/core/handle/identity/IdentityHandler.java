@@ -13,12 +13,15 @@ import com.lanstar.core.handle.HandleChain;
 import com.lanstar.core.handle.Handler;
 import com.lanstar.core.handle.HandlerContext;
 
+import javax.servlet.ServletException;
+import java.io.IOException;
+
 /**
  * 处理身份认证
  */
 public class IdentityHandler implements Handler {
     @Override
-    public void handle( HandlerContext context, HandleChain next ) {
+    public void handle( HandlerContext context, HandleChain next ) throws ServletException, IOException {
         RequestContext requestContext = context.getRequestContext();
         if (!requestContext.hasIdentityContext()){
             // TODO: 增加身份认证过程
