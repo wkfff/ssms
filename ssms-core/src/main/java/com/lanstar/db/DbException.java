@@ -9,6 +9,7 @@
 package com.lanstar.db;
 
 import com.lanstar.common.exception.WebException;
+import com.lanstar.db.statement.SqlStatement;
 
 /**
  * 数据库异常基类

@@ -9,7 +9,7 @@
 package com.lanstar.db.dialect;
 
 import com.lanstar.db.JdbcOperations;
-import com.lanstar.db.SqlStatement;
+import com.lanstar.db.statement.SqlStatement;
 
 import java.sql.SQLException;
 

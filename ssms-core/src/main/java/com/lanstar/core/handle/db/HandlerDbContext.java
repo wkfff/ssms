@@ -9,7 +9,10 @@
 package com.lanstar.core.handle.db;
 
 import com.lanstar.db.DBSession;
+import com.lanstar.db.JdbcRecord;
+import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
+import com.lanstar.db.statement.SqlBuilder;
 
 /**
  * 数据库操作上下文
@@ -41,6 +44,18 @@ public abstract class HandlerDbContext extends DBSessionHolder {
         } finally {
             session.endTransaction();
         }
+    }
+
+    public final int execute( SqlBuilder sqlBuilder ) {
+        return getDbSession().execute( sqlBuilder.toSqlStatement() );
+    }
+
+    public final JdbcRecord first( SqlBuilder sqlBuilder ) {
+        return getDbSession().first( sqlBuilder.toSqlStatement() );
+    }
+
+    public final JdbcRecordSet query( SqlBuilder sqlBuilder ) {
+        return getDbSession().query( sqlBuilder.toSqlStatement() );
     }
 
     public interface TransactionContext {

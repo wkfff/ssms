@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.db;
+package com.lanstar.db.statement;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -68,7 +68,7 @@ public class SqlStatement {
 
     @Override
     public String toString() {
-        return String.format( "{sql='%s', params=%s}", sql, Arrays.toString( params ) );
+        return String.format( "{\nsql:\n%s\nparams=%s\n}", sql, Arrays.toString( params ) );
     }
 }
 

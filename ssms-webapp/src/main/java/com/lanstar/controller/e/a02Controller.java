@@ -54,7 +54,9 @@ public class a02Controller {
                                .where( "f1=?", 2 )
                                .value( "f1", 3 )
                                .update();
-        JdbcRecordSet list = context.DB.withTable( "demo" ).queryList();
+        JdbcRecordSet list = context.DB.withTable( "demo" )
+                                       .where( "f1 in ({0}) or 1={1}", new int[] { 1, 5 }, 0 )
+                                       .queryList();
         int delete = context.DB.withTable( "demo" )
                                .delete();
 
