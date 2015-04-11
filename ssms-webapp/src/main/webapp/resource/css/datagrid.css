@@ -1,0 +1,9 @@
+.datagrid{padding:5px;}
+.datagrid table{width:100%;table-layout:fixed;font-size:12px;border-collapse:collapse}
+.datagrid thead{background-color:#FAFAFA;}
+.datagrid thead td{background:#FAFAFA;border-bottom:1px solid #EEE;border-top:1px solid #EEE;padding:8px;text-align:left;}		
+.datagrid tbody tr td{border-bottom:1px solid #EEE;padding:8px;}
+.datagrid .toolbar{heigth:42px;padding:10px 0px;}
+
+.rowSelected {background-color:#FBFBFB;}
+.cell-chk{width:20px;}
