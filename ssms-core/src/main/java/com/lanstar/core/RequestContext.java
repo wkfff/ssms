@@ -9,7 +9,6 @@
 package com.lanstar.core;
 
 import com.lanstar.app.App;
-import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.identity.IdentityContext;
 
 import javax.servlet.ServletException;
@@ -55,12 +54,8 @@ public class RequestContext {
      *
      * @param path 转向地址
      */
-    public void forward( String path ) {
-        try {
-            request.getRequestDispatcher( path ).forward( request, response );
-        } catch ( ServletException | IOException e ) {
-            throw new HandleException( e );
-        }
+    public void forward( String path ) throws ServletException, IOException {
+        request.getRequestDispatcher( path ).forward( request, response );
     }
 
     /**

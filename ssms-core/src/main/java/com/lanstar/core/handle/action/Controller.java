@@ -36,7 +36,7 @@ class Controller extends Cache<Action> {
                 action = new Action( method, controller );
                 put( actionName, action );
             } catch ( NoSuchMethodException e ) {
-                throw new NoSuchActionException( e );
+                return null;
             }
         }
 

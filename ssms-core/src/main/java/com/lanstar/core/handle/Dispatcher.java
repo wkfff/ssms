@@ -9,13 +9,22 @@
 package com.lanstar.core.handle;
 
 import com.lanstar.app.container.ContainerHelper;
+import com.lanstar.common.exception.WebException;
+import com.lanstar.common.log.Logger;
 import com.lanstar.core.RequestContext;
+import com.lanstar.core.handle.action.ActionException;
+import com.lanstar.core.render.RenderException;
+import com.lanstar.core.render.RenderFactory;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
 public class Dispatcher {
+    private final Logger log = new Logger( Dispatcher.class );
+
     private final Handlers handlers;
 
     public static Dispatcher me() {
@@ -31,6 +40,38 @@ public class Dispatcher {
     }
 
     public void dispatch( RequestContext requestContext ) throws ServletException, IOException {
-        handlers.handle( requestContext );
+        HttpServletRequest request = requestContext.getRequest();
+        HttpServletResponse response = requestContext.getResponse();
+        String target = requestContext.getUri();
+        try {
+            handlers.handle( requestContext );
+        } catch ( RenderException e ) {
+            if ( log.isErrorEnabled() ) {
+                String qs = request.getQueryString();
+                log.error( qs == null ? target : target + "?" + qs, e );
+            }
+        } catch ( ActionException e ) {
+            int errorCode = e.getErrorCode();
+            if ( errorCode == 404 && log.isWarnEnabled() ) {
+                String qs = request.getQueryString();
+                log.warn( "404 Not Found: %s", qs == null ? target : target + "?" + qs );
+            } else if ( errorCode == 401 && log.isWarnEnabled() ) {
+                String qs = request.getQueryString();
+                log.warn( "401 Unauthorized: %s", qs == null ? target : target + "?" + qs );
+            } else if ( errorCode == 403 && log.isWarnEnabled() ) {
+                String qs = request.getQueryString();
+                log.warn( "403 Forbidden: %s", qs == null ? target : target + "?" + qs );
+            } else if ( log.isErrorEnabled() ) {
+                String qs = request.getQueryString();
+                log.error( e, qs == null ? target : target + "?" + qs );
+            }
+            RenderFactory.me().getErrorRender( e, requestContext ).render();
+        } catch ( WebException e ) {
+            if ( log.isErrorEnabled() ) {
+                String qs = request.getQueryString();
+                log.error( e, qs == null ? target : target + "?" + qs );
+            }
+            RenderFactory.me().getErrorRender( 500, requestContext );
+        }
     }
 }

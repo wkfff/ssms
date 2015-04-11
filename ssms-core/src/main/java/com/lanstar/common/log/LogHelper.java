@@ -18,41 +18,49 @@ public final class LogHelper {
 
     public static void debug( Class<?> type, String s, Object... params ) {
         Logger logger = LoggerFactory.getLogger( type );
-        logger.debug( (params == null || params.length == 0) ? s : String.format( s, params ) );
+        if ( logger.isDebugEnabled() )
+            logger.debug( (params == null || params.length == 0) ? s : String.format( s, params ) );
     }
 
     public static void debug( Class<?> type, Throwable throwable, String s, Object... params ) {
         Logger logger = LoggerFactory.getLogger( type );
-        logger.debug( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
+        if ( logger.isDebugEnabled() )
+            logger.debug( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
     }
 
     public static void info( Class<?> type, String s, Object... params ) {
         Logger logger = LoggerFactory.getLogger( type );
-        logger.info( (params == null || params.length == 0) ? s : String.format( s, params ) );
+        if ( logger.isInfoEnabled() )
+            logger.info( (params == null || params.length == 0) ? s : String.format( s, params ) );
     }
 
     public static void info( Class<?> type, Throwable throwable, String s, Object... params ) {
         Logger logger = LoggerFactory.getLogger( type );
-        logger.info( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
+        if ( logger.isInfoEnabled() )
+            logger.info( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
     }
 
     public static void warn( Class<?> type, String s, Object... aobj ) {
         Logger logger = LoggerFactory.getLogger( type );
-        logger.warn( String.format( s, aobj ) );
+        if ( logger.isWarnEnabled() )
+            logger.warn( String.format( s, aobj ) );
     }
 
     public static void warn( Class<?> type, Throwable throwable, String s, Object... params ) {
         Logger logger = LoggerFactory.getLogger( type );
-        logger.warn( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
+        if ( logger.isWarnEnabled() )
+            logger.warn( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
     }
 
     public static void error( Class<?> type, String s, Object... params ) {
         Logger logger = LoggerFactory.getLogger( type );
-        logger.error( (params == null || params.length == 0) ? s : String.format( s, params ) );
+        if ( logger.isErrorEnabled() )
+            logger.error( (params == null || params.length == 0) ? s : String.format( s, params ) );
     }
 
     public static void error( Class<?> type, Throwable throwable, String s, Object... params ) {
         Logger logger = LoggerFactory.getLogger( type );
-        logger.error( String.format( s, params ), throwable );
+        if ( logger.isErrorEnabled() )
+            logger.error( String.format( s, params ), throwable );
     }
 }

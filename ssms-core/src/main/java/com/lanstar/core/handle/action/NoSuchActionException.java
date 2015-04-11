@@ -8,9 +8,7 @@
 
 package com.lanstar.core.handle.action;
 
-import com.lanstar.common.exception.WebException;
-
-public class NoSuchActionException extends WebException {
+public class NoSuchActionException extends ActionException {
     private static final long serialVersionUID = 8034981648106503768L;
 
     public NoSuchActionException() {

@@ -8,7 +8,6 @@
 package com.lanstar.core.handle.action;
 
 import com.lanstar.core.ViewAndModel;
-import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.HandlerContext;
 
 import java.lang.reflect.Method;
@@ -25,11 +24,11 @@ class Action {
         this.controller = controller;
     }
 
-    public ViewAndModel invoke( HandlerContext context ) {
+    public ViewAndModel invoke( HandlerContext context ) throws ActionException {
         try {
             return (ViewAndModel) method.invoke( controller, context );
         } catch ( ReflectiveOperationException e ) {
-            throw new HandleException( "处理调度时发生异常", e.getCause() );
+            throw new ActionException( e.getLocalizedMessage(), e.getCause() );
         }
     }
 }

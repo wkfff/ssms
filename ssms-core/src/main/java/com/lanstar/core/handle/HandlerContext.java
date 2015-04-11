@@ -119,19 +119,21 @@ public class HandlerContext {
     public ViewAndModel returnWith() {
         return returnWith( ModelBean.EMPTY );
     }
-    
+
     /**
      * 获取参数
+     *
      * @return
      */
-    public Map<String,Object> getParameterMap(){
-		Map<String,Object> map = new HashMap<String,Object>();
-		Map<String, String[]> p = getRequestContext().getRequest().getParameterMap();
-		for(String key:p.keySet()){
-			String[] values = p.get(key);
-			String value = values==null?"":values[0];
-			map.put(key, value);
-		}
-		return map;
-	}
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> getParameterMap() {
+        Map<String, Object> map = new HashMap<>();
+        Map<String, String[]> p = getRequestContext().getRequest().getParameterMap();
+        for ( String key : p.keySet() ) {
+            String[] values = p.get( key );
+            String value = values == null ? "" : values[0];
+            map.put( key, value );
+        }
+        return map;
+    }
 }

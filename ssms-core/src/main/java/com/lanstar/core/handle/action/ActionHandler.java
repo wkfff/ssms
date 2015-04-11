@@ -7,13 +7,13 @@
  */
 package com.lanstar.core.handle.action;
 
-import com.lanstar.common.log.LogHelper;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandleChain;
 import com.lanstar.core.handle.Handler;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.core.render.RenderFactory;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
 import java.io.IOException;
 
 /**
@@ -27,31 +27,18 @@ public class ActionHandler implements Handler {
     }
 
     @Override
-    public void handle( HandlerContext handlerContext, HandleChain next ) {
-        ActionContext context = new ActionContext( handlerContext );
+    public void handle( HandlerContext context, HandleChain next ) throws ServletException, IOException {
+        ActionMeta meta = ActionMeta.parseUrl( context.getRequestContext().getUri() );
         // 如果不是Action请求，则继续往下送，否则就开始做Action
-        if ( !context.isActionRequest() ) {
-            next.doHandle( handlerContext );
+        if ( meta == null ) {
+            next.doHandle( context );
             return;
         }
-        // 获取Action
-        Action action;
-        try {
-            action = actionCache.getValue( context.getMeta() );
-        } catch ( NoSuchActionException e ) {
-            LogHelper.error( getClass(), e, "无法找到相应的Action" );
-            try {
-                handlerContext.getRequestContext().getResponse().sendError( HttpServletResponse.SC_NOT_FOUND );
-            } catch ( IOException ignored ) {
-            }
-            return;
-        }
+        Action action = actionCache.getAction( meta );
         // 调度执行Action
-        ViewAndModel viewAndModel = action.invoke( handlerContext );
-        // 设置HandlerContext中的View和Model
-        context.setViewAndModel( viewAndModel );
+        ViewAndModel vam = action.invoke( context );
         // 输出View
-        context.render();
+        RenderFactory.me().getActionRender( meta, vam, context ).render();
     }
 }
 

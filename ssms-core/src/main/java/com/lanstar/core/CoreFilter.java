@@ -20,28 +20,34 @@ import java.io.IOException;
 public class CoreFilter implements Filter {
     private String[] expaths;
     private Dispatcher dispatcher;
+    private int contextPathLength;
 
     @Override
     public void init( FilterConfig filterConfig ) throws ServletException {
         //排除路径
         expaths = filterConfig.getInitParameter( "exclude-paths" ).split( "," );
         dispatcher = Dispatcher.me();
+
+        String contextPath = filterConfig.getServletContext().getContextPath();
+        contextPathLength = (contextPath == null || "/".equals( contextPath ) ? 0 : contextPath.length());
     }
 
     @Override
     public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain ) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        String uri = req.getRequestURI();
-        RequestContext requestContext = new RequestContext( uri, req, res );
+        String target = req.getRequestURI();
+        if ( contextPathLength != 0 )
+            target = target.substring( contextPathLength );
+        RequestContext requestContext = new RequestContext( target, req, res );
 
         // 视图目录禁止访问
-        if ( uri.startsWith( requestContext.getViewsFolder( false ) ) ) {
+        if ( target.startsWith( requestContext.getViewsFolder( false ) ) ) {
             res.sendError( HttpServletResponse.SC_NOT_FOUND );
             return;
         }
         // 资源目录使用默认调度方式
-        if ( uri.startsWith( requestContext.getResourceFolder( false ) ) ) {
+        if ( target.startsWith( requestContext.getResourceFolder( false ) ) ) {
             chain.doFilter( request, response );
             return;
         }

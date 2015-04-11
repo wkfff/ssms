@@ -99,4 +99,8 @@ public class a02Controller {
 
         context.setValue( "sessionVar", value, VAR_SCOPE.SESSION );
     }
+
+    public void getPost(HandlerContext context){
+        context.setValue( "count", context.getRequestContext().getRequest().getParameterMap().size() );
+    }
 }

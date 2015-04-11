@@ -22,13 +22,14 @@ public class ActionCache extends Cache<Action> {
         // 直接静态化？延迟加载？
     }
 
-    public synchronized Action getValue( ActionMeta meta ) {
+    public synchronized Action getAction( ActionMeta meta ) throws NoSuchActionException {
         String key = getActionKey( meta );
         Action action = getValue( key );
         if ( action == null ) {
             LogHelper.debug( ActionCache.class, "加载Action[%s]", key );
             Controller controller = controllerCache.getValue( meta );
             action = controller.getValue( meta.getAction() );
+            if ( action == null ) throw new NoSuchActionException( "无法找到对应的Action!" );
             put( key, action );
         }
 

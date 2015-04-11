@@ -31,4 +31,19 @@ public class HandleException extends WebException {
     public HandleException( String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace ) {
         super( message, cause, enableSuppression, writableStackTrace );
     }
+
+    public HandleException( String message, int errorCode ) {
+        this( message );
+        this.errorCode = errorCode;
+    }
+
+    private int errorCode = -1;
+
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode( int errorCode ) {
+        this.errorCode = errorCode;
+    }
 }

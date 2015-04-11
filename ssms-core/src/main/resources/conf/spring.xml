@@ -40,30 +40,6 @@
             </map>
         </constructor-arg>
     </bean>
-
-    <!-- Render 工厂初始化 -->
-    <bean class="com.lanstar.core.render.RenderFactory">
-        <constructor-arg>
-            <map>
-                <!--<entry key="html">
-                    <bean class="com.lanstar.core.render.action.MultiRender">
-                        <constructor-arg>
-                            <list>
-                                <bean class="com.lanstar.core.render.action.HtmlRender"/>
-                                <bean class="com.lanstar.core.render.action.FreemarkerRender"/>
-                            </list>
-                        </constructor-arg>
-                    </bean>
-                </entry>-->
-                <entry key="html">
-                    <bean class="com.lanstar.core.render.impl.FreemarkerRender"/>
-                </entry>
-                <entry key="json">
-                    <bean class="com.lanstar.core.render.impl.JsonRender"/>
-                </entry>
-            </map>
-        </constructor-arg>
-    </bean>
     
     <!-- Dispatcher初始化 -->
     <bean class="com.lanstar.core.handle.Dispatcher">

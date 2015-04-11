@@ -12,7 +12,7 @@ import com.lanstar.core.RequestContext;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class RenderHelper {
+class RenderHelper {
     public static final String HTML_CONTENT_TYPE = "text/html; charset=UTF-8";
     public static final String JSON_CONTENT_TYPE = "application/json; charset=UTF-8";
 
