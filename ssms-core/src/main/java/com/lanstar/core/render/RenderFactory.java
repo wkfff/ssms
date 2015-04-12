@@ -8,13 +8,9 @@
 
 package com.lanstar.core.render;
 
-import com.lanstar.common.helper.Asserts;
 import com.lanstar.core.ModelBean;
 import com.lanstar.core.RequestContext;
-import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandleException;
-import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.core.handle.action.ActionMeta;
 
 public class RenderFactory {
     private static RenderFactory instance = new RenderFactory();
@@ -23,8 +19,8 @@ public class RenderFactory {
         return instance;
     }
 
-    public Render getViewRender( ActionMeta meta, ViewAndModel vam, HandlerContext context ) {
-        return new FreemarkerRender( new ViewAndModelContext( meta, vam, context ) );
+    public FreemarkerRender getViewRender( String viewName, ModelBean model, RequestContext requestContext ) {
+        return new FreemarkerRender( new ViewAndModelContext( viewName, model, requestContext ) );
     }
 
     public Render getJsonRender( ModelBean model, RequestContext context ) {
@@ -37,16 +33,5 @@ public class RenderFactory {
 
     public Render getErrorRender( int errorCode, RequestContext requestContext ) {
         return new ErrorRender( new ErrorRenderContext( errorCode, requestContext ) );
-    }
-
-    public Render getActionRender( ActionMeta meta, ViewAndModel vam, HandlerContext context ) {
-        String render = meta.getRender();
-        Asserts.notEmpty( render, "Render不能为空" );
-        if ( "html".equalsIgnoreCase( render ) )
-            return getViewRender( meta, vam, context );
-        else if ( "json".equalsIgnoreCase( render ) )
-            return getJsonRender( vam == null ? null : vam.getModel(), context.getRequestContext() );
-
-        throw new NotSupportedRenderException( String.format( "Render[%s]不支持", render ) );
     }
 }

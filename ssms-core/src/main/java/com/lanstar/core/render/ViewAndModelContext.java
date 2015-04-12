@@ -8,31 +8,17 @@
 
 package com.lanstar.core.render;
 
-import com.google.common.base.Joiner;
-import com.lanstar.app.App;
-import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.ModelBean;
-import com.lanstar.core.ViewAndModel;
-import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.core.handle.action.ActionMeta;
+import com.lanstar.core.RequestContext;
 
 class ViewAndModelContext extends RequestRenderContext {
-    public static final String TEMPLATE_SUFFIX = App.config().getTemplateSuffix();
     private final String viewPath;
-    private ModelBean model;
+    private final ModelBean model;
 
-    public ViewAndModelContext( ActionMeta meta, ViewAndModel vam, HandlerContext context ) {
-        super( context.getRequestContext() );
-
-        // build View Path
-        String viewName = null;
-        if ( vam != null ) {
-            viewName = vam.getViewName();
-            // cache model
-            model = vam.getModel();
-        }
-        if ( StringHelper.isBlank( viewName ) ) viewName = meta.getAction();
-        viewPath = Joiner.on( '/' ).join( meta.getModule(), meta.getController(), viewName + TEMPLATE_SUFFIX );
+    public ViewAndModelContext( String viewName, ModelBean model, RequestContext requestContext ) {
+        super( requestContext );
+        this.viewPath = viewName;
+        this.model = model;
     }
 
     public String getViewPath() {

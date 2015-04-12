@@ -7,23 +7,36 @@
  */
 package com.lanstar.core.handle.action;
 
+import com.google.common.base.Joiner;
+import com.lanstar.app.App;
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandleChain;
 import com.lanstar.core.handle.Handler;
 import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.core.render.RenderFactory;
+import com.lanstar.core.render.Render;
+import com.lanstar.core.render.resolver.HtmlRenderResolver;
+import com.lanstar.core.render.resolver.JsonRenderResolver;
+import com.lanstar.core.render.resolver.RenderResolver;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Action处理器
  */
 public class ActionHandler implements Handler {
+    public static final String TEMPLATE_SUFFIX = App.config().getTemplateSuffix();
     private final ActionCache actionCache;
+    private final Map<String, RenderResolver> map;
 
     public ActionHandler() {
         actionCache = new ActionCache();
+        map = new HashMap<>();
+        map.put( "html", new HtmlRenderResolver() );
+        map.put( "json", new JsonRenderResolver() );
     }
 
     @Override
@@ -37,8 +50,16 @@ public class ActionHandler implements Handler {
         Action action = actionCache.getAction( meta );
         // 调度执行Action
         ViewAndModel vam = action.invoke( context );
+        if ( vam == null ) vam = new ViewAndModel().view( getPath( meta, meta.getAction() ) );
+        else vam.view( getPath( meta, vam.getViewName() ) );
         // 输出View
-        RenderFactory.me().getActionRender( meta, vam, context ).render();
+        RenderResolver resolver = map.get( meta.getRender() );
+        Render render = resolver.getRender( vam, context.getRequestContext() );
+        render.render();
+    }
+
+    private String getPath( ActionMeta meta, String viewName ) {
+        viewName = StringHelper.isBlank( viewName ) ? meta.getAction() : viewName;
+        return Joiner.on( '/' ).join( meta.getModule(), meta.getController(), viewName + TEMPLATE_SUFFIX );
     }
 }
-
