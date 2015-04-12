@@ -8,19 +8,27 @@
 
 package com.lanstar.core.handle.action;
 
+import com.lanstar.common.helper.BeanHelper;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.core.interceptor.Before;
+import com.lanstar.core.interceptor.Interceptor;
 import com.lanstar.plugin.staticcache.Cache;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 class Controller extends Cache<Action> {
+    private final List<Interceptor> controlInterceptors = new ArrayList<>();
     private Object controller;
     private Class<Object> clazz;
 
     public Controller( Object controller, Class<Object> clazz ) {
         this.controller = controller;
         this.clazz = clazz;
+        Before before = this.clazz.getAnnotation( Before.class );
+        if ( before != null ) buildInterceptors( before.value(), controlInterceptors );
     }
 
     @Override
@@ -33,7 +41,13 @@ class Controller extends Cache<Action> {
         if ( action == null ) {
             try {
                 Method method = clazz.getMethod( actionName, HandlerContext.class );
-                action = new Action( method, controller );
+                Before before = method.getAnnotation( Before.class );
+                List<Interceptor> methodInterceptors = new ArrayList<>();
+                if ( before != null ) {
+                    buildInterceptors( before.value(), methodInterceptors );
+                    methodInterceptors.addAll( 0, controlInterceptors );
+                }
+                action = new Action( method, controller, methodInterceptors );
                 put( actionName, action );
             } catch ( NoSuchMethodException e ) {
                 return null;
@@ -41,6 +55,13 @@ class Controller extends Cache<Action> {
         }
 
         return action;
+    }
+
+    private static void buildInterceptors( Class<? extends Interceptor>[] value, List<Interceptor> interceptors ) {
+        for ( Class<? extends Interceptor> clazz : value ) {
+            Interceptor o = BeanHelper.newInstance( clazz );
+            interceptors.add( o );
+        }
     }
 
     /**

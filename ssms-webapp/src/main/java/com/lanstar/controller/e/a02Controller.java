@@ -13,6 +13,7 @@ import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.handle.identity.IdentityContext;
 import com.lanstar.core.handle.identity.impl.CompanyIdentity;
+import com.lanstar.core.interceptor.Before;
 import com.lanstar.db.JdbcRecordSet;
 
 import java.util.Date;
@@ -21,6 +22,7 @@ import java.util.Date;
  * @author F
  */
 public class a02Controller {
+    @Before(a02Validator.class)
     public ViewAndModel index( HandlerContext context ) {
         // 返回结果
         return context.returnWith()
@@ -100,7 +102,7 @@ public class a02Controller {
         context.setValue( "sessionVar", value, VAR_SCOPE.SESSION );
     }
 
-    public void getPost(HandlerContext context){
+    public void getPost( HandlerContext context ) {
         context.setValue( "count", context.getRequestContext().getRequest().getParameterMap().size() );
     }
 }

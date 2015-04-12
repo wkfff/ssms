@@ -9,8 +9,11 @@ package com.lanstar.core.handle.action;
 
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.core.interceptor.Interceptor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * Action
@@ -18,17 +21,32 @@ import java.lang.reflect.Method;
 class Action {
     private final Method method;
     private final Object controller;
+    private final List<Interceptor> interceptors;
 
-    public Action( Method method, Object controller ) {
+    public Action( Method method, Object controller, List<Interceptor> methodInterceptors ) {
         this.method = method;
         this.controller = controller;
+        this.interceptors = methodInterceptors;
     }
 
     public ViewAndModel invoke( HandlerContext context ) throws ActionException {
         try {
+            invokeInterceptors(context);
             return (ViewAndModel) method.invoke( controller, context );
-        } catch ( ReflectiveOperationException e ) {
-            throw new ActionException( e.getLocalizedMessage(), e.getCause() );
+        }catch (InvocationTargetException e) {
+            Throwable cause = e.getTargetException();
+            if (cause instanceof RuntimeException)
+                throw (RuntimeException)cause;
+            throw new ActionException(e);
+        } catch (Exception e) {
+            throw new ActionException(e);
+        }
+    }
+
+    private void invokeInterceptors( HandlerContext context ) {
+        for ( Interceptor interceptor : interceptors ) {
+            ActionInvocation ai = new ActionInvocation( context, this );
+            interceptor.intercept( ai );
         }
     }
 }

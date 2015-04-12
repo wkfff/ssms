@@ -1,15 +1,15 @@
-<#macro layout>
+<#macro doLayout header="" footer="">
 <!doctype html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="/resource/css/base.css"/>
-    <link rel="stylesheet" href="/css/base.css"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>${_TITLE_!"安全生产标准化管理系统"}</title>
+    <#if (header?length>0)>${header}</#if>
 </head>
 <body>
-这里是layout的内容
-<#nested />
+    <#nested/>
+    <#if (footer?length>0)>${footer}</#if>
 </body>
 </html>
 </#macro>
