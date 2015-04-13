@@ -7,128 +7,13 @@
  */
 package com.lanstar.controller.sys;
 
-import com.google.common.base.Strings;
-import com.lanstar.common.helper.StringHelper;
-import com.lanstar.core.ViewAndModel;
-import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.core.handle.identity.IdentityContext;
-import com.lanstar.db.JdbcRecordSet;
-import com.lanstar.db.ar.ARTable;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.lanstar.controller.DefaultController;
 
 /**
  * @author F
  */
-public class orgController {
-    private final String TABLENAME = "sys_org";
-
-    protected final Map<String, Object> defaultValues = new HashMap<>();
-
-    public enum MergerType {
-        forUpdate,
-        forInsert;
-
-        static MergerType withSid( String sid ) {
-            return StringHelper.isBlank( sid ) ? forInsert : forUpdate;
-        }
-    }
-
-    public orgController() {
-        defaultValues.put( "T_CREATE", "@now()" );
-        defaultValues.put( "T_UPDATE", "@now()" );
-    }
-
-    protected void mergerValues( ARTable table, HandlerContext context, MergerType mergerType ) {
-        Map<String, Object> lastValues = new HashMap<>();
-        lastValues.putAll( defaultValues );
-        IdentityContext identityContext = context.getRequestContext().getIdentityContxt();
-        String usersid = identityContext.getIdentityId();
-        String username = identityContext.getIdentityName();
-        switch ( mergerType ) {
-            case forUpdate:
-                lastValues.put( "R_UPDATE", usersid );
-                lastValues.put( "S_UPDATE", username );
-                lastValues.remove( "T_CREATE" );
-                break;
-            case forInsert:
-                lastValues.put( "R_CREATE", usersid );
-                lastValues.put( "S_CREATE", username );
-                break;
-        }
-
-        lastValues.putAll( context.getParameterMap() );
-        table.values( lastValues );
-    }
-
-    /**
-     * 主页面
-     */
-    public ViewAndModel index( HandlerContext context ) {
-        return context.returnWith();
-    }
-
-    /**
-     * 列表数据
-     */
-    public ViewAndModel list( HandlerContext context ) {
-        //传入的过滤条件，格式为field=value
-        String filter = (String) context.getValue( "_filter" );
-        JdbcRecordSet list;
-        ARTable arTable = context.DB.withTable( TABLENAME );
-        if ( Strings.isNullOrEmpty( filter ) )
-            list = arTable.queryList();
-        else {
-            String[] f = filter.split( "=" );
-            if ( f.length == 2 )
-                list = arTable.where( f[0] + " like ?", placeholder( f[1], "%" ) ).queryList();
-            else
-                list = arTable.queryList();
-        }
-        return context.returnWith().put( "total", list.size() ).put( "rows", list.toArray() );
-    }
-
-    protected String placeholder( String field, String symbol ) {
-        return symbol + field + symbol;
-    }
-
-    /**
-     * 表单数据
-     */
-    public ViewAndModel rec( HandlerContext context ) {
-        String sid = (String) context.getValue( "sid" );
-        return context.returnWith().set( context.DB.withTable( TABLENAME ).where( "SID=?", sid ).query() );
-    }
-
-    /**
-     * 表单.保存
-     */
-    public ViewAndModel save( HandlerContext context ) {
-        String sid = (String) context.getValue( "sid" );
-        ARTable table = context.DB.withTable( TABLENAME );
-        mergerValues( table, context, MergerType.withSid( sid ) );
-        // 根据sid的存在设置where语句
-        // TODO：一律过滤"null"值？
-        table.where( !StringHelper.isBlank( sid ) && !sid.equals( "null" ), "SID=?", sid )
-             .save();
-
-        /*if ( !Strings.isNullOrEmpty( sid ) && !sid.equals( "null" ) ) {
-            table = table.where( "SID=?", sid );
-            table.update();
-        } else
-            table.insert();*/
-        return context.returnWith().set( "{}" );
-    }
-
-    /**
-     * 列表.删除
-     */
-    public ViewAndModel del( HandlerContext context ) {
-        String ids = (String) context.getValue( "ids" );
-        if ( !Strings.isNullOrEmpty( ids ) ) {
-            context.DB.withTable( TABLENAME ).where( "SID in (" + ids + ")" ).delete();
-        }
-        return context.returnWith().set( "{}" );
+public class orgController extends DefaultController {
+    public orgController(  ) {
+        super( "sys_org" );
     }
 }

@@ -11,4 +11,13 @@ package com.lanstar.core.handle.identity.impl;
 import com.lanstar.core.handle.identity.Identity;
 
 public class AuditIdentity implements Identity {
+    @Override
+    public String getId() {
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return null;
+    }
 }

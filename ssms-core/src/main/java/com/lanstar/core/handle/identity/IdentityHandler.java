@@ -32,7 +32,17 @@ public class IdentityHandler implements Handler {
             if ( false ) throw new HandleException( "身份认证未通过", HttpServletResponse.SC_UNAUTHORIZED );
 
             // 创建或者获取身份标识
-            Identity identity = new Identity() {};
+            Identity identity = new Identity() {
+                @Override
+                public String getId() {
+                    return null;
+                }
+
+                @Override
+                public String getName() {
+                    return null;
+                }
+            };
             // 绑定到请求上下文中
             requestContext.bindIdentity( new IdentityContextImpl( identity ) );
 
