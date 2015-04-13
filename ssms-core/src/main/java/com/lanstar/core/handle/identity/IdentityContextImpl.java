@@ -38,4 +38,14 @@ class IdentityContextImpl implements IdentityContext {
         // TODO 根据Identity来获取DbContext
         return DS.getDbContext();
     }
+
+    @Override
+    public String getIdentityId() {
+        return identity.getId();
+    }
+
+    @Override
+    public String getIdentityName() {
+        return identity.getName();
+    }
 }

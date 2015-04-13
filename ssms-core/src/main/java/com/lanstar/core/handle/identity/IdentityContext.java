@@ -16,4 +16,8 @@ public interface IdentityContext {
     <T extends Identity> boolean is( Class<T> type );
 
     DbContext getDbContext();
+
+    String getIdentityId();
+
+    String getIdentityName();
 }

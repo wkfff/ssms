@@ -8,7 +8,11 @@
 
 package com.lanstar.db.ar;
 
-import com.lanstar.db.*;
+import com.lanstar.common.helper.StringHelper;
+import com.lanstar.db.DBSession;
+import com.lanstar.db.IRowAction;
+import com.lanstar.db.JdbcRecord;
+import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.statement.SqlStatement;
 
 import java.sql.SQLException;
@@ -93,6 +97,19 @@ public class ARTable extends ActiveRecordAbstr {
     public ARTable where( String where, Object... ps ) {
         this.where = trimString( where );
         this.whereParams = ps;
+        return this;
+    }
+
+    /**
+     * 根据condition计算的结果设置WHERE条件，必须构造好的字符串，符合SQL语法（不包含WHERE文字）
+     *
+     * @param where WHERE 子句，不包含“WHERE”
+     * @param ps    WHERE子句中的参数（？对应参数值）
+     *
+     * @return 当前对象
+     */
+    public ARTable where( boolean condition, String where, Object... ps ) {
+        if ( condition ) where( where, ps );
         return this;
     }
 
@@ -200,6 +217,10 @@ public class ARTable extends ActiveRecordAbstr {
         } catch ( SQLException e ) {
             throw new ActiveRecordException( e );
         }
+    }
+
+    public int save() {
+        return StringHelper.isBlank( where ) ? insert() : update();
     }
 
     /**

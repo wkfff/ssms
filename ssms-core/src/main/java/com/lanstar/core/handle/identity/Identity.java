@@ -9,4 +9,7 @@
 package com.lanstar.core.handle.identity;
 
 public interface Identity {
+    String getId();
+
+    String getName();
 }
