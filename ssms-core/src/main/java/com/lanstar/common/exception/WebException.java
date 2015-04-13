@@ -12,7 +12,7 @@ package com.lanstar.common.exception;
  * Web异常基类。
  * NOTE: 项目中所有自定义异常均继承自该类
  */
-public class WebException extends RuntimeException {
+public abstract class WebException extends RuntimeException {
     private static final long serialVersionUID = 8242841032365446427L;
 
     public WebException() {

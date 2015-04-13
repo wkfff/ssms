@@ -40,7 +40,21 @@
             </map>
         </constructor-arg>
     </bean>
-    
+
+    <!-- RenderResolver 工厂 -->
+    <bean class="com.lanstar.core.render.resolver.RenderResolverFactory">
+        <constructor-arg>
+            <map>
+                <entry key="html">
+                    <bean class="com.lanstar.core.render.resolver.HtmlRenderResolver"/>
+                </entry>
+                <entry key="json">
+                    <bean class="com.lanstar.core.render.resolver.JsonRenderResolver"/>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
     <!-- Dispatcher初始化 -->
     <bean class="com.lanstar.core.handle.Dispatcher">
         <constructor-arg>

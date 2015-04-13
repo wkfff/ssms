@@ -59,6 +59,8 @@ public abstract class DefaultController extends BaseController {
      * 表单.保存
      */
     public ViewAndModel save( HandlerContext context ) {
+        // 先验证下参数
+        validatePara( context );
         String sid = (String) context.getValue( "sid" );
         ARTable table = context.DB.withTable( TABLENAME );
         mergerValues( table, context, MergerType.withSid( sid ) );

@@ -31,8 +31,4 @@ public class ActionException extends HandleException {
     public ActionException( String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace ) {
         super( message, cause, enableSuppression, writableStackTrace );
     }
-
-    public ActionException( String message, int errorCode ) {
-        super( message, errorCode );
-    }
 }

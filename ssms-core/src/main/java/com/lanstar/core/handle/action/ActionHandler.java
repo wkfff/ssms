@@ -10,19 +10,18 @@ package com.lanstar.core.handle.action;
 import com.google.common.base.Joiner;
 import com.lanstar.app.App;
 import com.lanstar.common.helper.StringHelper;
+import com.lanstar.core.RequestContext;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandleChain;
+import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.Handler;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.render.Render;
-import com.lanstar.core.render.resolver.HtmlRenderResolver;
-import com.lanstar.core.render.resolver.JsonRenderResolver;
 import com.lanstar.core.render.resolver.RenderResolver;
+import com.lanstar.core.render.resolver.RenderResolverFactory;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Action处理器
@@ -30,32 +29,33 @@ import java.util.Map;
 public class ActionHandler implements Handler {
     public static final String TEMPLATE_SUFFIX = App.config().getTemplateSuffix();
     private final ActionCache actionCache;
-    private final Map<String, RenderResolver> map;
 
     public ActionHandler() {
         actionCache = new ActionCache();
-        map = new HashMap<>();
-        map.put( "html", new HtmlRenderResolver() );
-        map.put( "json", new JsonRenderResolver() );
     }
 
     @Override
     public void handle( HandlerContext context, HandleChain next ) throws ServletException, IOException {
-        ActionMeta meta = ActionMeta.parseUrl( context.getRequestContext().getUri() );
+        RequestContext requestContext = context.getRequestContext();
+        ActionMeta meta = ActionMeta.parseUrl( requestContext.getUri() );
         // 如果不是Action请求，则继续往下送，否则就开始做Action
         if ( meta == null ) {
             next.doHandle( context );
             return;
         }
         Action action = actionCache.getAction( meta );
-        // 调度执行Action
-        ViewAndModel vam = action.invoke( context );
-        if ( vam == null ) vam = new ViewAndModel().view( getPath( meta, meta.getAction() ) );
-        else vam.view( getPath( meta, vam.getViewName() ) );
-        // 输出View
-        RenderResolver resolver = map.get( meta.getRender() );
-        Render render = resolver.getRender( vam, context.getRequestContext() );
-        render.render();
+        RenderResolver resolver = RenderResolverFactory.me().getResolver( meta.getRender() );
+        try {
+            // 调度执行Action
+            ViewAndModel vam = action.invoke( context );
+            if ( vam == null ) vam = new ViewAndModel().view( getPath( meta, meta.getAction() ) );
+            else vam.view( getPath( meta, vam.getViewName() ) );
+            // 输出View
+            Render render = resolver.getRender( vam, requestContext );
+            render.render();
+        } catch ( HandleException e ) {
+            resolver.getErrorRender( e, requestContext ).render();
+        }
     }
 
     private String getPath( ActionMeta meta, String viewName ) {

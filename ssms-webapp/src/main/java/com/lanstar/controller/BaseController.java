@@ -8,15 +8,17 @@
 
 package com.lanstar.controller;
 
+import com.lanstar.common.helper.BeanHelper;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.core.handle.action.ActionInvocation;
 import com.lanstar.core.handle.identity.IdentityContext;
 import com.lanstar.db.ar.ARTable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class BaseController {
+public abstract class BaseController {
     protected final Map<String, Object> defaultValues = new HashMap<>();
     protected final String TABLENAME;
 
@@ -48,9 +50,18 @@ public class BaseController {
         table.values( lastValues );
     }
 
-    protected String placeholder( String field, String symbol ) {
+    protected final String placeholder( String field, String symbol ) {
         return symbol + field + symbol;
     }
+
+    private ActionValidator validator;
+
+    protected void validatePara( HandlerContext context ) {
+        if ( validator == null ) validator = BeanHelper.newInstance( getValidator() );
+        validator.intercept( new ActionInvocation( context, null ) );
+    }
+
+    protected abstract Class<? extends ActionValidator> getValidator();
 
     public enum MergerType {
         forUpdate,

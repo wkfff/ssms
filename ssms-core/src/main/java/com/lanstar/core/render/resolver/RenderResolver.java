@@ -10,8 +10,11 @@ package com.lanstar.core.render.resolver;
 
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.render.Render;
 
 public interface RenderResolver {
     Render getRender( ViewAndModel vam, RequestContext requestContext );
+
+    Render getErrorRender(HandleException e, RequestContext requestContext);
 }

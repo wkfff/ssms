@@ -32,18 +32,24 @@ public class HandleException extends WebException {
         super( message, cause, enableSuppression, writableStackTrace );
     }
 
-    public HandleException( String message, int errorCode ) {
-        this( message );
-        this.errorCode = errorCode;
-    }
-
     private int errorCode = -1;
+    private Object attachObject;
 
     public int getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode( int errorCode ) {
+    public HandleException errorCode( int errorCode ) {
         this.errorCode = errorCode;
+        return this;
+    }
+
+    public Object getAttachObject() {
+        return attachObject;
+    }
+
+    public HandleException attachObject( Object attachObject ) {
+        this.attachObject = attachObject;
+        return this;
     }
 }
