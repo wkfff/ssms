@@ -36,6 +36,9 @@
 </HEAD>
 
 <BODY>
+<#list _USER_SEX_ as map>
+    ${map.key}:${map.value}
+</#list>
 <div class="datagrid" id="dg">
 	<div class="toolbar">
 			<select class="filter_field">

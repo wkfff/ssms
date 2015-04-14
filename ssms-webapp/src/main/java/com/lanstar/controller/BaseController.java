@@ -10,12 +10,17 @@ package com.lanstar.controller;
 
 import com.lanstar.common.helper.BeanHelper;
 import com.lanstar.common.helper.StringHelper;
+import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.handle.action.ActionInvocation;
 import com.lanstar.core.handle.identity.IdentityContext;
 import com.lanstar.db.ar.ARTable;
+import com.lanstar.service.bean.Parameter;
+import com.lanstar.service.parameter.ParameterResolver;
 
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class BaseController {
@@ -59,6 +64,17 @@ public abstract class BaseController {
     protected void validatePara( HandlerContext context ) {
         if ( validator == null ) validator = BeanHelper.newInstance( getValidator() );
         validator.intercept( new ActionInvocation( context, null ) );
+    }
+
+    protected List<Parameter> resolveMultiParameter( HandlerContext context, String parameterName ) {
+        List<Parameter> list;
+        try {
+            list = ParameterResolver.me().getMultiParameter( parameterName );
+        } catch ( SQLException e ) {
+            throw new HandleException( e );
+        }
+        context.setValue( placeholder( parameterName, "_" ), list );
+        return list;
     }
 
     protected abstract Class<? extends ActionValidator> getValidator();
