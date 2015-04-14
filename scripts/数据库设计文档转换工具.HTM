@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>数据库设计文档转换工具 for MySQL - FLIN</title>
+		<style>
+			body,input,textarea,button,select{font-size:12px;font-family:Arial,sans-serif}
+		</style>
+		<script language="javascript">
+
+		String.prototype.trim=function(){
+　　		return this.replace(/(^\s*)|(\s*$)/g, "");
+　　	}
+
+		function PaserHtmlToXML()
+		{
+			var idoc = document.all.htmlFrame.contentWindow.document;
+			if(typeof(idoc) == 'undefined') {
+				alert('没有找到对应文档的DOCUMENT对象');
+				return;
+			}
+
+			document.all.xmlContent.value = '';
+			h2s = idoc.getElementsByTagName('h2');
+			if(typeof(h2s) == 'undefined') {			
+				alert('没有找到标题，不是属于标准的数据库设计文档转换来的文件！');
+				return;
+			}
+
+			var tmpstr = '';
+			var tblName = '';
+			var commstr = '';
+			for( i=0;i<h2s.length;i++ )
+			{
+				var fldStr = '\n\r';
+				tblstr = h2s[i].innerText.trim().replace(new RegExp(' +','gm'),' ');
+				if(tblstr.substring(0,2)!='2.') continue;
+
+				tblName = tblstr.split(' ');
+				if (tblName.length!=3){
+					commstr+="--"+tblstr+"  格式无效\n\r";
+					continue;
+				}				
+				
+				nextObj = h2s[i];
+				if( nextObj=='undefined' ) continue;
+				var isTable = false;
+				while(isTable==false){
+					nextObj = nextObj.nextSibling;
+					if (nextObj.tagName=='DIV')
+					{
+						nextObj = nextObj.getElementsByTagName('TABLE')[0];
+						isTable = true;
+					}
+				}
+				
+				if( nextObj.rows[0].cells.length==8)
+				{
+					tmpstr += '-- ' + tblName[2] + ':\n\r';
+					tmpstr += 'DROP TABLE IF EXISTS ' + tblName[1] + ';\n';
+					tmpstr += 'CREATE TABLE ' + tblName[1] + '\n(' ;
+					// 创建默认的SID字段
+					fldStr = fldStr + "\t`SID`\t\tINT(11) \tNOT NULL auto_increment COMMENT '自增主键',\n";
+					
+
+					for( j=1;j<nextObj.rows.length;j++ )
+					{
+						IDStr = nextObj.rows[j].cells[1].innerText.trim();
+						if(IDStr=='' || IDStr=='SID') continue;
+						NoteStr =  nextObj.rows[j].cells[2].innerText;
+						NoteStr = NoteStr.replace(/\r+/g,' ').replace(/\n+/g,' ' );
+						TypeStr = nextObj.rows[j].cells[3].innerText.toUpperCase().replace('SID','INT').replace('PARAMETER','VARCHAR(32)');
+						IsKeyStr = nextObj.rows[j].cells[4].innerText;
+						IsNullStr = nextObj.rows[j].cells[5].innerText;
+						DefaultStr = (nextObj.rows[j].cells[6].innerText).trim().replace(new RegExp('‘','gm'),'\'').replace(new RegExp('’','gm'),'\'');
+
+						fldStr += ('\t`' + IDStr + '`\t\t\t' + TypeStr+'\t') ;
+						if(DefaultStr.length>0) fldStr += ' DEFAULT '+DefaultStr+'\t';
+						if(IsNullStr!='undefined' && IsNullStr=='N') fldStr += 'NOT NULL\t';
+						fldStr += ' COMMENT \''+NoteStr+'\'';
+						fldStr += ',\n';
+					}
+
+					fldStr = fldStr + "\t`R_CREATOR`\t\tVARCHAR(32) COMMENT '创建人编号'\t,\n";
+					fldStr = fldStr + "\t`S_CREATOR`\t\tVARCHAR(100) COMMENT '创建人'\t,\n";
+					fldStr = fldStr + "\t`T_CREATE`\t\tDATETIME COMMENT '创建时间'\t,\n";
+					fldStr = fldStr + "\t`R_UPDATE`\t\tVARCHAR(32) COMMENT '更新人编号'\t,\n";
+					fldStr = fldStr + "\t`S_UPDATE`\t\tVARCHAR(100) COMMENT '更新人'\t,\n";
+					fldStr = fldStr + "\t`T_UPDATE`\t\tTIMESTAMP COMMENT '更新时间'\t,\n";
+					fldStr = fldStr + "\t`N_STATE`\t\tINT COMMENT '状态'\t,\n";
+					fldStr = fldStr + "\t`N_INDEX`\t\tINT COMMENT '排序'\t,\n";
+					fldStr = fldStr + "\t`N_VERSION`\t\tINT COMMENT '版本'\t,\n";
+
+					fldStr +='\tPRIMARY KEY  (`SID`)\n';
+					fldStr += ');\n';
+					fldStr = fldStr.replace( /,\n\r\);\n\r/,'\n\r);\n\r' );
+					tmpstr += (fldStr+'\n\r');
+					document.all.xmlContent.value = tmpstr ;
+				}			
+			}
+			document.all.xmlContent.value = tmpstr+commstr;
+	   }
+		</script>
+	</head>
+	<body>
+		<center>
+			<TABLE cellSpacing="3" cellPadding="0" width="100%" border="0">
+				<TR>
+					<TD align="center">
+						<strong>数据库设计文档转换工具 - MySQL <strong>
+						<hr style="height:1px;border:none;border-top:1px dashed #0066CC;"></hr>
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						<INPUT type="text"	 id="srcPath" name="srcPath" size="60" value="D:\02.项目\安全生产标准化管理系统\项目文档\04.设计文档\LANSTAR-SSMS-02 安全生产标准化数据结构设计_20150413_01.htm">
+						<INPUT type="file"   id="srcFile" name="srcFile" size="0"  onchange="document.all.srcPath.value=this.value;document.all.xmlContent.value='';document.all.htmlFrame.src = srcPath.value;" style="display:none">
+						<INPUT type="button" id="btnOpen" name="btnOpen" value="浏览"  onclick="document.all.srcFile.click();">
+						<INPUT type="button" id="btnLoad" name="btnLoad" onclick="document.all.xmlContent.value='';document.all.htmlFrame.src = srcPath.value;" value="载入" >
+						<INPUT type="button" id="btnParse" name="btnParse" value="解析"  onclick="PaserHtmlToXML();">
+						提示：先将数据库设计文档另存为类型为筛选过的网页后再加载
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						SQL:
+						<TEXTAREA style="width:100%;overflow:auto;border:1 solid #ccc;" id="xmlContent" name="Textarea1" rows="20" cols="128"></TEXTAREA>
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						文档：
+						<IFRAME  style="width:100%;overflow:auto;border:1 solid #ccc;" onload="this.height=this.contentWindow.document.body.scrollHeight" ID="htmlFrame" FRAMEBORDER="0" SCROLLING="yes" SRC=""></IFRAME>
+					</TD>
+				</TR>
+			</TABLE>
+		</center>
+	</body>
+</html>
