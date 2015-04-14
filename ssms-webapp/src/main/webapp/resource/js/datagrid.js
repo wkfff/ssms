@@ -21,26 +21,28 @@ var datagrid = (function() {
     	$("input[name='btn_del']",self.gridId).click(function(){self.doDel();}); 
     	
     	$("input[name='btn_first']",self.gridId).click(function(){
-    		this.pageIndex.val(1);
+    		self.pageIndex.val(1);
     		self.doQuery();
     	});
     	$("input[name='btn_prev']",self.gridId).click(function(){
-    		var i = this.pageIndex.val();
+    		var i = self.pageIndex.val();
     		if (i>1) {
     			i--;
+    			self.pageIndex.val(i);
     			self.doQuery();    			
     		}
     	});
     	$("input[name='btn_next']",self.gridId).click(function(){
-    		var i = this.pageIndex.val();
-    		if (i<this.pageCount.val()-1){
+    		var i = self.pageIndex.val();
+    		if (i<self.pageCount.text()){
     			i++;
+    			self.pageIndex.val(i);
     			self.doQuery();
     		}
     		
     	});
     	$("input[name='btn_last']",self.gridId).click(function(){
-    		this.pageIndex.val(this.pageCount.val());
+    		self.pageIndex.val(self.pageCount.text());
     		self.doQuery();
     	});
     	$("input[name='_pageIndex']",self.gridId).click(function(){

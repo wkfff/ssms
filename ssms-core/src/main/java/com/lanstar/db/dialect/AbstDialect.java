@@ -38,7 +38,7 @@ public abstract class AbstDialect implements IDialect {
     public JdbcRecordSet queryPaging( JdbcOperations operations,SqlStatement sqlStatement,DBPaging paging ) throws SQLException {
         paging.setRecCount( operations.getRecordsetSize( sqlStatement.getSql(), sqlStatement.NONE_PARAM ) );
         String sql = this.getPagingSql( sqlStatement.getSql(), paging.getStartIndex(), paging.getEndIndex() );
-        SqlStatement stat = new SqlStatement(sql,new Object[]{});
+        SqlStatement stat = new SqlStatement(sql,sqlStatement.getParams());
         return operations.query( stat );
     }
 }

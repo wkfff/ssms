@@ -34,8 +34,6 @@ public abstract class DefaultController extends BaseController {
      * 列表数据
      */
     public ViewAndModel list( HandlerContext context ) {
-        //传入的过滤条件，格式为field=value
-//        String filter = (String) context.getValue( "_filter" );
         JdbcRecordSet list;
         ARTable arTable = context.DB.withTable( TABLENAME );
         
@@ -45,17 +43,7 @@ public abstract class DefaultController extends BaseController {
                 arTable.where( key + " like ?", placeholder( filter.get( key ), "%" ) );
             }
         }
-        /*
-        if ( Strings.isNullOrEmpty( filter ) )
-            list = arTable.queryList();
-        else {
-            String[] f = filter.split( "=" );
-            if ( f.length == 2 )
-                list = arTable.where( f[0] + " like ?", placeholder( f[1], "%" ) ).queryList();
-            else
-                list = arTable.queryList();
-        }*/
-        
+
         DBPaging paging = context.getPaging();
         if (paging!=null) 
             list = arTable.queryPaging(paging);
