@@ -11,7 +11,7 @@ package com.lanstar.core.render;
 import com.lanstar.core.RequestContext;
 
 public abstract class AbstractRender implements Render {
-    private RenderContext context;
+    protected final RenderContext context;
 
     public AbstractRender( RenderContext context ) {
         this.context = context;

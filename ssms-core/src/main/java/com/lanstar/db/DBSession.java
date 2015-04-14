@@ -248,7 +248,7 @@ public class DBSession implements JdbcOperations {
      */
     @Override
     public int getRecordsetSize( String sql, Object[] params ) {
-        return first( new SqlStatement( "select count(*) from (" + sql + ")", params ), new RowMapper<Integer>() {
+        return first( new SqlStatement( "select count(*) from (" + sql + ") T", params ), new RowMapper<Integer>() {
             @Override
             public Integer mapRow( ResultSet rs, int rowNum ) throws SQLException {
                 return rs.getInt( 1 );

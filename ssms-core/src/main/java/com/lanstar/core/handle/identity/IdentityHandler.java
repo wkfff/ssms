@@ -29,7 +29,7 @@ public class IdentityHandler implements Handler {
             // TODO: 增加身份认证过程
             // query...
             // 如果身份认证通过，那么使用nextHandle继续处理后续的，否则应抛出无权访问的异常（考虑直接重定向？）。
-            if ( false ) throw new HandleException( "身份认证未通过", HttpServletResponse.SC_UNAUTHORIZED );
+            if ( false ) throw new HandleException( "身份认证未通过" ).errorCode( HttpServletResponse.SC_UNAUTHORIZED );
 
             // 创建或者获取身份标识
             Identity identity = new Identity() {

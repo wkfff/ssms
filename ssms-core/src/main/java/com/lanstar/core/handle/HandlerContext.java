@@ -8,6 +8,7 @@
 
 package com.lanstar.core.handle;
 
+import com.google.common.base.Strings;
 import com.lanstar.common.helper.Asserts;
 import com.lanstar.core.ModelBean;
 import com.lanstar.core.RequestContext;
@@ -16,6 +17,7 @@ import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.db.impl.SystemDbContext;
 import com.lanstar.core.handle.db.impl.TanentDbContext;
+import com.lanstar.db.DBPaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -126,14 +128,46 @@ public class HandlerContext {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getParameterMap() {
-        Map<String, Object> map = new HashMap<>();
+    public Map<String, String> getParameterMap() {
+        Map<String, String> map = new HashMap<>();
         Map<String, String[]> p = getRequestContext().getRequest().getParameterMap();
         for ( String key : p.keySet() ) {
             String[] values = p.get( key );
             String value = values == null ? "" : values[0];
             map.put( key, value );
+            System.out.println( key+"="+value);
         }
         return map;
+    }
+    /**
+     * 获取分页信息
+     * @return
+     */
+    public DBPaging getPaging(){
+        DBPaging paging = new DBPaging();
+        Map<String, String> para = getParameterMap();
+        String pageIndex = para.get( DBPaging.PAGE_INDEX );
+        if (Strings.isNullOrEmpty( pageIndex )) return null;
+        paging.setPageIndex(Integer.parseInt( pageIndex ));        
+        paging.setPageSize( Integer.parseInt( para.get( DBPaging.PAGE_SIZE )) );
+        return paging;
+    }
+    /**
+     * 获取过滤条件
+     * @return
+     */
+    public Map<String,String> getFilter(){
+        Map<String, String> filter = new HashMap<String,String>();
+        Map<String, String> para = getParameterMap();
+        for(String key:para.keySet()){
+            if (key.startsWith( "_filter" )){
+                String value = para.get( key );
+                if (Strings.isNullOrEmpty( value )) continue;
+                int beginIndex = key.indexOf( "[" )+1;
+                int endIndex = key.length()-1;
+                filter.put( key.substring( beginIndex, endIndex ), para.get( key ) );
+            }
+        }
+        return filter;
     }
 }

@@ -13,7 +13,7 @@ import com.google.common.base.Splitter;
 
 import java.util.List;
 
-public class ActionMeta {
+class ActionMeta {
     private String module;
     private String controller;
     private String action;

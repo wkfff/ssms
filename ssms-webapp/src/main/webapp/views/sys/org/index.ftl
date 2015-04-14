@@ -76,11 +76,13 @@
 		<thead>
 			<tr>
 				<td class="cell-chk"><input class="chk" type="checkbox" /></td>
+				<td id="SID"></td>
 				<td id="C_NAME">企业名称</td>
 				<td id="C_ADDR">地址</td>
 			<tr>
 		</thead>
 		<tbody/>
+		<tfoot/>
 	</table>
 </div>
 </BODY>

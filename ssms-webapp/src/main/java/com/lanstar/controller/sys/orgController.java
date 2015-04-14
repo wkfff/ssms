@@ -7,6 +7,7 @@
  */
 package com.lanstar.controller.sys;
 
+import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
 
 /**
@@ -15,5 +16,10 @@ import com.lanstar.controller.DefaultController;
 public class orgController extends DefaultController {
     public orgController(  ) {
         super( "sys_org" );
+    }
+
+    @Override
+    protected Class<? extends ActionValidator> getValidator() {
+        return orgValidator.class;
     }
 }

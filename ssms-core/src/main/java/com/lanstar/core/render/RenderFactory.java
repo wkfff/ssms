@@ -10,7 +10,8 @@ package com.lanstar.core.render;
 
 import com.lanstar.core.ModelBean;
 import com.lanstar.core.RequestContext;
-import com.lanstar.core.handle.HandleException;
+
+import javax.servlet.http.HttpServletResponse;
 
 public class RenderFactory {
     private static RenderFactory instance = new RenderFactory();
@@ -19,7 +20,7 @@ public class RenderFactory {
         return instance;
     }
 
-    public FreemarkerRender getViewRender( String viewName, ModelBean model, RequestContext requestContext ) {
+    public Render getViewRender( String viewName, ModelBean model, RequestContext requestContext ) {
         return new FreemarkerRender( new ViewAndModelContext( viewName, model, requestContext ) );
     }
 
@@ -27,11 +28,18 @@ public class RenderFactory {
         return new JsonRender( new ModelRenderContext( model, context ) );
     }
 
-    public Render getErrorRender( HandleException exception, RequestContext requestContext ) {
-        return new ErrorRender( new ErrorRenderContext( exception, requestContext ) );
+    public Render getHtmlRender( String html, RequestContext context ) {
+        return new HtmlRender( html, new RequestRenderContext( context ) );
     }
 
-    public Render getErrorRender( int errorCode, RequestContext requestContext ) {
-        return new ErrorRender( new ErrorRenderContext( errorCode, requestContext ) );
+    public Render wrapErrorRender( final Render render, final int errorCode, final RequestContext context ) {
+        return new Render() {
+            @Override
+            public void render() throws RenderException {
+                HttpServletResponse response = context.getResponse();
+                response.setStatus( errorCode < 0 ? 500 : errorCode );    // HttpServletResponse.SC_XXX_XXX
+                render.render();
+            }
+        };
     }
 }

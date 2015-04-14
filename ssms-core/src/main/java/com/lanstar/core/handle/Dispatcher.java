@@ -12,9 +12,8 @@ import com.lanstar.app.container.ContainerHelper;
 import com.lanstar.common.exception.WebException;
 import com.lanstar.common.log.Logger;
 import com.lanstar.core.RequestContext;
-import com.lanstar.core.handle.action.ActionException;
 import com.lanstar.core.render.RenderException;
-import com.lanstar.core.render.RenderFactory;
+import com.lanstar.core.render.resolver.RenderResolverFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +49,7 @@ public class Dispatcher {
                 String qs = request.getQueryString();
                 log.error( qs == null ? target : target + "?" + qs, e );
             }
-        } catch ( ActionException e ) {
+        } catch ( HandleException e ) {
             int errorCode = e.getErrorCode();
             if ( errorCode == 404 && log.isWarnEnabled() ) {
                 String qs = request.getQueryString();
@@ -65,13 +64,14 @@ public class Dispatcher {
                 String qs = request.getQueryString();
                 log.error( e, qs == null ? target : target + "?" + qs );
             }
-            RenderFactory.me().getErrorRender( e, requestContext ).render();
+            RenderResolverFactory.me().getResolver( "html" ).getErrorRender( e, requestContext ).render();
         } catch ( WebException e ) {
             if ( log.isErrorEnabled() ) {
                 String qs = request.getQueryString();
                 log.error( e, qs == null ? target : target + "?" + qs );
             }
-            RenderFactory.me().getErrorRender( 500, requestContext );
+            HandleException exception = new HandleException( e ).errorCode( 500 );
+            RenderResolverFactory.me().getResolver( "html" ).getErrorRender( exception, requestContext ).render();
         }
     }
 }

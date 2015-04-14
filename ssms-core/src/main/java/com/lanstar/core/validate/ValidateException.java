@@ -8,9 +8,9 @@
 
 package com.lanstar.core.validate;
 
-import com.lanstar.common.exception.WebException;
+import com.lanstar.core.handle.HandleException;
 
-class ValidateException extends WebException {
+public class ValidateException extends HandleException {
     private static final long serialVersionUID = 20920496215941871L;
 
     public ValidateException() {

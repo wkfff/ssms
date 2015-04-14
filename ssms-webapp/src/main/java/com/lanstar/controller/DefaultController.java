@@ -8,10 +8,13 @@
 
 package com.lanstar.controller;
 
+import java.util.Map;
+
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.db.DBPaging;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
 
@@ -32,9 +35,17 @@ public abstract class DefaultController extends BaseController {
      */
     public ViewAndModel list( HandlerContext context ) {
         //传入的过滤条件，格式为field=value
-        String filter = (String) context.getValue( "_filter" );
+//        String filter = (String) context.getValue( "_filter" );
         JdbcRecordSet list;
         ARTable arTable = context.DB.withTable( TABLENAME );
+        
+        Map<String, String> filter = context.getFilter();
+        if (!filter.isEmpty()){
+            for(String key:filter.keySet()){
+                arTable.where( key + " like ?", placeholder( filter.get( key ), "%" ) );
+            }
+        }
+        /*
         if ( Strings.isNullOrEmpty( filter ) )
             list = arTable.queryList();
         else {
@@ -43,8 +54,19 @@ public abstract class DefaultController extends BaseController {
                 list = arTable.where( f[0] + " like ?", placeholder( f[1], "%" ) ).queryList();
             else
                 list = arTable.queryList();
-        }
-        return context.returnWith().put( "total", list.size() ).put( "rows", list.toArray() );
+        }*/
+        
+        DBPaging paging = context.getPaging();
+        if (paging!=null) 
+            list = arTable.queryPaging(paging);
+        else
+            list = arTable.queryList();
+        
+        return context.returnWith()
+                .put( DBPaging.PAGING_TOTAL_NAME, paging.getRecCount() )
+                .put( DBPaging.PAGING_COUNT_NAME, paging.getPageCount() )
+                .put( DBPaging.PAGING_INDEX_NAME, paging.getPageIndex() )
+                .put( "data", list.toArray() );
     }
 
     /**
@@ -59,6 +81,8 @@ public abstract class DefaultController extends BaseController {
      * 表单.保存
      */
     public ViewAndModel save( HandlerContext context ) {
+        // 先验证下参数
+        validatePara( context );
         String sid = (String) context.getValue( "sid" );
         ARTable table = context.DB.withTable( TABLENAME );
         mergerValues( table, context, MergerType.withSid( sid ) );

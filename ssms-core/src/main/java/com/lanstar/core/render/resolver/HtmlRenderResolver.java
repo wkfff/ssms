@@ -10,6 +10,8 @@ package com.lanstar.core.render.resolver;
 
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.handle.ErrorHtmlBuilder;
+import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.render.Render;
 import com.lanstar.core.render.RenderFactory;
 
@@ -17,5 +19,13 @@ public class HtmlRenderResolver implements RenderResolver {
     @Override
     public Render getRender( ViewAndModel vam, RequestContext requestContext ) {
         return RenderFactory.me().getViewRender( vam.getViewName(), vam.getModel(), requestContext );
+    }
+
+    @Override
+    public Render getErrorRender( HandleException e, RequestContext requestContext ) {
+        String html = ErrorHtmlBuilder.newInstance( e ).build();
+        RenderFactory factory = RenderFactory.me();
+        Render render = factory.getHtmlRender( html, requestContext );
+        return factory.wrapErrorRender( render, e.getErrorCode(), requestContext );
     }
 }

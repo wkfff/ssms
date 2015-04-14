@@ -8,6 +8,8 @@
 
 package com.lanstar.db.dialect.impl;
 
+import java.sql.SQLException;
+
 import com.lanstar.db.dialect.AbstDialect;
 import com.lanstar.db.dialect.IDialect;
 
@@ -29,5 +31,16 @@ public class MySqlDialect extends AbstDialect implements IDialect {
     @Override
     public String getHeartbeatSql() {
         return "SELECT 1 FROM DUAL";
+    }
+    
+    /**
+     * 获取分页SQL
+     */
+    @Override
+    public String getPagingSql(String sql, int startIndex, int endIndex) throws SQLException {
+        StringBuffer pageSql = new StringBuffer(sql.length() + 20).append(sql).append(" limit ");
+        if (startIndex > 0) pageSql.append(startIndex).append(",");
+        pageSql.append(endIndex);
+        return pageSql.toString();
     }
 }
