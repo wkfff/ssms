@@ -9,6 +9,8 @@ package com.lanstar.controller.sys;
 
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
+import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.handle.HandlerContext;
 
 /**
  * @author F
@@ -21,5 +23,11 @@ public class orgController extends DefaultController {
     @Override
     protected Class<? extends ActionValidator> getValidator() {
         return orgValidator.class;
+    }
+
+    @Override
+    public ViewAndModel index( HandlerContext context ) {
+        this.resolveMultiParameter( context, "USER_SEX" );
+        return super.index( context );
     }
 }
