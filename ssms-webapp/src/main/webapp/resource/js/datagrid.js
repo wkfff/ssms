@@ -131,6 +131,11 @@ var datagrid = (function() {
     	
     	var filter = {},paging = {};
     	filter[$(".filter_field",this.gridId).val()] = $(".filter_value",this.gridId).val();
+    	
+    	$.each($(".toolbar>input[type='text']",this.girdId),function(i,e){				
+				var value = e.value;
+				if (value) filter[e.attributes["query"].value]=value;
+		});
     	para["_filter"] = filter;
     	
     	paging["pageIndex"]=this.pageIndex.val();

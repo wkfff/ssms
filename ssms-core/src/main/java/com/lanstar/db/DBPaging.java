@@ -14,6 +14,7 @@ package com.lanstar.db;
 public class DBPaging {    
     public static final String PAGE_INDEX = "_paging[pageIndex]";
     public static final String PAGE_SIZE = "_paging[pageSize]";
+    public static final String PAGE_DATA = "data";
     
     public static final String PAGING_TOTAL_NAME = "total";
     public static final String PAGING_SIZE_NAME = "pageSize";

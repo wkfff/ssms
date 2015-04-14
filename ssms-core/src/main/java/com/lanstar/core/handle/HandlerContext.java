@@ -20,6 +20,7 @@ import com.lanstar.core.handle.db.impl.TanentDbContext;
 import com.lanstar.db.DBPaging;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class HandlerContext {
@@ -134,8 +135,7 @@ public class HandlerContext {
         for ( String key : p.keySet() ) {
             String[] values = p.get( key );
             String value = values == null ? "" : values[0];
-            map.put( key, value );
-            System.out.println( key+"="+value);
+            map.put( key, value );            
         }
         return map;
     }
@@ -157,15 +157,16 @@ public class HandlerContext {
      * @return
      */
     public Map<String,String> getFilter(){
-        Map<String, String> filter = new HashMap<String,String>();
+        Map<String, String> filter = new LinkedHashMap<String,String>();
         Map<String, String> para = getParameterMap();
         for(String key:para.keySet()){
             if (key.startsWith( "_filter" )){
                 String value = para.get( key );
                 if (Strings.isNullOrEmpty( value )) continue;
+                if (key.indexOf( "like" )>-1) value = "%"+value+"%";
                 int beginIndex = key.indexOf( "[" )+1;
                 int endIndex = key.length()-1;
-                filter.put( key.substring( beginIndex, endIndex ), para.get( key ) );
+                filter.put( key.substring( beginIndex, endIndex ), value );
             }
         }
         return filter;

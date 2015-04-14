@@ -18,16 +18,19 @@ import com.lanstar.core.interceptor.Before;
  *
  */
 public class tenant_eController extends DefaultController {
-    public tenant_eController(  ) {
+    public tenant_eController() {
         super( "SYS_TENANT_E" );
     }
-    
+
+    @Override
     @Before(tenant_eValidator.class)
     public ViewAndModel index( HandlerContext context ) {
         return super.index( context );
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.lanstar.controller.BaseController#getValidator()
      */
     @Override

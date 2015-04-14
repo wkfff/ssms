@@ -9,9 +9,48 @@ package com.lanstar.db;
 
 import java.util.ArrayList;
 
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * 数据库记录的基础类
  */
 public class JdbcRecordSet extends ArrayList<JdbcRecord> {
     private static final long serialVersionUID = -660397472192306649L;
+    
+    private DBPaging paging;
+    
+    /**
+     * @return the paging
+     */
+    public DBPaging getPaging() {
+        return paging;
+    }
+
+    /**
+     * @param paging the paging to set
+     */
+    public void setPaging( DBPaging paging ) {
+        this.paging = paging;
+    }
+
+    public JSONObject toJson(){        
+        JSONObject r = new JSONObject();
+        if (paging!=null){
+            r.put( DBPaging.PAGING_TOTAL_NAME, paging.getRecCount() );
+            r.put( DBPaging.PAGING_COUNT_NAME, paging.getPageCount() );
+            r.put( DBPaging.PAGING_INDEX_NAME, paging.getPageIndex() );
+        }
+        r.put( DBPaging.PAGE_DATA, this); 
+        return r;
+    }
+    
+    public String toJsonString(){
+        if (paging==null) return this.toString();
+        JSONObject r = new JSONObject();
+        r.put( DBPaging.PAGING_TOTAL_NAME, paging.getRecCount() );
+        r.put( DBPaging.PAGING_COUNT_NAME, paging.getPageCount() );
+        r.put( DBPaging.PAGING_INDEX_NAME, paging.getPageIndex() );
+        r.put( DBPaging.PAGE_DATA, this);        
+        return r.toJSONString();
+    }
 }

@@ -204,7 +204,10 @@ public class ARTable extends ActiveRecordAbstr {
     public JdbcRecordSet queryPaging(DBPaging paging) {
         SqlStatement st = TableStatementBuilder.query( this );
         try {           
-            return dialect.queryPaging( session, st ,paging);
+            if (paging!=null)
+                return dialect.queryPaging( session, st ,paging);
+            else
+                return dialect.queryList( session, st);
         } catch ( SQLException e ) {
             throw new ActiveRecordException( e );
         }

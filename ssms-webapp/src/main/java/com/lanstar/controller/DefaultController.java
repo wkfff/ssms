@@ -34,29 +34,14 @@ public abstract class DefaultController extends BaseController {
      * 列表数据
      */
     public ViewAndModel list( HandlerContext context ) {
-        JdbcRecordSet list;
-        ARTable arTable = context.DB.withTable( TABLENAME );
-        
+        ARTable arTable = context.DB.withTable( TABLENAME );        
         Map<String, String> filter = context.getFilter();
-        if (!filter.isEmpty()){
-            for(String key:filter.keySet()){
-                arTable.where( key + " like ?", placeholder( filter.get( key ), "%" ) );
-            }
-        }
-
+        if (!filter.isEmpty()) arTable.where( StringHelper.join( filter.keySet(), " and ", false ), filter.values().toArray());
         DBPaging paging = context.getPaging();
-        if (paging!=null) 
-            list = arTable.queryPaging(paging);
-        else
-            list = arTable.queryList();
-        
-        return context.returnWith()
-                .put( DBPaging.PAGING_TOTAL_NAME, paging.getRecCount() )
-                .put( DBPaging.PAGING_COUNT_NAME, paging.getPageCount() )
-                .put( DBPaging.PAGING_INDEX_NAME, paging.getPageIndex() )
-                .put( "data", list.toArray() );
+        JdbcRecordSet list = arTable.queryPaging(paging);
+        return context.returnWith().set( list.toJson() );
     }
-
+    
     /**
      * 表单数据
      */

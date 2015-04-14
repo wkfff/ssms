@@ -19,12 +19,20 @@
 <#list _ERROR_?keys as map>${map} ${_ERROR_[map]}</#list>
 <div class="datagrid" id="dg">
     <div class="toolbar">
+    	<!--
+    	模糊查询
         <select class="filter_field">
             <option value="C_NAME">企业名称</option>
             <option value="C_ADDR">地址</option>
         </select>
         <input type="text" class="filter_value"/>
+        -->
+       	 企业名称<input type="text" name="C_NAME" style="width:60px;" query="C_NAME like ?"/>
+       	 省份<input type="text" name="S_PROVINCE" style="width:60px;" query="S_PROVINCE = ?"/>
+       	 地市<input type="text" name="S_CITY" style="width:60px;" query="S_CITY = ?"/>
+       	 县市<input type="text" name="S_COUNTY" style="width:60px;" query="S_COUNTY = ?"/>
         <input type="button" name="btn_query" value="查询">
+        
         <input type="button" name="btn_add" value="新增">
         <input type="button" name="btn_open" value="打开">
         <input type="button" name="btn_del" value="删除">
