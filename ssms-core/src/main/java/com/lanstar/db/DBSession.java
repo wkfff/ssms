@@ -12,6 +12,7 @@ import com.lanstar.common.helper.Asserts;
 import com.lanstar.common.log.LogHelper;
 import com.lanstar.common.log.Logger;
 import com.lanstar.db.dialect.IDialect;
+import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.db.statement.SqlStatement;
 
 import java.sql.*;
@@ -185,6 +186,17 @@ public class DBSession implements JdbcOperations {
     @Override
     public JdbcRecordSet query( String sql, Object[] params ) {
         return query( new SqlStatement( sql, params ) );
+    }
+
+    @Override
+    public JdbcPageRecordSet query( SqlStatement sqlStatement, DBPaging paging ) {
+        JdbcPageRecordSet rs = new JdbcPageRecordSet( paging );
+        rs.setTotal( getRecordsetSize( sqlStatement.getSql(), sqlStatement.getParams() ) );
+        String sql = dialect.getPagingSql( sqlStatement.getSql(), paging.getStartIndex(), paging.getEndIndex() );
+        SqlStatement stat = new SqlStatement( sql, sqlStatement.getParams() );
+        JdbcRecordSet records = query( stat );
+        rs.setData( records );
+        return rs;
     }
 
     @Override

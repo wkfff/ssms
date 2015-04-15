@@ -9,11 +9,8 @@
 package com.lanstar.db.ar;
 
 import com.lanstar.common.helper.StringHelper;
-import com.lanstar.db.DBPaging;
-import com.lanstar.db.DBSession;
-import com.lanstar.db.IRowAction;
-import com.lanstar.db.JdbcRecord;
-import com.lanstar.db.JdbcRecordSet;
+import com.lanstar.db.*;
+import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.db.statement.SqlStatement;
 
 import java.sql.SQLException;
@@ -198,21 +195,20 @@ public class ARTable extends ActiveRecordAbstr {
 
     /**
      * 分页查询
+     *
      * @param paging
+     *
      * @return
      */
-    public JdbcRecordSet queryPaging(DBPaging paging) {
+    public JdbcPageRecordSet queryPaging( DBPaging paging ) {
         SqlStatement st = TableStatementBuilder.query( this );
-        try {           
-            if (paging!=null)
-                return dialect.queryPaging( session, st ,paging);
-            else
-                return dialect.queryList( session, st);
+        try {
+            return dialect.queryPaging( session, st, paging );
         } catch ( SQLException e ) {
             throw new ActiveRecordException( e );
         }
     }
-    
+
     /**
      * 插入到表中
      */

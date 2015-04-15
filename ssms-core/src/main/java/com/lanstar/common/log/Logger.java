@@ -14,15 +14,17 @@ import org.slf4j.LoggerFactory;
  * 日志组件
  */
 public class Logger {
-    /** 抽取自SLF4J的日志 */
+    /**
+     * 抽取自SLF4J的日志
+     */
     private final org.slf4j.Logger logger;
 
-    public static Logger getLogger(Class<?> clazz) {
-        return new Logger(clazz);
+    public static Logger getLogger( Class<?> clazz ) {
+        return new Logger( clazz );
     }
 
-    public Logger(Class<?> clazz) {
-        this.logger = LoggerFactory.getLogger(clazz);
+    public Logger( Class<?> clazz ) {
+        this.logger = LoggerFactory.getLogger( clazz );
     }
 
     public String getName() {
@@ -33,47 +35,47 @@ public class Logger {
         return logger.isDebugEnabled();
     }
 
-    public void debug(String s, Object... params) {
-        logger.debug((params == null || params.length == 0) ? s : String.format(s, params));
+    public void debug( String s, Object... params ) {
+        logger.debug( (params == null || params.length == 0) ? s : String.format( s, params ) );
     }
 
-    public void debug(Throwable throwable, String s, Object... params) {
-        logger.debug((params == null || params.length == 0) ? s : String.format(s, params), throwable);
+    public void debug( Throwable throwable, String s, Object... params ) {
+        logger.debug( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
     }
 
     public boolean isInfoEnabled() {
         return logger.isInfoEnabled();
     }
 
-    public void info(String s, Object... params) {
-        logger.info((params == null || params.length == 0) ? s : String.format(s, params));
+    public void info( String s, Object... params ) {
+        logger.info( (params == null || params.length == 0) ? s : String.format( s, params ) );
     }
 
-    public void info(Throwable throwable, String s, Object... params) {
-        logger.info((params == null || params.length == 0) ? s : String.format(s, params), throwable);
+    public void info( Throwable throwable, String s, Object... params ) {
+        logger.info( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
     }
 
     public boolean isWarnEnabled() {
         return logger.isWarnEnabled();
     }
 
-    public void warn(String s, Object... aobj) {
-        logger.warn(String.format(s, aobj));
+    public void warn( String s, Object... aobj ) {
+        logger.warn( String.format( s, aobj ) );
     }
 
-    public void warn(Throwable throwable, String s, Object... params) {
-        logger.warn((params == null || params.length == 0) ? s : String.format(s, params), throwable);
+    public void warn( Throwable throwable, String s, Object... params ) {
+        logger.warn( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
     }
 
     public boolean isErrorEnabled() {
         return logger.isErrorEnabled();
     }
 
-    public void error(String s, Object... params) {
-        logger.error((params == null || params.length == 0) ? s : String.format(s, params));
+    public void error( String s, Object... params ) {
+        logger.error( (params == null || params.length == 0) ? s : String.format( s, params ) );
     }
 
-    public void error(Throwable throwable, String s, Object... params) {
-        logger.error(String.format(s, params), throwable);
+    public void error( Throwable throwable, String s, Object... params ) {
+        logger.error( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
     }
 }

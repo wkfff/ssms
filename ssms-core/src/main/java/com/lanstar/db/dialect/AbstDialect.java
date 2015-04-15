@@ -35,12 +35,7 @@ public abstract class AbstDialect implements IDialect {
     }
 
     @Override
-    public JdbcRecordSet queryPaging( JdbcOperations operations,SqlStatement sqlStatement,DBPaging paging ) throws SQLException {
-        paging.setRecCount( operations.getRecordsetSize( sqlStatement.getSql(), sqlStatement.getParams()) );
-        String sql = this.getPagingSql( sqlStatement.getSql(), paging.getStartIndex(), paging.getEndIndex() );
-        SqlStatement stat = new SqlStatement(sql,sqlStatement.getParams());
-        JdbcRecordSet rs = operations.query( stat );
-        rs.setPaging( paging );
-        return rs;
+    public JdbcPageRecordSet queryPaging( JdbcOperations operations, SqlStatement sqlStatement, DBPaging paging ) throws SQLException {
+        return operations.query( sqlStatement, paging );
     }
 }
