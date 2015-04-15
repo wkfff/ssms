@@ -4,7 +4,12 @@ $form = {
 		init: function(set){
 			setting = set;
 			$("input[name='btn_save']").click(function(){$form.doSave();});
-			if(setting.sid!=null) $form.bindData(setting.sid);
+			$("input[name='btn_back']").click(function(){$form.doBack();});
+			$("input[name='btn_del']").click(function(){$form.doDel();});
+			if(setting.sid!=null) 
+				$form.bindData(setting.sid);
+			else
+				$("input[name='btn_del']").hide();
 		},		
 		bindData: function(sid){
 			$.get(setting.dataUrl, {sid:setting.sid},function (data) {      
@@ -39,11 +44,19 @@ $form = {
 			}
 			$.post(setting.saveUrl,postData,function (data) {      
 				alert("保存成功！");
-				window.close();
 		    }).fail(function( jqXHR) {
 				alert(jqXHR.status+":"+jqXHR.statusText);
 				// TODO：服务端送来的具体错误内容
 				alert(jqXHR.responseJSON);
 			});
+		},
+		doBack:function(){
+			window.history.go( -1 );
+		},
+		doDel: function(){						
+			if(!confirm("确认要删除当前记录吗？")) return;
+			$.post(setting.delUrl, {sid:setting.sid},function (data) {      
+				$form.doBack();
+		    });	
 		}
 }

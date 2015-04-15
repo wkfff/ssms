@@ -75,10 +75,22 @@ public abstract class DefaultController extends BaseController {
     /**
      * 列表.删除
      */
-    public ViewAndModel del( HandlerContext context ) {
+    public ViewAndModel dels( HandlerContext context ) {
         String ids = (String) context.getValue( "ids" );
         if ( !Strings.isNullOrEmpty( ids ) ) {
             context.DB.withTable( TABLENAME ).where( "SID in (" + ids + ")" ).delete();
+        }
+        return context.returnWith().set( "{}" );
+    }
+    /**
+     * 表单.删除
+     * @param context
+     * @return
+     */
+    public ViewAndModel del( HandlerContext context ) {
+        String sid = (String) context.getValue( "sid" );
+        if ( !Strings.isNullOrEmpty( sid ) ) {
+            context.DB.withTable( TABLENAME ).where( "SID = ?",sid).delete();
         }
         return context.returnWith().set( "{}" );
     }

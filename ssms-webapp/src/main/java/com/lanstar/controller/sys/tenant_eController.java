@@ -11,7 +11,6 @@ import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.core.interceptor.Before;
 
 /**
  * 企业租户表
@@ -23,7 +22,6 @@ public class tenant_eController extends DefaultController {
     }
 
     @Override
-    @Before(tenant_eValidator.class)
     public ViewAndModel index( HandlerContext context ) {
         return super.index( context );
     }
@@ -35,7 +33,6 @@ public class tenant_eController extends DefaultController {
      */
     @Override
     protected Class<? extends ActionValidator> getValidator() {
-        // TODO Auto-generated method stub
-        return null;
+        return tenant_eValidator.class;
     }
 }

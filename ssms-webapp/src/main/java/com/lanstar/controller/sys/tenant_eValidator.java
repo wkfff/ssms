@@ -7,14 +7,14 @@
  */
 package com.lanstar.controller.sys;
 
+import com.lanstar.controller.ActionValidator;
 import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.core.validate.Validator;
 
 /**
  * 验证
  *
  */
-public class tenant_eValidator extends Validator {
+public class tenant_eValidator extends ActionValidator {
     @Override
     protected void validate( HandlerContext c ) {
         this.validateRequiredString( "", "", "" );
