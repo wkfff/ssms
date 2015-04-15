@@ -21,21 +21,7 @@ public interface IQueryDialect {
     void queryList( JdbcOperations operations, SqlStatement sqlStatement, IRowAction row ) throws SQLException;
 
     /**
-     * 获取分页SQL
-     * @param sql
-     * @param startIndex
-     * @param endIndex
-     * @return
-     * @throws Exception
-     */
-    String getPagingSql( String sql, int startIndex, int endIndex ) throws SQLException;
-    /**
      * 分页查询
-     * @param operations
-     * @param sqlStatement
-     * @param paging
-     * @return
-     * @throws SQLException
      */
-    JdbcRecordSet queryPaging( JdbcOperations operations, SqlStatement sqlStatement,DBPaging paging ) throws SQLException;
+    JdbcPageRecordSet queryPaging( JdbcOperations operations, SqlStatement sqlStatement, DBPaging paging ) throws SQLException;
 }

@@ -8,15 +8,15 @@
 
 package com.lanstar.controller;
 
-import java.util.Map;
-
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.DBPaging;
-import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
+import com.lanstar.db.dialect.JdbcPageRecordSet;
+
+import java.util.Map;
 
 public abstract class DefaultController extends BaseController {
     public DefaultController( String tablename ) {
@@ -38,8 +38,8 @@ public abstract class DefaultController extends BaseController {
         Map<String, String> filter = context.getFilter();
         if (!filter.isEmpty()) arTable.where( StringHelper.join( filter.keySet(), " and ", false ), filter.values().toArray());
         DBPaging paging = context.getPaging();
-        JdbcRecordSet list = arTable.queryPaging(paging);
-        return context.returnWith().set( list.toJson() );
+        JdbcPageRecordSet list = arTable.queryPaging( paging );
+        return context.returnWith().set( list );
     }
     
     /**

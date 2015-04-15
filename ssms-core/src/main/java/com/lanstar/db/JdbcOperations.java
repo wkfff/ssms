@@ -8,6 +8,7 @@
 
 package com.lanstar.db;
 
+import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.db.statement.SqlStatement;
 
 import java.sql.SQLException;
@@ -98,6 +99,8 @@ public interface JdbcOperations {
      * @return 结果集
      */
     JdbcRecordSet query( String sql, Object[] params );
+
+    JdbcPageRecordSet query(SqlStatement sqlStatement, DBPaging paging);
 
     /**
      * 以查询方式执行SQL语句，返回结果列表

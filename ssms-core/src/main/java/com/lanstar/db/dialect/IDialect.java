@@ -20,5 +20,10 @@ public interface IDialect extends IQueryDialect, IExecuteDialiect {
     /**
      * 获取心跳检测SQL
      */
-    String getHeartbeatSql();   
+    String getHeartbeatSql();
+
+    /**
+     * 获取分页SQL
+     */
+    String getPagingSql( String sql, int startIndex, int endIndex );
 }
