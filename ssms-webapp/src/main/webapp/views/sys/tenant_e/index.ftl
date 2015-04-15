@@ -4,7 +4,7 @@
     var setting = {
         gridId: "dg",
         dataUrl: "list.json",
-        delUrl: "del.json",
+        delUrl: "dels.json",
         addUrl: "rec.html",
         openUrl: "rec.html"
     };
@@ -16,9 +16,28 @@
 </script>
 </#assign>
 <@layout.doLayout script>
-<#list _ERROR_?keys as map>${map} ${_ERROR_[map]}</#list>
+<!--导航栏-->
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active">
+                <a href="#">首页 ></a>
+              </li>
+              <li class="active">
+                <a href="#">管理中心 ></a>
+              </li>
+              <li class="active">
+                <a href="#">企业信息管理 ></a>
+              </li>            
+            </ul>
+          </div>
+        </div>
+      </div>
+</div>
 <div class="datagrid" id="dg">
-    <div class="toolbar">
+    <div class="form-actions">
     	<!--
     	模糊查询
         <select class="filter_field">
@@ -27,15 +46,15 @@
         </select>
         <input type="text" class="filter_value"/>
         -->
-       	 企业名称<input type="text" name="C_NAME" style="width:60px;" query="C_NAME like ?"/>
-       	 省份<input type="text" name="S_PROVINCE" style="width:60px;" query="S_PROVINCE = ?"/>
-       	 地市<input type="text" name="S_CITY" style="width:60px;" query="S_CITY = ?"/>
-       	 县市<input type="text" name="S_COUNTY" style="width:60px;" query="S_COUNTY = ?"/>
-        <input type="button" name="btn_query" value="查询">
+       	 企业名称<input type="text" name="C_NAME" style="width:60px;" query="C_NAME like ?" class="search-query"/>
+       	 省份<input type="text" name="S_PROVINCE" style="width:60px;" query="S_PROVINCE = ?" class="search-query"/>
+       	 地市<input type="text" name="S_CITY" style="width:60px;" query="S_CITY = ?" class="search-query"/>
+       	 县市<input type="text" name="S_COUNTY" style="width:60px;" query="S_COUNTY = ?" class="search-query"/>
+        <input type="button" name="btn_query" class="btn" value="查询">
         
-        <input type="button" name="btn_add" value="新增">
-        <input type="button" name="btn_open" value="打开">
-        <input type="button" name="btn_del" value="删除">
+        <input type="button" name="btn_add" class="btn" value="新增">
+        <input type="button" name="btn_open" class="btn" value="打开">
+        <input type="button" name="btn_del" class="btn" value="删除">
     </div>
     <table>
         <thead>
@@ -53,7 +72,7 @@
         </thead>
         <tbody/>        
     </table>
-    <div class="paging">
+    <div class="paging navbar">
     	每页显示
     	<select name="_pageSize">
             <option value="10">10</option>
@@ -61,13 +80,12 @@
             <option value="30">30</option>
             <option value="50">50</option>
         </select>
-                共<label name="_recCount"></label>条,
-        <label name="_pageCount"></label>页
-        <input type="button" name="btn_first" value="首页">
-        <input type="button" name="btn_prev" value="上页">
-        <input type="text" name="_pageIndex" class="pageIndex" value="1"/>
-        <input type="button" name="btn_next" value="下页">
-        <input type="button" name="btn_last" value="末页">
+                共<label name="_recCount"></label>条,<label name="_pageCount"></label>页
+        <input type="button" name="btn_first" value="首页" class="btn">
+        <input type="button" name="btn_prev" value="上页" class="btn">
+        <input type="text" name="_pageIndex" class="pageIndex input-mini" value="1"/>
+        <input type="button" name="btn_next" value="下页" class="btn">
+        <input type="button" name="btn_last" value="末页" class="btn">
     </div>
 </div>
 </@layout.doLayout>
