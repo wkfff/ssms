@@ -73,6 +73,7 @@
         </thead>
         <tbody/>
     </table>
+    <!--系统大文本表--><table><thead><tr><td id="R_TABLE">对应表</td><td id="R_SID">对应记录编号</td><td id="R_FIELD">对应字段</td><td id="C_CONTENT">内容</td><td id="C_TANENT">所属租户</td><tr></thead><tbody/></table>
     <div class="paging">
     	每页显示
     	<select name="_pageSize" class="input-mini">
