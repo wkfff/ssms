@@ -11,41 +11,6 @@
 　　		return this.replace(/(^\s*)|(\s*$)/g, "");
 　　	}
 
-
-        var typeMap = {};
-
-		function parseTypeMap(doc) {
-			var list = doc.getElementsByTagName('h2');
-			for(var i=0;i<list.length;i++ ) {
-				var fldStr = '\n\r';
-				var tblstr = list[i].innerText.trim().replace(new RegExp(' +','gm'),' ');
-				if(tblstr.substring(0,3)!='1.2') continue;
-
-				var nextObj = list[i];
-				var isTable = false;
-				while(isTable==false){
-					nextObj = nextObj.nextSibling;
-					if (nextObj.tagName=='DIV')
-					{
-						nextObj = nextObj.getElementsByTagName('TABLE')[0];
-						isTable = true;
-					}
-				}
-				if( nextObj=='undefined' ) continue;
-
-				if( nextObj.rows[0].cells.length==8) {
-					for( j=1;j<nextObj.rows.length;j++ ) {
-						var IDStr = nextObj.rows[j].cells[1].innerText.trim();
-						var TypeStr = nextObj.rows[j].cells[3].innerText.toUpperCase();
-
-						if (IDStr.length === 0) continue;
-						typeMap[IDStr] = TypeStr;
-					}
-					return true;
-				}
-			}
-		}
-
 		function PaserHtmlToXML()
 		{
 			var idoc = document.all.htmlFrame.contentWindow.document;
@@ -56,27 +21,20 @@
 
 			document.all.xmlContent.value = '';
 			h2s = idoc.getElementsByTagName('h2');
-			if(typeof(h2s) == 'undefined') {
+			if(typeof(h2s) == 'undefined') {			
 				alert('没有找到标题，不是属于标准的数据库设计文档转换来的文件！');
 				return;
 			}
 
-			if (parseTypeMap(idoc) != true) return;
-
-			var tmpstr = '';
+			var tmpstr='',tmp1str='',tmp2str = '';
 			var tblName = '';
 			var commstr = '';
+			var fieldTypes = {};
 			for( i=0;i<h2s.length;i++ )
 			{
 				var fldStr = '\n\r';
-				tblstr = h2s[i].innerText.trim().replace(new RegExp(' +','gm'),' ');
-				if(tblstr.substring(0,2)!='2.') continue;
-
-				tblName = tblstr.split(' ');
-				if (tblName.length!=3){
-					commstr+="--"+tblstr+"  格式无效\n\r";
-					continue;
-				}
+				var gridStr = '';
+				var formStr = '';
 
 				nextObj = h2s[i];
 				if( nextObj=='undefined' ) continue;
@@ -90,6 +48,26 @@
 					}
 				}
 
+				tblstr = h2s[i].innerText.trim().replace(new RegExp(' +','gm'),' ');
+				//字段类型解析				
+				if(tblstr.indexOf('字段类型')>-1){
+					for( j=1;j<nextObj.rows.length;j++ )
+					{
+						designType = nextObj.rows[j].cells[1].innerText.toUpperCase().trim();
+						if(designType.trim()=='') continue;
+						realType =  nextObj.rows[j].cells[3].innerText;
+						realType = realType.trim();
+						fieldTypes[designType] = realType;						
+					}			
+				}
+				if(tblstr.substring(0,2)!='2.') continue;
+
+				tblName = tblstr.split(' ');
+				if (tblName.length!=3){
+					commstr+="--"+tblstr+"  格式无效\n\r";
+					continue;
+				}
+				
 				if( nextObj.rows[0].cells.length==8)
 				{
 					tmpstr += '-- ' + tblName[2] + ':\n\r';
@@ -97,7 +75,7 @@
 					tmpstr += 'CREATE TABLE ' + tblName[1] + '\n(' ;
 					// 创建默认的SID字段
 					fldStr = fldStr + "\t`SID`\t\tINT(11) \tNOT NULL auto_increment COMMENT '自增主键',\n";
-
+					
 
 					for( j=1;j<nextObj.rows.length;j++ )
 					{
@@ -105,9 +83,9 @@
 						if(IDStr=='' || IDStr=='SID') continue;
 						NoteStr =  nextObj.rows[j].cells[2].innerText;
 						NoteStr = NoteStr.replace(/\r+/g,' ').replace(/\n+/g,' ' );
-						TypeStr = nextObj.rows[j].cells[3].innerText.toUpperCase();
-						if (TypeStr in typeMap) TypeStr = typeMap[TypeStr];
-						// .replace('SID','INT').replace('PARAMETER','VARCHAR(32)');
+						TypeStr = nextObj.rows[j].cells[3].innerText.toUpperCase().trim();//.replace('SID','INT').replace('PARAMETER','VARCHAR(32)');
+						var t = fieldTypes[TypeStr];
+						if (typeof(t)!='undefined') TypeStr = t;
 						IsKeyStr = nextObj.rows[j].cells[4].innerText;
 						IsNullStr = nextObj.rows[j].cells[5].innerText;
 						DefaultStr = (nextObj.rows[j].cells[6].innerText).trim().replace(new RegExp('‘','gm'),'\'').replace(new RegExp('’','gm'),'\'');
@@ -117,10 +95,22 @@
 						if(IsNullStr!='undefined' && IsNullStr=='N') fldStr += 'NOT NULL\t';
 						fldStr += ' COMMENT \''+NoteStr+'\'';
 						fldStr += ',\n';
+
+
+						//表格
+						gridStr += '<td id="'+IDStr+'">'+NoteStr+'</td>';
+						//表单
+						formStr += '<div class="control-group">\t';
+						formStr += '	<label class="control-label" for="input01">'+NoteStr+':</label>\t';
+						formStr += '	<div class="controls">\t';
+						formStr += '	<input type="text" placeholder="" class="input-xxlarge" id="'+IDStr+'" name="'+IDStr+'">\t';
+						formStr += '	<p class="help-block">'+NoteStr+'</p>\t';
+						formStr += '	</div>\t';
+						formStr += '</div>\t';
 					}
 
-					fldStr = fldStr + "\t`R_CREATOR`\t\tVARCHAR(32) COMMENT '创建人编号'\t,\n";
-					fldStr = fldStr + "\t`S_CREATOR`\t\tVARCHAR(100) COMMENT '创建人'\t,\n";
+					fldStr = fldStr + "\t`R_CREATE`\t\tVARCHAR(32) COMMENT '创建人编号'\t,\n";
+					fldStr = fldStr + "\t`S_CREATE`\t\tVARCHAR(100) COMMENT '创建人'\t,\n";
 					fldStr = fldStr + "\t`T_CREATE`\t\tDATETIME COMMENT '创建时间'\t,\n";
 					fldStr = fldStr + "\t`R_UPDATE`\t\tVARCHAR(32) COMMENT '更新人编号'\t,\n";
 					fldStr = fldStr + "\t`S_UPDATE`\t\tVARCHAR(100) COMMENT '更新人'\t,\n";
@@ -133,8 +123,12 @@
 					fldStr += ');\n';
 					fldStr = fldStr.replace( /,\n\r\);\n\r/,'\n\r);\n\r' );
 					tmpstr += (fldStr+'\n\r');
+					tmp1str += '<!--'+ tblName[2]+'--><table><thead><tr>'+gridStr+'<tr></thead><tbody/></table>\n\r';
+					tmp2str += '<!--'+ tblName[2]+'-->'+formStr+'\n\r';
 					document.all.xmlContent.value = tmpstr ;
-				}
+					document.all.gridContent.value = tmp1str;
+					document.all.formContent.value = tmp2str;
+				}			
 			}
 			document.all.xmlContent.value = tmpstr+commstr;
 	   }
@@ -151,10 +145,10 @@
 				</TR>
 				<TR>
 					<TD>
-						<INPUT type="text"	 id="srcPath" name="srcPath" size="60" value="D:\02.项目\安全生产标准化管理系统\项目文档\04.设计文档\LANSTAR-SSMS-02 安全生产标准化数据结构设计_20150413_01.htm">
+						<INPUT type="text"	 id="srcPath" name="srcPath" size="60" value="">
 						<INPUT type="file"   id="srcFile" name="srcFile" size="0"  onchange="document.all.srcPath.value=this.value;document.all.xmlContent.value='';document.all.htmlFrame.src = srcPath.value;" style="display:none">
 						<INPUT type="button" id="btnOpen" name="btnOpen" value="浏览"  onclick="document.all.srcFile.click();">
-						<INPUT type="button" id="btnLoad" name="btnLoad" onclick="document.all.xmlContent.value='';document.all.htmlFrame.src = srcPath.value;" value="载入" >
+						<!--<INPUT type="button" id="btnLoad" name="btnLoad" onclick="document.all.xmlContent.value='';document.all.htmlFrame.src = srcPath.value;" value="载入" >-->
 						<INPUT type="button" id="btnParse" name="btnParse" value="解析"  onclick="PaserHtmlToXML();">
 						提示：先将数据库设计文档另存为类型为筛选过的网页后再加载
 					</TD>
@@ -163,6 +157,18 @@
 					<TD>
 						SQL:
 						<TEXTAREA style="width:100%;overflow:auto;border:1 solid #ccc;" id="xmlContent" name="Textarea1" rows="20" cols="128"></TEXTAREA>
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						表格:
+						<TEXTAREA style="width:100%;overflow:auto;border:1 solid #ccc;" id="gridContent" name="Textarea1" rows="20" cols="128"></TEXTAREA>
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						表单
+						<TEXTAREA style="width:100%;overflow:auto;border:1 solid #ccc;" id="formContent" name="Textarea1" rows="20" cols="128"></TEXTAREA>
 					</TD>
 				</TR>
 				<TR>
