@@ -3,7 +3,7 @@
 <script type="text/javascript">
     var setting = {
         gridId: "dg",
-        dataUrl: "list.json",
+        dataUrl: "list_publics.json",
         openUrl: "rec.html"
     };
     
