@@ -39,6 +39,7 @@
       </div>
 </div>
 
+<div class="container">
 <!--表单-->
 <form class="form-horizontal" id="mainForm">
 	<div class="form-actions">
@@ -108,5 +109,5 @@
 		</div>
 	</div>
 </form>
-
+</div>
 </@layout.doLayout>

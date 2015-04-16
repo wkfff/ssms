@@ -10,7 +10,7 @@
   <link rel="stylesheet" type="text/css" href="/resource/css/ie.css">
   <![endif]-->
   
-<link href="/resource/css/form.css" rel="stylesheet" type="text/css">
+
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
 <script type="text/javascript" src="/resource/js/jquery.json.min.js"></script>
 <script type="text/javascript" src="/resource/js/common.js"></script>

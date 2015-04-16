@@ -1,4 +1,4 @@
-.datagrid{padding-top:45px;}
+.datagrid .form-actions{margin-bottom: 0px;}
 .datagrid table{width:100%;table-layout:fixed;font-size:12px;border-collapse:collapse}
 .datagrid thead{background-color:#FAFAFA;}
 .datagrid thead td{background:#FAFAFA;border-bottom:1px solid #EEE;border-top:1px solid #EEE;padding:8px;text-align:left;}		

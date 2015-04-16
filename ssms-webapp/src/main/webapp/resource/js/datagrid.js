@@ -7,8 +7,8 @@ var datagrid = (function() {
 		this.tBody = $("table>tbody",this.gridId);
 		this.pageIndex = $("input[name='_pageIndex']",self.gridId);
 		this.pageSize = $("select[name='_pageSize']",self.gridId);
-		this.pageCount = $("label[name='_pageCount']",self.gridId);
-		this.recCount = $("label[name='_recCount']",self.gridId);
+		this.pageCount = $("span[name='_pageCount']",self.gridId);
+		this.recCount = $("span[name='_recCount']",self.gridId);
 		this.bindEvent();		
     }
     
