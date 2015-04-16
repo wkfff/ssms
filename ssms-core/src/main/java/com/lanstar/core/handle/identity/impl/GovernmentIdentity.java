@@ -8,9 +8,10 @@
 
 package com.lanstar.core.handle.identity.impl;
 
-import com.lanstar.core.handle.identity.Identity;
-
-public class GovernmentIdentity implements Identity {
+/**
+ * 政府人员
+ */
+public class GovernmentIdentity extends AbstractIdentity {
     @Override
     public String getId() {
         return null;
@@ -19,5 +20,13 @@ public class GovernmentIdentity implements Identity {
     @Override
     public String getName() {
         return null;
+    }
+
+    /**
+     * 获取租户类型
+     */
+    @Override
+    public String getTanentType() {
+        return "G";
     }
 }

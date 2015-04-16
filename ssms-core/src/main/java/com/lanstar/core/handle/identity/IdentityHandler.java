@@ -13,6 +13,7 @@ import com.lanstar.core.handle.HandleChain;
 import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.Handler;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.core.handle.identity.impl.AbstractIdentity;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +33,7 @@ public class IdentityHandler implements Handler {
             if ( false ) throw new HandleException( "身份认证未通过" ).errorCode( HttpServletResponse.SC_UNAUTHORIZED );
 
             // 创建或者获取身份标识
-            Identity identity = new Identity() {
+            Identity identity = new AbstractIdentity() {
                 @Override
                 public String getId() {
                     return null;
@@ -41,6 +42,14 @@ public class IdentityHandler implements Handler {
                 @Override
                 public String getName() {
                     return null;
+                }
+
+                /**
+                 * 获取租户类型
+                 */
+                @Override
+                public String getTanentType() {
+                    return "X";
                 }
             };
             // 绑定到请求上下文中

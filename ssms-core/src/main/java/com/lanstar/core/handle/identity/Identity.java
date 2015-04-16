@@ -8,8 +8,31 @@
 
 package com.lanstar.core.handle.identity;
 
+import com.lanstar.db.DbContext;
+
 public interface Identity {
+    /**
+     * 获取用户ID
+     */
     String getId();
 
+    /**
+     * 获取用户名
+     */
     String getName();
+
+    /**
+     * 获取租户ID
+     */
+    String getTanendId();
+
+    /**
+     * 获取租户类型
+     */
+    String getTanentType();
+
+    /**
+     * 获取租户对应的数据库上下文
+     */
+    DbContext getDbContext();
 }
