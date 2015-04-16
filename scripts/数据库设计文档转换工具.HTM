@@ -1,5 +1,5 @@
 <!doctype html>
-<!--suppress HtmlFormInputWithoutLabel -->
+
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -29,9 +29,8 @@
                 return;
             }
 
-            var tmpstr = '', tmp1str = '', tmp2str = '';
-            var tblName = '';
-            var commstr = '';
+            var sqlStr = '', gridsStr = '', formsStr = '', fixStr = '';
+            var titleStr = '',names = [];
             var fieldTypes = {};
             for (var i = 0; i < h2s.length; i++) {
                 var fldStr = '\n\r';
@@ -49,9 +48,9 @@
                     }
                 }
 
-                var tblstr = h2s[i].innerText.trim().replace(new RegExp(' +', 'gm'), ' ');
+                var titleStr = h2s[i].innerText.trim().replace(new RegExp(' +', 'gm'), ' ');
                 //字段类型解析
-                if (tblstr.indexOf('字段类型') > -1) {
+                if (titleStr.indexOf('字段类型') > -1) {
                     for (var j = 1; j < nextObj.rows.length; j++) {
                         var designType = nextObj.rows[j].cells[1].innerText.toUpperCase().trim();
                         if (designType.trim() == '') continue;
@@ -60,18 +59,40 @@
                         fieldTypes[designType] = realType;
                     }
                 }
-                if (tblstr.substring(0, 2) != '2.') continue;
+				//固定字段解析
+                if (titleStr.indexOf('固定字段') > -1) {
+                    for (var j = 1; j < nextObj.rows.length; j++) {
+                        var IDStr = nextObj.rows[j].cells[1].innerText.trim();
+                        if (IDStr == '' || IDStr == 'SID') continue;
+                        var NoteStr = nextObj.rows[j].cells[2].innerText;
+                        NoteStr = NoteStr.replace(/\r+/g, ' ').replace(/\n+/g, ' ');
+                        var TypeStr = nextObj.rows[j].cells[3].innerText.toUpperCase().trim();
+                        var t = fieldTypes[TypeStr];
+                        if (typeof(t) != 'undefined') TypeStr = t;
+                        var IsKeyStr = nextObj.rows[j].cells[4].innerText;
+                        var IsNullStr = nextObj.rows[j].cells[5].innerText;
+                        var DefaultStr = (nextObj.rows[j].cells[6].innerText).trim().replace(new RegExp('‘', 'gm'), '\'').replace(new RegExp('’', 'gm'), '\'');
 
-                tblName = tblstr.split(' ');
-                if (tblName.length != 3) {
-                    commstr += "--" + tblstr + "  格式无效\n\r";
+                        fixStr += ('\t`' + IDStr + '`\t\t\t' + TypeStr + '\t');
+                        if (DefaultStr.length > 0) fldStr += ' DEFAULT ' + DefaultStr + '\t';
+                        if (IsNullStr != 'undefined' && IsNullStr == 'N') fldStr += 'NOT NULL\t';
+                        fixStr += ' COMMENT \'' + NoteStr + '\'';
+                        fixStr += ',\n';
+                    }
+					 fixStr += '\tPRIMARY KEY  (`SID`)\n';
+                }
+                if (titleStr.substring(0, 2) != '2.') continue;
+
+                names = titleStr.split(' ');
+                if (names.length != 3) {
+                    sqlStr += "--" + titleStr + "  格式无效\n\r";
                     continue;
                 }
 
                 if (nextObj.rows[0].cells.length == 8) {
-                    tmpstr += '-- ' + tblName[2] + ':\n\r';
-                    tmpstr += 'DROP TABLE IF EXISTS ' + tblName[1] + ';\n';
-                    tmpstr += 'CREATE TABLE ' + tblName[1] + '\n(';
+                    sqlStr += '-- ' + names[2] + ':\n\r';
+                    sqlStr += 'DROP TABLE IF EXISTS ' + names[1] + ';\n';
+                    sqlStr += 'CREATE TABLE ' + names[1] + '\n(';
                     // 创建默认的SID字段
                     fldStr = fldStr + "\t`SID`\t\tINT(11) \tNOT NULL auto_increment COMMENT '自增主键',\n";
 
@@ -81,7 +102,7 @@
                         if (IDStr == '' || IDStr == 'SID') continue;
                         var NoteStr = nextObj.rows[j].cells[2].innerText;
                         NoteStr = NoteStr.replace(/\r+/g, ' ').replace(/\n+/g, ' ');
-                        var TypeStr = nextObj.rows[j].cells[3].innerText.toUpperCase().trim();//.replace('SID','INT').replace('PARAMETER','VARCHAR(32)');
+                        var TypeStr = nextObj.rows[j].cells[3].innerText.toUpperCase().trim();
                         var t = fieldTypes[TypeStr];
                         if (typeof(t) != 'undefined') TypeStr = t;
                         var IsKeyStr = nextObj.rows[j].cells[4].innerText;
@@ -94,43 +115,29 @@
                         fldStr += ' COMMENT \'' + NoteStr + '\'';
                         fldStr += ',\n';
 
-
                         //表格
-                        gridStr += '<td id="' + IDStr + '">' + NoteStr + '</td>';
+                        gridStr += '\t<td id="' + IDStr + '">' + NoteStr + '</td>\n';
                         //表单
-                        formStr += '<div class="control-group">\t';
-                        formStr += '	<label class="control-label" for="input01">' + NoteStr + ':</label>\t';
-                        formStr += '	<div class="controls">\t';
-                        formStr += '	<input type="text" placeholder="" class="input-xxlarge" id="' + IDStr + '" name="' + IDStr + '">\t';
-                        formStr += '	<p class="help-block">' + NoteStr + '</p>\t';
-                        formStr += '	</div>\t';
-                        formStr += '</div>\t';
+                        formStr += '<div class="control-group">\n';
+                        formStr += '\t<label class="control-label" for="input01">' + NoteStr + ':</label>\n';
+                        formStr += '\t<div class="controls">\n';
+                        formStr += '\t\t<input type="text" placeholder="" class="input-xxlarge" id="' + IDStr + '" name="' + IDStr + '">\n';
+                        formStr += '\t\t<p class="help-block">' + NoteStr + '</p>\n';
+                        formStr += '\t</div>\n';
+                        formStr += '</div>\n';
                     }
 
-                    fldStr = fldStr + "\t`R_CREATE`\t\tVARCHAR(32) COMMENT '创建人编号'\t,\n";
-                    fldStr = fldStr + "\t`S_CREATE`\t\tVARCHAR(100) COMMENT '创建人'\t,\n";
-                    fldStr = fldStr + "\t`T_CREATE`\t\tDATETIME COMMENT '创建时间'\t,\n";
-                    fldStr = fldStr + "\t`R_UPDATE`\t\tVARCHAR(32) COMMENT '更新人编号'\t,\n";
-                    fldStr = fldStr + "\t`S_UPDATE`\t\tVARCHAR(100) COMMENT '更新人'\t,\n";
-                    fldStr = fldStr + "\t`T_UPDATE`\t\tTIMESTAMP COMMENT '更新时间'\t,\n";
-                    fldStr = fldStr + "\t`R_TANENT`\t\tINT(9) COMMENT '关联的租户'\t,\n";
-                    fldStr = fldStr + "\t`P_TANENT`\t\tCHAR(1) COMMENT '租户类型(E,R,G)'\t,\n";
-                    fldStr = fldStr + "\t`N_STATE`\t\tINT COMMENT '状态'\t,\n";
-                    fldStr = fldStr + "\t`N_INDEX`\t\tINT COMMENT '排序'\t,\n";
-                    fldStr = fldStr + "\t`N_VERSION`\t\tINT COMMENT '版本'\t,\n";
-
-                    fldStr += '\tPRIMARY KEY  (`SID`)\n';
+                    fldStr += fixStr;
                     fldStr += ');\n';
                     fldStr = fldStr.replace(/,\n\r\);\n\r/, '\n\r);\n\r');
-                    tmpstr += (fldStr + '\n\r');
-                    tmp1str += '<!--' + tblName[2] + '--><table><thead><tr>' + gridStr + '<tr></thead><tbody/></table>\n\r';
-                    tmp2str += '<!--' + tblName[2] + '-->' + formStr + '\n\r';
-                    document.all.xmlContent.value = tmpstr;
-                    document.all.gridContent.value = tmp1str;
-                    document.all.formContent.value = tmp2str;
+                    sqlStr += (fldStr + '\n\r');
+                    gridsStr += '<!--' + names[2] + '-->\n<table><thead><tr>\n' + gridStr + '\n<tr></thead><tbody/></table>\n\r';
+                    formsStr += '<!--' + names[2] + '-->\n' + formStr + '\n\r';                                        
                 }
             }
-            document.all.xmlContent.value = tmpstr + commstr;
+            document.all.xmlContent.value = sqlStr;
+			document.all.gridContent.value = gridsStr;
+            document.all.formContent.value = formsStr;
         }
     </script>
 </head>
@@ -178,7 +185,7 @@
         <TD>
             文档：
             <IFRAME style="width:100%;overflow:auto;border:1px solid #ccc;"
-                    onload="this.height=this.contentWindow.document.body.scrollHeight" ID="htmlFrame"
+                    onload="this.height=this.contentWindow.document.body.scrollHeight;if(this.src.indexOf('.htm')>-1)alert('文档加载完毕！');" ID="htmlFrame"
                     FRAMEBORDER="0" SCROLLING="yes" SRC=""></IFRAME>
         </TD>
     </TR>
