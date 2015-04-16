@@ -13,6 +13,7 @@ import com.lanstar.core.handle.HandleChain;
 import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.Handler;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.core.handle.identity.impl.SystemIdentity;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -32,17 +33,7 @@ public class IdentityHandler implements Handler {
             if ( false ) throw new HandleException( "身份认证未通过" ).errorCode( HttpServletResponse.SC_UNAUTHORIZED );
 
             // 创建或者获取身份标识
-            Identity identity = new Identity() {
-                @Override
-                public String getId() {
-                    return null;
-                }
-
-                @Override
-                public String getName() {
-                    return null;
-                }
-            };
+            Identity identity = new SystemIdentity();
             // 绑定到请求上下文中
             requestContext.bindIdentity( new IdentityContextImpl( identity ) );
 

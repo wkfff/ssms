@@ -13,6 +13,8 @@ import com.lanstar.db.DbContext;
 public interface IdentityContext {
     <T extends Identity> T getIdentity( Class<T> type );
 
+    Identity getIdentity();
+
     <T extends Identity> boolean is( Class<T> type );
 
     DbContext getDbContext();
