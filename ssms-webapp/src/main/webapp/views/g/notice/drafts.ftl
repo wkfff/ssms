@@ -3,8 +3,9 @@
 <script type="text/javascript">
     var setting = {
         gridId: "dg",
-        dataUrl: "list.json",
-        openUrl: "rec.html"
+        dataUrl: "list_drafts.json",
+        openUrl: "rec.html",
+        delUrl: "dels.json"
     };
     
     $(document).ready(function () {
@@ -17,6 +18,7 @@
 <div class="datagrid" id="dg"> 
      <div class="form-actions">
      <input type="button" name="btn_open" class="btn" value="查看">
+     <input type="button" name="btn_del" class="btn" value="删除">
      </div>
     <table>
         <thead>
