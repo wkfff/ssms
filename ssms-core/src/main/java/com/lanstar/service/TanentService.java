@@ -9,6 +9,7 @@
 package com.lanstar.service;
 
 import com.lanstar.core.handle.identity.Identity;
+import com.lanstar.db.DbContext;
 
 /**
  * 租户服务
@@ -18,9 +19,14 @@ public abstract class TanentService {
 
     /**
      * 根据身份标识获取租户服务
-     * @param identity
+     * @param identity 身份标识
      */
     public TanentService( Identity identity ) {
         this.identity = identity;
     }
+
+    /**
+     * 获取租户对应的数据库上下文
+     */
+    public DbContext getDbContext() {return identity.getDbContext();}
 }
