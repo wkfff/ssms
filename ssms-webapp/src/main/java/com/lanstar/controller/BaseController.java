@@ -15,7 +15,7 @@ import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.handle.action.ActionInvocation;
 import com.lanstar.core.handle.identity.IdentityContext;
 import com.lanstar.db.ar.ARTable;
-import com.lanstar.service.bean.Parameter;
+import com.lanstar.service.parameter.Parameter;
 import com.lanstar.service.parameter.ParameterResolver;
 
 import java.sql.SQLException;
