@@ -26,7 +26,7 @@
 |S_                |引用表，字符串。冗余设计。
 |N_                |数值型
 |T_                |日期型
-|Z_                |引用编码，非指向SID，选项值，KEY
+|P_                |引用参数，非指向SID，选项值，KEY
 |B_                |bool值
 
 
@@ -89,6 +89,7 @@ else return;
 |缩略词       |描述
 |-------------|----------------------
 |SYS          |system，系统
+|STDTMP       |达标体系模板
 
 
 # 四、页面调度规则
@@ -203,3 +204,18 @@ Model变量->本地变量 --> request --> url参数 --> session --> servletConte
 1. 租户数据库配置信息放置于: `webapp/WEB-INF/db`
 2. 使用properties文件进行配置（支持xml？）
 3. 每个文件表示一个数据库配置
+
+## 六、系统参数使用规则
+### 6.1 单值参数
+未实现
+
+### 6.2 多值参数
+1. 数据命名规则：
+    - C_CODE: 参数名字+'_'+KEY。如：`USER_SEX_1`
+    - C_VALUE: 名称。如：`男`
+2. 模板上使用
+```
+<#list _USER_SEX_ as map>
+    ${map.key}:${map.value}
+</#list>
+```

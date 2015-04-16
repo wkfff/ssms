@@ -1,183 +1,187 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-	<head>
-		<title>Êı¾İ¿âÉè¼ÆÎÄµµ×ª»»¹¤¾ß for MySQL - FLIN</title>
-		<style>
-			body,input,textarea,button,select{font-size:12px;font-family:Arial,sans-serif}
-		</style>
-		<script language="javascript">
+<!doctype html>
+<!--suppress HtmlFormInputWithoutLabel -->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>æ•°æ®åº“è®¾è®¡æ–‡æ¡£è½¬æ¢å·¥å…· for MySQL - FLIN</title>
+    <style type="text/css">
+        body, input, textarea, button, select {
+            font-size: 14px;
+            font-family: Arial, sans-serif
+        }
+    </style>
+    <script type="text/javascript">
+        String.prototype.trim = function () {
+            return this.replace(/(^\s*)|(\s*$)/g, "");
+        };
 
-		String.prototype.trim=function(){
-¡¡¡¡		return this.replace(/(^\s*)|(\s*$)/g, "");
-¡¡¡¡	}
+        function PaserHtmlToXML() {
+            var idoc = document.all.htmlFrame.contentWindow.document;
+            if (typeof(idoc) == 'undefined') {
+                alert('æ²¡æœ‰æ‰¾åˆ°å¯¹åº”æ–‡æ¡£çš„DOCUMENTå¯¹è±¡');
+                return;
+            }
 
-		function PaserHtmlToXML()
-		{
-			var idoc = document.all.htmlFrame.contentWindow.document;
-			if(typeof(idoc) == 'undefined') {
-				alert('Ã»ÓĞÕÒµ½¶ÔÓ¦ÎÄµµµÄDOCUMENT¶ÔÏó');
-				return;
-			}
+            document.all.xmlContent.value = '';
+            var h2s = idoc.getElementsByTagName('h2');
+            if (typeof(h2s) == 'undefined') {
+                alert('æ²¡æœ‰æ‰¾åˆ°æ ‡é¢˜ï¼Œä¸æ˜¯å±äºæ ‡å‡†çš„æ•°æ®åº“è®¾è®¡æ–‡æ¡£è½¬æ¢æ¥çš„æ–‡ä»¶ï¼');
+                return;
+            }
 
-			document.all.xmlContent.value = '';
-			h2s = idoc.getElementsByTagName('h2');
-			if(typeof(h2s) == 'undefined') {			
-				alert('Ã»ÓĞÕÒµ½±êÌâ£¬²»ÊÇÊôÓÚ±ê×¼µÄÊı¾İ¿âÉè¼ÆÎÄµµ×ª»»À´µÄÎÄ¼ş£¡');
-				return;
-			}
+            var tmpstr = '', tmp1str = '', tmp2str = '';
+            var tblName = '';
+            var commstr = '';
+            var fieldTypes = {};
+            for (var i = 0; i < h2s.length; i++) {
+                var fldStr = '\n\r';
+                var gridStr = '';
+                var formStr = '';
 
-			var tmpstr='',tmp1str='',tmp2str = '';
-			var tblName = '';
-			var commstr = '';
-			var fieldTypes = {};
-			for( i=0;i<h2s.length;i++ )
-			{
-				var fldStr = '\n\r';
-				var gridStr = '';
-				var formStr = '';
+                var nextObj = h2s[i];
+                if (nextObj == 'undefined') continue;
+                var isTable = false;
+                while (isTable == false) {
+                    nextObj = nextObj.nextSibling;
+                    if (nextObj.tagName == 'DIV') {
+                        nextObj = nextObj.getElementsByTagName('TABLE')[0];
+                        isTable = true;
+                    }
+                }
 
-				nextObj = h2s[i];
-				if( nextObj=='undefined' ) continue;
-				var isTable = false;
-				while(isTable==false){
-					nextObj = nextObj.nextSibling;
-					if (nextObj.tagName=='DIV')
-					{
-						nextObj = nextObj.getElementsByTagName('TABLE')[0];
-						isTable = true;
-					}
-				}
+                var tblstr = h2s[i].innerText.trim().replace(new RegExp(' +', 'gm'), ' ');
+                //å­—æ®µç±»å‹è§£æ
+                if (tblstr.indexOf('å­—æ®µç±»å‹') > -1) {
+                    for (var j = 1; j < nextObj.rows.length; j++) {
+                        var designType = nextObj.rows[j].cells[1].innerText.toUpperCase().trim();
+                        if (designType.trim() == '') continue;
+                        var realType = nextObj.rows[j].cells[3].innerText;
+                        realType = realType.trim();
+                        fieldTypes[designType] = realType;
+                    }
+                }
+                if (tblstr.substring(0, 2) != '2.') continue;
 
-				tblstr = h2s[i].innerText.trim().replace(new RegExp(' +','gm'),' ');
-				//×Ö¶ÎÀàĞÍ½âÎö				
-				if(tblstr.indexOf('×Ö¶ÎÀàĞÍ')>-1){
-					for( j=1;j<nextObj.rows.length;j++ )
-					{
-						designType = nextObj.rows[j].cells[1].innerText.toUpperCase().trim();
-						if(designType.trim()=='') continue;
-						realType =  nextObj.rows[j].cells[3].innerText;
-						realType = realType.trim();
-						fieldTypes[designType] = realType;						
-					}			
-				}
-				if(tblstr.substring(0,2)!='2.') continue;
+                tblName = tblstr.split(' ');
+                if (tblName.length != 3) {
+                    commstr += "--" + tblstr + "  æ ¼å¼æ— æ•ˆ\n\r";
+                    continue;
+                }
 
-				tblName = tblstr.split(' ');
-				if (tblName.length!=3){
-					commstr+="--"+tblstr+"  ¸ñÊ½ÎŞĞ§\n\r";
-					continue;
-				}
-				
-				if( nextObj.rows[0].cells.length==8)
-				{
-					tmpstr += '-- ' + tblName[2] + ':\n\r';
-					tmpstr += 'DROP TABLE IF EXISTS ' + tblName[1] + ';\n';
-					tmpstr += 'CREATE TABLE ' + tblName[1] + '\n(' ;
-					// ´´½¨Ä¬ÈÏµÄSID×Ö¶Î
-					fldStr = fldStr + "\t`SID`\t\tINT(11) \tNOT NULL auto_increment COMMENT '×ÔÔöÖ÷¼ü',\n";
-					
-
-					for( j=1;j<nextObj.rows.length;j++ )
-					{
-						IDStr = nextObj.rows[j].cells[1].innerText.trim();
-						if(IDStr=='' || IDStr=='SID') continue;
-						NoteStr =  nextObj.rows[j].cells[2].innerText;
-						NoteStr = NoteStr.replace(/\r+/g,' ').replace(/\n+/g,' ' );
-						TypeStr = nextObj.rows[j].cells[3].innerText.toUpperCase().trim();//.replace('SID','INT').replace('PARAMETER','VARCHAR(32)');
-						var t = fieldTypes[TypeStr];
-						if (typeof(t)!='undefined') TypeStr = t;
-						IsKeyStr = nextObj.rows[j].cells[4].innerText;
-						IsNullStr = nextObj.rows[j].cells[5].innerText;
-						DefaultStr = (nextObj.rows[j].cells[6].innerText).trim().replace(new RegExp('¡®','gm'),'\'').replace(new RegExp('¡¯','gm'),'\'');
-
-						fldStr += ('\t`' + IDStr + '`\t\t\t' + TypeStr+'\t') ;
-						if(DefaultStr.length>0) fldStr += ' DEFAULT '+DefaultStr+'\t';
-						if(IsNullStr!='undefined' && IsNullStr=='N') fldStr += 'NOT NULL\t';
-						fldStr += ' COMMENT \''+NoteStr+'\'';
-						fldStr += ',\n';
+                if (nextObj.rows[0].cells.length == 8) {
+                    tmpstr += '-- ' + tblName[2] + ':\n\r';
+                    tmpstr += 'DROP TABLE IF EXISTS ' + tblName[1] + ';\n';
+                    tmpstr += 'CREATE TABLE ' + tblName[1] + '\n(';
+                    // åˆ›å»ºé»˜è®¤çš„SIDå­—æ®µ
+                    fldStr = fldStr + "\t`SID`\t\tINT(11) \tNOT NULL auto_increment COMMENT 'è‡ªå¢ä¸»é”®',\n";
 
 
-						//±í¸ñ
-						gridStr += '<td id="'+IDStr+'">'+NoteStr+'</td>';
-						//±íµ¥
-						formStr += '<div class="control-group">\t';
-						formStr += '	<label class="control-label" for="input01">'+NoteStr+':</label>\t';
-						formStr += '	<div class="controls">\t';
-						formStr += '	<input type="text" placeholder="" class="input-xxlarge" id="'+IDStr+'" name="'+IDStr+'">\t';
-						formStr += '	<p class="help-block">'+NoteStr+'</p>\t';
-						formStr += '	</div>\t';
-						formStr += '</div>\t';
-					}
+                    for (var j = 1; j < nextObj.rows.length; j++) {
+                        var IDStr = nextObj.rows[j].cells[1].innerText.trim();
+                        if (IDStr == '' || IDStr == 'SID') continue;
+                        var NoteStr = nextObj.rows[j].cells[2].innerText;
+                        NoteStr = NoteStr.replace(/\r+/g, ' ').replace(/\n+/g, ' ');
+                        var TypeStr = nextObj.rows[j].cells[3].innerText.toUpperCase().trim();//.replace('SID','INT').replace('PARAMETER','VARCHAR(32)');
+                        var t = fieldTypes[TypeStr];
+                        if (typeof(t) != 'undefined') TypeStr = t;
+                        var IsKeyStr = nextObj.rows[j].cells[4].innerText;
+                        var IsNullStr = nextObj.rows[j].cells[5].innerText;
+                        var DefaultStr = (nextObj.rows[j].cells[6].innerText).trim().replace(new RegExp('â€˜', 'gm'), '\'').replace(new RegExp('â€™', 'gm'), '\'');
 
-					fldStr = fldStr + "\t`R_CREATE`\t\tVARCHAR(32) COMMENT '´´½¨ÈË±àºÅ'\t,\n";
-					fldStr = fldStr + "\t`S_CREATE`\t\tVARCHAR(100) COMMENT '´´½¨ÈË'\t,\n";
-					fldStr = fldStr + "\t`T_CREATE`\t\tDATETIME COMMENT '´´½¨Ê±¼ä'\t,\n";
-					fldStr = fldStr + "\t`R_UPDATE`\t\tVARCHAR(32) COMMENT '¸üĞÂÈË±àºÅ'\t,\n";
-					fldStr = fldStr + "\t`S_UPDATE`\t\tVARCHAR(100) COMMENT '¸üĞÂÈË'\t,\n";
-					fldStr = fldStr + "\t`T_UPDATE`\t\tTIMESTAMP COMMENT '¸üĞÂÊ±¼ä'\t,\n";
-					fldStr = fldStr + "\t`N_STATE`\t\tINT COMMENT '×´Ì¬'\t,\n";
-					fldStr = fldStr + "\t`N_INDEX`\t\tINT COMMENT 'ÅÅĞò'\t,\n";
-					fldStr = fldStr + "\t`N_VERSION`\t\tINT COMMENT '°æ±¾'\t,\n";
+                        fldStr += ('\t`' + IDStr + '`\t\t\t' + TypeStr + '\t');
+                        if (DefaultStr.length > 0) fldStr += ' DEFAULT ' + DefaultStr + '\t';
+                        if (IsNullStr != 'undefined' && IsNullStr == 'N') fldStr += 'NOT NULL\t';
+                        fldStr += ' COMMENT \'' + NoteStr + '\'';
+                        fldStr += ',\n';
 
-					fldStr +='\tPRIMARY KEY  (`SID`)\n';
-					fldStr += ');\n';
-					fldStr = fldStr.replace( /,\n\r\);\n\r/,'\n\r);\n\r' );
-					tmpstr += (fldStr+'\n\r');
-					tmp1str += '<!--'+ tblName[2]+'--><table><thead><tr>'+gridStr+'<tr></thead><tbody/></table>\n\r';
-					tmp2str += '<!--'+ tblName[2]+'-->'+formStr+'\n\r';
-					document.all.xmlContent.value = tmpstr ;
-					document.all.gridContent.value = tmp1str;
-					document.all.formContent.value = tmp2str;
-				}			
-			}
-			document.all.xmlContent.value = tmpstr+commstr;
-	   }
-		</script>
-	</head>
-	<body>
-		<center>
-			<TABLE cellSpacing="3" cellPadding="0" width="100%" border="0">
-				<TR>
-					<TD align="center">
-						<strong>Êı¾İ¿âÉè¼ÆÎÄµµ×ª»»¹¤¾ß - MySQL <strong>
-						<hr style="height:1px;border:none;border-top:1px dashed #0066CC;"></hr>
-					</TD>
-				</TR>
-				<TR>
-					<TD>
-						<INPUT type="text"	 id="srcPath" name="srcPath" size="60" value="">
-						<INPUT type="file"   id="srcFile" name="srcFile" size="0"  onchange="document.all.srcPath.value=this.value;document.all.xmlContent.value='';document.all.htmlFrame.src = srcPath.value;" style="display:none">
-						<INPUT type="button" id="btnOpen" name="btnOpen" value="ä¯ÀÀ"  onclick="document.all.srcFile.click();">
-						<!--<INPUT type="button" id="btnLoad" name="btnLoad" onclick="document.all.xmlContent.value='';document.all.htmlFrame.src = srcPath.value;" value="ÔØÈë" >-->
-						<INPUT type="button" id="btnParse" name="btnParse" value="½âÎö"  onclick="PaserHtmlToXML();">
-						ÌáÊ¾£ºÏÈ½«Êı¾İ¿âÉè¼ÆÎÄµµÁí´æÎªÀàĞÍÎªÉ¸Ñ¡¹ıµÄÍøÒ³ºóÔÙ¼ÓÔØ
-					</TD>
-				</TR>
-				<TR>
-					<TD>
-						SQL:
-						<TEXTAREA style="width:100%;overflow:auto;border:1 solid #ccc;" id="xmlContent" name="Textarea1" rows="20" cols="128"></TEXTAREA>
-					</TD>
-				</TR>
-				<TR>
-					<TD>
-						±í¸ñ:
-						<TEXTAREA style="width:100%;overflow:auto;border:1 solid #ccc;" id="gridContent" name="Textarea1" rows="20" cols="128"></TEXTAREA>
-					</TD>
-				</TR>
-				<TR>
-					<TD>
-						±íµ¥
-						<TEXTAREA style="width:100%;overflow:auto;border:1 solid #ccc;" id="formContent" name="Textarea1" rows="20" cols="128"></TEXTAREA>
-					</TD>
-				</TR>
-				<TR>
-					<TD>
-						ÎÄµµ£º
-						<IFRAME  style="width:100%;overflow:auto;border:1 solid #ccc;" onload="this.height=this.contentWindow.document.body.scrollHeight" ID="htmlFrame" FRAMEBORDER="0" SCROLLING="yes" SRC=""></IFRAME>
-					</TD>
-				</TR>
-			</TABLE>
-		</center>
-	</body>
+
+                        //è¡¨æ ¼
+                        gridStr += '<td id="' + IDStr + '">' + NoteStr + '</td>';
+                        //è¡¨å•
+                        formStr += '<div class="control-group">\t';
+                        formStr += '	<label class="control-label" for="input01">' + NoteStr + ':</label>\t';
+                        formStr += '	<div class="controls">\t';
+                        formStr += '	<input type="text" placeholder="" class="input-xxlarge" id="' + IDStr + '" name="' + IDStr + '">\t';
+                        formStr += '	<p class="help-block">' + NoteStr + '</p>\t';
+                        formStr += '	</div>\t';
+                        formStr += '</div>\t';
+                    }
+
+                    fldStr = fldStr + "\t`R_CREATE`\t\tVARCHAR(32) COMMENT 'åˆ›å»ºäººç¼–å·'\t,\n";
+                    fldStr = fldStr + "\t`S_CREATE`\t\tVARCHAR(100) COMMENT 'åˆ›å»ºäºº'\t,\n";
+                    fldStr = fldStr + "\t`T_CREATE`\t\tDATETIME COMMENT 'åˆ›å»ºæ—¶é—´'\t,\n";
+                    fldStr = fldStr + "\t`R_UPDATE`\t\tVARCHAR(32) COMMENT 'æ›´æ–°äººç¼–å·'\t,\n";
+                    fldStr = fldStr + "\t`S_UPDATE`\t\tVARCHAR(100) COMMENT 'æ›´æ–°äºº'\t,\n";
+                    fldStr = fldStr + "\t`T_UPDATE`\t\tTIMESTAMP COMMENT 'æ›´æ–°æ—¶é—´'\t,\n";
+                    fldStr = fldStr + "\t`R_TANENT`\t\tINT(9) COMMENT 'å…³è”çš„ç§Ÿæˆ·'\t,\n";
+                    fldStr = fldStr + "\t`P_TANENT`\t\tCHAR(1) COMMENT 'ç§Ÿæˆ·ç±»å‹(E,R,G)'\t,\n";
+                    fldStr = fldStr + "\t`N_STATE`\t\tINT COMMENT 'çŠ¶æ€'\t,\n";
+                    fldStr = fldStr + "\t`N_INDEX`\t\tINT COMMENT 'æ’åº'\t,\n";
+                    fldStr = fldStr + "\t`N_VERSION`\t\tINT COMMENT 'ç‰ˆæœ¬'\t,\n";
+
+                    fldStr += '\tPRIMARY KEY  (`SID`)\n';
+                    fldStr += ');\n';
+                    fldStr = fldStr.replace(/,\n\r\);\n\r/, '\n\r);\n\r');
+                    tmpstr += (fldStr + '\n\r');
+                    tmp1str += '<!--' + tblName[2] + '--><table><thead><tr>' + gridStr + '<tr></thead><tbody/></table>\n\r';
+                    tmp2str += '<!--' + tblName[2] + '-->' + formStr + '\n\r';
+                    document.all.xmlContent.value = tmpstr;
+                    document.all.gridContent.value = tmp1str;
+                    document.all.formContent.value = tmp2str;
+                }
+            }
+            document.all.xmlContent.value = tmpstr + commstr;
+        }
+    </script>
+</head>
+<body>
+<TABLE cellSpacing="3" cellPadding="0" width="100%" border="0">
+    <TR>
+        <TD align="center"><strong>æ•°æ®åº“è®¾è®¡æ–‡æ¡£è½¬æ¢å·¥å…· - MySQL </strong>
+            <hr style="height:1px;border:none;border-top:1px dashed #0066CC;"/>
+        </TD>
+    </TR>
+    <TR>
+        <TD>
+            <INPUT type="text" id="srcPath" name="srcPath" size="60" value="">
+            <INPUT type="file" id="srcFile" name="srcFile" size="0"
+                   onchange="document.all.srcPath.value=this.value;document.all.xmlContent.value='';document.all.htmlFrame.src = srcPath.value;"
+                   style="display:none">
+            <INPUT type="button" id="btnOpen" name="btnOpen" value="æµè§ˆ" onclick="document.all.srcFile.click();">
+            <!--<INPUT type="button" id="btnLoad" name="btnLoad" onclick="document.all.xmlContent.value='';document.all.htmlFrame.src = srcPath.value;" value="è½½å…¥" >-->
+            <INPUT type="button" id="btnParse" name="btnParse" value="è§£æ" onclick="PaserHtmlToXML();">
+            æç¤ºï¼šå…ˆå°†æ•°æ®åº“è®¾è®¡æ–‡æ¡£å¦å­˜ä¸ºç±»å‹ä¸ºç­›é€‰è¿‡çš„ç½‘é¡µåå†åŠ è½½
+        </TD>
+    </TR>
+    <TR>
+        <TD>
+            SQL:
+                <TEXTAREA style="width:100%;overflow:auto;border:1px solid #ccc;" id="xmlContent" name="Textarea1"
+                          rows="20" cols="128"></TEXTAREA>
+        </TD>
+    </TR>
+    <TR>
+        <TD>
+            è¡¨æ ¼:
+                <TEXTAREA style="width:100%;overflow:auto;border:1px solid #ccc;" id="gridContent" name="Textarea1"
+                          rows="20" cols="128"></TEXTAREA>
+        </TD>
+    </TR>
+    <TR>
+        <TD>
+            è¡¨å•
+                <TEXTAREA style="width:100%;overflow:auto;border:1px solid #ccc;" id="formContent" name="Textarea1"
+                          rows="20" cols="128"></TEXTAREA>
+        </TD>
+    </TR>
+    <TR>
+        <TD>
+            æ–‡æ¡£ï¼š
+            <IFRAME style="width:100%;overflow:auto;border:1px solid #ccc;"
+                    onload="this.height=this.contentWindow.document.body.scrollHeight" ID="htmlFrame"
+                    FRAMEBORDER="0" SCROLLING="yes" SRC=""></IFRAME>
+        </TD>
+    </TR>
+</TABLE>
+</body>
 </html>
