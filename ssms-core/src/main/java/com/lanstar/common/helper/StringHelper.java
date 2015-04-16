@@ -23,9 +23,7 @@ public final class StringHelper {
      * 将首字母设置成大写
      */
     public static String capitalize( String str ) {
-        if ( str == null || (str.length()) == 0 ) {
-            return str;
-        }
+        if ( str == null || (str.length()) == 0 ) return str;
         return String.valueOf( Character.toTitleCase( str.charAt( 0 ) ) ) + str.substring( 1 );
     }
 
@@ -89,8 +87,7 @@ public final class StringHelper {
     /**
      * 任何一个地方存在空串都返回true;
      */
-    public static boolean isBlank( String str, String... args ) {
-        if ( isBlank( str ) ) return true;
+    public static boolean isBlank( String... args ) {
         for ( String o : args )
             if ( isBlank( o ) ) return true;
         return false;
@@ -252,9 +249,8 @@ public final class StringHelper {
     /**
      * 相加字符串
      */
-    public static String concat( String src, String... args ) {
+    public static String concat( String... args ) {
         StringBuilder result = new StringBuilder();
-        if ( src != null ) result.append( src );
         if ( args != null ) for ( String s : args ) {
             if ( s != null ) result.append( s );
         }
