@@ -30,7 +30,8 @@ public class LocationBuilder {
     }
 
     public LocationBuilder extension( String ext ) {
-        ext = StringUtils.getFilenameExtension( ext );
+        String ext2 = StringUtils.getFilenameExtension( ext );
+        if (ext2 != null) ext = ext2;
         buffer.append( '.' ).append( ext );
         return this;
     }

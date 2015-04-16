@@ -14,6 +14,7 @@ import com.lanstar.db.DbContext;
 
 /**
  * 标识系统默认用户
+ * TODO:系统用户数据加载
  */
 public class SystemIdentity implements Identity {
     public static Identity me() {

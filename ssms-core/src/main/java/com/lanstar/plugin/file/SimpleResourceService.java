@@ -11,6 +11,7 @@ package com.lanstar.plugin.file;
 import com.lanstar.common.io.FileSystemResource;
 import com.lanstar.common.io.InputStreamSource;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,7 +21,7 @@ public class SimpleResourceService implements ResourceService {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public SimpleResourceService( String baseFolder ) {
-        this.baseFolder = new FileSystemResource( baseFolder );
+        this.baseFolder = new FileSystemResource( baseFolder+"/" );
         if (!this.baseFolder.exists()) this.baseFolder.getFile().mkdirs();
     }
 
@@ -43,15 +44,23 @@ public class SimpleResourceService implements ResourceService {
      * @throws IOException
      */
     @Override
-    public void saveResource( InputStreamSource source, String location ) throws IOException {
+    public long saveResource( InputStreamSource source, String location ) throws IOException {
         FileSystemResource file = (FileSystemResource) this.baseFolder.createRelative( location );
+        if (!file.exists()) {
+            File tmp = file.getFile();
+            tmp.getParentFile().mkdirs();
+            tmp.createNewFile();
+        }
         byte[] buffer = new byte[1024];
+        long length = 0;
         try ( InputStream input = source.getInputStream(); OutputStream output = file.getOutputStream() ) {
             int count;
             while ( (count = input.read( buffer )) > 0 ) {
                 output.write( buffer, 0, count );
+                length+=count;
             }
         }
+        return length;
     }
 
     @Override

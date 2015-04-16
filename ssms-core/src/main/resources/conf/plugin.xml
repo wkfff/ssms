@@ -24,6 +24,8 @@
     <bean class="com.lanstar.plugin.template.freemarker.FreemarkerPlugin"/>
     <!-- JSON插件 -->
     <bean class="com.lanstar.plugin.json.JsonPlugin"/>
+    <!-- 资源文件插件 -->
+    <bean class="com.lanstar.plugin.file.ResourcePlugin"/>
     <!-- 控制台插件 -->
     <bean class="com.lanstar.plugin.console.ConsolePlugin"/>
 </beans>

@@ -28,6 +28,11 @@ class IdentityContextImpl implements IdentityContext {
     }
 
     @Override
+    public Identity getIdentity() {
+        return identity;
+    }
+
+    @Override
     public <T extends Identity> boolean is( Class<T> type ) {
         Asserts.notNull( type, "TYPE NOT NULL" );
         return type.isAssignableFrom( identity.getClass() );

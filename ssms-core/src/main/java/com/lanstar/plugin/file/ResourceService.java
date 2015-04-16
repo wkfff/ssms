@@ -28,7 +28,7 @@ public interface ResourceService {
      *
      * @throws IOException
      */
-    void saveResource( InputStreamSource source, String location ) throws IOException;
+    long saveResource( InputStreamSource source, String location ) throws IOException;
 
     /**
      * 获取文件服务器代码
