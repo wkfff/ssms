@@ -34,7 +34,7 @@ public abstract class DefaultController extends BaseController {
      * 列表数据
      */
     public ViewAndModel list( HandlerContext context ) {
-        ARTable arTable = context.DB.withTable( TABLENAME );        
+        ARTable arTable = context.DB.withTable( TABLENAME );
         Map<String, String> filter = context.getFilter();
         if (!filter.isEmpty()) arTable.where( StringHelper.join( filter.keySet(), " and ", false ), filter.values().toArray());
         DBPaging paging = context.getPaging();

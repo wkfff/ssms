@@ -13,6 +13,7 @@
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/common.js"></script>
     <script type="text/javascript" src="/resource/js/datagrid.js"></script>
+    <style>body{margin-top:80px;}</style>
 </#assign>
 
 <#macro doLayout script>
