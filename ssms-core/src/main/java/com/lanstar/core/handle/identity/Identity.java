@@ -24,7 +24,12 @@ public interface Identity {
     /**
      * 获取租户ID
      */
-    String getTanendId();
+    int getTanendId();
+
+    /**
+     * 获取租户名称
+     */
+    String getTanentName();
 
     /**
      * 获取租户类型

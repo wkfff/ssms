@@ -4,7 +4,7 @@
     var setting = {
         gridId: "dg",
         dataUrl: "list_publics.json",
-        openUrl: "rec.html"
+        openUrl: "look.html"
     };
     
     $(document).ready(function () {
