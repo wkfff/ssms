@@ -19,6 +19,7 @@
     已发布列表
      <div class="form-actions">
      <input type="button" name="btn_open" class="btn" value="查看">
+     <input type="button" class="btn" onclick="javascript:window.location.href='rec.html'" value="新增">	
      </div>
     <table>
         <thead>

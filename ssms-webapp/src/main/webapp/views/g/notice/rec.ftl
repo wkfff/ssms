@@ -47,6 +47,18 @@
 			          </div>
 			        </div>
 				</div>
+				
+				<div class="row-fluid">
+				<div class="span12">
+					<div class="control-group">
+			          <!-- Text input-->
+			          <label class="control-label" for="input01">发布机构:</label>
+			          <div class="controls">
+			            <input type="text" placeholder="" class="input-xxlarge" id="R_TANENT" name="R_TANENT" readonly="readonly">
+			            <p class="help-block">发布机构</p>
+			          </div>
+			        </div>
+				</div>
 			</div>
 		</fieldset>		
 	</form>

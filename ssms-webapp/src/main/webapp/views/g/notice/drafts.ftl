@@ -20,6 +20,7 @@
      <div class="form-actions">
      <input type="button" name="btn_open" class="btn" value="查看">
      <input type="button" name="btn_del" class="btn" value="删除">
+     <input type="button" class="btn" onclick="javascript:window.location.href='publics.html'" value="返回">	
      </div>
     <table>
         <thead>
