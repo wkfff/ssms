@@ -45,7 +45,7 @@
     },
         $win = {
             navigate: function (url) {
-                window.location.href(url);
+                window.location.href = url;
             },
             openModelWindow: function (url, wid, hei) {
                 if (!wid) wid = screen.availWidth - 10;
