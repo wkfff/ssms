@@ -18,6 +18,7 @@ import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.db.impl.SystemDbContext;
 import com.lanstar.core.handle.db.impl.TanentDbContext;
 import com.lanstar.db.DBPaging;
+import com.lanstar.service.file.FileService;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -57,11 +58,11 @@ public class HandlerContext {
         return context;
     }
 
-    public Object getValue( String name ) {
+    public <T> T getValue( String name ) {
         return getRequestContext().getValue( name );
     }
 
-    public Object getValue( String name, VAR_SCOPE scope ) {
+    public <T> T getValue( String name, VAR_SCOPE scope ) {
         return getRequestContext().getValue( name, scope );
     }
 
@@ -135,40 +136,51 @@ public class HandlerContext {
         for ( String key : p.keySet() ) {
             String[] values = p.get( key );
             String value = values == null ? "" : values[0];
-            map.put( key, value );            
+            map.put( key, value );
         }
         return map;
     }
+
     /**
      * 获取分页信息
+     *
      * @return
      */
-    public DBPaging getPaging(){
+    public DBPaging getPaging() {
         DBPaging paging = new DBPaging();
         Map<String, String> para = getParameterMap();
         String pageIndex = para.get( DBPaging.PAGE_INDEX );
-        if (Strings.isNullOrEmpty( pageIndex )) return null;
-        paging.setPageIndex(Integer.parseInt( pageIndex ));        
-        paging.setPageSize( Integer.parseInt( para.get( DBPaging.PAGE_SIZE )) );
+        if ( Strings.isNullOrEmpty( pageIndex ) ) return null;
+        paging.setPageIndex( Integer.parseInt( pageIndex ) );
+        paging.setPageSize( Integer.parseInt( para.get( DBPaging.PAGE_SIZE ) ) );
         return paging;
     }
+
     /**
      * 获取过滤条件
+     *
      * @return
      */
-    public Map<String,String> getFilter(){
-        Map<String, String> filter = new LinkedHashMap<String,String>();
+    public Map<String, String> getFilter() {
+        Map<String, String> filter = new LinkedHashMap<String, String>();
         Map<String, String> para = getParameterMap();
-        for(String key:para.keySet()){
-            if (key.startsWith( "_filter" )){
+        for ( String key : para.keySet() ) {
+            if ( key.startsWith( "_filter" ) ) {
                 String value = para.get( key );
-                if (Strings.isNullOrEmpty( value )) continue;
-                if (key.indexOf( "like" )>-1) value = "%"+value+"%";
-                int beginIndex = key.indexOf( "[" )+1;
-                int endIndex = key.length()-1;
+                if ( Strings.isNullOrEmpty( value ) ) continue;
+                if ( key.indexOf( "like" ) > -1 ) value = "%" + value + "%";
+                int beginIndex = key.indexOf( "[" ) + 1;
+                int endIndex = key.length() - 1;
                 filter.put( key.substring( beginIndex, endIndex ), value );
             }
         }
         return filter;
+    }
+
+    /**
+     * 获取文件服务
+     */
+    public FileService getFileService() {
+        return new FileService( getRequestContext().getIdentityContxt().getIdentity() );
     }
 }
