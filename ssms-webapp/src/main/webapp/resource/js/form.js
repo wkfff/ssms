@@ -6,6 +6,7 @@ $form = {
 			$("input[name='btn_save']").click(function(){$form.doSave();});
 			$("input[name='btn_back']").click(function(){$form.doBack();});
 			$("input[name='btn_del']").click(function(){$form.doDel();});
+			$("input[name='btn_publice']").click(function(){$form.doPublice();});
 			if(setting.sid!=null) 
 				$form.bindData(setting.sid);
 			else
@@ -56,6 +57,12 @@ $form = {
 		doDel: function(){						
 			if(!confirm("确认要删除当前记录吗？")) return;
 			$.post(setting.delUrl, {sid:setting.sid},function (data) {      
+				$form.doBack();
+		    });	
+		},
+		doPublice:function(){
+			if (setting.sid == null) {alert("发布失败！");return;}
+			$.post(setting.publiceUrl, {sid:setting.sid},function (data) {      
 				$form.doBack();
 		    });	
 		}

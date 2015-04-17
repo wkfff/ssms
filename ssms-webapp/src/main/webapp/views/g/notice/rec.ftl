@@ -5,7 +5,8 @@
 			sid:$url.getUrlParam("sid"),
 			dataUrl:"rec.json",			
 			saveUrl:"save.json",
-			delUrl:"del.json"
+			delUrl:"del.json",
+			publiceUrl:"publice.json"
 	}
 	$(document).ready(function(){
 		$form.init(setting);			
@@ -23,7 +24,8 @@
 	</div>
 	<form id="mainForm" >
 		<table>
-		    <tr><td><input type="text" id="N_STATE" name="N_STATE"  style="display:none;" value="1"/></td></tr>		
+		    <td id="SID" style="display:none;"></td>
+		    <tr><td><input type="text" id="N_STATE" name="N_STATE"  style="display:none;" value="0"/></td></tr>		
 			<tr><td>标题:</td><td><input type="text" id="C_TITLE" name="C_TITLE" /></td></tr>
 			<tr><td>发布日期:</td><td><input type="text" id="T_BEGIN" name="T_BEGIN" /></td></tr>
 			<tr><td>创建人:</td><td><input type="text" id="S_CREATOR" name="R_CREATE" /></td></tr>

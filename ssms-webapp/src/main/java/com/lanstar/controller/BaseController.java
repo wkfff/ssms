@@ -43,7 +43,7 @@ public abstract class BaseController {
             case forUpdate:
                 lastValues.put( "R_UPDATE", usersid );
                 lastValues.put( "S_UPDATE", username );
-                lastValues.remove( "T_CREATE" );
+                lastValues.remove( "T_CREATE" );                
                 break;
             case forInsert:
                 lastValues.put( "R_CREATE", usersid );
@@ -52,6 +52,8 @@ public abstract class BaseController {
         }
 
         lastValues.putAll( context.getParameterMap() );
+        lastValues.remove( "sid" );
+        lastValues.remove( "T_UPDATE" );
         table.values( lastValues );
     }
 
