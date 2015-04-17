@@ -31,6 +31,14 @@ public class noticeController extends DefaultController {
 	     return context.returnWith().set( context.DB.withTable( TABLENAME ).where( "SID=?", sid ).query() );
 	   }
     /**
+     * 发布通知公告
+     */
+    public void publice( HandlerContext context ) {
+    	ARTable table = context.DB.withTable( TABLENAME );
+        String sid = (String) context.getValue( "sid" );
+        table.where( "SID=?", sid ).value("N_STATE", 1).save();
+    }
+    /**
      * 显示草稿箱
      */
     public ViewAndModel drafts( HandlerContext context ){
