@@ -20,7 +20,10 @@
 <script type="text/javascript" src="/resource/js/plupload/plupload.full.min.js"></script>
 <script type="text/javascript" src="/resource/js/plupload/zh_CN.js"></script>
 <script type="text/javascript" src="/resource/js/upload.js"></script>
-<style>body{margin-top:100px;}</style>
+<style>
+	body{margin-top:100px;}
+	.help-block{visibility: ;color:#EEE;}
+</style>
 </#assign>
 
 <#macro doLayout script="">

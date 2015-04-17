@@ -70,4 +70,11 @@ public abstract class HandlerDbContext extends DBSessionHolder {
     public interface TransactionContext {
         void execute( HandlerDbContext dbContext );
     }
+    
+    /**
+     * 获取新增记录的SID值
+     */
+    public int getSID(){
+        return getDbSession().getSID();
+    }
 }
