@@ -122,7 +122,7 @@
 					<!-- Text input-->
 			          <label class="control-label" for="input01">所属专业:</label>
 			          <div class="controls">
-			            <input type="text" placeholder="" class="input-xlarge" id="C_NAME" name="C_NAME">
+			            <input type="text" placeholder="" class="input-xlarge" id="S_PROFESSION" name="S_PROFESSION">
 			            <p class="help-block">企业的所属专业</p>
 			          </div>
 			        </div>
@@ -132,7 +132,7 @@
 			          <!-- Text input-->
 			          <label class="control-label" for="input01">企业性质</label>
 			          <div class="controls">
-			            <input type="text" placeholder="" class="input-xlarge">
+			            <input type="text" placeholder="" class="input-xlarge" id="S_NATURE" name="S_NATURE">
 			            <p class="help-block">企业性质</p>
 			          </div>
 			        </div>
@@ -145,7 +145,7 @@
 			          <!-- Text input-->
 			          <label class="control-label" for="input01">专职安全管理员:</label>
 			          <div class="controls">
-			            <input type="text" placeholder="" class="input-xlarge" id="C_NAME" name="C_NAME">
+			            <input type="text" placeholder="" class="input-xlarge" id="N_SAFETY" name="N_SAFETY" value="${N_SAFETY}">
 			            <p class="help-block">企业的专职安全管理员人数</p>
 			          </div>
 			        </div>
@@ -155,7 +155,7 @@
 					<!-- Text input-->
 			          <label class="control-label" for="input01">员工总数</label>
 			          <div class="controls">
-			            <input type="text" placeholder="" class="input-xlarge">
+			            <input type="text" placeholder="" class="input-xlarge" id="N_EMPLOYEE" name="N_EMPLOYEE" value="${N_EMPLOYEE}">
 			            <p class="help-block">企业员工总数</p>
 			          </div>
 			        </div>
@@ -167,7 +167,7 @@
 					<div class="control-group">
 						<label class="control-label" for="input01">主营业务收入:</label>
 						<div class="controls">
-							<input type="text" placeholder="" class="input-xlarge" id="N_INCOME" name="N_INCOME">
+							<input type="text" placeholder="" class="input-xlarge" id="N_INCOME" name="N_INCOME" value="${N_INCOME}">
 							<p class="help-block">主营业务收入</p>
 						</div>
 					</div>
@@ -176,7 +176,7 @@
 					<div class="control-group">
 						<label class="control-label" for="input01">固定资产:</label>
 						<div class="controls">
-							<input type="text" placeholder="" class="input-xlarge" id="N_ASSETS" name="N_ASSETS">
+							<input type="text" placeholder="" class="input-xlarge" id="N_ASSETS" name="N_ASSETS" value="${N_ASSETS}">
 							<p class="help-block">固定资产</p>
 						</div>
 					</div>
@@ -187,7 +187,7 @@
 					<div class="control-group">
 						<label class="control-label" for="input01">特种作业人员数:</label>
 						<div class="controls">
-							<input type="text" placeholder="" class="input-xlarge" id="N_SPECIAL" name="N_SPECIAL">
+							<input type="text" placeholder="" class="input-xlarge" id="N_SPECIAL" name="N_SPECIAL" value="${N_SPECIAL}">
 							<p class="help-block">特种作业人员数</p>
 						</div>
 					</div>
