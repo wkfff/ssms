@@ -16,13 +16,14 @@
 <@layout.doLayout script>
 
 <div class="navbar navbar-default navbar-fixed-top"><br><br>
+    通知公告编辑
       <div class="navbar-inner">
         <div class="container">
 	        <div class="nav pull-right">
 		      <input type="button" name="btn_save" value="保存">	
               <input type="button" name="btn_del" value="删除">
               <input type="button" name="btn_publice" value="发布">
-		      <input type="button" onclick="window.history.go( -1 );" value="返回">	
+		      <input type="button" onclick="javascript:window.location.href='publics.html'" value="返回">	
 	        </div>
         </div>
       </div>
@@ -46,58 +47,15 @@
 			          </div>
 			        </div>
 				</div>
-			</div>
-			
-			<div class="row-fluid">
-				<div class="span6">
-					<div class="control-group">
-						<label class="control-label" for="input01">发布日期:</label>
-						<div class="controls">
-							<input type="text" placeholder="" class="input-xlarge" id="T_BEGIN" name="T_BEGIN">
-							<p class="help-block">发布日期</p>
-						</div>
-					</div>
-				</div>
-				<div class="span6">
-					<div class="control-group">
-						<label class="control-label" for="input01">创建人:</label>
-						<div class="controls">
-							<input type="text" placeholder="" class="input-xlarge" id="S_CREATOR" name="R_CREATE">
-							<p class="help-block">创建人</p>
-						</div>
-					</div>
-				</div>
-		   </div>
-		
-	       <div class="row-fluid">
-				<div class="span6">
-					<div class="control-group">
-						<label class="control-label" for="input01">创建日期:</label>
-						<div class="controls">
-							<input type="text" placeholder="" class="input-xlarge" id="T_CREATE" name="T_CREATE">
-							<p class="help-block">创建日期</p>
-						</div>
-					</div>
-				</div>
-				<div class="span6">
-					<div class="control-group">
-						<label class="control-label" for="input01">修改人:</label>
-						<div class="controls">
-							<input type="text" placeholder="" class="input-xlarge" id="S_UPDATE" name="S_UPDATE">
-							<p class="help-block">修改人</p>
-						</div>
-					</div>
-			</div>
-			
-			</div>
+				
 				<div class="row-fluid">
 				<div class="span12">
 					<div class="control-group">
 			          <!-- Text input-->
-			          <label class="control-label" for="input01">修改日期:</label>
+			          <label class="control-label" for="input01">发布机构:</label>
 			          <div class="controls">
-			            <input type="text" placeholder="" class="input-xxlarge" id="T_UPDATE"  name="T_UPDATE">
-			            <p class="help-block">修改日期</p>
+			            <input type="text" placeholder="" class="input-xxlarge" id="R_TANENT" name="R_TANENT" readonly="readonly">
+			            <p class="help-block">发布机构</p>
 			          </div>
 			        </div>
 				</div>

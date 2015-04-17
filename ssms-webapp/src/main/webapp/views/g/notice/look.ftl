@@ -13,8 +13,10 @@
 <@layout.doLayout script>
 
 <div class="container">
-
-	
+   <div class="form-actions">
+   <input type="button" onclick="javascript:window.location.href='publics.html'" value="返回">	
+   </div>
+	查看列表
 	  <fieldset>
 		<div id="legend">
 			<legend>概述</legend>
