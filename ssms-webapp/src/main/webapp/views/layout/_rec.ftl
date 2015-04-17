@@ -1,4 +1,5 @@
 <#import "/layout/_layout.ftl" as layout/>
+<#include "/layout/_component.ftl"/>
 
 <#assign header>
 
