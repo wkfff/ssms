@@ -8,8 +8,7 @@
 
 package com.lanstar.controller.sys;
 
-import com.lanstar.controller.ActionValidator;
-import com.lanstar.controller.DefaultController;
+import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.handle.NotMultipartException;
@@ -24,25 +23,21 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-public class attachfileController extends DefaultController {
+public class attachfileController {
     // TODO: 先用spring的实现，以后再考虑换自己的实现
     private final CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 
-    public attachfileController() {
-        super( "SYS_ATTACH_FILE" );
-    }
-
-    @Override
-    protected Class<? extends ActionValidator> getValidator() {
-        return null;
-    }
+    public void index( HandlerContext context ) {}
 
     public void upload( HandlerContext context ) {
         HttpServletRequest request = context.getRequestContext().getRequest();
+        // 判断是否是文件上传的请求，如果不是就直接报错返回。
         if ( !resolver.isMultipart( request ) ) throw new NotMultipartException();
-
-        FileService service = new FileService( context.getRequestContext().getIdentityContxt().getIdentity(  ) );
+        // 获取租户专用的文件服务
+        FileService service = context.getFileService();
+        // 转换请求
         MultipartHttpServletRequest multipart = resolver.resolveMultipart( request );
+        // 使用文件服务保存文件
         String module = multipart.getParameter( "module" );
         int recordSid = Integer.parseInt( multipart.getParameter( "recordSid" ) );
         Iterator<String> fileMap = multipart.getFileNames();
@@ -50,10 +45,20 @@ public class attachfileController extends DefaultController {
             String next = fileMap.next();
             MultipartFile file = multipart.getFile( next );
             try {
-                service.save( module, recordSid, new FileBean(file.getOriginalFilename(), file.getInputStream() ) );
+                service.save( module, recordSid, new FileBean( file.getOriginalFilename(), file.getInputStream() ) );
             } catch ( SQLException | IOException e ) {
                 throw new HandleException( e );
             }
+        }
+    }
+
+    public ViewAndModel list( HandlerContext context ) {
+        String module = context.getValue( "module" );
+        int sid = Integer.parseInt( (String) context.getValue( "recordSid" ) );
+        try {
+            return context.returnWith().set( context.getFileService().list( module, sid ) );
+        } catch ( SQLException e ) {
+            throw new HandleException( e );
         }
     }
 }

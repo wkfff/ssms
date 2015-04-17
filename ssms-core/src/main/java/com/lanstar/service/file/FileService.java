@@ -53,8 +53,12 @@ public class FileService extends TanentService {
      *
      * @throws SQLException
      */
-    public List<AttachFile> list( String module, String recordId ) throws SQLException {
-        ARTable table = getTable().where( "R_TABLE=? and R_SID=?", module, recordId );
+    public List<AttachFile> list( String module, int recordId ) throws SQLException {
+        ARTable table = getTable().where( "R_TABLE=? and R_SID=? and R_TANENT=? and P_TANENT=?",
+                module,
+                recordId,
+                identity.getTanendId(),
+                identity.getTanentType() );
 
         JdbcRecordSet records = table.queryList();
         List<AttachFile> files = new ArrayList<>();
@@ -103,7 +107,7 @@ public class FileService extends TanentService {
         // 规则：tanent/module/date[mounth]/file.ext
         SimpleDateFormat format = new SimpleDateFormat( "yyyyMM" );
         return LocationBuilder.newInstance()
-                              .folder( identity.getTanendId() )
+                              .folder( identity.getTanentName() )
                               .folder( module )
                               .folder( format.format( new Date() ) )
                               .filename( filename ).extension( extension )

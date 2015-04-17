@@ -24,8 +24,17 @@ public abstract class AbstractIdentity implements Identity {
     }
 
     @Override
-    public String getTanendId() {
+    public int getTanendId() {
         // TODO: 获取租户ID
+        return -1;
+    }
+
+    /**
+     * 获取租户名称
+     */
+    @Override
+    public String getTanentName() {
+        // TODO: 获取租户名称
         return null;
     }
 }

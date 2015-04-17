@@ -25,13 +25,14 @@ public class LocationBuilder {
 
     public LocationBuilder filename( String filename ) {
         filename = StringUtils.stripFilenameExtension( filename );
-        buffer.append( '/' ).append( filename );
+        if ( buffer.length() > 0 ) buffer.append( '/' );
+        buffer.append( filename );
         return this;
     }
 
     public LocationBuilder extension( String ext ) {
         String ext2 = StringUtils.getFilenameExtension( ext );
-        if (ext2 != null) ext = ext2;
+        if ( ext2 != null ) ext = ext2;
         buffer.append( '.' ).append( ext );
         return this;
     }

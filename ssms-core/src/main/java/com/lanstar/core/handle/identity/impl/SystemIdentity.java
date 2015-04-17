@@ -32,7 +32,15 @@ public class SystemIdentity implements Identity {
     }
 
     @Override
-    public String getTanendId() {
+    public int getTanendId() {
+        return 0;
+    }
+
+    /**
+     * 获取租户名称
+     */
+    @Override
+    public String getTanentName() {
         return "system";
     }
 

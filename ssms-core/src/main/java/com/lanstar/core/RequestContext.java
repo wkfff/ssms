@@ -143,14 +143,15 @@ public class RequestContext {
     /**
      * 从局部上下文中取值
      */
-    public Object getValue( String name ) {
+    @SuppressWarnings("unchecked")
+    public <T> T getValue( String name ) {
         // 取值的顺序：本地变量 --> request --> url参数 --> session --> servletContext
         Object v = localVars.get( name );
         if ( v == null ) v = request.getAttribute( name );
         if ( v == null ) v = getParameter( name );
         if ( v == null ) v = request.getSession().getAttribute( name );
         if ( v == null ) v = App.getServletContext().getAttribute( name );
-        return v;
+        return (T)v;
     }
 
     /**
@@ -158,7 +159,8 @@ public class RequestContext {
      *
      * @see VAR_SCOPE
      */
-    public Object getValue( String name, VAR_SCOPE scope ) {
+    @SuppressWarnings("unchecked")
+    public <T> T getValue( String name, VAR_SCOPE scope ) {
         Object value = null;
         switch ( scope ) {
             case LOCAL:
@@ -175,7 +177,7 @@ public class RequestContext {
                 value = App.getServletContext().getAttribute( name );
                 break;
         }
-        return value;
+        return (T)value;
     }
 
     public Map<String, Object> getValues() {

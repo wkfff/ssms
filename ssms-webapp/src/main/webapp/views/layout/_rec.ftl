@@ -15,9 +15,13 @@
 <script type="text/javascript" src="/resource/js/jquery.json.min.js"></script>
 <script type="text/javascript" src="/resource/js/common.js"></script>
 <script type="text/javascript" src="/resource/js/form.js"></script>
+<#--上传组件-->
+<script type="text/javascript" src="/resource/js/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="/resource/js/plupload/zh_CN.js"></script>
+<script type="text/javascript" src="/resource/js/upload.js"></script>
 </#assign>
 
-<#macro doLayout script>
+<#macro doLayout script="">
     <@layout.doLayout header=header footer=script>
         <#nested />
     </@layout.doLayout>
