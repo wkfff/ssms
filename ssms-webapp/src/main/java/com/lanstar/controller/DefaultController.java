@@ -8,6 +8,8 @@
 
 package com.lanstar.controller;
 
+import java.util.Map;
+
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.ViewAndModel;
@@ -15,8 +17,6 @@ import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.DBPaging;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
-
-import java.util.Map;
 
 public abstract class DefaultController extends BaseController {
     public DefaultController( String tablename ) {
@@ -34,20 +34,23 @@ public abstract class DefaultController extends BaseController {
      * 列表数据
      */
     public ViewAndModel list( HandlerContext context ) {
-        ARTable arTable = context.DB.withTable( TABLENAME );
+        ARTable arTable = context.DB.withTable( this.TABLENAME );
         Map<String, String> filter = context.getFilter();
-        if (!filter.isEmpty()) arTable.where( StringHelper.join( filter.keySet(), " and ", false ), filter.values().toArray());
+        if ( !filter.isEmpty() ) arTable.where( StringHelper.join(
+                filter.keySet(), " and ", false ), filter.values().toArray() );
         DBPaging paging = context.getPaging();
         JdbcPageRecordSet list = arTable.queryPaging( paging );
         return context.returnWith().set( list );
     }
-    
+
     /**
      * 表单数据
      */
     public ViewAndModel rec( HandlerContext context ) {
         String sid = (String) context.getValue( "sid" );
-        return context.returnWith().set( context.DB.withTable( TABLENAME ).where( "SID=?", sid ).query() );
+        return context.returnWith().set(
+                context.DB.withTable( this.TABLENAME ).where( "SID=?", sid )
+                        .query() );
     }
 
     /**
@@ -55,21 +58,20 @@ public abstract class DefaultController extends BaseController {
      */
     public ViewAndModel save( HandlerContext context ) {
         // 先验证下参数
-        validatePara( context );
+        this.validatePara( context );
         String sid = (String) context.getValue( "sid" );
-        ARTable table = context.DB.withTable( TABLENAME );
-        mergerValues( table, context, MergerType.withSid( sid ) );
+        ARTable table = context.DB.withTable( this.TABLENAME );
+        this.mergerValues( table, context, MergerType.withSid( sid ) );
         // 根据sid的存在设置where语句
         // TODO：一律过滤"null"值？
-        table.where( !StringHelper.isBlank( sid ) && !sid.equals( "null" ), "SID=?", sid )
-             .save();
+        table.where( !StringHelper.isBlank( sid ) && !sid.equals( "null" ),
+                "SID=?", sid ).save();
 
-        /*if ( !Strings.isNullOrEmpty( sid ) && !sid.equals( "null" ) ) {
-            table = table.where( "SID=?", sid );
-            table.update();
-        } else
-            table.insert();*/
-        return context.returnWith().set( "{}" );
+        if ( StringHelper.isBlank( sid ) || sid.equals( "null" ) ) {
+            sid = Integer.toString( context.DB.getSID() );
+        }
+
+        return context.returnWith().put( "SID", sid );
     }
 
     /**
@@ -78,19 +80,23 @@ public abstract class DefaultController extends BaseController {
     public ViewAndModel dels( HandlerContext context ) {
         String ids = (String) context.getValue( "ids" );
         if ( !Strings.isNullOrEmpty( ids ) ) {
-            context.DB.withTable( TABLENAME ).where( "SID in (" + ids + ")" ).delete();
+            context.DB.withTable( this.TABLENAME )
+                    .where( "SID in (" + ids + ")" ).delete();
         }
         return context.returnWith().set( "{}" );
     }
+
     /**
      * 表单.删除
+     * 
      * @param context
      * @return
      */
     public ViewAndModel del( HandlerContext context ) {
         String sid = (String) context.getValue( "sid" );
         if ( !Strings.isNullOrEmpty( sid ) ) {
-            context.DB.withTable( TABLENAME ).where( "SID = ?",sid).delete();
+            context.DB.withTable( this.TABLENAME ).where( "SID = ?", sid )
+                    .delete();
         }
         return context.returnWith().set( "{}" );
     }

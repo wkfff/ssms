@@ -1,13 +1,16 @@
 <#import "/layout/_rec.ftl" as layout/>
-<#assign script>
 
+<#assign script>
+<script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript">
     var setting = {
 			sid:$url.getUrlParam("sid"),
 			dataUrl:"rec.json",
 			saveUrl:"save.json",
-			delUrl: "del.json"
+			delUrl: "del.json",
+			editor:"C_SUMMARY"
 	}
+	
 	$(document).ready(function(){
 		$form.init(setting);
 	});
@@ -208,7 +211,7 @@
 			<div class="span12">
 				<div class="control-group">
 					<div class="controls">
-						<textarea class="input-xxlarge" id="C_SUMMARY" name="C_SUMMARY" rows=5> </textarea>
+						<textarea id="C_SUMMARY" name="C_SUMMARY" rows=5 > </textarea>
 					</div>
 				</div>
 			</div>

@@ -26,4 +26,9 @@ public interface IDialect extends IQueryDialect, IExecuteDialiect {
      * 获取分页SQL
      */
     String getPagingSql( String sql, int startIndex, int endIndex );
+    
+    /**
+     * 获取最后插入SID的SQL
+     */
+    String getSIDSql ();
 }

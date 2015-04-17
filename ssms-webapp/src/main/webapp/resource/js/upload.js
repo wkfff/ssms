@@ -1,3 +1,4 @@
+/// <reference path="jquery.d.ts" />
 /**
  * 上传组件
  */
@@ -24,7 +25,6 @@ var Uploader = (function () {
             },
             init: {
                 PostInit: function () {
-                    settings.el.list.innerHTML = '';
                     settings.el.uploadButtion.onclick = function () {
                         $uploader.start();
                         return false;
@@ -39,7 +39,10 @@ var Uploader = (function () {
                     document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
                 },
                 Error: function (up, err) {
-                    settings.el.console.innerHTML += "\nError #" + err.code + ": " + err.message;
+                    var el = settings.el.console;
+                    if (el.innerHTML != null && el.innerHTML.length > 0)
+                        el.innerHTML += '\n';
+                    el.innerHTML += "Error #" + err.code + ": " + err.message;
                 }
             }
         });
@@ -47,6 +50,7 @@ var Uploader = (function () {
     Uploader.prototype.init = function () {
         var _this = this;
         this.uploader.init();
+        this.settings.el.list.innerHTML = '';
         $.post("/sys/attachfile/list.json", {
             module: this.settings.module,
             recordSid: this.settings.sid

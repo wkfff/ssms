@@ -282,5 +282,19 @@ public class DBSession implements JdbcOperations {
     public boolean isValid() {
         return JdbcHelper.isConnectionValid( conn );
     }
+    
+    /**
+     * 获取最新添加纪录的SID值
+     * @return
+     */
+    @Override
+    public int getSID(){
+        return first( new SqlStatement( dialect.getSIDSql(), new Object[]{} ), new RowMapper<Integer>() {
+            @Override
+            public Integer mapRow( ResultSet rs, int rowNum ) throws SQLException {
+                return rs.getInt( 1 );
+            }
+        } );
+    }
 }
 
