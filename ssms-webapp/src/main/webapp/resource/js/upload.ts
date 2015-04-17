@@ -81,7 +81,7 @@ class Uploader {
 
     public init() {
         this.uploader.init();
-        this.settings.el.list.innerHTML = '';
+        this.settings.el.list.innerHTML = '正在从加载文件列表，请稍等...';
 
         $.post("/sys/attachfile/list.json", {
             module: this.settings.module,
@@ -92,6 +92,8 @@ class Uploader {
                 var item = result[i];
                 this.settings.el.list.innerHTML += '<div>' + item.outerFilename + ' (' + plupload.formatSize(item.length) + ') <b></b></div>';
             }
+        }).fail((xhr)=>{
+            this.settings.el.list.innerHTML = '加载文件列表时发生了异常，请报告管理员。';
         });
     }
 }
