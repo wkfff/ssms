@@ -30,15 +30,24 @@ public class MySqlDialect extends AbstDialect implements IDialect {
     public String getHeartbeatSql() {
         return "SELECT 1 FROM DUAL";
     }
-    
+
     /**
      * 获取分页SQL
      */
     @Override
-    public String getPagingSql(String sql, int startIndex, int endIndex) {
-        StringBuilder pageSql = new StringBuilder(sql.length() + 20).append(sql).append( " limit " );
-        if (startIndex > 0) pageSql.append(startIndex).append(",");
-        pageSql.append(endIndex);
+    public String getPagingSql( String sql, int startIndex, int endIndex ) {
+        StringBuilder pageSql = new StringBuilder( sql.length() + 20 ).append(
+                sql ).append( " limit " );
+        if ( startIndex > 0 ) pageSql.append( startIndex ).append( "," );
+        pageSql.append( endIndex );
         return pageSql.toString();
+    }
+
+    /**
+     * 获取新增记录的SID的SQL
+     */
+    @Override
+    public String getSIDSql() {
+        return "SELECT LAST_INSERT_ID()";
     }
 }

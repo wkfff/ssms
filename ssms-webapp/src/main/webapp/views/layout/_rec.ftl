@@ -15,7 +15,10 @@
 <script type="text/javascript" src="/resource/js/jquery.json.min.js"></script>
 <script type="text/javascript" src="/resource/js/common.js"></script>
 <script type="text/javascript" src="/resource/js/form.js"></script>
-<style>body{margin-top:100px;}</style>
+<style>
+	body{margin-top:100px;}
+	.help-block{visibility: ;color:#EEE;}
+</style>
 </#assign>
 
 <#macro doLayout script>

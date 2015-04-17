@@ -162,4 +162,10 @@ public interface JdbcOperations {
      * @return 记录数
      */
     int getRecordsetSize( String sql, Object[] params );
+
+    /**
+     * 获取新增记录的SID值
+     * @return
+     */
+    int getSID();
 }
