@@ -1,3 +1,4 @@
+
 <#import "/layout/_list.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
@@ -15,6 +16,7 @@
 </#assign>
 <@layout.doLayout script>
 <div class="datagrid" id="dg"> 
+    已发布列表
      <div class="form-actions">
      <input type="button" name="btn_open" class="btn" value="查看">
      </div>
@@ -24,8 +26,8 @@
             <td class="cell-chk"><input class="chk" type="checkbox"/></td>
             <td id="SID" style="display:none;"></td>
             <td id="C_TITLE">标题</td>   
-            <td id="R_CREATE">创建人</td> 
-            <td id="T_CREATE">创建时间</td>                         
+            <td id="S_PUBLIC">发布人</td> 
+            <td id="T_PUBLIC">发布时间</td>                         
         <tr>
         </thead>
         <tbody/>        

@@ -52,9 +52,10 @@ public class noticeController extends DefaultController {
        }
     /**
      * 遍历草稿箱数据
+     *
      */
     public ViewAndModel list_drafts( HandlerContext context ) {
-        ARTable arTable = context.DB.withTable( TABLENAME ).where("N_STATE=0");        
+        ARTable arTable = context.DB.withTable( TABLENAME ).where("N_STATE=0").orderby("T_UPDATE desc");        
         Map<String, String> filter = context.getFilter();
         if (!filter.isEmpty()) arTable.where( StringHelper.join( filter.keySet(), " and ", false ), filter.values().toArray());
         DBPaging paging = context.getPaging();
@@ -63,9 +64,10 @@ public class noticeController extends DefaultController {
         }
     /**
      * 遍历已发布公告数据
+     * 
      */
     public ViewAndModel list_publics( HandlerContext context ) {
-        ARTable arTable = context.DB.withTable( TABLENAME ).where("N_STATE=1");        
+        ARTable arTable = context.DB.withTable( TABLENAME ).where("N_STATE=1").orderby("T_PUBLIC desc");        
         Map<String, String> filter = context.getFilter();
         if (!filter.isEmpty()) arTable.where( StringHelper.join( filter.keySet(), " and ", false ), filter.values().toArray());
         DBPaging paging = context.getPaging();
