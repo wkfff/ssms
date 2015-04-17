@@ -1,3 +1,17 @@
+/// <reference path="jquery.d.ts" />
+
+declare module plupload {
+    class Uploader {
+        constructor(settings);
+
+        start();
+    }
+
+    function each(array:any[], callback:(item:any)=>void);
+
+    function formatSize(size:number);
+}
+
 interface UploaderSettings {
     el: {
         container:HTMLElement;
@@ -40,8 +54,6 @@ class Uploader {
 
             init: {
                 PostInit: function () {
-                    settings.el.list.innerHTML = '';
-
                     settings.el.uploadButtion.onclick = function () {
                         $uploader.start();
                         return false;
@@ -59,7 +71,9 @@ class Uploader {
                 },
 
                 Error: function (up, err) {
-                    settings.el.console.innerHTML += "\nError #" + err.code + ": " + err.message;
+                    var el = settings.el.console;
+                    if (el.innerHTML != null && el.innerHTML.length > 0) el.innerHTML += '\n';
+                    el.innerHTML += "Error #" + err.code + ": " + err.message;
                 }
             }
         });
@@ -67,6 +81,8 @@ class Uploader {
 
     public init() {
         this.uploader.init();
+        this.settings.el.list.innerHTML = '';
+
         $.post("/sys/attachfile/list.json", {
             module: this.settings.module,
             recordSid: this.settings.sid
@@ -76,6 +92,6 @@ class Uploader {
                 var item = result[i];
                 this.settings.el.list.innerHTML += '<div>' + item.outerFilename + ' (' + plupload.formatSize(item.length) + ') <b></b></div>';
             }
-        })
+        });
     }
 }
