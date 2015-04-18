@@ -16,9 +16,11 @@
 </#assign>
 <@layout.doLayout script>
 <div class="datagrid" id="dg"> 
+    草稿箱列表
      <div class="form-actions">
      <input type="button" name="btn_open" class="btn" value="查看">
      <input type="button" name="btn_del" class="btn" value="删除">
+     <input type="button" class="btn" onclick="javascript:window.location.href='publics.html'" value="返回">	
      </div>
     <table>
         <thead>
@@ -26,8 +28,8 @@
             <td class="cell-chk"><input class="chk" type="checkbox"/></td>
             <td id="SID" style="display:none;"></td>
             <td id="C_TITLE">标题</td>   
-            <td id="R_CREATE">创建人</td> 
-            <td id="T_CREATE">创建时间</td>                         
+            <td id="S_UPDATE">修改人</td> 
+            <td id="T_UPDATE">修改时间</td>                         
         <tr>
         </thead>
         <tbody/>        

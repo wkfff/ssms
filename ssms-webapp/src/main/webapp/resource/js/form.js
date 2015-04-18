@@ -25,13 +25,11 @@ $form = {
 				allowFileManager :false,
 				allowUpload:false,
 				items : [
-					'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', 'cut', 'copy', 'paste',
-                    'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
-                    'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
-                    'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen',
-                    'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
-                    'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'table', 'hr', 'emoticons', 'pagebreak',
-                    'anchor', 'link', 'unlink', '|', 'about'
+                    'fontname', 'fontsize', 
+                    '|', 'forecolor', 'hilitecolor', 'bold','italic', 'underline','removeformat', 
+                    '|', 'justifyleft', 'justifycenter', 'justifyright',
+                    'justifyfull', 'insertorderedlist','insertunorderedlist',
+                    '|', 'table','|','fullscreen'
 					]
 			});
 			$form.editors[field] = editor;

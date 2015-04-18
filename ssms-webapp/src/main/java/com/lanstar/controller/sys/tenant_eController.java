@@ -21,9 +21,18 @@ public class tenant_eController extends DefaultController {
         super( "SYS_TENANT_E" );
     }
 
+    /* (non-Javadoc)
+     * @see com.lanstar.controller.DefaultController#rec(com.lanstar.core.handle.HandlerContext)
+     */
     @Override
-    public ViewAndModel index( HandlerContext context ) {
-        return super.index( context );
+    public ViewAndModel rec( HandlerContext context ) {
+        //默认值设置
+        context.setValue( "N_EMPLOYEE", 0 );
+        context.setValue( "N_SAFETY", 0 );
+        context.setValue( "N_SPECIAL", 0 );
+        context.setValue( "N_ASSETS", 0 );
+        context.setValue( "N_INCOME", 0 );
+        return super.rec( context );
     }
 
     /*
