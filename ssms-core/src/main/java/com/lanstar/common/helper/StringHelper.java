@@ -387,4 +387,17 @@ public final class StringHelper {
             return v;
         }
     }
+
+    /**
+     * 字符串转换为${@code boolean}值
+     *
+     * @param str      字符串
+     * @param defvalue 默认值
+     */
+    public static boolean toBoolean( String str, boolean defvalue ) {
+        if ( isBlank( str ) ) return defvalue;
+        if ( str.trim().compareToIgnoreCase( "true" ) == 0 ) return true;
+        else if ( str.trim().compareToIgnoreCase( "false" ) == 0 ) return false;
+        return defvalue;
+    }
 }

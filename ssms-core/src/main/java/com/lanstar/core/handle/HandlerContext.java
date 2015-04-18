@@ -18,6 +18,7 @@ import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.db.impl.SystemDbContext;
 import com.lanstar.core.handle.db.impl.TanentDbContext;
 import com.lanstar.db.DBPaging;
+import com.lanstar.service.attachtext.AttachTextService;
 import com.lanstar.service.file.FileService;
 
 import java.util.HashMap;
@@ -182,5 +183,12 @@ public class HandlerContext {
      */
     public FileService getFileService() {
         return new FileService( getRequestContext().getIdentityContxt().getIdentity() );
+    }
+
+    /**
+     * 获取附加文本服务
+     */
+    public AttachTextService getAttachTextService() {
+        return new AttachTextService( getRequestContext().getIdentityContxt().getIdentity() );
     }
 }
