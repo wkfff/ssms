@@ -55,6 +55,7 @@ public class AttachTextService extends TanentService {
                 .value( "R_SID", recordSId )
                 .value( "C_CONTENT", content )
                 .value( "R_TANENT", identity.getTanendId() )
+                .value( "S_TANENT", identity.getTanentName() )
                 .value( "P_TANENT", identity.getTanentType() )
                 .value( "R_UPDATE", identity.getTanendId() )
                 .value( "S_UPDATE", identity.getName() )

@@ -98,6 +98,7 @@ public class FileService extends TanentService {
                 .value( "S_CREATE", identity.getName() )
                 .value( "S_CREATE", identity.getName() )
                 .value( "R_TANENT", identity.getTanendId() )
+                .value( "S_TANENT", identity.getTanentName() )
                 .value( "P_TANENT", identity.getTanentType() );
 
         table.insert();

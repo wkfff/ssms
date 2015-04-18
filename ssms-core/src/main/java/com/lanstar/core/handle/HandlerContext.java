@@ -17,6 +17,7 @@ import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.db.impl.SystemDbContext;
 import com.lanstar.core.handle.db.impl.TanentDbContext;
+import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBPaging;
 import com.lanstar.service.attachtext.AttachTextService;
 import com.lanstar.service.file.FileService;
@@ -190,5 +191,9 @@ public class HandlerContext {
      */
     public AttachTextService getAttachTextService() {
         return new AttachTextService( getRequestContext().getIdentityContxt().getIdentity() );
+    }
+
+    public Identity getIdentity() {
+        return getRequestContext().getIdentityContxt().getIdentity();
     }
 }
