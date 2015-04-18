@@ -9,7 +9,7 @@ public class noticeValidator extends ActionValidator{
  */
 	@Override
 	protected void validate(HandlerContext c) {
-		// TODO Auto-generated method stub
+		// TODO 具体实现没写
 		
 	}
 
