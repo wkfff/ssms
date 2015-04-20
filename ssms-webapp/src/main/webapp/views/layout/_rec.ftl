@@ -1,7 +1,7 @@
 <#import "/layout/_layout.ftl" as layout/>
 <#include "/layout/_component.ftl"/>
-
-<#assign header>
+<#macro doLayout script="" header="">
+<#assign _header>
 <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap.css">
 <!--[if lte IE 6]>
 <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap-ie6.css">
@@ -11,7 +11,6 @@
 <![endif]-->
 <link rel="stylesheet" type="text/css" href="/resource/theme/bootstrap/jquery-ui-1.10.0.custom.css"/>
 <link rel="stylesheet" type="text/css" href="/resource/css/jquery-ui/jquery-ui-timepicker-addon.css"/>
-
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
 <script type="text/javascript" src="/resource/js/common.js"></script>
 <script type="text/javascript" src="/resource/js/form.js"></script>
@@ -29,13 +28,12 @@
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript" src="/resource/js/texteditor.js"></script>
 <style>
-	body{margin-top:100px;}
-	.help-block{visibility: ;color:#EEE;}
+    body{margin-top:100px;}
+    .help-block{visibility: ;color:#EEE;}
 </style>
+<#if (header?length>0)>${header}</#if>
 </#assign>
-
-<#macro doLayout script="">
-    <@layout.doLayout header=header footer=script>
-        <#nested />
-    </@layout.doLayout>
+<@layout.doLayout header=_header footer=script>
+    <#nested />
+</@layout.doLayout>
 </#macro>
