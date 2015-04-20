@@ -10,6 +10,13 @@
 
 	$(document).ready(function() {
 		$form.init(setting);
+		$("#T_CREATE").datepicker({
+			inline : false
+		});
+		$("#T_DATETIME").datetimepicker({
+			timeFormat : "HH:mm:ss",
+			dateFormat : "yy-mm-dd"
+		});
 	});
 </script>
 </#assign> <@layout.doLayout script>
@@ -45,6 +52,7 @@
 </div>
 
 <div class="container">
+
     <!--表单-->
     <form class="form-horizontal" id="mainForm">
         <fieldset>
@@ -354,7 +362,8 @@
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xlarge" id="T_EXAMINE_NEXT"
-                                name="T_EXAMINE_NEXT" readonly="readonly">
+                                name="T_EXAMINE_NEXT"
+                                readonly="readonly">
                             <p class="help-block">下次复审时间</p>
                         </div>
                     </div>

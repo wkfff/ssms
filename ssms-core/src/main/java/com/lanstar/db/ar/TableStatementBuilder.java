@@ -34,7 +34,7 @@ final class TableStatementBuilder {
 
         return SQL.SELECT( ar.columns )
                   .FROM( ar.table )
-                  .WHERE()._If( !StringHelper.isBlank( ar.where ), ar.where, ar.whereParams )
+                  .WHERE()._If( !StringHelper.isBlank( ar.where ), ar.where, ar.whereParams.toArray() )
                   .ORDER_BY()._If( !StringHelper.isBlank( ar.orderby ), ar.orderby )
                   .toSqlStatement();
     }
