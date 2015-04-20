@@ -131,13 +131,12 @@
 				<div class="span6">
 					<div class="control-group">
 						<label class="control-label">参数:</label>
-						<div class="controls">
-							<select id="S_COUNTY" class="ui-combbox input-xlarge" src="">
-								<option>Slower</option>
-								<option>Slow</option>
-								<option selected="selected">Medium</option>
-								<option>Fast</option>
-								<option>Faster</option>
+						<div class="controls"> 
+							<input type="hidden" id="S_COUNTY" name="S_COUNTY"/>
+							<select id="P_COUNTY" class="ui-parameter input-xlarge" src="USER_SEX">
+								<#list _USER_SEX_ as Parameter>
+								<option value=${Parameter.key}>${Parameter.value}</option>
+								</#list>
 							</select>
 							<p class="help-block">参数</p>
 						</div>
@@ -242,7 +241,7 @@
 		<div class="row-fluid">
 			<div class="span12">
 				<input type="button" class="btn" id="btn_dialog" value="打开对话框"/>
-				<input type="button" class="btn" id="btn_modaldialog" value="打开模态对话框" style="display:none;"/>
+				<input type="button" class="btn" id="btn_modaldialog" value="打开模态对话框" style="display:;"/>
 				<div id="dialog_simple" title="对话框">
                     <p>内容.</p>
                 </div>
@@ -254,7 +253,6 @@
 		</fieldset>
 </div>
 </form>
-
 
 </div>
 </@layout.doLayout>

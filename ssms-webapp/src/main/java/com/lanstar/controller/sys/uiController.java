@@ -7,8 +7,16 @@
  */
 package com.lanstar.controller.sys;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
+import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.handle.HandleException;
+import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.service.parameter.Parameter;
+import com.lanstar.service.parameter.ParameterResolver;
 
 /**
  * UI示例
@@ -30,4 +38,23 @@ public class uiController extends DefaultController {
         return uiValidator.class;
     }
 
+    /* (non-Javadoc)
+     * @see com.lanstar.controller.DefaultController#rec(com.lanstar.core.handle.HandlerContext)
+     */
+    @Override
+    public ViewAndModel rec( HandlerContext context ) {
+        resolveMultiParameter(context,"USER_SEX");
+        return super.rec( context );
+    }
+
+    public ViewAndModel getPara(HandlerContext context){
+        String parameterName = context.getValue( "name" );
+        List<Parameter> list;
+        try {
+            list = ParameterResolver.me().getMultiParameter( parameterName );
+        } catch ( SQLException e ) {
+            throw new HandleException( e );
+        }
+        return context.returnWith().set(list);
+    }
 }
