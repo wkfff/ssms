@@ -18,7 +18,6 @@
 <@layout.doLayout script>
 <!--导航栏-->
 <div class="navbar navbar-inverse navbar-fixed-top">
-评审机构人员列表
       <div class="navbar-inner">
         <div class=""><!--container-->
           <div class="nav-collapse collapse">
@@ -30,7 +29,7 @@
                 <a href="#">管理中心 ></a>
               </li>
               <li class="active">
-                <a href="#">用户管理 ></a>
+                <a href="#">评审用户管理 ></a>
               </li>            
             </ul>
           </div>
@@ -40,20 +39,20 @@
 
 <div class="">
 <div class="datagrid" id="dg">
-	<div class="navbar navbar-default navbar-fixed-top"><br><br>
-	  <div class="navbar-inner">
-	    <form class="navbar-form pull-left form-search">&nbsp;&nbsp;
-			<label class="checkbox">聘书编号</label>
-			<input type="text" name="C_CERT" style="width:120px;" query="C_CERT like ?" />
-			<label class="checkbox">用户名</label>
-			<input type="text" name="C_NAME" style="width:120px;" query="C_NAME = ?"/>
-			<input type="button" name="btn_query" class="btn" value="查询">
-			<input type="button" name="btn_add" class="btn" value="新增">
-			<input type="button" name="btn_open" class="btn" value="打开">
-			<input type="button" name="btn_del" class="btn" value="删除"></label>
-	    </form>
-	  </div>
-	</div>
+    <div class="navbar navbar-default navbar-fixed-top"><br><br>
+      <div class="navbar-inner">
+        <form class="navbar-form pull-left form-search">&nbsp;&nbsp;
+            <label class="checkbox">用户名</label>
+            <input type="text" name="C_NAME" style="width:120px;" query="C_NAME like ?" />
+            <label class="checkbox">职务</label>
+            <input type="text" name="C_POSITION" style="width:120px;" query="C_POSITION = ?"/>
+            <input type="button" name="btn_query" class="btn" value="查询">
+            <input type="button" name="btn_add" class="btn" value="新增">
+            <input type="button" name="btn_open" class="btn" value="打开">
+            <input type="button" name="btn_del" class="btn" value="删除"></label>
+        </form>
+      </div>
+    </div>
 
     <table >
         <thead>
@@ -70,10 +69,10 @@
     </table>
     
     <div class="paging nav-bar">
-    	<form class="form-search">
-    	<label class="checkbox">
-    	每页显示
-    	<select name="_pageSize" class="input-mini">
+        <form class="form-search">
+        <label class="checkbox">
+        每页显示
+        <select name="_pageSize" class="input-mini">
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="30">30</option>
@@ -89,5 +88,5 @@
         </form>
     </div></div>
 </div>
-</div>
+
 </@layout.doLayout>
