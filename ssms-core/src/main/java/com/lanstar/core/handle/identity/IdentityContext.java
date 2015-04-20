@@ -19,7 +19,7 @@ public interface IdentityContext {
 
     DbContext getDbContext();
 
-    String getIdentityId();
+    int getIdentityId();
 
     String getIdentityName();
 }

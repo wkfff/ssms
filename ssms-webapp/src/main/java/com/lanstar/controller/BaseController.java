@@ -37,7 +37,7 @@ public abstract class BaseController {
         Map<String, Object> lastValues = new HashMap<>();
         lastValues.putAll( defaultValues );
         IdentityContext identityContext = context.getRequestContext().getIdentityContxt();
-        String usersid = identityContext.getIdentityId();
+        int usersid = identityContext.getIdentityId();
         String username = identityContext.getIdentityName();
         switch ( mergerType ) {
             case forUpdate:
@@ -67,8 +67,10 @@ public abstract class BaseController {
     private ActionValidator validator;
 
     protected void validatePara( HandlerContext context ) {
-        if ( validator == null ) validator = BeanHelper.newInstance( getValidator() );
-        validator.intercept( new ActionInvocation( context, null ) );
+        if ( validator != null ) {
+            validator = BeanHelper.newInstance( getValidator() );
+            validator.intercept( new ActionInvocation( context, null ) );
+        }
     }
 
     protected List<Parameter> resolveMultiParameter( HandlerContext context, String parameterName ) {

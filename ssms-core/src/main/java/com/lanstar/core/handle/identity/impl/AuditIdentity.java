@@ -13,8 +13,8 @@ package com.lanstar.core.handle.identity.impl;
  */
 public class AuditIdentity extends AbstractIdentity {
     @Override
-    public String getId() {
-        return null;
+    public int getId() {
+        return -1;
     }
 
     @Override

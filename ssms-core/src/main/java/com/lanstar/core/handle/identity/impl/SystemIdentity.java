@@ -13,8 +13,7 @@ import com.lanstar.db.DS;
 import com.lanstar.db.DbContext;
 
 /**
- * 标识系统默认用户
- * TODO:系统用户数据加载
+ * 标识系统默认用户 TODO:系统用户数据加载
  */
 public class SystemIdentity implements Identity {
     public static Identity me() {
@@ -22,8 +21,8 @@ public class SystemIdentity implements Identity {
     }
 
     @Override
-    public String getId() {
-        return "admin";
+    public int getId() {
+        return 0;
     }
 
     @Override

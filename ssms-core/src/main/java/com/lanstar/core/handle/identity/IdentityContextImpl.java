@@ -45,7 +45,7 @@ class IdentityContextImpl implements IdentityContext {
     }
 
     @Override
-    public String getIdentityId() {
+    public int getIdentityId() {
         return identity.getId();
     }
 
