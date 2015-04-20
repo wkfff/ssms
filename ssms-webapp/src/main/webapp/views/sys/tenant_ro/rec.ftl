@@ -170,29 +170,6 @@
             <div id="legend">
                 <legend>联系方式</legend>
             </div>
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="control-group">
-                        <!-- Text input-->
-                        <label class="control-label" for="input01">地址:</label>
-                        <div class="controls">
-                            <input type="text" placeholder=""
-                                class="input-xlarge" id="S_PROVINCE"
-                                name="S_PROVINCE" value="省"> <input
-                                type="text" placeholder=""
-                                class="input-xlarge" id="S_CITY"
-                                name="S_CITY" value="市"> <input
-                                type="text" placeholder=""
-                                class="input-xlarge" id="S_COUNTY"
-                                name="S_COUNTY" value="市辖区"> <input
-                                type="text" placeholder=""
-                                class="input-xlarge" id="C_ADDR"
-                                name="C_ADDR">
-                            <p class="help-block">通讯地址</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="row-fluid">
                 <div class="span12">
@@ -235,12 +212,62 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="control-group">
+                        <label class="control-label" for="input01">省份:</label>
+                        <div class="controls">
+                            <input type="text" placeholder=""
+                                class="input-xlarge" id="S_PROVINCE"
+                                name="S_PROVINCE">
+                            <p class="help-block">省份</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label" for="input01">地市:</label>
+                        <div class="controls">
+                            <input type="text" placeholder=""
+                                class="input-xlarge" id="S_CITY"
+                                name="S_CITY">
+                            <p class="help-block">地市</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label" for="input01">县市:</label>
+                        <div class="controls">
+                            <input type="text" placeholder=""
+                                class="input-xlarge" id="S_COUNTY"
+                                name="S_COUNTY">
+                            <p class="help-block">县市</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6">
+                    <div class="control-group">
                         <label class="control-label" for="input01">邮政编码:</label>
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xlarge" id="C_ZIP"
                                 name="C_ZIP">
                             <p class="help-block">邮政编码</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="control-group">
+                        <!-- Text input-->
+                        <label class="control-label" for="input01">地址:</label>
+                        <div class="controls">
+                            <input type="text" placeholder=""
+                                class="input-xxlarge" id="C_ADDR"
+                                name="C_ADDR">
+                            <p class="help-block">地址</p>
                         </div>
                     </div>
                 </div>
