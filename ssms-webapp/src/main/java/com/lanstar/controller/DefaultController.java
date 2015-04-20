@@ -8,8 +8,6 @@
 
 package com.lanstar.controller;
 
-import java.util.Map;
-
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.ViewAndModel;
@@ -17,6 +15,8 @@ import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.DBPaging;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
+
+import java.util.Map;
 
 public abstract class DefaultController extends BaseController {
     public DefaultController( String tablename ) {
@@ -34,10 +34,15 @@ public abstract class DefaultController extends BaseController {
      * 列表数据
      */
     public ViewAndModel list( HandlerContext context ) {
+        return list( context, null );
+    }
+
+    protected ViewAndModel list( HandlerContext context, TableProcessor processor ) {
         ARTable arTable = context.DB.withTable( this.TABLENAME );
         Map<String, String> filter = context.getFilter();
         if ( !filter.isEmpty() ) arTable.where( StringHelper.join(
                 filter.keySet(), " and ", false ), filter.values().toArray() );
+        if ( processor != null ) processor.process( arTable );
         DBPaging paging = context.getPaging();
         JdbcPageRecordSet list = arTable.queryPaging( paging );
         return context.returnWith().set( list );
@@ -50,7 +55,7 @@ public abstract class DefaultController extends BaseController {
         String sid = (String) context.getValue( "sid" );
         return context.returnWith().set(
                 context.DB.withTable( this.TABLENAME ).where( "SID=?", sid )
-                        .query() );
+                          .query() );
     }
 
     /**
@@ -81,22 +86,23 @@ public abstract class DefaultController extends BaseController {
         String ids = (String) context.getValue( "ids" );
         if ( !Strings.isNullOrEmpty( ids ) ) {
             context.DB.withTable( this.TABLENAME )
-                    .where( "SID in (" + ids + ")" ).delete();
+                      .where( "SID in (" + ids + ")" ).delete();
         }
         return context.returnWith().set( "{}" );
     }
 
     /**
      * 表单.删除
-     * 
+     *
      * @param context
+     *
      * @return
      */
     public ViewAndModel del( HandlerContext context ) {
         String sid = (String) context.getValue( "sid" );
         if ( !Strings.isNullOrEmpty( sid ) ) {
             context.DB.withTable( this.TABLENAME ).where( "SID = ?", sid )
-                    .delete();
+                      .delete();
         }
         return context.returnWith().set( "{}" );
     }
