@@ -36,6 +36,10 @@ public class RequestContext {
         return uri;
     }
 
+    public String getReferer(){
+        return request.getHeader( "Referer" );
+    }
+
     public HttpServletRequest getRequest() {
         return request;
     }

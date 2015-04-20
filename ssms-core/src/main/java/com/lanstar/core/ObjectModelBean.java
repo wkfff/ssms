@@ -30,6 +30,7 @@ public final class ObjectModelBean implements ModelBean {
     public void set( Object value ) {
         this.value = value;
         map.clear();
+        if (value == null) return;
         if ( map.getClass().isAssignableFrom( value.getClass() ) ) map.putAll( (Map<? extends String, ?>) value );
         else map.putAll( BeanHelper.transToMap( value ) );
     }
