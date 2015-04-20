@@ -1,23 +1,23 @@
 <#import "/layout/_rec.ftl" as layout/> <#assign script>
 <script type="text/javascript">
-	var setting = {
-		sid : $url.getUrlParam("sid"),
-		dataUrl : "rec.json",
-		saveUrl : "save.json",
-		delUrl : "del.json",
-		editor : "C_SUMMARY"
-	}
+var setting = {
+        sid : $url.getUrlParam("sid"),
+        dataUrl : "rec.json",
+        saveUrl : "save.json",
+        delUrl : "del.json",
+        editor : "C_SUMMARY"
+    }
 
-	$(document).ready(function() {
-		$form.init(setting);
-		$("#T_CREATE").datepicker({
-			inline : false
-		});
-		$("#T_DATETIME").datetimepicker({
-			timeFormat : "HH:mm:ss",
-			dateFormat : "yy-mm-dd"
-		});
-	});
+    $(document).ready(function() {
+        $form.init(setting);
+        $("#T_CREATE").datepicker({
+            inline : false
+        });
+        $("#T_DATETIME").datetimepicker({
+            timeFormat : "HH:mm:ss",
+            dateFormat : "yy-mm-dd"
+        });
+    });
 </script>
 </#assign> <@layout.doLayout script>
 
