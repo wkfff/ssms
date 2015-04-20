@@ -34,6 +34,15 @@ public abstract class BaseController {
     }
 
     protected void mergerValues( ARTable table, HandlerContext context, MergerType mergerType ) {
+        mergerValuesWithoutParaMap( table, context, mergerType );
+        Map<String, Object> lastValues = new HashMap<>();
+        lastValues.putAll( context.getParameterMap() );
+        lastValues.remove( "sid" );
+        lastValues.remove( "T_UPDATE" );
+        table.values( lastValues );
+    }
+
+    protected void mergerValuesWithoutParaMap( ARTable table, HandlerContext context, MergerType mergerType ) {
         Map<String, Object> lastValues = new HashMap<>();
         lastValues.putAll( defaultValues );
         IdentityContext identityContext = context.getRequestContext().getIdentityContxt();
@@ -53,8 +62,6 @@ public abstract class BaseController {
                 lastValues.put( "P_TANENT", context.getIdentity().getTanentType() );
                 break;
         }
-
-        lastValues.putAll( context.getParameterMap() );
         lastValues.remove( "sid" );
         lastValues.remove( "T_UPDATE" );
         table.values( lastValues );
