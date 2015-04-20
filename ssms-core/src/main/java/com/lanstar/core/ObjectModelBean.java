@@ -11,11 +11,12 @@ package com.lanstar.core;
 import com.lanstar.common.helper.BeanHelper;
 import com.lanstar.plugin.json.JsonHelper;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public final class ObjectModelBean implements ModelBean {
     private Object value;
-    private Map<String, Object> map;
+    private Map<String, Object> map = new HashMap<>();
 
     /**
      * @return JSON标准字符串, 带“{”...“}”串
@@ -25,9 +26,13 @@ public final class ObjectModelBean implements ModelBean {
         return JsonHelper.toJson( value );
     }
 
+    @SuppressWarnings("unchecked")
     public void set( Object value ) {
         this.value = value;
-        map = BeanHelper.transToMap( value );
+        map.clear();
+        if (value == null) return;
+        if ( map.getClass().isAssignableFrom( value.getClass() ) ) map.putAll( (Map<? extends String, ?>) value );
+        else map.putAll( BeanHelper.transToMap( value ) );
     }
 
     @Override
