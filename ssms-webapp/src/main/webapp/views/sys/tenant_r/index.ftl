@@ -88,5 +88,5 @@
         </form>
     </div></div>
 </div>
-</div>
+
 </@layout.doLayout>
