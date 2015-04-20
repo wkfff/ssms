@@ -83,26 +83,22 @@ final class TableStatementBuilder {
         StringBuilder sb = new StringBuilder( "UPDATE " );
         sb.append( ar.table ).append( " SET " );
 
-        int whereParas = ar.whereParams == null ? 0 : ar.whereParams.length;
+        int whereParas = ar.whereParams == null ? 0 : ar.whereParams.size();
         int psize = ar.values.size();
-        Object[] params = new Object[psize + whereParas];
+        List<Object> params = new ArrayList<>( psize + whereParas );
         int i = 0;
         //根据VALUES构造相关的指令
         //TODO： 识别字段是否在表内存在，识别BLOB类型字段的处理，识别关键字等
         for ( Map.Entry<String, Object> entry : ar.values.entrySet() ) {
-            params[i] = entry.getValue();
-            if ( i++ > 0 ) {
-                sb.append( "," );
-            }
+            params.add( entry.getValue() );
+            if ( i++ > 0 ) sb.append( "," );
             sb.append( entry.getKey() ).append( "=?" );
         }
         // 处理WHERE
         if ( ar.where == null || ar.where.length() == 0 ) log.warn( "发现不带条件的UPDATE操作:" + sb.toString() );
         else {
             sb.append( " WHERE " ).append( ar.where );
-            if ( ar.whereParams != null ) {
-                System.arraycopy( ar.whereParams, 0, params, psize, ar.whereParams.length );
-            }
+            if ( ar.whereParams != null ) params.addAll( ar.whereParams );
         }
 
         return new SqlStatement( sb.toString(), params );
