@@ -12,6 +12,13 @@
 	
 	$(document).ready(function(){
 		$form.init(setting);
+		$( "#T_CREATE" ).datepicker({
+			inline: false
+		});
+		$( "#T_DATETIME" ).datetimepicker({
+			 timeFormat: "HH:mm:ss",
+             dateFormat: "yy-mm-dd"
+		});
 	});
 </script>
 </#assign>
@@ -197,6 +204,29 @@
 						<div class="controls">
 							<input type="text" placeholder="" class="input-xlarge" id="C_SCOPE" name="C_SCOPE">
 							<p class="help-block">营业范围</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row-fluid">
+				<div class="span6">
+					<div class="control-group">
+						<label class="control-label" for="input01">日期控件:</label>
+						<div class="controls">
+							 <div class="input-append">
+							    <input type="text" placeholder="" class="input-xlarge" id="T_CREATE" name="T_CREATE">
+							    <!--<button class="btn" type="button">选择</button>-->
+							  </div>
+							<p class="help-block">测试日期控件</p>
+						</div>
+					</div>
+				</div>
+				<div class="span6">
+					<div class="control-group">
+						<label class="control-label" for="input01">日期时间:</label>
+						<div class="controls">
+							<input type="text" placeholder="" class="input-xlarge" id="T_DATETIME" name="T_DATETIME">
+							<p class="help-block"></p>
 						</div>
 					</div>
 				</div>

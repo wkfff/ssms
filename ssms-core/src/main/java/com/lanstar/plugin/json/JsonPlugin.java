@@ -24,7 +24,7 @@ public class JsonPlugin extends AppPlugin implements IJsonPlugin {
 
     @Override
     public String toJson( Object object ) {
-        return JSON.toJSONString( object, SerializerFeature.WriteDateUseDateFormat, SerializerFeature.SortField );
+        return JSON.toJSONString( object, SerializerFeature.WriteDateUseDateFormat, SerializerFeature.SortField,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullNumberAsZero,SerializerFeature.WriteNullStringAsEmpty);
     }
 
     @Override

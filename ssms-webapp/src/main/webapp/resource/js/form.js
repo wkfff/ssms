@@ -4,6 +4,7 @@ $form = {
 	sourceData : null,
 	init : function(set) {
 		setting = set;
+		//标准按钮
 		$("input[name='btn_save']").click(function() {
 			$form.doSave();
 		});
@@ -18,9 +19,9 @@ $form = {
 		else
 			$("input[name='btn_del']").hide();
 
-		var es = setting.editor.split(",");
-		$.each(es,function(index,field){
-			var editor = KindEditor.create('textarea[name="' + field + '"]', {
+		//富文本编辑器
+		$.each($(".ui-editor"),function(index,e){
+			var editor = KindEditor.create('textarea[id="' + e.id + '"]', {
 				uploadUrl : '',
 				allowFileManager :false,
 				allowUpload:false,
@@ -32,7 +33,24 @@ $form = {
                     '|', 'table','|','fullscreen'
 					]
 			});
-			$form.editors[field] = editor;
+			$form.editors[e.id] = editor;
+		});
+		//日期
+		$.each($(".ui-date"),function(index,e){
+			$(e).datepicker({
+				inline: false
+			});
+		});
+		//日期时间
+		$.each($(".ui-date"),function(index,e){
+			$(e).datetimepicker({
+				 timeFormat: "HH:mm:ss",
+	             dateFormat: "yy-mm-dd"
+			});
+		});
+		//标签
+		$.each($(".ui-tabs"),function(index,e){
+			$(e).tabs();
 		});
 	},
 	bindData : function(sid) {
@@ -48,16 +66,41 @@ $form = {
 		}, "json");
 	},
 	setValue : function(field, value) {
-		// 需要具体处理
-		if ($form.editors[field])
+		var e = $("#" + field);
+		//选择框
+		if (e.hasClass("ui-checkbox")){
+			var values = value.split(",");
+			$.each($("input[type='checkbox']",e), function(i, chk) {
+				if ($.inArray(chk.value,values)>-1) chk.checked = true;
+			});
+		}
+		//单选
+		else if (e.hasClass("ui-radio")){
+			$("input[name="+field+"][value="+value+"]").attr("checked",true);
+		}
+		//富文本编辑器
+		else if (e.hasClass("ui-editor"))
 			$form.editors[field].html(value);
 		else
 			$("#" + field).val(value);
 	},
 	getValue : function(field) {
-		// 需要具体处理
 		var value;
-		if ($form.editors[field])
+		var e = $("#" + field);
+		//选择框
+		if (e.hasClass("ui-checkbox")){
+			var values = [];
+			$.each($(":checked",e), function(i, chk) {
+				values.push(chk.value);
+			});
+			value = values.join(",");
+		}
+		//单选
+		else if (e.hasClass("ui-radio")){
+			value = $(":checked",e).val();
+		}
+		//富文本编辑器
+		else if (e.hasClass("ui-editor"))
 			value = $form.editors[field].html();
 		else
 			value = $("#" + field).val();
@@ -68,10 +111,9 @@ $form = {
 		if (setting.sid != null) {
 			$.each(sourceData, function(field, value) {
 				var v = $form.getValue(field);
-				if (v != value
-						&& typeof (v) != "undefined") {
+				if (v != value && typeof (v) != "undefined") {
 					if (field != "SID" && field !="sid")
-						postData.push({
+					postData.push({
 							"name" : field,
 							"value" : v
 					});
