@@ -27,6 +27,7 @@ public class attachfileController {
     // TODO: 先用spring的实现，以后再考虑换自己的实现
     private final CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 
+    // TODO: 示例页面，正式上线的时候以后移除掉
     public void index( HandlerContext context ) {}
 
     public void upload( HandlerContext context ) {

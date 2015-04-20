@@ -14,14 +14,13 @@ import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.db.statement.SqlStatement;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ARTable extends ActiveRecordAbstr {
     String table;
     String columns;
     String where;
-    Object[] whereParams;
+    List<Object> whereParams = new ArrayList<>(  );
     String orderby;
     final Map<String, Object> values = new HashMap<>();
 
@@ -93,8 +92,9 @@ public class ARTable extends ActiveRecordAbstr {
      * @return 当前对象
      */
     public ARTable where( String where, Object... ps ) {
-        this.where = trimString( where );
-        this.whereParams = ps;
+        if ( this.where == null ) this.where = trimString( where );
+        else this.where = String.format( "%s AND %s", this.where, where );
+        Collections.addAll( this.whereParams, ps );
         return this;
     }
 
@@ -145,7 +145,7 @@ public class ARTable extends ActiveRecordAbstr {
         table = null;
         orderby = null;
         where = null;
-        whereParams = null;
+        whereParams.clear();
         values.clear();
 
         return this;

@@ -14,7 +14,7 @@ public interface Identity {
     /**
      * 获取用户ID
      */
-    String getId();
+    int getId();
 
     /**
      * 获取用户名

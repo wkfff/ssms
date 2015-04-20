@@ -34,24 +34,34 @@ public abstract class BaseController {
     }
 
     protected void mergerValues( ARTable table, HandlerContext context, MergerType mergerType ) {
+        mergerValuesWithoutParaMap( table, context, mergerType );
+        Map<String, Object> lastValues = new HashMap<>();
+        lastValues.putAll( context.getParameterMap() );
+        lastValues.remove( "sid" );
+        lastValues.remove( "T_UPDATE" );
+        table.values( lastValues );
+    }
+
+    protected void mergerValuesWithoutParaMap( ARTable table, HandlerContext context, MergerType mergerType ) {
         Map<String, Object> lastValues = new HashMap<>();
         lastValues.putAll( defaultValues );
         IdentityContext identityContext = context.getRequestContext().getIdentityContxt();
-        String usersid = identityContext.getIdentityId();
+        int usersid = identityContext.getIdentityId();
         String username = identityContext.getIdentityName();
         switch ( mergerType ) {
             case forUpdate:
                 lastValues.put( "R_UPDATE", usersid );
                 lastValues.put( "S_UPDATE", username );
-                lastValues.remove( "T_CREATE" );                
+                lastValues.remove( "T_CREATE" );
                 break;
             case forInsert:
                 lastValues.put( "R_CREATE", usersid );
                 lastValues.put( "S_CREATE", username );
+                lastValues.put( "R_TANENT", context.getIdentity().getId() );
+                lastValues.put( "S_TANENT", context.getIdentity().getName() );
+                lastValues.put( "P_TANENT", context.getIdentity().getTanentType() );
                 break;
         }
-
-        lastValues.putAll( context.getParameterMap() );
         lastValues.remove( "sid" );
         lastValues.remove( "T_UPDATE" );
         table.values( lastValues );
@@ -64,8 +74,10 @@ public abstract class BaseController {
     private ActionValidator validator;
 
     protected void validatePara( HandlerContext context ) {
-        if ( validator == null ) validator = BeanHelper.newInstance( getValidator() );
-        validator.intercept( new ActionInvocation( context, null ) );
+        if ( validator != null ) {
+            validator = BeanHelper.newInstance( getValidator() );
+            validator.intercept( new ActionInvocation( context, null ) );
+        }
     }
 
     protected List<Parameter> resolveMultiParameter( HandlerContext context, String parameterName ) {

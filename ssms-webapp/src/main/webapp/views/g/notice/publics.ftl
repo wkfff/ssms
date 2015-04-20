@@ -28,7 +28,9 @@
             <td id="SID" style="display:none;"></td>
             <td id="C_TITLE">标题</td>   
             <td id="S_PUBLIC">发布人</td> 
+            <#--TODO 该字段表中没有要添加-->
             <td id="T_PUBLIC">发布时间</td>                         
+            <#--TODO 该字段表中没有要添加-->
         <tr>
         </thead>
         <tbody/>        

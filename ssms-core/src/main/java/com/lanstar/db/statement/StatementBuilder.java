@@ -79,7 +79,7 @@ class StatementBuilder {
 
     protected StatementBuilder appendClause( String clauseName, String separator, String format, Object... args ) {
         if ( separator == null || !equalsIgnoreCase( currentClause, clauseName ) ) {
-            if ( !this.empty() ) {
+            if ( !this.isEmpty() ) {
                 this.buffer.append( '\n' );
             }
 
@@ -118,7 +118,7 @@ class StatementBuilder {
                         this.parameterValues.add( Array.get( obj, i ) );
                     }
                     continue;
-                } else if ( SqlBuilder.class.isAssignableFrom( obj.getClass() ) ) {
+                } else if ( StatementBuilder.class.isAssignableFrom( obj.getClass() ) ) {
                     StatementBuilder sqlb = (StatementBuilder) obj;
                     fargs.add( ("\n" + MakeAbsolutePlaceholders( sqlb )).replaceAll( "\n", "\n\t" ) );
                     this.parameterValues.addAll( sqlb.parameterValues );
@@ -140,7 +140,7 @@ class StatementBuilder {
         return this;
     }
 
-    public boolean empty() {
+    public boolean isEmpty() {
         return this.buffer.length() == 0;
     }
 

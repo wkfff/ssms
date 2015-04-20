@@ -1,7 +1,6 @@
 <#import "/layout/_rec.ftl" as layout/>
 
 <#assign script>
-<script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript">
     var setting = {
 			sid:$url.getUrlParam("sid"),
