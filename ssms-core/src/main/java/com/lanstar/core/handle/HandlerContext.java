@@ -10,6 +10,7 @@ package com.lanstar.core.handle;
 
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.Asserts;
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.ModelBean;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.VAR_SCOPE;
@@ -135,7 +136,12 @@ public class HandlerContext {
         Map<String, String[]> p = getRequestContext().getRequest().getParameterMap();
         for ( String key : p.keySet() ) {
             String[] values = p.get( key );
-            String value = values == null ? "" : values[0];
+            String value = "";
+            if (values==null || (values.length==1 && StringHelper.isBlank( values[0] ))) {
+                if (key.startsWith( "N_" )) value = "0"; 
+            }
+            else
+                value = StringHelper.join( values, ",", false );
             map.put( key, value );
         }
         return map;
