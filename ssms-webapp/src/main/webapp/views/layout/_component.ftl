@@ -75,7 +75,17 @@
 <div class="control-group">
     <label class="control-label" for="${name}">${title}:</label>
     <div class="controls">
-        <textarea name="${name}" id="${name}"></textarea>
+        <input type="text" placeholder="" class="ui-text input-xlarge" id="${name}" name="${name}">
+        <p class="help-block">${desc}</p>
+    </div>
+</div>
+</#macro>
+
+<#macro textarea name title desc>
+<div class="control-group">
+    <label class="control-label" for="${name}">${title}:</label>
+    <div class="controls">
+        <textarea id="${name}" name="${name}" rows=5 class="ui-editor"> </textarea>
         <p class="help-block">${desc}</p>
     </div>
 </div>
