@@ -1,5 +1,5 @@
 <!--suppress HtmlFormInputWithoutLabel -->
-<#import "_vars.ftl" as vars>
+<#import "_vars.ftl" as vars />
 
 <#--
     上传组件
@@ -71,39 +71,52 @@
 </@vars.component_base>
 </#macro>
 
-<#macro textbox name title desc>
-<div class="control-group">
-    <label class="control-label" for="${name}">${title}:</label>
+<#macro textbox name title="" desc="" readonly=false span=12>
+<div class="control-group span${span}">
+    <#if (title?length>0)>
+        <label class="control-label" for="${name}">${title}:</label>
+    </#if>
     <div class="controls">
-        <input type="text" placeholder="" class="ui-text input-xlarge" id="${name}" name="${name}">
+        <input type="text" placeholder="" class="ui-text input-x<#if span==12>x</#if>large" id="${name}" name="${name}" <#if readonly>readonly="readonly"</#if>>
+        <#if (desc?length>0)>
         <p class="help-block">${desc}</p>
+        </#if>
     </div>
 </div>
 </#macro>
 
-<#macro textarea name title desc>
-<div class="control-group">
+<#macro textarea name title="" desc="" span=12>
+<div class="control-group span${span}">
+    <#if (title?length>0)>
     <label class="control-label" for="${name}">${title}:</label>
+    </#if>
     <div class="controls">
         <textarea id="${name}" name="${name}" rows=5> </textarea>
+        <#if (desc?length>0)>
         <p class="help-block">${desc}</p>
+        </#if>
     </div>
 </div>
 </#macro>
 
-<#macro editor name title desc>
-<div class="control-group">
+<#macro editor name title="" desc="" span=12>
+<#assign ROW_COUNT=vars.ROW_COUNT+span in vars/>
+<div class="control-group span${span}">
+    <#if (title?length>0)>
     <label class="control-label" for="${name}">${title}:</label>
+    </#if>
     <div class="controls">
         <textarea id="${name}" name="${name}" rows=5 class="ui-editor"> </textarea>
+        <#if (desc?length>0)>
         <p class="help-block">${desc}</p>
+        </#if>
     </div>
 </div>
 </#macro>
 
 
-<#macro toolbar class="">
-<div class="navbar navbar-default ${class}">
+<#macro toolbar class="" outer="">
+<div class="navbar navbar-default ${class}">${outer}
     <div class="navbar-inner">
         <div class="container">
             <div class="nav pull-right">
@@ -115,15 +128,39 @@
 </#macro>
 
 
-<#macro form id title>
-<!--表单-->
+<#macro form id title="">
 <form class="form-horizontal" id="${id}">
-    <fieldset>
-        <legend id="p_title">${title}</legend>
-        <div class="row-fluid">
-            <div class="span12">
-                <#nested />
-            </div>
-        </div>
+<#if (title?length>0)>
+    <@group title>
+        <#nested />
+    </@group>
+<#else>
+    <#nested />
+</#if>
 </form>
+</#macro>
+
+<#macro group title>
+<fieldset>
+    <legend>${title}</legend>
+    <#nested />
+</fieldset>
+</#macro>
+
+<#macro row>
+<div class="row-fluid">
+    <#nested />
+</div>
+</#macro>
+
+<#macro table_repeat items>
+<table style="table-layout: fixed" width="100%">
+    <tbody>
+        <#list items as item>
+        <tr>
+            <#nested item/>
+        </tr>
+        </#list>
+    </tbody>
+</table>
 </#macro>

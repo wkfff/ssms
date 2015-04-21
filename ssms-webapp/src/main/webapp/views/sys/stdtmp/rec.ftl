@@ -28,30 +28,32 @@
 <@layout.doLayout script=script header=header>
 <div class="container">
     <@layout.form id="mainForm" title="[${C_NAME}]属性配置">
-        <@layout.textbox "C_NAME" "名称" "目录名称"/>
-        <@layout.textarea "C_DESC" "描述" "目录描述"/>
         <@layout.toolbar>
             <input type="button" class="btn" name="btn_save" value="保存">
-            <#if R_SID!=0>
-                <input type="button" class="btn" name="btn_del" value="删除">
-            </#if>
+            <#if R_SID!=0><input type="button" class="btn" name="btn_del" value="删除"></#if>
         </@layout.toolbar>
+        <@layout.textbox name="C_NAME" title="名称" desc="目录名称"/>
+        <@layout.textarea name="C_DESC" title="描述" desc="目录描述" span=6/>
     </@layout.form>
 
-    <@layout.form id="subForm" title="[${C_NAME}]子类型配置">
-        <table style="table-layout: fixed" width="100%">
-            <tbody>
-                <#list subitems as item>
-                <tr>
-                    <td>${item.C_NAME}</td>
-                    <td width="70"><a href="subitem.html?sid=${item.SID}&pid=${sid!}">[编辑]</a></td>
-                </tr>
-                </#list>
-            </tbody>
-        </table>
+    <@layout.group "[${C_NAME}]子类型配置">
         <@layout.toolbar>
             <input type="button" class="btn" id="btn_add" value="增加子分类">
         </@layout.toolbar>
-    </@layout.form>
+        <@layout.table_repeat subitems; item>
+            <td>${item.C_NAME}</td>
+            <td width="70"><a href="subitem.html?sid=${item.SID}&pid=${sid!}">[编辑]</a></td>
+        </@layout.table_repeat>
+    </@layout.group>
+
+    <@layout.group "[${C_NAME}]文件模板配置">
+        <@layout.toolbar>
+            <input type="button" class="btn" id="btn_add" value="增加子分类">
+        </@layout.toolbar>
+        <@layout.table_repeat subitems; item>
+            <td>${item.C_NAME}</td>
+            <td width="70"><a href="subitem.html?sid=${item.SID}&pid=${sid!}">[编辑]</a></td>
+        </@layout.table_repeat>
+    </@layout.group>
 </div>
 </@layout.doLayout>
