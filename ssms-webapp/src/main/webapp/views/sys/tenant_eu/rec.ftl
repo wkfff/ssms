@@ -156,7 +156,6 @@
                         <label class="control-label" for="input01">手机:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="C_MOBILE" name="C_MOBILE">
-                             <#--TODO缺少邮编字段-->
                             <p class="help-block">手机</p>
                         </div>
                     </div>
