@@ -104,6 +104,13 @@
 </@_edit_component>
 </#macro>
 
+<#macro radio name title="" desc="" span=12>
+<@_edit_component name title desc span>
+<input type="radio" placeholder="" class="input-xlarge" id="${name}" name="${name}">男
+<input type="radio" placeholder="" class="input-xlarge" id="${name}" name="${name}">女
+</@_edit_component>
+</#macro>
+
 <#macro parameter keyField valueField src="" items=[] title="" desc="" span=12>
 <@_edit_component keyField title desc span>
 <input type="hidden" id="${valueField}" name="${valueField}"/>
