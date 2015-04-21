@@ -34,8 +34,13 @@ public class stdtmpController extends DefaultController {
         JdbcRecordSet records = context.SYSTEM_DB.withTable( "SYS_STDTMP_FOLDER" )
                                                  .where( "R_SID=?", sid )
                                                  .queryList();
+        JdbcRecordSet records2 = context.SYSTEM_DB.withTable( "SYS_STDTMP_FILE" )
+                                                  .where( "R_SID=?", sid )
+                                                  .queryList();
 
-        return super.rec( context ).put( "subitems", records );
+        return super.rec( context )
+                    .put( "subitems", records )
+                    .put( "fileitems", records2 );
     }
 
     @Override
