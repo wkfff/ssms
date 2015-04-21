@@ -54,7 +54,7 @@ public class DruidDataSourceProvider implements IDataSourceProvider {
 
         // 配置监控统计拦截的filters
         try {
-            ds.addFilters( "stat,log4j" );
+//            ds.addFilters( "stat,log4j" );
             // 创建好数据库后先执行一次初始化操作
             ds.init();
         } catch ( SQLException e ) {

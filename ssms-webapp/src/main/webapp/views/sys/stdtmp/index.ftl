@@ -4,8 +4,19 @@
 <link rel="stylesheet" href="/resource/css/zTreeStyle/zTreeStyle.css"/>
 <style type="text/css">
     body {
-        margin-top: 40px;
+         margin-top: 40px;
     }
+
+    * { margin:0; padding:0; list-style:none;}
+    html { height:100%; overflow:hidden; background:#fff;}
+    body { height:100%; overflow:hidden; background:#fff;}
+    .side { position:absolute; left:0; top:40px; bottom:0; width:260px; overflow:auto; border-right: dashed 1px #cccccc}
+    .main { position:absolute; left:270px; top:40px; bottom:0; right:0; overflow:hidden;}
+    .main iframe { width:100%; height:100%;}
+    /*---ie6---*/
+    html { *padding:70px 10px;}
+    .side { *height:100%; *float:left; *width:260px; *position:relative; *top:0; *right:0; *bottom:0; *left:0;}
+    .main { *height:100%; *margin-left:210px; _margin-left:207px; *position:relative; *top:0; *right:0; *bottom:0; *left:0;}
 </style>
 </#assign>
 <#assign script>
@@ -30,22 +41,22 @@
         }
     };
 
-    $(document).ready(function () {
-        var demoIframe = $("#mainFrame");
+    function loadTree(){
         $.post('tree.json', {profession: '${profession}'}, function (result) {
-            if ($.isArray(result))
-                $.fn.zTree.init($("#treeDemo"), setting, result).expandAll(true);
-            demoIframe.bind("load", loadReady);
+            if ($.isArray(result)) {
+                $.each(result, function (index, item) {
+                    item.open = true;
+                });
+                $.fn.zTree.init($("#treeDemo"), setting, result);
+            }
         });
+    }
 
-        function loadReady() {
-            var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
-                    htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
-                    maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
-                    h = demoIframe.height() >= maxH ? minH:maxH ;
-            if (h < 530) h = 530;
-            demoIframe.height(h);
-        }
+    $(document).ready(function () {
+        loadTree();
+        $('#btnRefresh').click(function () {
+            loadTree();
+        });
     });
 </script>
 </#assign>
@@ -66,15 +77,13 @@
     </div>
 </div>
 
-<table border="0" style="height: 600px" align="left">
-    <tr>
-        <td width="260px" align="left" valign="top" style="border-right: #999999 1px dashed">
-            <ul id="treeDemo" class="ztree" style="width: 260px; overflow: auto;"></ul>
-        </td>
-        <td width="100%" align="left" valign="top">
-            <iframe id="mainFrame" name="mainFrame" frameborder="0" scrolling="auto" width="100%"></iframe>
-        </td>
-    </tr>
-</table>
+<div class="side" style="padding-left: 5px">
+    <input type="button" value="刷新" id="btnRefresh"/>
+    <ul id="treeDemo" class="ztree"></ul>
+</div>
+
+<div class="main" style="padding-right: 5px">
+    <iframe id="mainFrame" frameborder="0"></iframe>
+</div>
 
 </@layout.doLayout>

@@ -7,7 +7,7 @@
         dataUrl: "rec.json",
         saveUrl: "save.json",
         delUrl: "del.json",
-        backUrl: '${referer!}' // 设置回退的URL。referer是请求头，里面含有请求当前页面的页面地址。
+        backUrl: '${Referer!}' // 设置回退的URL。referer是请求头，里面含有请求当前页面的页面地址。
     };
 
     $(document).ready(function () {

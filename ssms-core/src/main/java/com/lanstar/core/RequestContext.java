@@ -149,13 +149,15 @@ public class RequestContext {
      */
     @SuppressWarnings("unchecked")
     public <T> T getValue( String name ) {
-        // 取值的顺序：本地变量 --> request --> url参数 --> session --> servletContext
+        // 取值的顺序：本地变量 --> request --> url参数 --> header --> session --> servletContext
         Object v = localVars.get( name );
         if ( v == null ) v = request.getAttribute( name );
         if ( v == null ) v = getParameter( name );
+        // 增加从Header中取值的行为              by 张铮彬#2015-4-21
+        if ( v == null ) v = request.getHeader( name );
         if ( v == null ) v = request.getSession().getAttribute( name );
         if ( v == null ) v = App.getServletContext().getAttribute( name );
-        return (T)v;
+        return (T) v;
     }
 
     /**
@@ -173,6 +175,8 @@ public class RequestContext {
             case REQUEST:
                 value = request.getAttribute( name );
                 if ( value == null ) value = getParameter( name );
+                // 增加从Header中取值的行为              by 张铮彬#2015-4-21
+                if ( value == null ) value = request.getHeader( name );
                 break;
             case SESSION:
                 value = request.getSession().getAttribute( name );
@@ -181,7 +185,7 @@ public class RequestContext {
                 value = App.getServletContext().getAttribute( name );
                 break;
         }
-        return (T)value;
+        return (T) value;
     }
 
     public Map<String, Object> getValues() {
