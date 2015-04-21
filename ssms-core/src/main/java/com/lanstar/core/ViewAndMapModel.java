@@ -14,7 +14,8 @@ public final class ViewAndMapModel extends ViewAndModel {
     public ViewAndMapModel( ViewAndModel parent ) {
         super( parent );
         if ( parent.model == null || !MapModelBean.class.isAssignableFrom( parent.model.getClass() ) ) {
-            mapModel = new MapModelBean();
+            if ( parent.model != null ) mapModel = new MapModelBean( parent.model.getValues() );
+            else mapModel = new MapModelBean();
             model( mapModel );
         } else {
             mapModel = (MapModelBean) parent.model;

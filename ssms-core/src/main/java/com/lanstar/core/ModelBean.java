@@ -10,8 +10,12 @@ package com.lanstar.core;
 
 import com.lanstar.common.bean.IJsonable;
 
+import java.util.Map;
+
 public interface ModelBean extends IJsonable {
     ModelBean EMPTY = null;
 
     Object getValue( String name );
+
+    Map<String, Object> getValues();
 }

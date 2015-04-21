@@ -40,4 +40,10 @@ public final class ObjectModelBean implements ModelBean {
         if ( map == null ) return null;
         return map.get( name );
     }
+
+    @Override
+    public Map<String, Object> getValues() {
+        if ( map == null ) return null;
+        return map;
+    }
 }

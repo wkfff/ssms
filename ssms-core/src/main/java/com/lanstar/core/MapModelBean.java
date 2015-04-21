@@ -40,4 +40,9 @@ public final class MapModelBean implements ModelBean {
     public Object getValue( String key ) {
         return map.get( key );
     }
+
+    @Override
+    public Map<String, Object> getValues() {
+        return map;
+    }
 }
