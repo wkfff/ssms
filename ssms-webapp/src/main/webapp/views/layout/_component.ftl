@@ -100,7 +100,6 @@
 </#macro>
 
 <#macro editor name title="" desc="" span=12>
-<#assign ROW_COUNT=vars.ROW_COUNT+span in vars/>
 <div class="control-group span${span}">
     <#if (title?length>0)>
     <label class="control-label" for="${name}">${title}:</label>
