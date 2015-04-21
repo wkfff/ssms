@@ -100,3 +100,30 @@
     </div>
 </div>
 </#macro>
+
+
+<#macro toolbar class="">
+<div class="navbar navbar-default ${class}">
+    <div class="navbar-inner">
+        <div class="container">
+            <div class="nav pull-right">
+                <#nested />
+            </div>
+        </div>
+    </div>
+</div>
+</#macro>
+
+
+<#macro form id title>
+<!--表单-->
+<form class="form-horizontal" id="${id}">
+    <fieldset>
+        <legend id="p_title">${title}</legend>
+        <div class="row-fluid">
+            <div class="span12">
+                <#nested />
+            </div>
+        </div>
+</form>
+</#macro>
