@@ -71,48 +71,52 @@
 </@vars.component_base>
 </#macro>
 
-<#macro textbox name title="" desc="" readonly=false span=12>
-<div class="control-group span${span}">
+
+<#macro _edit_component name title="" desc="" span=12>
+<div class="control-group <#if (span>0)>span${span}</#if>">
     <#if (title?length>0)>
         <label class="control-label" for="${name}">${title}:</label>
     </#if>
-    <div class="controls">
-        <input type="text" placeholder="" class="ui-text input-x<#if span==12>x</#if>large" id="${name}" name="${name}" <#if readonly>readonly="readonly"</#if>>
+    <div <#if (title?length>0)>class="controls"</#if>>
+        <#nested />
         <#if (desc?length>0)>
-        <p class="help-block">${desc}</p>
+            <p class="help-block">${desc}</p>
         </#if>
     </div>
 </div>
+</#macro>
+
+<#macro textbox name title="" desc="" value="" readonly=false span=12>
+<@_edit_component name title desc span>
+<input type="text" placeholder="" class="ui-text input-x<#if span==12>x</#if>large" id="${name}" name="${name}" <#if readonly>readonly="readonly"</#if> value="${value}">
+</@_edit_component>
 </#macro>
 
 <#macro textarea name title="" desc="" span=12>
-<div class="control-group span${span}">
-    <#if (title?length>0)>
-    <label class="control-label" for="${name}">${title}:</label>
-    </#if>
-    <div class="controls">
-        <textarea id="${name}" name="${name}" rows=5> </textarea>
-        <#if (desc?length>0)>
-        <p class="help-block">${desc}</p>
-        </#if>
-    </div>
-</div>
+<@_edit_component name title desc span>
+<textarea id="${name}" name="${name}" rows=5 class="input-x<#if span==12>x</#if>large"> </textarea>
+</@_edit_component>
 </#macro>
 
 <#macro editor name title="" desc="" span=12>
-<div class="control-group span${span}">
-    <#if (title?length>0)>
-    <label class="control-label" for="${name}">${title}:</label>
-    </#if>
-    <div class="controls">
-        <textarea id="${name}" name="${name}" rows=5 class="ui-editor"> </textarea>
-        <#if (desc?length>0)>
-        <p class="help-block">${desc}</p>
-        </#if>
-    </div>
-</div>
+<@_edit_component name title desc span>
+<textarea id="${name}" name="${name}" rows=5 class="ui-editor"></textarea>
+</@_edit_component>
 </#macro>
 
+<#macro parameter keyField valueField src="" items=[] title="" desc="" span=12>
+<@_edit_component keyField title desc span>
+<input type="hidden" id="${valueField}" name="${valueField}"/>
+<select id="${keyField}" class="ui-parameter input-x<#if span==12>x</#if>large" src="${src}">
+<#list items as Parameter>
+    <option value=${Parameter.key}>${Parameter.value}</option>
+</#list>
+</select>
+<#if (desc?length>0)>
+<p class="help-block">${desc}</p>
+</#if>
+</@>
+</#macro>
 
 <#macro toolbar class="" outer="">
 <div class="navbar navbar-default ${class}">${outer}
@@ -125,7 +129,6 @@
     </div>
 </div>
 </#macro>
-
 
 <#macro form id title="">
 <form class="form-horizontal" id="${id}">
@@ -163,3 +166,4 @@
     </tbody>
 </table>
 </#macro>
+
