@@ -8,7 +8,9 @@
 
 package com.lanstar.core.handle.identity;
 
-import com.lanstar.db.DbContext;
+import com.lanstar.db.DBSession;
+
+import java.sql.SQLException;
 
 public interface IdentityContext {
     <T extends Identity> T getIdentity( Class<T> type );
@@ -17,7 +19,7 @@ public interface IdentityContext {
 
     <T extends Identity> boolean is( Class<T> type );
 
-    DbContext getDbContext();
+    DBSession getDBSession() throws SQLException;
 
     int getIdentityId();
 

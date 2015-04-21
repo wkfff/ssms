@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="/resource/css/zTreeStyle/zTreeStyle.css"/>
 <style type="text/css">
     body {
-        overflow: hidden;
         margin-top: 40px;
     }
 </style>

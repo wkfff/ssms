@@ -23,6 +23,7 @@ import com.lanstar.db.DBPaging;
 import com.lanstar.service.attachtext.AttachTextService;
 import com.lanstar.service.file.FileService;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;

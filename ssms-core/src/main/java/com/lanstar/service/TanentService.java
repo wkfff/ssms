@@ -9,7 +9,9 @@
 package com.lanstar.service;
 
 import com.lanstar.core.handle.identity.Identity;
-import com.lanstar.db.DbContext;
+import com.lanstar.db.DBSession;
+
+import java.sql.SQLException;
 
 /**
  * 租户服务
@@ -28,5 +30,5 @@ public abstract class TanentService {
     /**
      * 获取租户对应的数据库上下文
      */
-    public DbContext getDbContext() {return identity.getDbContext();}
+    public DBSession getDBSession() throws SQLException {return identity.getDBSession();}
 }

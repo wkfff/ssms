@@ -32,7 +32,7 @@ public class Handlers {
         try ( HandlerContext handlerContext = new HandlerContext( context ) ) {
             new VirtualHandleChain( handlers ).doHandle( handlerContext );
         } catch ( Exception e ) {
-            LogHelper.error( getClass(), e, e.getLocalizedMessage() );
+            LogHelper.warn( getClass(), e, e.getLocalizedMessage() );
         }
     }
 

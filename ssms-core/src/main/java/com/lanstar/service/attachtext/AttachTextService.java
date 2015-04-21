@@ -10,7 +10,7 @@ package com.lanstar.service.attachtext;
 
 import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBSession;
-import com.lanstar.db.DbContext;
+import com.lanstar.db.DbException;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.service.TanentService;
@@ -22,7 +22,7 @@ import java.sql.SQLException;
  */
 public class AttachTextService extends TanentService {
     private static final String TABLENAME = "SYS_ATTACH_TEXT";
-    private final DbContext context;
+    private final DBSession session;
 
     /**
      * 根据身份标识获取租户服务
@@ -31,7 +31,11 @@ public class AttachTextService extends TanentService {
      */
     public AttachTextService( Identity identity ) {
         super( identity );
-        this.context = getDbContext();
+        try {
+            this.session = getDBSession();
+        } catch ( SQLException e ) {
+            throw new DbException( e );
+        }
     }
 
     public String getContent( String tableName, String field, int sid ) throws SQLException {
@@ -74,7 +78,7 @@ public class AttachTextService extends TanentService {
     }
 
     private ARTable getTable() throws SQLException {
-        return getTable( context.createDbSession() );
+        return getTable( session );
     }
 
     private ARTable getTable( DBSession session ) {
