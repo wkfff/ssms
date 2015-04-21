@@ -70,3 +70,13 @@
 <textarea id="${id}_editor" name="${name}"></textarea>
 </@vars.component_base>
 </#macro>
+
+<#macro textbox name title desc>
+<div class="control-group">
+    <label class="control-label" for="${name}">${title}:</label>
+    <div class="controls">
+        <textarea name="${name}" id="${name}"></textarea>
+        <p class="help-block">${desc}</p>
+    </div>
+</div>
+</#macro>
