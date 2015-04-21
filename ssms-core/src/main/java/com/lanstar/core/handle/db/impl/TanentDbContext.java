@@ -28,7 +28,7 @@ public class TanentDbContext extends HandlerDbContext {
             throw new DbException( "身份认证无法通过，无法创建租户数据库会话！" );
         }
         try {
-            return context.getIdentityContxt().getDBSession();
+            return context.getIdentityContxt().getDbContext().createDbSession();
         } catch ( SQLException e ) {
             throw new DbException( "无法创建数据库会话", e );
         }

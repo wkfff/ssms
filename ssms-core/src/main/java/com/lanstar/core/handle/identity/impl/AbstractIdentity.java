@@ -8,14 +8,13 @@
 
 package com.lanstar.core.handle.identity.impl;
 
-import com.lanstar.core.handle.db.DBSessionHolder;
 import com.lanstar.core.handle.identity.Identity;
-import com.lanstar.db.DBSession;
 import com.lanstar.db.DS;
+import com.lanstar.db.DbContext;
 
 import java.sql.SQLException;
 
-public abstract class AbstractIdentity extends DBSessionHolder implements Identity {
+public abstract class AbstractIdentity implements Identity {
     protected String getTanentDbCode() {
         // TODO: 要调整为根据当前用户的租户信息来获取
         return "tanent01";
@@ -37,7 +36,7 @@ public abstract class AbstractIdentity extends DBSessionHolder implements Identi
     }
 
     @Override
-    protected DBSession buildDbSession() throws SQLException {
-        return DS.getDbContext(getTanentDbCode()).createDbSession();
+    public DbContext getDbContext() throws SQLException {
+        return DS.getDbContext( getTanentDbCode() );
     }
 }

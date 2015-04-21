@@ -9,7 +9,7 @@
 package com.lanstar.core.handle.identity;
 
 import com.lanstar.common.helper.Asserts;
-import com.lanstar.db.DBSession;
+import com.lanstar.db.DbContext;
 
 import java.sql.SQLException;
 
@@ -40,8 +40,8 @@ class IdentityContextImpl implements IdentityContext {
     }
 
     @Override
-    public DBSession getDBSession() throws SQLException {
-        return identity.getDBSession();
+    public DbContext getDbContext() throws SQLException {
+        return identity.getDbContext();
     }
 
     @Override

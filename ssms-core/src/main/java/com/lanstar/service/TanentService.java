@@ -8,27 +8,34 @@
 
 package com.lanstar.service;
 
+import com.lanstar.core.handle.db.DBSessionHolder;
 import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBSession;
+import com.lanstar.db.DbException;
 
 import java.sql.SQLException;
 
 /**
  * 租户服务
  */
-public abstract class TanentService {
+public abstract class TanentService extends DBSessionHolder {
     protected final Identity identity;
 
     /**
      * 根据身份标识获取租户服务
+     *
      * @param identity 身份标识
      */
     public TanentService( Identity identity ) {
         this.identity = identity;
     }
 
-    /**
-     * 获取租户对应的数据库上下文
-     */
-    public DBSession getDBSession() throws SQLException {return identity.getDBSession();}
+    @Override
+    protected DBSession buildDbSession() {
+        try {
+            return identity.getDbContext().createDbSession();
+        } catch ( SQLException e ) {
+            throw new DbException( "无法创建数据库会话", e );
+        }
+    }
 }
