@@ -85,6 +85,16 @@
 <div class="control-group">
     <label class="control-label" for="${name}">${title}:</label>
     <div class="controls">
+        <textarea id="${name}" name="${name}" rows=5> </textarea>
+        <p class="help-block">${desc}</p>
+    </div>
+</div>
+</#macro>
+
+<#macro editor name title desc>
+<div class="control-group">
+    <label class="control-label" for="${name}">${title}:</label>
+    <div class="controls">
         <textarea id="${name}" name="${name}" rows=5 class="ui-editor"> </textarea>
         <p class="help-block">${desc}</p>
     </div>
