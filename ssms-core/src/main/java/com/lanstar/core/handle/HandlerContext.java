@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class HandlerContext {
+public class HandlerContext implements AutoCloseable{
     private final RequestContext context;
     /**
      * 租户库上下文
@@ -201,5 +201,12 @@ public class HandlerContext {
 
     public Identity getIdentity() {
         return getRequestContext().getIdentityContxt().getIdentity();
+    }
+
+    @Override
+    public void close() throws Exception {
+        DB.close();
+        SYSTEM_DB.close();
+        TANENT_DB.close();
     }
 }
