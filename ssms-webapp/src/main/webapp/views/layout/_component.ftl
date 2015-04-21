@@ -70,3 +70,33 @@
 <textarea id="${id}_editor" name="${name}"></textarea>
 </@vars.component_base>
 </#macro>
+
+<#macro textbox name title desc>
+<div class="control-group">
+    <label class="control-label" for="${name}">${title}:</label>
+    <div class="controls">
+        <input type="text" placeholder="" class="ui-text input-xlarge" id="${name}" name="${name}">
+        <p class="help-block">${desc}</p>
+    </div>
+</div>
+</#macro>
+
+<#macro textarea name title desc>
+<div class="control-group">
+    <label class="control-label" for="${name}">${title}:</label>
+    <div class="controls">
+        <textarea id="${name}" name="${name}" rows=5> </textarea>
+        <p class="help-block">${desc}</p>
+    </div>
+</div>
+</#macro>
+
+<#macro editor name title desc>
+<div class="control-group">
+    <label class="control-label" for="${name}">${title}:</label>
+    <div class="controls">
+        <textarea id="${name}" name="${name}" rows=5 class="ui-editor"> </textarea>
+        <p class="help-block">${desc}</p>
+    </div>
+</div>
+</#macro>
