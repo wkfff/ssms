@@ -8,10 +8,8 @@
 
 package com.lanstar.service.parameter;
 
-import com.lanstar.db.DS;
-import com.lanstar.db.DbContext;
-import com.lanstar.db.JdbcRecord;
-import com.lanstar.db.JdbcRecordSet;
+import com.lanstar.common.log.LogHelper;
+import com.lanstar.db.*;
 import com.lanstar.db.statement.SQL;
 import com.lanstar.db.statement.SqlBuilder;
 
@@ -39,13 +37,18 @@ public class ParameterResolver {
         SqlBuilder sql = SQL.SELECT( "C_CODE, C_VALUE" )
                             .FROM( "SYS_PARA_MULTI" )
                             .WHERE( "C_NAME=?", parameterName );
-        JdbcRecordSet records = dbContext.createDbSession().query( sql.toSqlStatement() );
-        List<Parameter> list = new ArrayList<>();
-        for ( JdbcRecord record : records ) {
-            String code = record.getString( "C_CODE" );
-            String value = record.getString( "C_VALUE" );
-            list.add( new Parameter( code, value ) );
+        try ( DBSession session = dbContext.createDbSession() ) {
+            JdbcRecordSet records = session.query( sql.toSqlStatement() );
+            List<Parameter> list = new ArrayList<>();
+            for ( JdbcRecord record : records ) {
+                String code = record.getString( "C_CODE" );
+                String value = record.getString( "C_VALUE" );
+                list.add( new Parameter( code, value ) );
+            }
+            return list;
+        } catch ( Exception e ) {
+            LogHelper.warn( getClass(), e, e.getLocalizedMessage() );
+            return null;
         }
-        return list;
     }
 }

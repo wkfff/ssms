@@ -8,6 +8,7 @@
 
 package com.lanstar.core.handle;
 
+import com.lanstar.common.log.LogHelper;
 import com.lanstar.core.RequestContext;
 
 import javax.servlet.ServletException;
@@ -28,7 +29,11 @@ public class Handlers {
 
     public void handle( RequestContext context ) throws ServletException, IOException {
         // 每次都是一个新的调用链
-        new VirtualHandleChain( handlers ).doHandle( new HandlerContext( context ) );
+        try ( HandlerContext handlerContext = new HandlerContext( context ) ) {
+            new VirtualHandleChain( handlers ).doHandle( handlerContext );
+        } catch ( Exception e ) {
+            LogHelper.warn( getClass(), e, e.getLocalizedMessage() );
+        }
     }
 
     private static class VirtualHandleChain implements HandleChain {

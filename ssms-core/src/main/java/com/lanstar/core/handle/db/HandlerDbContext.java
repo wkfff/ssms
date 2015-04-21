@@ -9,10 +9,13 @@
 package com.lanstar.core.handle.db;
 
 import com.lanstar.db.DBSession;
+import com.lanstar.db.DbException;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.statement.SqlBuilder;
+
+import java.sql.SQLException;
 
 /**
  * 数据库操作上下文
@@ -28,7 +31,11 @@ public abstract class HandlerDbContext extends DBSessionHolder {
      * @see ARTable
      */
     public final ARTable withTable( String tableName ) {
-        return new ARTable( getDbSession() ).table( tableName );
+        try {
+            return new ARTable( getDBSession() ).table( tableName );
+        } catch ( SQLException e ) {
+            throw new DbException( e );
+        }
     }
 
     /**
@@ -37,7 +44,12 @@ public abstract class HandlerDbContext extends DBSessionHolder {
      * @param trans 事务上下文
      */
     public final void transaction( TransactionContext trans ) {
-        DBSession session = getDbSession();
+        DBSession session;
+        try {
+            session = getDBSession();
+        } catch ( SQLException e ) {
+            throw new DbException( e );
+        }
         try {
             session.beginTransaction();
             trans.execute( this );
@@ -50,21 +62,33 @@ public abstract class HandlerDbContext extends DBSessionHolder {
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
      */
     public final int execute( SqlBuilder sqlBuilder ) {
-        return getDbSession().execute( sqlBuilder.toSqlStatement() );
+        try {
+            return getDBSession().execute( sqlBuilder.toSqlStatement() );
+        } catch ( SQLException e ) {
+            throw new DbException( e );
+        }
     }
 
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
      */
     public final JdbcRecord first( SqlBuilder sqlBuilder ) {
-        return getDbSession().first( sqlBuilder.toSqlStatement() );
+        try {
+            return getDBSession().first( sqlBuilder.toSqlStatement() );
+        } catch ( SQLException e ) {
+            throw new DbException( e );
+        }
     }
 
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
      */
     public final JdbcRecordSet query( SqlBuilder sqlBuilder ) {
-        return getDbSession().query( sqlBuilder.toSqlStatement() );
+        try {
+            return getDBSession().query( sqlBuilder.toSqlStatement() );
+        } catch ( SQLException e ) {
+            throw new DbException( e );
+        }
     }
 
     public interface TransactionContext {
@@ -74,7 +98,11 @@ public abstract class HandlerDbContext extends DBSessionHolder {
     /**
      * 获取新增记录的SID值
      */
-    public int getSID(){
-        return getDbSession().getSID();
+    public int getSID() {
+        try {
+            return getDBSession().getSID();
+        } catch ( SQLException e ) {
+            throw new DbException( e );
+        }
     }
 }
