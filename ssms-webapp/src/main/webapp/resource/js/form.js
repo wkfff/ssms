@@ -21,7 +21,7 @@ $form = {
 
 		//富文本编辑器
 		$.each($(".ui-editor"),function(index,e){
-			var editor = KindEditor.create('textarea[id="' + e.id + '"]', {
+			var editor = KindEditor.create('#' + e.id, {
 				uploadUrl : '',
 				allowFileManager :false,
 				allowUpload:false,
