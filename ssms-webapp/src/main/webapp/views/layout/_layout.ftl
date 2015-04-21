@@ -1,3 +1,4 @@
+<#import "_vars.ftl" as vars/>
 <#macro doLayout header="" footer="">
 <!doctype html>
 <html lang="zh-CN">
@@ -9,7 +10,7 @@
 </head>
 <body>
     <#nested/>
-    <#if (footer?length>0)>${footer}</#if>
+    <#if (footer?length>0)>${footer}</#if>${vars.COMPONENT_INIT_SCRIPTS}<#--输出组件初始化脚本-->
 </body>
 </html>
 </#macro>
