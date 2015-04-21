@@ -27,58 +27,31 @@
 </#assign>
 <@layout.doLayout script=script header=header>
 <div class="container">
-    <!--表单-->
-    <form class="form-horizontal" id="mainForm">
-        <fieldset>
-            <legend id="p_title">[${C_NAME}]属性配置</legend>
-            <div class="row-fluid">
-                <div class="span12">
-                    <@layout.textbox "C_NAME" "名称" "目录名称"/>
-                    <@layout.textarea "C_DESC" "描述" "目录描述"/>
-                </div>
-            </div>
+    <@layout.form id="mainForm" title="[${C_NAME}]属性配置">
+        <@layout.textbox "C_NAME" "名称" "目录名称"/>
+        <@layout.textarea "C_DESC" "描述" "目录描述"/>
+        <@layout.toolbar>
+            <input type="button" class="btn" name="btn_save" value="保存">
+            <#if R_SID!=0>
+                <input type="button" class="btn" name="btn_del" value="删除">
+            </#if>
+        </@layout.toolbar>
+    </@layout.form>
 
-            <div class="navbar navbar-default">
-                <div class="navbar-inner">
-                    <div class="container">
-                        <div class="nav pull-right">
-                            <input type="button" class="btn" name="btn_save" value="保存">
-                            <#if R_SID!=0>
-                                <input type="button" class="btn" name="btn_del" value="删除">
-                            </#if>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </form>
-
-    <form class="form-horizontal" id="subForm">
-        <fieldset>
-            <legend id="p_title">[${C_NAME}]子类型配置</legend>
-            <div class="row-fluid" id="subitems">
-                <div class="span12">
-                    <table style="table-layout: fixed" width="100%">
-                        <tbody>
-                            <#list subitems as item>
-                            <tr>
-                                <td>${item.C_NAME}</td>
-                                <td width="70"><a href="subitem.html?sid=${item.SID}&pid=${sid!}">[编辑]</a></td>
-                            </tr>
-                            </#list>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="navbar navbar-default">
-                <div class="navbar-inner">
-                    <div class="container">
-                        <div class="nav pull-right">
-                            <input type="button" class="btn" id="btn_add" value="增加子分类">
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </form>
+    <@layout.form id="subForm" title="[${C_NAME}]子类型配置">
+        <table style="table-layout: fixed" width="100%">
+            <tbody>
+                <#list subitems as item>
+                <tr>
+                    <td>${item.C_NAME}</td>
+                    <td width="70"><a href="subitem.html?sid=${item.SID}&pid=${sid!}">[编辑]</a></td>
+                </tr>
+                </#list>
+            </tbody>
+        </table>
+        <@layout.toolbar>
+            <input type="button" class="btn" id="btn_add" value="增加子分类">
+        </@layout.toolbar>
+    </@layout.form>
 </div>
 </@layout.doLayout>
