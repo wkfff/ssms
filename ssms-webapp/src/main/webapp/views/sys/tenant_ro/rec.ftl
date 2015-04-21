@@ -1,17 +1,17 @@
  <#import "/layout/_rec.ftl" as layout/> <#assign script>
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript">
-	var setting = {
-		sid : $url.getUrlParam("sid"),
-		dataUrl : "rec.json",
-		saveUrl : "save.json",
-		delUrl : "del.json",
-		editor : "C_SUMMARY"
-	}
+var setting = {
+        sid : $url.getUrlParam("sid"),
+        dataUrl : "rec.json",
+        saveUrl : "save.json",
+        delUrl : "del.json",
+        editor : "C_SUMMARY"
+    }
 
-	$(document).ready(function() {
-		$form.init(setting);
-	});
+    $(document).ready(function() {
+        $form.init(setting);
+    });
 </script>
 </#assign> <@layout.doLayout script>
 

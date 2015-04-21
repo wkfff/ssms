@@ -8,7 +8,7 @@
             dataUrl:"rec.json",
             saveUrl:"save.json",
             delUrl: "del.json",
-            editor:"C_SUMMARY"
+            editor: "C_SUMMARY"
     }
     
     $(document).ready(function(){
@@ -260,6 +260,7 @@
                 <div class="control-group">
                     <div class="controls">
                         <textarea id="S_EDUCATION" name="C_SUMMARY" rows=5 > </textarea>
+                        <#--TODO更新完代码后没有效果没了-->
                     </div>
                 </div>
             </div>

@@ -52,6 +52,26 @@ $form = {
 		$.each($(".ui-tabs"),function(index,e){
 			$(e).tabs();
 		});
+		//参数
+		$.each($(".ui-parameter"),function(index,e){
+			var src = $(e).attr("src");
+			if (src){
+				$.get("/sys/ui/getPara.json", {name : src}, function(data) {
+					if (data == null) return;
+					$.each(data, function(i, item) {
+						$(e).append("<option value='"+item.key+"'>"+item.value+"</option>");
+					});
+				}, "json");
+			}
+			
+			$(e).change(function() {
+				var text = this.options[this.selectedIndex].text;
+				var id = "#S_"+e.id.substr(2,e.id.length); alert(id+"__"+text);
+				var txt = $(id);
+				if (txt) txt.val(text);
+			});
+		});
+		
 	},
 	bindData : function(sid) {
 		$.get(setting.dataUrl, {
