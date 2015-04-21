@@ -21,13 +21,14 @@ import com.lanstar.core.handle.HandlerContext;
  *
  */
 public class tenant_gValidator extends ActionValidator {
+
+    /* (non-Javadoc)
+     * @see com.lanstar.core.validate.Validator#validate(com.lanstar.core.handle.HandlerContext)
+     */
     @Override
     protected void validate( HandlerContext c ) {
-        this.validateRequiredString( "", "", "" );
+        // TODO Auto-generated method stub
+        
     }
-
-    @Override
-    protected void handleError( HandlerContext c ) {
-        c.setValue( "_ERROR_", this.errorMsg );
-    }
+    
 }
