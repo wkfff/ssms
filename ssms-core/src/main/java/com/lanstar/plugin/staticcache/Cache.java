@@ -10,7 +10,6 @@ package com.lanstar.plugin.staticcache;
 
 import com.lanstar.common.log.LogHelper;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -53,7 +52,12 @@ public abstract class Cache<V> implements ICache<V> {
      * 获取所有值
      */
     @Override
-    public Iterator<V> getValues() {
-        return pools.values().iterator();
+    public Iterable<V> getValues() {
+        return pools.values();
+    }
+
+    @Override
+    public Iterable<String> getKeys() {
+        return pools.keySet();
     }
 }

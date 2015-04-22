@@ -9,10 +9,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 静态缓存插件 -->
     <bean class="com.lanstar.plugin.staticcache.StaticCachePlugin">
         <constructor-arg>
             <list>
                 <bean class="com.lanstar.plugin.staticcache.impl.TanentDbCache"/>
+                <bean class="com.lanstar.plugin.staticcache.impl.StandardTemplateCache"/>
                 <bean class="com.lanstar.core.handle.action.ActionCache"/>
             </list>
         </constructor-arg>

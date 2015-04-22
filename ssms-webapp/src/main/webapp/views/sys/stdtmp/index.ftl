@@ -78,7 +78,7 @@
 </div>
 
 <div class="side" style="padding-left: 5px">
-    <input type="button" value="刷新" id="btnRefresh"/>
+    <input type="button" class="btn" value="刷新" id="btnRefresh"/>
     <ul id="treeDemo" class="ztree"></ul>
 </div>
 

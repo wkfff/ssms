@@ -88,13 +88,13 @@
 
 <#macro textbox name title="" desc="" value="" readonly=false span=12>
 <@_edit_component name title desc span>
-<input type="text" placeholder="" class="ui-text input-x<#if span==12>x</#if>large" id="${name}" name="${name}" <#if readonly>readonly="readonly"</#if> value="${value}">
+<input type="text" placeholder="" class="ui-text input-x<#if (span>6)>x</#if>large" id="${name}" name="${name}" <#if readonly>readonly="readonly"</#if> value="${value}">
 </@_edit_component>
 </#macro>
 
 <#macro textarea name title="" desc="" span=12>
 <@_edit_component name title desc span>
-<textarea id="${name}" name="${name}" rows=5 class="input-x<#if span==12>x</#if>large"> </textarea>
+<textarea id="${name}" name="${name}" rows=5 class="input-x<#if (span>6)>x</#if>large"> </textarea>
 </@_edit_component>
 </#macro>
 
@@ -114,14 +114,12 @@
 <#macro parameter keyField valueField src="" items=[] title="" desc="" span=12>
 <@_edit_component keyField title desc span>
 <input type="hidden" id="${valueField}" name="${valueField}"/>
-<select id="${keyField}" class="ui-parameter input-x<#if span==12>x</#if>large" src="${src}">
+<select id="${keyField}" class="ui-parameter input-x<#if (span>6)>x</#if>large" src="${src}">
+    <option value=""></option>
 <#list items as Parameter>
     <option value=${Parameter.key}>${Parameter.value}</option>
 </#list>
 </select>
-<#if (desc?length>0)>
-<p class="help-block">${desc}</p>
-</#if>
 </@>
 </#macro>
 

@@ -15,12 +15,12 @@ import com.lanstar.common.utils.DirectorySteper;
 import java.io.File;
 import java.util.Map;
 
-public abstract class FileCache<T> extends Cache<T> {
+public abstract class FilesCache<T> extends Cache<T> {
     @Override
     protected void load( final Map<String, T> pools ) {
         DirectorySteper.IFilePicker filePicker = new DirectorySteper.IFilePicker() {
             public void pick( File file ) {
-                LogHelper.debug( FileCache.class, "---->解析文件:" + file.getAbsolutePath() );
+                LogHelper.debug( FilesCache.class, "---->解析文件:" + file.getAbsolutePath() );
                 if ( file.getAbsolutePath().toLowerCase().endsWith( getFileExtensions() ) ) {
                     parseFile( pools, file );
                 }

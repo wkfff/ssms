@@ -16,7 +16,6 @@ import com.lanstar.db.datasource.DataSourceFactory;
 import com.lanstar.plugin.staticcache.CacheManager;
 import com.lanstar.plugin.staticcache.impl.TanentDbCache;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,9 +36,7 @@ public class SpringDbPlugin implements IDbPlugin {
         dbContext = dataSourceFactory.create( App.config().getProperties() );
         dbContext.startup();
 
-        Iterator<DataSourceConfig> iterator = CacheManager.me().getCache( TanentDbCache.class ).getValues();
-        while ( iterator.hasNext() ) {
-            DataSourceConfig config = iterator.next();
+        for ( DataSourceConfig config : CacheManager.me().getCache( TanentDbCache.class ).getValues() ) {
             String id = config.getId();
             if ( StringHelper.isBlank( id ) ) continue;
             DbContext dbContext = dataSourceFactory.create( config );

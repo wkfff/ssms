@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-public abstract class XmlFilesCache<T> extends FileCache<T> {
+public abstract class XmlFilesCache<T> extends FilesCache<T> {
     @Override
     protected String getFileExtensions() {
         return ".xml";
