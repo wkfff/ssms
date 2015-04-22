@@ -56,7 +56,7 @@
         </@layout.row>
         <@layout.row>
             <@layout.parameter keyField="P_TMPFILE" valueField="S_TMPFILE" items=tmpfiles title="模板文件" desc="配置模板文件" span=10/>
-            <input id="editorTmp" type="button" class="btn" value="配置模板"/>
+            <a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?pid=${SID}">[配置模板]</a>
         </@layout.row>
         <@layout.row>
             <@layout.editor name="C_EXPLAIN" title="政策解读" desc="配置政策解读信息" />

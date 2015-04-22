@@ -11,10 +11,10 @@ package com.lanstar.plugin.staticcache;
 import com.lanstar.common.log.LogHelper;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 public abstract class Cache<V> implements ICache<V> {
-    private Map<String, V> pools = new ConcurrentHashMap<>();
+    private Map<String, V> pools = new ConcurrentSkipListMap<>();
 
     @Override
     public void refresh() {
