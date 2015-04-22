@@ -10,7 +10,6 @@ package com.lanstar.service.file;
 
 import com.lanstar.common.io.LocationBuilder;
 import com.lanstar.core.handle.identity.Identity;
-import com.lanstar.db.DbContext;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
@@ -28,7 +27,6 @@ import java.util.UUID;
 
 public class FileService extends TanentService {
     public static final String TABLENAME = "SYS_ATTACH_FILE";
-    private final DbContext context;
     private final ResourceService resourceService;
 
     /**
@@ -38,8 +36,6 @@ public class FileService extends TanentService {
      */
     public FileService( Identity identity ) {
         super( identity );
-        // 获取当前租户的数据库上下文
-        context = identity.getDbContext();
         resourceService = ResourcePlugin.me().getResourceService();
     }
 
@@ -115,5 +111,7 @@ public class FileService extends TanentService {
                               .build();
     }
 
-    private ARTable getTable() throws SQLException {return new ARTable( context.createDbSession() ).table( TABLENAME );}
+    private ARTable getTable() throws SQLException {
+        return new ARTable( getDBSession() ).table( TABLENAME );
+    }
 }

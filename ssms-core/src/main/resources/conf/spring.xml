@@ -60,7 +60,9 @@
         <constructor-arg>
             <list>
                 <!--<bean class="com.lanstar.core.handle.statics.StaticHandler"/>-->
+                <bean class="com.lanstar.core.handle.LoginHandler"/>
                 <bean class="com.lanstar.core.handle.identity.IdentityHandler"/>
+                <bean class="com.lanstar.core.handle.HomeHandler"/>
                 <bean class="com.lanstar.core.handle.action.ActionHandler"/>
             </list>
         </constructor-arg>

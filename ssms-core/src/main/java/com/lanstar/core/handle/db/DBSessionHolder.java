@@ -10,10 +10,10 @@ package com.lanstar.core.handle.db;
 
 import com.lanstar.db.DBSession;
 
-abstract class DBSessionHolder {
+public abstract class DBSessionHolder implements AutoCloseable {
     private DBSession session;
 
-    protected final DBSession getDbSession() {
+    public final DBSession getDBSession() {
         if ( session == null || !session.isValid() ) {
             session = buildDbSession();
         }
@@ -21,4 +21,9 @@ abstract class DBSessionHolder {
     }
 
     protected abstract DBSession buildDbSession();
+
+    @Override
+    public void close() throws Exception {
+        if (session!=null) session.close();
+    }
 }

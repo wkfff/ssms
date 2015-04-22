@@ -28,7 +28,7 @@ public abstract class HandlerDbContext extends DBSessionHolder {
      * @see ARTable
      */
     public final ARTable withTable( String tableName ) {
-        return new ARTable( getDbSession() ).table( tableName );
+        return new ARTable( getDBSession() ).table( tableName );
     }
 
     /**
@@ -37,7 +37,8 @@ public abstract class HandlerDbContext extends DBSessionHolder {
      * @param trans 事务上下文
      */
     public final void transaction( TransactionContext trans ) {
-        DBSession session = getDbSession();
+        DBSession session;
+        session = getDBSession();
         try {
             session.beginTransaction();
             trans.execute( this );
@@ -50,21 +51,21 @@ public abstract class HandlerDbContext extends DBSessionHolder {
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
      */
     public final int execute( SqlBuilder sqlBuilder ) {
-        return getDbSession().execute( sqlBuilder.toSqlStatement() );
+        return getDBSession().execute( sqlBuilder.toSqlStatement() );
     }
 
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
      */
     public final JdbcRecord first( SqlBuilder sqlBuilder ) {
-        return getDbSession().first( sqlBuilder.toSqlStatement() );
+        return getDBSession().first( sqlBuilder.toSqlStatement() );
     }
 
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
      */
     public final JdbcRecordSet query( SqlBuilder sqlBuilder ) {
-        return getDbSession().query( sqlBuilder.toSqlStatement() );
+        return getDBSession().query( sqlBuilder.toSqlStatement() );
     }
 
     public interface TransactionContext {
@@ -74,7 +75,7 @@ public abstract class HandlerDbContext extends DBSessionHolder {
     /**
      * 获取新增记录的SID值
      */
-    public int getSID(){
-        return getDbSession().getSID();
+    public int getSID() {
+        return getDBSession().getSID();
     }
 }

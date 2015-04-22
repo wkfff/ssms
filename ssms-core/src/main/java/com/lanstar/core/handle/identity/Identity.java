@@ -10,6 +10,8 @@ package com.lanstar.core.handle.identity;
 
 import com.lanstar.db.DbContext;
 
+import java.sql.SQLException;
+
 public interface Identity {
     /**
      * 获取用户ID
@@ -39,5 +41,5 @@ public interface Identity {
     /**
      * 获取租户对应的数据库上下文
      */
-    DbContext getDbContext();
+    DbContext getDbContext() throws SQLException;
 }

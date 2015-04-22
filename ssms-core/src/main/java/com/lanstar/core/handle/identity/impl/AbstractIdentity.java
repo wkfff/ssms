@@ -12,12 +12,9 @@ import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DS;
 import com.lanstar.db.DbContext;
 
-public abstract class AbstractIdentity implements Identity {
-    @Override
-    public DbContext getDbContext() {
-        return DS.getDbContext( getTanentDbCode() );
-    }
+import java.sql.SQLException;
 
+public abstract class AbstractIdentity implements Identity {
     protected String getTanentDbCode() {
         // TODO: 要调整为根据当前用户的租户信息来获取
         return "tanent01";
@@ -36,5 +33,10 @@ public abstract class AbstractIdentity implements Identity {
     public String getTanentName() {
         // TODO: 获取租户名称
         return null;
+    }
+
+    @Override
+    public DbContext getDbContext() throws SQLException {
+        return DS.getDbContext( getTanentDbCode() );
     }
 }

@@ -62,7 +62,8 @@ public class DbContext {
     }
 
     /**
-     * 创建数据库会话
+     * 创建数据库会话。
+     * 注意，请在使用完毕后关闭数据库会话!!!
      *
      * @return {@code DBSession}实例
      *

@@ -18,7 +18,7 @@ import com.lanstar.db.statement.SqlStatement;
 import java.sql.*;
 import java.util.List;
 
-public class DBSession implements JdbcOperations {
+public class DBSession implements JdbcOperations, AutoCloseable {
     protected final Connection conn;
     private final IDialect dialect;
     private static final Logger log = new Logger( DBSession.class );
@@ -295,6 +295,11 @@ public class DBSession implements JdbcOperations {
                 return rs.getInt( 1 );
             }
         } );
+    }
+
+    @Override
+    public void close() throws Exception {
+        JdbcHelper.close( conn );
     }
 }
 

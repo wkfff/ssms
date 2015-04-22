@@ -12,6 +12,8 @@ import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DS;
 import com.lanstar.db.DbContext;
 
+import java.sql.SQLException;
+
 /**
  * 标识系统默认用户 TODO:系统用户数据加载
  */
@@ -43,16 +45,16 @@ public class SystemIdentity implements Identity {
         return "system";
     }
 
-    @Override
-    public DbContext getDbContext() {
-        return DS.getDbContext();
-    }
-
     /**
      * 获取租户类型
      */
     @Override
     public String getTanentType() {
         return "S";
+    }
+
+    @Override
+    public DbContext getDbContext() throws SQLException {
+        return DS.getDbContext();
     }
 }
