@@ -65,7 +65,7 @@
                 <div class="span12">
                     <div class="control-group">
                       <!-- Text input-->
-                      <label class="control-label" for="input01">用户名:</label>
+                      <label class="control-label" for="C_NAME">用户名:</label>
                       <div class="controls">
                         <input type="text" placeholder="" class="input-xxlarge" id="C_NAME" name="C_NAME">
                         <p class="help-block">用户名</p>
@@ -77,7 +77,7 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">出生日期:</label>
+                        <label class="control-label" for="T_BIRTH">出生日期:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="T_BIRTH" name="T_BIRTH">
                             <p class="help-block">出生日期</p>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">身份证:</label>
+                        <label class="control-label" for="C_CARD">身份证:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="C_CARD" name="C_CARD">
                             <p class="help-block">身份证</p>
@@ -98,17 +98,17 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">性别:</label>
+                        <label class="control-label" for="S_SEX">性别:</label>
                         <div class="controls">
-                            <input type="radio" placeholder="" class="input-xlarge" value="男"id="S_SEX" name="S_SEX">男
-                            <input type="radio" placeholder="" class="input-xlarge" value="男" id="S_SEX" name="S_SEX">女
+                            <input type="radio" placeholder="" class="input-xlarge" id="S_SEX" name="S_SEX">男
+                            <input type="radio" placeholder="" class="input-xlarge"  id="S_SEX" name="S_SEX">女
                             <p class="help-block">性别</p>
                         </div>
                     </div>
                 </div>
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">部门:</label>
+                        <label class="control-label" for="C_DEPT">部门:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="C_DEPT" name="C_DEPT">
                             <p class="help-block">部门</p>
@@ -121,7 +121,7 @@
                 <div class="span6">
                     <div class="control-group">
                     <!-- Text input-->
-                      <label class="control-label" for="input01">职位:</label>
+                      <label class="control-label" for="C_POSITION">职位:</label>
                       <div class="controls">
                         <input type="text" placeholder="" class="input-xlarge" id="C_POSITION" name="C_POSITION">
                         <p class="help-block">职位</p>
@@ -140,7 +140,7 @@
                 <div class="span12">
                     <div class="control-group">
                       <!-- Text input-->
-                      <label class="control-label" for="input01">通讯地址:</label>
+                      <label class="control-label" for="C_ADDRE">通讯地址:</label>
                       <div class="controls">
                         <input type="text" placeholder="" class="input-xxlarge" id="C_ADDRE" name="C_ADDRE">
                          <#--TODO缺少通讯地址字段-->
@@ -153,7 +153,7 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">手机:</label>
+                        <label class="control-label" for="C_MOBILE">手机:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="C_MOBILE" name="C_MOBILE">
                             <p class="help-block">手机</p>
@@ -162,7 +162,7 @@
                 </div>
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">固话:</label>
+                        <label class="control-label" for="C_TEL">固话:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="C_TEL" name="C_TEL">
                             <p class="help-block">固话</p>
@@ -175,7 +175,7 @@
                 <div class="span12">
                     <div class="control-group">
                       <!-- Text input-->
-                      <label class="control-label" for="input01">电子邮箱:</label>
+                      <label class="control-label" for="C_EMAIL">电子邮箱:</label>
                       <div class="controls">
                         <input type="text" placeholder="" class="input-xxlarge" id="C_EMAIL" name="C_EMAIL">
                         <p class="help-block">电子邮箱</p>
@@ -191,7 +191,7 @@
         <div class="row-fluid">
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">毕业学校:</label>
+                        <label class="control-label" for="C_SCHOOL">毕业学校:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="C_SCHOOL" name="C_SCHOOL">
                             <p class="help-block">毕业学校</p>
@@ -200,7 +200,7 @@
                 </div>
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">学位:</label>
+                        <label class="control-label" for="S_DEGREE">学位:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="S_DEGREE" name="S_DEGREE">
                             <p class="help-block">学位</p>
@@ -211,7 +211,7 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">学历:</label>
+                        <label class="control-label" for="S_EDUCATION">学历:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="S_EDUCATION" name="S_EDUCATION">
                             <p class="help-block">学历</p>
@@ -228,7 +228,7 @@
         <div class="row-fluid">
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">密码:</label>
+                        <label class="control-label" for="C_PASSWD">密码:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="C_PASSWD" name="C_PASSWD">
                             <p class="help-block">密码</p>
@@ -237,7 +237,7 @@
                 </div>
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">重复密码:</label>
+                        <label class="control-label" for="">重复密码:</label>
                         <div class="controls">
                             <input type="text" placeholder="" class="input-xlarge" id="C_PASSWD" name="C_PASSWD">
                             <p class="help-block">重复密码</p>
