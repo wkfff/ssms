@@ -13,6 +13,12 @@ import com.lanstar.controller.DefaultController;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.JdbcRecord;
+import com.lanstar.plugin.staticcache.CacheManager;
+import com.lanstar.plugin.staticcache.impl.StandardTemplateCache;
+import com.lanstar.service.parameter.Parameter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class stdtmp_fileController extends DefaultController {
     public stdtmp_fileController() {
@@ -34,8 +40,15 @@ public class stdtmp_fileController extends DefaultController {
                                              .where( "SID=?", sid )
                                              .query();
 
-        resolveMultiParameter(context, "SYS_CYCLE");
+        resolveMultiParameter( context, "SYS_CYCLE" );
+
+        List<Parameter> list = new ArrayList<>(  );
+        StandardTemplateCache templateCache = CacheManager.me().getCache( StandardTemplateCache.class );
+        for ( String key : templateCache.getKeys() ) {
+            list.add( new Parameter( key, templateCache.getValue( key ) ) );
+        }
         return super.rec( context )
-                    .put( "folder", record );
+                    .put( "folder", record )
+                    .put( "tmpfiles", list );
     }
 }

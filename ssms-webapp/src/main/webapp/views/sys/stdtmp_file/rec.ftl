@@ -12,6 +12,10 @@
 
     $(document).ready(function () {
         $form.init(setting);
+
+        $('#editorTmp').click(function () {
+            alert("编辑模板");
+        });
     });
 </script>
 <style type="text/css">
@@ -51,7 +55,8 @@
             </div>
         </@layout.row>
         <@layout.row>
-            <@layout.textbox name="S_TMPFILE" title="模板文件" desc="配置模板文件" readonly=true/>
+            <@layout.parameter keyField="P_TMPFILE" valueField="S_TMPFILE" items=tmpfiles title="模板文件" desc="配置模板文件" span=10/>
+            <input id="editorTmp" type="button" class="btn" value="配置模板"/>
         </@layout.row>
         <@layout.row>
             <@layout.editor name="C_EXPLAIN" title="政策解读" desc="配置政策解读信息" />

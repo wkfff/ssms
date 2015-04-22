@@ -39,5 +39,10 @@ public interface ICache<V> {
     /**
      * 获取所有值
      */
-    Iterator<V> getValues();
+    Iterable<V> getValues();
+
+    /**
+     * 获取所有的键值
+     */
+    Iterable<String> getKeys();
 }

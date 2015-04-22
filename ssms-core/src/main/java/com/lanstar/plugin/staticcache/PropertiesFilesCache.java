@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
-public abstract class PropertiesFileCache<T> extends FileCache<T> {
+public abstract class PropertiesFilesCache<T> extends FilesCache<T> {
     @Override
     protected String getFileExtensions() {
         return ".properties";
