@@ -7,19 +7,14 @@
  */
 package com.lanstar.core.handle;
 
-import com.lanstar.app.ServletHelper;
-import com.lanstar.common.helper.XmlHelper;
-import com.lanstar.common.helper.XmlHelper.INodeParser;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.render.Render;
 import com.lanstar.core.render.resolver.RenderResolver;
 import com.lanstar.core.render.resolver.RenderResolverFactory;
-import org.w3c.dom.Element;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * 首页
@@ -33,43 +28,11 @@ public class HomeHandler implements Handler {
         String target = requestContext.getTarget();
         if ( target.equals( "/" ) || target.startsWith( "/index" ) ) {
             String tenantType = context.getIdentity().getTanentType().toLowerCase();
-            this.initPara( context,tenantType);
             RenderResolver resolver = RenderResolverFactory.me().getResolver("html" );
             ViewAndModel vam = new ViewAndModel().view( "/"+tenantType+"/home/index.ftl" );
             Render render = resolver.getRender( vam, requestContext );
             render.render();
         }
         else next.doHandle( context );
-    }
-    
-    public void initPara( HandlerContext context,String tenantType ) {
-        final StringBuffer sb = new StringBuffer();
-        InputStream resource = ServletHelper.getResource( "/WEB-INF/menu/menu_"+tenantType+".xml" );
-        try {
-            context.setValue( "_USERNAME_",context.getIdentity().getName());
-            
-            Element root = XmlHelper.getDocumentElement( resource );
-            XmlHelper.getSubNodes( root, new INodeParser() {
-
-                @Override
-                public void parse( Element node ) {
-                    sb.append( "<li value='" )
-                            .append( XmlHelper.getProperty( node, "id" ) )
-                            .append( "'" )
-                            .append(" class='js-component-tabitem tA0 oZ0 nui-tabs-item'" )
-                            .append( " title='" )
-                            .append( XmlHelper.getProperty( node, "title" ) )
-                            .append( "'" )
-                            .append( " onclick='changeTab(this.value)'>" )
-                            .append("<div class='kA0'></div><div class='mE0'></div>" )
-                            .append( "<div class='nui-tabs-item-text'>" )
-                            .append( XmlHelper.getProperty( node, "title" ) )
-                            .append( "</div>" ).append( "</li>" );
-                }
-            } );
-            context.setValue( "_TABS_", sb.toString() );
-        } catch ( Exception e ) {
-            e.printStackTrace();
-        }
     }
 }

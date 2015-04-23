@@ -73,7 +73,7 @@
             <ul class="js-component-component tO0">
                 <li class="js-component-component rZ0">
                     <a title="" class="sh0  kl0 nui-txt-link" href="javascript:;">欢迎您，<span
-                            id="username">${_USERNAME_!""}</span></a>
+                            id="username">${LANSTAR_IDENTITY.identityName}</span></a>
                 </li>
                 <li class="js-component-component rZ0 pn1">|</li>
                 <li class="js-component-component rZ0 nav__menu-item" id="config">
