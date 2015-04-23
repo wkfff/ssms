@@ -67,7 +67,7 @@
                 <a href="#">管理中心 ></a>
               </li>
               <li class="active">
-                <a href="#">企业信息管理 ></a>
+                <a href="#">企业信息管理 </a>
               </li>
               <li class="active">
                 <a href="#">企业信息编辑</a>
