@@ -7,13 +7,6 @@
  */
 package com.lanstar.core.handle;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.servlet.ServletException;
-
-import org.w3c.dom.Element;
-
 import com.lanstar.app.ServletHelper;
 import com.lanstar.common.helper.XmlHelper;
 import com.lanstar.common.helper.XmlHelper.INodeParser;
@@ -22,6 +15,11 @@ import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.render.Render;
 import com.lanstar.core.render.resolver.RenderResolver;
 import com.lanstar.core.render.resolver.RenderResolverFactory;
+import org.w3c.dom.Element;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 首页
@@ -32,7 +30,7 @@ public class HomeHandler implements Handler {
     public void handle( HandlerContext context, HandleChain next )
             throws ServletException, IOException {
         RequestContext requestContext = context.getRequestContext();
-        String uri = requestContext.getUri();
+        String uri = requestContext.getTarget();
         if ( uri.equals( "/" ) || uri.startsWith( "/index" ) ) {
             String tenantType = context.getIdentity().getTanentType().toLowerCase();
             this.initPara( context,tenantType);

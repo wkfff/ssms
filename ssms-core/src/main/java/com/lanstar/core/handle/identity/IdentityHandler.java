@@ -8,9 +8,9 @@
 
 package com.lanstar.core.handle.identity;
 
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.handle.HandleChain;
-import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.Handler;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.handle.identity.impl.AuditIdentity;
@@ -19,8 +19,6 @@ import com.lanstar.core.handle.identity.impl.GovernmentIdentity;
 import com.lanstar.core.handle.identity.impl.SystemIdentity;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 
 /**
@@ -30,13 +28,14 @@ public class IdentityHandler implements Handler {
     @Override
     public void handle( HandlerContext context, HandleChain next ) throws ServletException, IOException {
         RequestContext requestContext = context.getRequestContext();
-        if ( !requestContext.hasIdentityContext() && !requestContext.getUri().equals( "/logout" )) {
-            // TODO: 增加身份认证过程
-            // query...
-            // 如果身份认证通过，那么使用nextHandle继续处理后续的，否则应抛出无权访问的异常（考虑直接重定向？）。
-            if ( false ) throw new HandleException( "身份认证未通过" ).errorCode( HttpServletResponse.SC_UNAUTHORIZED );
-            
+        if ( !requestContext.hasIdentityContext() ) {
             String userSID = context.getValue( "username" );
+            // TODO: 向数据库查询用户名和密码信息
+            if ( StringHelper.isBlank( userSID )) {
+                // 登录信息无效要重定向到登录页
+                requestContext.redirect( "/login" );
+                return;
+            }
             // 创建或者获取身份标识,临时测试使用
             Identity identity;
             if (userSID.startsWith( "E" ))

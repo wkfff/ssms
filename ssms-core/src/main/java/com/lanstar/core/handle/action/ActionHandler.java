@@ -37,7 +37,7 @@ public class ActionHandler implements Handler {
     @Override
     public void handle( HandlerContext context, HandleChain next ) throws ServletException, IOException {
         RequestContext requestContext = context.getRequestContext();
-        ActionMeta meta = ActionMeta.parseUrl( requestContext.getUri() );
+        ActionMeta meta = ActionMeta.parseUrl( requestContext.getTarget() );
         // 如果不是Action请求，则继续往下送，否则就开始做Action
         if ( meta == null ) {
             next.doHandle( context );

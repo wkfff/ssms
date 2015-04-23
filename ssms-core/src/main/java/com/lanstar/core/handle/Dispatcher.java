@@ -41,7 +41,7 @@ public class Dispatcher {
     public void dispatch( RequestContext requestContext ) throws ServletException, IOException {
         HttpServletRequest request = requestContext.getRequest();
         HttpServletResponse response = requestContext.getResponse();
-        String target = requestContext.getUri();
+        String target = requestContext.getTarget();
         try {
             handlers.handle( requestContext );
         } catch ( RenderException e ) {

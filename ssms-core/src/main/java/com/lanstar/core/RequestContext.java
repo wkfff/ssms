@@ -9,6 +9,7 @@
 package com.lanstar.core;
 
 import com.lanstar.app.App;
+import com.lanstar.app.ServletHelper;
 import com.lanstar.core.handle.identity.IdentityContext;
 
 import javax.servlet.ServletException;
@@ -21,22 +22,32 @@ import java.util.Map;
 public class RequestContext {
     public static final String LANSTAR_IDENTITY = "LANSTAR_IDENTITY";
 
-    private final String uri;
+    private final String target;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
     private final Map<String, Object> localVars = new HashMap<>();
 
-    public RequestContext( String uri, HttpServletRequest request, HttpServletResponse responst ) {
-        this.uri = uri;
+    /**
+     * 实例化请求上下文
+     *
+     * @param target   请求目标
+     * @param request  {@code HttpServletRequest}
+     * @param responst {@code HttpServletResponse}
+     */
+    public RequestContext( String target, HttpServletRequest request, HttpServletResponse responst ) {
+        this.target = target;
         this.request = request;
         this.response = responst;
     }
 
-    public String getUri() {
-        return uri;
+    /**
+     * 获取请求目标。（移除上下文路径后的URL）
+     */
+    public String getTarget() {
+        return target;
     }
 
-    public String getReferer(){
+    public String getReferer() {
         return request.getHeader( "Referer" );
     }
 
@@ -46,6 +57,18 @@ public class RequestContext {
 
     public HttpServletResponse getResponse() {
         return response;
+    }
+
+    /**
+     * 重定向请求到指定路径
+     *
+     * @throws IOException
+     */
+    public void redirect( String location ) throws IOException {
+        String contextPath = ServletHelper.getContextPath();
+        if ( location.startsWith( "/" ) && !location.startsWith( contextPath ) )
+            location = contextPath + location;
+        response.sendRedirect( location );
     }
 
     private Object getParameter( String name ) {
@@ -222,6 +245,11 @@ public class RequestContext {
         return this;
     }
 
+    /**
+     * 绑定身份标识到会话中。
+     *
+     * @param context 身份标识上下文
+     */
     public void bindIdentity( IdentityContext context ) {
         setValue( LANSTAR_IDENTITY, context, VAR_SCOPE.SESSION );
     }
