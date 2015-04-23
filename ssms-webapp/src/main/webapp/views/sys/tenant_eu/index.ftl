@@ -1,17 +1,17 @@
 <#import "/layout/_list.ftl" as layout/> <#assign script>
 <script type="text/javascript">
-var setting = {
-        gridId : "dg",
-        dataUrl : "list.json",
-        delUrl : "dels.json",
-        addUrl : "rec.html",
-        openUrl : "rec.html"
-    };
+	var setting = {
+		gridId : "dg",
+		dataUrl : "list.json",
+		delUrl : "dels.json",
+		addUrl : "rec.html",
+		openUrl : "rec.html"
+	};
 
-    $(document).ready(function() {
-        var dg = new datagrid(setting);
-        dg.doQuery();
-    });
+	$(document).ready(function() {
+		var dg = new datagrid(setting);
+		dg.doQuery();
+	});
 </script>
 </#assign> <@layout.doLayout script>
 <!--导航栏-->
@@ -33,8 +33,7 @@ var setting = {
 <div class="">
     <div class="datagrid" id="dg">
         <div class="navbar navbar-default navbar-fixed-top">
-            <br>
-            <br>
+            <br> <br>
             <div class="navbar-inner">
                 <form class="navbar-form pull-left form-search">
                     &nbsp;&nbsp; <label class="checkbox">用户名</label> <input

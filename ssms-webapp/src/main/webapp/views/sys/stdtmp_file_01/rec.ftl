@@ -59,9 +59,9 @@
             </div>
            <@layout.row>
                 <@layout.textbox name="C_NUMBER" title="文件编号" desc="文件编号" span=6 />
+                 <@layout.textbox name="C_DEPT_01" title="执行部门" desc="执行部门" span=6 />
             </@layout.row>
             <@layout.row>
-                <@layout.textbox name="C_DEPT_01" title="执行部门" desc="执行部门" span=6 />
                 <@layout.textbox name="C_DEPT_02" title="监督部门" desc="监督部门" span=6 />
            </@layout.row>
         </@layout.group>
