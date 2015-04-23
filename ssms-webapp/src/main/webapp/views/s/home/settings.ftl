@@ -15,12 +15,11 @@
         <div class="side">
             <ul>
                 <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-                <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-                <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-                <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-                <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-                <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-                <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
+                <li><a href="/sys/tenant_eu/index.html">企业用户信息管理</a></li>
+                <li><a href="/sys/tenant_r/index.html">评审用户信息管理</a></li>
+                <li><a href="/sys/tenant_ro/index.html">评审机构信息管理</a></li>
+                <li><a href="/sys/tenant_g/index.html">政府机构信息管理</a></li>
+                <li><a href="/sys/tenant_gu/index.html">政府用户信息管理</a></li>
             </ul>
         </div>
         <div class="main">
@@ -42,12 +41,11 @@
     <div class="side">
         <ul>
             <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-            <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-            <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-            <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-            <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-            <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
-            <li><a href="/sys/tenant_e/index.html">企业信息管理</a></li>
+                <li><a href="/sys/tenant_eu/index.html">企业用户信息管理</a></li>
+                <li><a href="/sys/tenant_r/index.html">评审用户信息管理</a></li>
+                <li><a href="/sys/tenant_ro/index.html">评审机构信息管理</a></li>
+                <li><a href="/sys/tenant_g/index.html">政府机构信息管理</a></li>
+                <li><a href="/sys/tenant_gu/index.html">政府用户信息管理</a></li>
         </ul>
     </div>
         <div class="main">

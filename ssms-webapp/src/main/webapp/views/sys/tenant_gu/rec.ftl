@@ -1,4 +1,4 @@
-<#import "/layout/_rec.ftl" as layout/>
+<#import "/s/home/settings.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
     var setting = {
@@ -13,7 +13,7 @@
     });
 </script>
 </#assign>
-<@layout.doLayout script>
+<@layout.recIndex script>
 <!--导航栏-->
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -85,4 +85,4 @@
         </@layout.group>
     </@layout.form>
 </div>
-</@layout.doLayout>
+</@>

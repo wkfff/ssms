@@ -1,4 +1,4 @@
- <#import "/layout/_rec.ftl" as layout/> <#assign script>
+ <#import "/s/home/settings.ftl" as layout/> <#assign script>
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript">
 var setting = {
@@ -13,7 +13,8 @@ var setting = {
         $form.init(setting);
     });
 </script>
-</#assign> <@layout.doLayout script>
+</#assign> 
+<@layout.recIndex script>
 
 <!--导航栏-->
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -276,4 +277,4 @@ var setting = {
 
     </form>
 </div>
-</@layout.doLayout>
+</@>

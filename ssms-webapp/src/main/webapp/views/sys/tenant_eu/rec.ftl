@@ -1,5 +1,5 @@
 <#--缺少上传这个控件-->
-<#import "/layout/_rec.ftl" as layout/>
+<#import "/s/home/settings.ftl" as layout/>
 <#assign script>
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript">
@@ -16,7 +16,7 @@
     });
 </script>
 </#assign>
-<@layout.doLayout script>
+<@layout.recIndex script>
 
 <!--导航栏-->
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -252,4 +252,4 @@
         </fieldset>
 </form>
 </div>
-</@layout.doLayout>
+</@>
