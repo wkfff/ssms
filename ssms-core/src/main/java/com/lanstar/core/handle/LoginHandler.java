@@ -29,7 +29,7 @@ public class LoginHandler implements Handler {
         RenderResolver resolver = RenderResolverFactory.me().getResolver( "html" );
         ViewAndModel vam = new ViewAndModel();
         if ( target.equals( "/login" ) ) {
-            vam.view( "/s/home/login.ftl" );
+            vam.view( "/login.ftl" );
             Render render = resolver.getRender( vam, requestContext );
             render.render();
             return;

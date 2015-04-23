@@ -3,15 +3,8 @@
 <script type="text/javascript" src="/resource/js/jquery.ztree.all-3.5.min.js"></script>
 <link rel="stylesheet" href="/resource/css/zTreeStyle/zTreeStyle.css"/>
 <style type="text/css">
-    body {
-         margin-top: 40px;
-    }
-
-    * { margin:0; padding:0; list-style:none;}
-    html { height:100%; overflow:hidden; background:#fff;}
-    body { height:100%; overflow:hidden; background:#fff;}
-    .side { position:absolute; left:0; top:40px; bottom:0; width:260px; overflow:auto; border-right: dashed 1px #cccccc}
-    .main { position:absolute; left:270px; top:40px; bottom:0; right:0; overflow:hidden;}
+    .side { position:absolute; left:0; top:60px; bottom:0; width:260px; overflow:auto; border-right: dashed 1px #cccccc}
+    .main { position:absolute; left:270px; top:60px; bottom:0; right:0; overflow:hidden;}
     .main iframe { width:100%; height:100%;}
     /*---ie6---*/
     html { *padding:70px 10px;}
@@ -60,9 +53,8 @@
     });
 </script>
 </#assign>
-<@layout.doLayout script=script header=header>
-
-<div class="navbar navbar-inverse navbar-fixed-top">
+<@layout.doIndexLayout menuID="模板管理" script=script header=header>
+<div class="navbar navbar-inverse">
     <div class="navbar-inner">
         <div class="">
             <!--container-->
@@ -82,8 +74,7 @@
     <ul id="treeDemo" class="ztree"></ul>
 </div>
 
-<div class="main" style="padding-right: 5px">
+<div class="main">
     <iframe id="mainFrame" frameborder="0"></iframe>
 </div>
-
-</@layout.doLayout>
+</@>

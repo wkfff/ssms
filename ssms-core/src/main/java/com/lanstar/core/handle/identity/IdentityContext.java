@@ -56,4 +56,10 @@ public interface IdentityContext {
      * 获取用户名
      */
     String getIdentityName();
+
+    int getTanendId();
+
+    String getTanentName();
+
+    String getTanentType();
 }

@@ -71,6 +71,24 @@
 </@vars.component_base>
 </#macro>
 
+<#--
+    菜单项
+-->
+<#macro menu items>
+<ul class="js-component-tab tz0 nui-tabs" id="tabs">
+    <#list items as item>
+        <#local class>nui-tabs-item<#if item.title=vars.SELECTED_MENU>-selected</#if></#local>
+        <li value='0' class='js-component-tabitem tA0 oZ0 ${class}' title='${item.title}'>
+            <div class='kA0'></div>
+            <div class='mE0'></div>
+            <a href="${item.url}">
+                <div class='nui-tabs-item-text'>${item.title}</div>
+            </a>
+        </li>
+    </#list>
+</ul>
+</#macro>
+
 
 <#macro _edit_component name title="" desc="" span=12>
 <div class="control-group <#if (span>0)>span${span}</#if>">

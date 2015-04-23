@@ -30,8 +30,8 @@ public class HomeHandler implements Handler {
     public void handle( HandlerContext context, HandleChain next )
             throws ServletException, IOException {
         RequestContext requestContext = context.getRequestContext();
-        String uri = requestContext.getTarget();
-        if ( uri.equals( "/" ) || uri.startsWith( "/index" ) ) {
+        String target = requestContext.getTarget();
+        if ( target.equals( "/" ) || target.startsWith( "/index" ) ) {
             String tenantType = context.getIdentity().getTanentType().toLowerCase();
             this.initPara( context,tenantType);
             RenderResolver resolver = RenderResolverFactory.me().getResolver("html" );
@@ -39,7 +39,7 @@ public class HomeHandler implements Handler {
             Render render = resolver.getRender( vam, requestContext );
             render.render();
         }
-        next.doHandle( context );
+        else next.doHandle( context );
     }
     
     public void initPara( HandlerContext context,String tenantType ) {

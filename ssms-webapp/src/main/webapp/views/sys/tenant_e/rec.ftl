@@ -1,4 +1,4 @@
-<#import "/layout/_rec.ftl" as layout/>
+<#import "/s/home/settings.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
     var setting = {
@@ -13,9 +13,9 @@
     });
 </script>
 </#assign>
-<@layout.doLayout script>
+<@layout.recIndex script>
 <!--导航栏-->
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse">
     <div class="navbar-inner">
         <div class="container">
             <div class="nav-collapse collapse">
@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<@layout.toolbar class="navbar-fixed-top" outer="<br><br>">
+<@layout.toolbar>
 <input type="button" class="btn" name="btn_save" value="保存"/>
 <input type="button" class="btn" name="btn_del" value="删除"/>
 <input type="button" class="btn" name="btn_back" value="返回"/>
@@ -100,4 +100,4 @@
         </@layout.group>
     </@layout.form>
 </div>
-</@layout.doLayout>
+</@>
