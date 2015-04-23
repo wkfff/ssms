@@ -67,7 +67,7 @@
 </script>
 </#local>
 <@vars.component_base script>
-<textarea id="${id}_editor" name="${name}"></textarea>
+<textarea id="${id}_editor" name="${name}" style="width: 100%"></textarea>
 </@vars.component_base>
 </#macro>
 
@@ -98,9 +98,9 @@
 </@_edit_component>
 </#macro>
 
-<#macro editor name title="" desc="" span=12>
+<#macro editor name title="" desc="" span=12 rows=10>
 <@_edit_component name title desc span>
-<textarea id="${name}" name="${name}" rows=5 class="ui-editor"></textarea>
+<textarea id="${name}" name="${name}" rows=${rows} class="ui-editor" style="width:100%;"></textarea>
 </@_edit_component>
 </#macro>
 
