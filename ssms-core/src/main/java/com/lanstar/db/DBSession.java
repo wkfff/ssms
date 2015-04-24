@@ -190,6 +190,11 @@ public class DBSession implements JdbcOperations, AutoCloseable {
 
     @Override
     public JdbcPageRecordSet query( SqlStatement sqlStatement, DBPaging paging ) {
+        if (paging==null) {
+            paging = new DBPaging();
+            paging.setPageIndex( 1 );
+            paging.setPageSize( Integer.MIN_VALUE );
+        }
         JdbcPageRecordSet rs = new JdbcPageRecordSet( paging );
         rs.setTotal( getRecordsetSize( sqlStatement.getSql(), sqlStatement.getParams() ) );
         String sql = dialect.getPagingSql( sqlStatement.getSql(), paging.getStartIndex(), paging.getEndIndex() );

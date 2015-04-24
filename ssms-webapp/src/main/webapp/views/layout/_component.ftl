@@ -190,3 +190,42 @@
 </table>
 </#macro>
 
+<#--日期-->
+<#macro date name title="" desc="" value="" readonly=false span=6>
+<@_edit_component name title desc span>
+<input type="text" placeholder="" class="ui-date input-x<#if span==12>x</#if>large" id="${name}" name="${name}" <#if readonly>readonly="readonly"</#if> value="${value}">
+</@_edit_component>
+</#macro>
+
+<#--日期时间-->
+<#macro datetime name title="" desc="" value="" readonly=false span=6>
+<@_edit_component name title desc span>
+<input type="text" placeholder="" class="ui-datetime input-x<#if span==12>x</#if>large" id="${name}" name="${name}" <#if readonly>readonly="readonly"</#if> value="${value}">
+</@_edit_component>
+</#macro>
+
+<#--翻页-->
+<#macro pagingbar>
+<div class="paging nav-bar">
+    <form class="form-search">
+        <label class="checkbox"> 每页显示 <select
+            name="_pageSize" class="input-mini">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+        </select> 共<span name="_recCount" class="navbar-text"></span>条,<span
+            name="_pageCount" class="navbar-text"></span>页 <input
+            type="button" name="btn_first" value="首页"
+            class="btn navbar-btn"> <input type="button"
+            name="btn_prev" value="上页" class="btn"> <input
+            type="text" name="_pageIndex"
+            class="input-mini navbar-text" value="1" /> <input
+            type="button" name="btn_next" value="下页" class="btn">
+            <input type="button" name="btn_last" value="末页"
+            class="btn">
+        </label>
+    </form>
+</div>
+</#macro>
+
