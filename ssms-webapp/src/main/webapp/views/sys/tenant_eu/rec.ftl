@@ -52,200 +52,58 @@
       </div>
 </div>
 
-<div class="navbar navbar-default">
-      <div class="navbar-inner">
-        <div class="container">
-            <div class="nav pull-right">
+<@layout.toolbar>
                <input type="button" class="btn"  onclick="svaeInfo()" value="保存">
                <input type="button" class="btn" name="btn_del" value="删除">
                <input type="button" class="btn" name="btn_back" value="返回">
-            </div>
-        </div>
-      </div>
-</div>
-
+</@layout.toolbar>
 <div class="container">
 <!--表单-->
-<form class="form-horizontal" id="mainForm">
-        <fieldset>
-            <div id="legend">
-            <legend>基本信息</legend>
-            </div>
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="control-group">
-                      <!-- Text input-->
-                      <label class="control-label" for="C_NAME">用户名:</label>
-                      <div class="controls">
-                        <input type="text" placeholder="" class="input-xxlarge" id="C_NAME" name="C_NAME">
-                        <p class="help-block">用户名</p>
-                      </div>
-                    </div>
-                </div>
-            </div>
+<@layout.form id="mainForm">
+     <@layout.group title="基本信息">
+       <@layout.row>
+                <@layout.textbox name="C_NAME" title="用户名" desc="用户名" />
+       </@layout.row>
+       <@layout.row>
+               <@layout.textbox name="T_BIRTH" title="企业状态" desc="出生日期" span=6 />
+               <@layout.textbox name="C_CARD" title="身份证" desc="身份证" span=6 />
+       </@layout.row>
+       <@layout.row>
+               <@layout.radio name="S_SEX" title="性别" desc="性别" span=6 />
+               <@layout.textbox name="C_DEPT" title="部门" desc="部门" span=6 />
+       </@layout.row>
+       <@layout.row>
+               <@layout.textbox name="C_POSITION" title="职位" desc="职位" span=6 />
+       </@layout.row>
+     </@layout.group>
+     
+     <@layout.group title="联系方式">
+       <@layout.row>
+               <@layout.textbox name="C_MOBILE" title="手机" desc="手机" span=6 />
+               <@layout.textbox name="C_TEL" title="固话" desc="固话" span=6 />
+       </@layout.row>
+       <@layout.row>
+               <@layout.textbox name="C_EMAIL" title="电子邮箱" desc="电子邮箱"/>
+       </@layout.row>
+     </@layout.group>
+     
+     <@layout.group title="学历">
+       <@layout.row>
+               <@layout.textbox name="C_SCHOOL" title="毕业学校" desc="毕业学校" span=6 />
+               <@layout.textbox name="S_DEGREE" title="学位" desc="学位" span=6 />
+       </@layout.row>
+       <@layout.row>
+               <@layout.textbox name="S_EDUCATION" title="学位" desc="学历" span=6 />
+       </@layout.row>
+     </@layout.group>
+     <@layout.group title="密码设置">
+       <@layout.row>
+               <@layout.textbox name="C_PASSWD" title="密码" desc="密码"  span=6/>
+               <@layout.textbox name="C_PASSWD1" title="重复密码" desc="重复密码"  span=6/>
+       </@layout.row>
+       <input type="button" class="btn" name="btn_reset" value="快速重置密码"/>
+     </@layout.group>
     
-            <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="T_BIRTH">出生日期:</label>
-                        <div class="controls">
-                            <input type="text" placeholder="" class="input-xlarge" id="T_BIRTH" name="T_BIRTH">
-                            <p class="help-block">出生日期</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="C_CARD">身份证:</label>
-                        <div class="controls">
-                            <input type="text" placeholder="" class="input-xlarge" id="C_CARD" name="C_CARD">
-                            <p class="help-block">身份证</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="S_SEX">性别:</label>
-                        <div class="controls">
-                            <input type="radio" placeholder="" class="input-xlarge" id="S_SEX" name="S_SEX" value="男">男
-                            <input type="radio" placeholder="" class="input-xlarge"  id="S_SEX" name="S_SEX" value="女">女
-                            <p class="help-block">性别</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="C_DEPT">部门:</label>
-                        <div class="controls">
-                            <input type="text" placeholder="" class="input-xlarge" id="C_DEPT" name="C_DEPT">
-                            <p class="help-block">部门</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                    <!-- Text input-->
-                      <label class="control-label" for="C_POSITION">职位:</label>
-                      <div class="controls">
-                        <input type="text" placeholder="" class="input-xlarge" id="C_POSITION" name="C_POSITION">
-                        <p class="help-block">职位</p>
-                      </div>
-                    </div>
-                </div>
-            </div>
-
-            </fieldset>
-            <fieldset>
-            <div id="legend">
-            <legend>联系方式</legend>
-            </div>
-
-            <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="C_MOBILE">手机:</label>
-                        <div class="controls">
-                            <input type="text" placeholder="" class="input-xlarge" id="C_MOBILE" name="C_MOBILE">
-                            <p class="help-block">手机</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="C_TEL">固话:</label>
-                        <div class="controls">
-                            <input type="text" placeholder="" class="input-xlarge" id="C_TEL" name="C_TEL">
-                            <p class="help-block">固话</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="control-group">
-                      <!-- Text input-->
-                      <label class="control-label" for="C_EMAIL">电子邮箱:</label>
-                      <div class="controls">
-                        <input type="text" placeholder="" class="input-xxlarge" id="C_EMAIL" name="C_EMAIL">
-                        <p class="help-block">电子邮箱</p>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-        <fieldset>
-        <div id="legend">
-        <legend>学历</legend>
-        </div>
-        <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="C_SCHOOL">毕业学校:</label>
-                        <div class="controls">
-                            <input type="text" placeholder="" class="input-xlarge" id="C_SCHOOL" name="C_SCHOOL">
-                            <p class="help-block">毕业学校</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="S_DEGREE">学位:</label>
-                        <div class="controls">
-                            <input type="text" placeholder="" class="input-xlarge" id="S_DEGREE" name="S_DEGREE">
-                            <p class="help-block">学位</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="S_EDUCATION">学历:</label>
-                        <div class="controls">
-                            <input type="text" placeholder="" class="input-xlarge" id="S_EDUCATION" name="S_EDUCATION">
-                            <p class="help-block">学历</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-
-        <fieldset>
-        <div id="legend">
-        <legend>密码设置</legend>
-        </div>
-        <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="C_PASSWD">密码:</label>
-                        <div class="controls">
-                            <input type="password" placeholder="" class="input-xlarge" id="C_PASSWD" name="C_PASSWD">
-                            <p class="help-block">密码</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="C_PASSWD1">重复密码:</label>
-                        <div class="controls">
-                            <input type="password" placeholder="" class="input-xlarge" id="C_PASSWD1" name="C_PASSWD1">
-                            <p class="help-block">重复密码</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="nav pull-right">
-                <input type="button" class="btn" name="btn_reset" value="快速重置密码">
-                <#--TODO功能没写-->
-                </div>
-            </div>
-        </fieldset>
-</form>
+</@layout.form>
 </div>
 </@>
