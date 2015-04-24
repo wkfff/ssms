@@ -16,7 +16,7 @@
 </#assign>
  <@layout.listIndex script>
 <!--导航栏-->
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse">
     <div class="navbar-inner">
         <div class="">
             <!--container-->
@@ -33,8 +33,7 @@
 
 <div class="">
     <div class="datagrid" id="dg">
-        <div class="navbar navbar-default navbar-fixed-top">
-            <br> <br>
+        <div class="navbar navbar-default">
             <div class="navbar-inner">
                 <form class="navbar-form pull-left form-search">
                     &nbsp;&nbsp; <label class="checkbox">用户名</label> <input

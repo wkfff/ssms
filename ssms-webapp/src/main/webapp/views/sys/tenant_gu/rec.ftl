@@ -15,7 +15,7 @@
 </#assign>
 <@layout.recIndex script>
 <!--导航栏-->
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse">
     <div class="navbar-inner">
         <div class="container">
             <div class="nav-collapse collapse">
@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<@layout.toolbar class="navbar-fixed-top" outer="<br><br>">
+<@layout.toolbar class="navbar-fixed-top">
 <input type="button" class="btn" name="btn_save" value="保存"/>
 <input type="button" class="btn" name="btn_del" value="删除"/>
 <input type="button" class="btn" name="btn_back" value="返回"/>
