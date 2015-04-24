@@ -29,7 +29,7 @@
 <@layout.recIndex script>
 
 <!--导航栏-->
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse">
       <div class="navbar-inner">
         <div class="container">
           <div class="nav-collapse collapse">
@@ -52,7 +52,7 @@
       </div>
 </div>
 
-<div class="navbar navbar-default navbar-fixed-top"><br><br>
+<div class="navbar navbar-default">
       <div class="navbar-inner">
         <div class="container">
             <div class="nav pull-right">
