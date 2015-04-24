@@ -52,21 +52,18 @@
             </@layout.row>
             <@layout.row>
                 <@layout.textbox name="C_NUMBER" title="注册号" desc="注册号" span=6 />
-                <@layout.textbox name="S_PROFESSION" title="所属专业" desc="所属专业" readonly=true span=6 />
-            </@layout.row>
-            <@layout.row>
                 <@layout.textbox name="S_NATURE" title="企业性质" desc="企业性质" span=6 />
+            </@layout.row>
+            <@layout.row>
                 <@layout.textbox name="N_SAFETY" title="专职安全管理员" desc="专职安全管理员" span=6 />
-            </@layout.row>
-            <@layout.row>
                 <@layout.textbox name="N_EMPLOYEE" title="企业员工总数" desc="企业员工总数" span=6 />
+            </@layout.row>
+            <@layout.row>
                 <@layout.textbox name="N_INCOME" title="主营业务收入" desc="主营业务收入" span=6 />
+                 <@layout.textbox name="N_ASSETS" title="固定资产" desc="固定资产" span=6 />
             </@layout.row>
             <@layout.row>
-                <@layout.textbox name="N_ASSETS" title="固定资产" desc="固定资产" span=6 />
                 <@layout.textbox name="N_SPECIAL" title="特种作业人员数" desc="特种作业人员数" span=6 />
-            </@layout.row>
-            <@layout.row>
                 <@layout.textbox name="C_SCOPE" title="营业范围" desc="营业范围" span=6 />
             </@layout.row>
         </@layout.group>
@@ -76,7 +73,7 @@
                 <@layout.textbox name="C_ADDR" title="地址" desc="地址" />
             </@layout.row>
             <@layout.row>
-                <@layout.textbox name="C_TEL" title="固话" desc="固话" readonly=true span=6 />
+                <@layout.textbox name="C_TEL" title="固话" desc="固话" span=6 />
                 <@layout.textbox name="C_EMAIL" title="电子邮件" desc="电子邮件" span=6 />
             </@layout.row>
             <@layout.row>

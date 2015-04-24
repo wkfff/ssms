@@ -43,8 +43,8 @@
                         type="text" name="C_NAME" style="width: 60px;"
                         query="C_NAME like ?"/> <label
                         class="checkbox">省份</label> <input type="text"
-                                                           name="S_PROVINCE" style="width: 60px;"
-                                                           query="S_PROVINCE = ?"/> <label
+                        name="S_PROVINCE" style="width: 60px;"
+                        query="S_PROVINCE = ?"/> <label
                         class="checkbox">地市</label> <input type="text"
                                                            name="S_CITY" style="width: 60px;"
                                                            query="S_CITY = ?"/> <label class="checkbox">
