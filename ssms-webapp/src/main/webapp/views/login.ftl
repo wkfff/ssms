@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="/resource/css/login.css"/>
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/jquery.fullscreenBackground.js"></script>
-
+    <script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#background-image").fullscreenBackground();
@@ -23,6 +23,9 @@
         function doLogin() {
             //window.location.href='index.html';
             //$("#login").submit();
+            //v=$.md5(document.getElementById("usrPasswd").value);
+            //md5加密
+            var v=$("#usrPasswd").val($.md5($("#usrPasswd").val()));
             document.getElementById("login").submit();
         }
     </script>
