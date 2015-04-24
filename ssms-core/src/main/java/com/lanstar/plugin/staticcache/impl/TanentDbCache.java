@@ -10,13 +10,13 @@ package com.lanstar.plugin.staticcache.impl;
 
 import com.lanstar.common.helper.PropertiesHelper;
 import com.lanstar.db.datasource.DataSourceConfig;
-import com.lanstar.plugin.staticcache.PropertiesFileCache;
+import com.lanstar.plugin.staticcache.PropertiesFilesCache;
 
 import java.io.File;
 import java.util.Map;
 import java.util.Properties;
 
-public class TanentDbCache extends PropertiesFileCache<DataSourceConfig> {
+public class TanentDbCache extends PropertiesFilesCache<DataSourceConfig> {
     @Override
     protected String getPath() {
         return "WEB-INF/db";

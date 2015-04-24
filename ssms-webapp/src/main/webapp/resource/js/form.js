@@ -160,7 +160,10 @@ $form = {
 	},
 	doBack : function() {
 		// 如果有定义回退的URL，那么就使用这个URL进行跳转，否则用默认的浏览器调整规则。				by 张铮彬#2015-4-20
-		if (setting.backUrl) $win.navigate(setting.backUrl);
+		if (setting.backUrl) {
+			$win.navigate(setting.backUrl);
+			return;
+		}
 		window.history.go(-1);
 	},
 	doDel : function() {

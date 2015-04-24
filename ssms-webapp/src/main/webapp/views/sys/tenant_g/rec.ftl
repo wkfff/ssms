@@ -1,4 +1,5 @@
-<#--缺少上传这个控件--> <#import "/layout/_rec.ftl" as layout/> <#assign script>
+<#--缺少上传这个控件--> 
+<#import "/s/home/settings.ftl" as layout/> <#assign script>
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript">
     var setting = {
@@ -13,7 +14,8 @@
         $form.init(setting);
     });
 </script>
-</#assign> <@layout.doLayout script>
+</#assign>
+ <@layout.recIndex script>
 
 <!--导航栏-->
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -57,7 +59,7 @@
                 <div class="span12">
                     <div class="control-group">
                         <!-- Text input-->
-                        <label class="control-label" for="input01">单位名称:</label>
+                        <label class="control-label" for="C_NAME">单位名称:</label>
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xxlarge" id="C_NAME"
@@ -71,7 +73,7 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">省:</label>
+                        <label class="control-label" for="S_PROVINCE">省:</label>
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xlarge" id="S_PROVINCE"
@@ -82,7 +84,7 @@
                 </div>
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">市:</label>
+                        <label class="control-label" for="S_CITY">市:</label>
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xlarge" id="S_CITY"
@@ -96,7 +98,7 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">县:</label>
+                        <label class="control-label" for="S_COUNTY">县:</label>
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xlarge" id="S_COUNTY"
@@ -117,7 +119,7 @@
                 <div class="span12">
                     <div class="control-group">
                         <!-- Text input-->
-                        <label class="control-label" for="input01">通讯地址:</label>
+                        <label class="control-label" for="C_ADDRE">通讯地址:</label>
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xxlarge" id="C_ADDRE"
@@ -131,7 +133,7 @@
             <div class="row-fluid">
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">传真:</label>
+                        <label class="control-label" for="C_FAX">传真:</label>
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xlarge" id="C_FAX"
@@ -142,7 +144,7 @@
                 </div>
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="input01">固话:</label>
+                        <label class="control-label" for="C_TEL">固话:</label>
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xlarge" id="C_TEL"
@@ -157,7 +159,7 @@
                 <div class="span6">
                     <div class="control-group">
                         <!-- Text input-->
-                        <label class="control-label" for="input01">电子邮箱:</label>
+                        <label class="control-label" for="C_EMAIL">电子邮箱:</label>
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xlarge" id="C_EMAIL"
@@ -169,7 +171,7 @@
                 <div class="span6">
                     <div class="control-group">
                         <!-- Text input-->
-                        <label class="control-label" for="input01">邮政编码:</label>
+                        <label class="control-label" for="C_ZIP">邮政编码:</label>
                         <div class="controls">
                             <input type="text" placeholder=""
                                 class="input-xlarge" id="C_ZIP"
@@ -183,4 +185,4 @@
 
     </form>
 </div>
-</@layout.doLayout>
+</@>

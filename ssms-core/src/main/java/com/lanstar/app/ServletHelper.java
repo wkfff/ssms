@@ -29,4 +29,8 @@ public class ServletHelper {
     public static String getRealPath( String path ) {
         return App.getServletContext().getRealPath( path );
     }
+
+    public static String getContextPath() {
+        return App.getServletContext().getContextPath();
+    }
 }

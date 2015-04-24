@@ -67,8 +67,26 @@
 </script>
 </#local>
 <@vars.component_base script>
-<textarea id="${id}_editor" name="${name}"></textarea>
+<textarea id="${id}_editor" name="${name}" style="width: 100%"></textarea>
 </@vars.component_base>
+</#macro>
+
+<#--
+    菜单项
+-->
+<#macro menu items>
+<ul class="js-component-tab tz0 nui-tabs" id="tabs">
+    <#list items as item>
+        <#local class>nui-tabs-item<#if item.title=vars.SELECTED_MENU>-selected</#if></#local>
+        <li value='0' class='js-component-tabitem tA0 oZ0 ${class}' title='${item.title}'>
+            <div class='kA0'></div>
+            <div class='mE0'></div>
+            <a href="${item.url}">
+                <div class='nui-tabs-item-text'>${item.title}</div>
+            </a>
+        </li>
+    </#list>
+</ul>
 </#macro>
 
 
@@ -88,33 +106,38 @@
 
 <#macro textbox name title="" desc="" value="" readonly=false span=12>
 <@_edit_component name title desc span>
-<input type="text" placeholder="" class="ui-text input-x<#if span==12>x</#if>large" id="${name}" name="${name}" <#if readonly>readonly="readonly"</#if> value="${value}">
+<input type="text" placeholder="" class="ui-text input-x<#if (span>6)>x</#if>large" id="${name}" name="${name}" <#if readonly>readonly="readonly"</#if> value="${value}">
 </@_edit_component>
 </#macro>
 
 <#macro textarea name title="" desc="" span=12>
 <@_edit_component name title desc span>
-<textarea id="${name}" name="${name}" rows=5 class="input-x<#if span==12>x</#if>large"> </textarea>
+<textarea id="${name}" name="${name}" rows=5 class="input-x<#if (span>6)>x</#if>large"> </textarea>
 </@_edit_component>
 </#macro>
 
-<#macro editor name title="" desc="" span=12>
+<#macro editor name title="" desc="" span=12 rows=10>
 <@_edit_component name title desc span>
-<textarea id="${name}" name="${name}" rows=5 class="ui-editor"></textarea>
+<textarea id="${name}" name="${name}" rows=${rows} class="ui-editor" style="width:100%;"></textarea>
+</@_edit_component>
+</#macro>
+
+<#macro radio name title="" desc="" span=12>
+<@_edit_component name title desc span>
+<input type="radio" placeholder="" class="input-xlarge" id="${name}" name="${name}">男
+<input type="radio" placeholder="" class="input-xlarge" id="${name}" name="${name}">女
 </@_edit_component>
 </#macro>
 
 <#macro parameter keyField valueField src="" items=[] title="" desc="" span=12>
 <@_edit_component keyField title desc span>
 <input type="hidden" id="${valueField}" name="${valueField}"/>
-<select id="${keyField}" class="ui-parameter input-x<#if span==12>x</#if>large" src="${src}">
+<select id="${keyField}" class="ui-parameter input-x<#if (span>6)>x</#if>large" src="${src}">
+    <option value=""></option>
 <#list items as Parameter>
     <option value=${Parameter.key}>${Parameter.value}</option>
 </#list>
 </select>
-<#if (desc?length>0)>
-<p class="help-block">${desc}</p>
-</#if>
 </@>
 </#macro>
 

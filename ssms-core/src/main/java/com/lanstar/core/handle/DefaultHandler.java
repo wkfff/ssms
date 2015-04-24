@@ -75,7 +75,7 @@ public class DefaultHandler implements Handler {
                     this.defaultServletName + "'" );
         }
         RequestContext requestContext = context.getRequestContext();
-        LogHelper.debug( getClass(), "使用容器默认的Servlet处理资源[%s]", context.getRequestContext().getUri() );
+        LogHelper.debug( getClass(), "使用容器默认的Servlet处理资源[%s]", context.getRequestContext().getTarget() );
         rd.forward( requestContext.getRequest(), requestContext.getResponse() );
     }
 }

@@ -1,4 +1,4 @@
-<#import "/layout/_list.ftl" as layout/> <#assign script>
+<#import "/s/home/settings.ftl" as layout/> <#assign script>
 <script type="text/javascript">
     var setting = {
         gridId : "dg",
@@ -13,7 +13,7 @@
         dg.doQuery();
     });
 </script>
-</#assign> <@layout.doLayout script>
+</#assign> <@layout.listIndex script>
 <!--导航栏-->
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -89,4 +89,4 @@
     </div>
 </div>
 
-</@layout.doLayout>
+</@>

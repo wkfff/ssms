@@ -7,11 +7,15 @@
         dataUrl: "rec.json",
         saveUrl: "save.json",
         delUrl: "del.json",
-        backUrl: '${referer!}' // 设置回退的URL。referer是请求头，里面含有请求当前页面的页面地址。
+        backUrl: '${Referer!}' // 设置回退的URL。referer是请求头，里面含有请求当前页面的页面地址。
     };
 
     $(document).ready(function () {
         $form.init(setting);
+
+        $('#editorTmp').click(function () {
+            alert("编辑模板");
+        });
     });
 </script>
 <style type="text/css">
@@ -51,7 +55,8 @@
             </div>
         </@layout.row>
         <@layout.row>
-            <@layout.textbox name="S_TMPFILE" title="模板文件" desc="配置模板文件" readonly=true/>
+            <@layout.parameter keyField="P_TMPFILE" valueField="S_TMPFILE" items=tmpfiles title="模板文件" desc="配置模板文件" span=10/>
+            <#if P_TMPFILE??><a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?pid=${SID}">[配置模板]</a></#if>
         </@layout.row>
         <@layout.row>
             <@layout.editor name="C_EXPLAIN" title="政策解读" desc="配置政策解读信息" />

@@ -7,45 +7,38 @@
  */
 package com.lanstar.core.handle;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.render.Render;
 import com.lanstar.core.render.resolver.RenderResolver;
 import com.lanstar.core.render.resolver.RenderResolverFactory;
 
+import javax.servlet.ServletException;
+import java.io.IOException;
+
 /**
  * 登录登出
- *
  */
 public class LoginHandler implements Handler {
-
-    /* (non-Javadoc)
-     * @see com.lanstar.core.handle.Handler#handle(com.lanstar.core.handle.HandlerContext, com.lanstar.core.handle.HandleChain)
-     */
     @Override
     public void handle( HandlerContext context, HandleChain next )
             throws ServletException, IOException {
         RequestContext requestContext = context.getRequestContext();
-        String uri = requestContext.getUri();
-        RenderResolver resolver = RenderResolverFactory.me().getResolver("html");
+        // 获取请求目标
+        String target = requestContext.getTarget();
+        RenderResolver resolver = RenderResolverFactory.me().getResolver( "html" );
         ViewAndModel vam = new ViewAndModel();
-        if ( uri.equals( "/login" )) {
-            vam.view( "/s/home/login.ftl" );
+        if ( target.equals( "/login" ) ) {
+            vam.view( "/login.ftl" );
             Render render = resolver.getRender( vam, requestContext );
             render.render();
             return;
-        }
-        else if (uri.equals( "/logout" )) {
+        } else if ( target.equals( "/logout" ) ) {
             if ( requestContext.hasIdentityContext() ) {
-                requestContext.bindIdentity( null );
+                // 直接将当前会话无效化掉
+                requestContext.getRequest().getSession().invalidate();
             }
-            vam.view( "/s/home/login.ftl" );
-            Render render = resolver.getRender( vam, requestContext );
-            render.render();
+            requestContext.redirect( "/login" );
             return;
         }
         next.doHandle( context );
