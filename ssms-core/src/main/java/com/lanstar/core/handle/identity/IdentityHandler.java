@@ -8,7 +8,9 @@
 
 package com.lanstar.core.handle.identity;
 
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.RequestContext;
+import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandleChain;
 import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.Handler;
@@ -17,6 +19,9 @@ import com.lanstar.core.handle.identity.impl.AuditIdentity;
 import com.lanstar.core.handle.identity.impl.CompanyIdentity;
 import com.lanstar.core.handle.identity.impl.GovernmentIdentity;
 import com.lanstar.core.handle.identity.impl.SystemIdentity;
+import com.lanstar.core.render.Render;
+import com.lanstar.core.render.resolver.RenderResolver;
+import com.lanstar.core.render.resolver.RenderResolverFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -37,6 +42,13 @@ public class IdentityHandler implements Handler {
             if ( false ) throw new HandleException( "身份认证未通过" ).errorCode( HttpServletResponse.SC_UNAUTHORIZED );
             
             String userSID = context.getValue( "username" );
+            if (StringHelper.isBlank( userSID )) {
+                RenderResolver resolver = RenderResolverFactory.me().getResolver("html");
+                ViewAndModel vam = new ViewAndModel();
+                vam.view( "/s/home/login.ftl" );
+                Render render = resolver.getRender( vam, requestContext );
+                render.render();
+            }
             // 创建或者获取身份标识,临时测试使用
             Identity identity;
             if (userSID.startsWith( "E" ))

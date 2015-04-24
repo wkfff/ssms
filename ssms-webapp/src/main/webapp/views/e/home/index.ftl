@@ -9,7 +9,6 @@
     <LINK id="patternCss" href="/resource/css/standard.css" rel="stylesheet" type="text/css"> 
 	<LINK id="styleCss" href="/resource/theme/skyblue/style.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="/resource/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/resource/js/index.js"></script>
 	<style>
 		.nav__menu {
 		  line-height: 45px;

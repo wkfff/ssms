@@ -62,6 +62,7 @@ public class HomeHandler implements Handler {
                             .append( " title='" )
                             .append( XmlHelper.getProperty( node, "title" ) )
                             .append( "'" )
+                            .append( " url='" ).append( XmlHelper.getProperty( node, "url" ) ).append( "'" )
                             .append( " onclick='changeTab(this.value)'>" )
                             .append("<div class='kA0'></div><div class='mE0'></div>" )
                             .append( "<div class='nui-tabs-item-text'>" )

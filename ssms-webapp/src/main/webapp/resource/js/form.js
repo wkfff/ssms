@@ -37,12 +37,14 @@ $form = {
 		});
 		//日期
 		$.each($(".ui-date"),function(index,e){
+			if ($(e).attr("readonly")!="readonly")
 			$(e).datepicker({
 				inline: false
 			});
 		});
 		//日期时间
-		$.each($(".ui-date"),function(index,e){
+		$.each($(".ui-datetime"),function(index,e){
+			if ($(e).attr("readonly")!="readonly")
 			$(e).datetimepicker({
 				 timeFormat: "HH:mm:ss",
 	             dateFormat: "yy-mm-dd"
@@ -66,7 +68,7 @@ $form = {
 			
 			$(e).change(function() {
 				var text = this.options[this.selectedIndex].text;
-				var id = "#S_"+e.id.substr(2,e.id.length); alert(id+"__"+text);
+				var id = "#S_"+e.id.substr(2,e.id.length);
 				var txt = $(id);
 				if (txt) txt.val(text);
 			});

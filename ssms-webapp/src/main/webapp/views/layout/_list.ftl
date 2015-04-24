@@ -1,5 +1,5 @@
 <#import "/layout/_layout.ftl" as layout/>
-
+<#include "/layout/_component.ftl"/>
 <#macro doLayout script header="">
 <#assign _header>
 <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap.css">
