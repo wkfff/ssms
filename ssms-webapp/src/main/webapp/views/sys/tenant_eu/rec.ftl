@@ -2,6 +2,7 @@
 <#import "/s/home/settings.ftl" as layout/>
 <#assign script>
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
+<script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
 <script type="text/javascript">
     var setting = {
             sid:$url.getUrlParam("sid"),
@@ -10,10 +11,19 @@
             delUrl: "del.json",
             editor: "C_SUMMARY"
     }
-    
     $(document).ready(function(){
         $form.init(setting);
     });
+     function svaeInfo(){
+    	if(($("#C_PASSWD").val())!=(($("#C_PASSWD1").val()))){
+    		alert("两次输入密码一致");
+    		 return;
+    	}
+    	$("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
+    	$("#C_PASSWD1").val($.md5($("#C_PASSWD1").val()));
+    	$("#C_PASSWD1").attr("disabled", "true")
+    	$form.doSave();
+    }
 </script>
 </#assign>
 <@layout.recIndex script>
@@ -46,7 +56,7 @@
       <div class="navbar-inner">
         <div class="container">
             <div class="nav pull-right">
-               <input type="button" class="btn" name="btn_save" value="保存">
+               <input type="button" class="btn"  onclick="svaeInfo()" value="保存">
                <input type="button" class="btn" name="btn_del" value="删除">
                <input type="button" class="btn" name="btn_back" value="返回">
             </div>
@@ -100,8 +110,8 @@
                     <div class="control-group">
                         <label class="control-label" for="S_SEX">性别:</label>
                         <div class="controls">
-                            <input type="radio" placeholder="" class="input-xlarge" id="S_SEX" name="S_SEX">男
-                            <input type="radio" placeholder="" class="input-xlarge"  id="S_SEX" name="S_SEX">女
+                            <input type="radio" placeholder="" class="input-xlarge" id="S_SEX" name="S_SEX" value="男">男
+                            <input type="radio" placeholder="" class="input-xlarge"  id="S_SEX" name="S_SEX" value="女">女
                             <p class="help-block">性别</p>
                         </div>
                     </div>
@@ -134,20 +144,6 @@
             <fieldset>
             <div id="legend">
             <legend>联系方式</legend>
-            </div>
-
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="control-group">
-                      <!-- Text input-->
-                      <label class="control-label" for="C_ADDRE">通讯地址:</label>
-                      <div class="controls">
-                        <input type="text" placeholder="" class="input-xxlarge" id="C_ADDRE" name="C_ADDRE">
-                         <#--TODO缺少通讯地址字段-->
-                        <p class="help-block">通讯地址</p>
-                      </div>
-                    </div>
-                </div>
             </div>
 
             <div class="row-fluid">
@@ -230,16 +226,16 @@
                     <div class="control-group">
                         <label class="control-label" for="C_PASSWD">密码:</label>
                         <div class="controls">
-                            <input type="text" placeholder="" class="input-xlarge" id="C_PASSWD" name="C_PASSWD">
+                            <input type="password" placeholder="" class="input-xlarge" id="C_PASSWD" name="C_PASSWD">
                             <p class="help-block">密码</p>
                         </div>
                     </div>
                 </div>
                 <div class="span6">
                     <div class="control-group">
-                        <label class="control-label" for="">重复密码:</label>
+                        <label class="control-label" for="C_PASSWD1">重复密码:</label>
                         <div class="controls">
-                            <input type="text" placeholder="" class="input-xlarge" id="C_PASSWD" name="C_PASSWD">
+                            <input type="password" placeholder="" class="input-xlarge" id="C_PASSWD1" name="C_PASSWD1">
                             <p class="help-block">重复密码</p>
                         </div>
                     </div>

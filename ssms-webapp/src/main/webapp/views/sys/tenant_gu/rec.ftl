@@ -1,16 +1,28 @@
 <#import "/s/home/settings.ftl" as layout/>
 <#assign script>
+<script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
 <script type="text/javascript">
     var setting = {
         sid: $url.getUrlParam("sid"),
         dataUrl: "rec.json",
-        saveUrl: "save.json",
-        delUrl: "del.json"
+        delUrl : "del.json",
+        saveUrl: "save.json"
     };
 
     $(document).ready(function () {
         $form.init(setting);
     });
+    
+    function svaeGInfo(){
+        if(($("#C_PASSWD").val())!=(($("#C_PASSWD1").val()))){
+            alert("两次输入密码一致");
+             return;
+        }
+        $("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
+        $("#C_PASSWD1").val($.md5($("#C_PASSWD1").val()));
+        $("#C_PASSWD1").attr("disabled", "true")
+        $form.doSave();
+    }
 </script>
 </#assign>
 <@layout.recIndex script>
@@ -31,8 +43,8 @@
 </div>
 
 <@layout.toolbar class="navbar-fixed-top" outer="<br><br>">
-<input type="button" class="btn" name="btn_save" value="保存"/>
-<input type="button" class="btn" name="btn_del" value="删除"/>
+<input type="button" class="btn" onclick="svaeGInfo()" value="保存"/>
+<input type="button" class="btn" name="btn_del" value="删除"> 
 <input type="button" class="btn" name="btn_back" value="返回"/>
 </@layout.toolbar>
 
@@ -79,7 +91,7 @@
         <@layout.group title="密码设置">
             <@layout.row>
                 <@layout.textbox name="C_PASSWD" title="密码" desc="密码"  span=6/>
-                <@layout.textbox name="C_PASSWD" title="重复密码" desc="重复密码"  span=6/>
+                <@layout.textbox name="C_PASSWD1" title="重复密码" desc="重复密码"  span=6/>
             </@layout.row>
             <input type="button" class="btn" name="btn_reset" value="快速重置密码"/>
         </@layout.group>
