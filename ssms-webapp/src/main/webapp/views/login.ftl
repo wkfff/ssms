@@ -25,7 +25,7 @@
             //$("#login").submit();
             //v=$.md5(document.getElementById("usrPasswd").value);
             //md5加密
-            var v=$("#usrPasswd").val($.md5($("#usrPasswd").val()));
+            $("#usrPasswd").val($.md5($("#usrPasswd").val()));
             document.getElementById("login").submit();
         }
     </script>
