@@ -7,6 +7,7 @@
  */
 package com.lanstar.controller.e;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.lanstar.common.helper.StringHelper;
@@ -32,22 +33,26 @@ public class grade_dController extends DefaultController {
     }
     
     public ViewAndModel gridsave(HandlerContext context){
-        ARTable table = context.DB.withTable( this.TABLENAME );
+        Map<String, Map<String,Object>> datas = new HashMap<String, Map<String,Object>>();        
         Map<String,String> map = context.getParameterMap();
         for(String key:map.keySet()){
-            
+            String[] keys = key.split( "#" );
+            if (keys.length>1){
+                if (datas.containsKey( keys[0] )){
+                    datas.get( keys[0] ).put( keys[1], map.get( key ) );
+                }else{
+                    Map<String, Object> data = new HashMap<String, Object>();
+                    data.put( keys[1], map.get( key ) );
+                    datas.put( keys[0], data );
+                }
+            }
         }
-        /*
-        this.mergerValues( table, context, MergerType.withSid( sid ) );
-        // 根据sid的存在设置where语句
-        // TODO：一律过滤"null"值？
-        table.where( !StringHelper.isBlank( sid ) && !sid.equals( "null" ),
-                "SID=?", sid ).save();
-
-        if ( StringHelper.isBlank( sid ) || sid.equals( "null" ) ) {
-            sid = Integer.toString( context.DB.getSID() );
+        for(String key:datas.keySet()){
+            Map<String, Object> data = datas.get( key );
+            ARTable table = context.DB.withTable( this.TABLENAME ).where( "SID=?",data.get( "SID" ) );
+            table.values( data );
+            table.save();
         }
-        */
         return context.returnWith();
     }
 }

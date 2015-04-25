@@ -21,12 +21,33 @@
         //表单
         $form.init(formSetting);
         //表格
-        var dg = new datagrid(gridSetting);
-        dg.doQuery();
+        //var dg = new datagrid(gridSetting);
+        //dg.doQuery();
         
         //完成自评处理
         $("input[name='btn_ok']").click(function() {
-            dg.doSave();
+            
+        });
+        
+        $("input[name='btn1']").click(function() {
+            //新建
+            if ($url.getUrlParam("sid")==""){
+                alert("new");
+                $.get("init.json",,function (data) {
+                    $win.navigate('rec.html?sid='+formSetting.sid);
+                },"json");
+            }
+            var data = $("#mainForm").serializeArray();
+            $.post(gridSetting.saveUrl, data,function (data) {
+                $win.navigate('rec.html?sid=');
+            });
+        });
+        
+        $("input[name='btn2']").click(function() {
+            var data = $("#mainForm").serializeArray();
+            $.post(gridSetting.saveUrl, data,function (data) {
+                $win.navigate(window.location.href);
+            });
         });
     });
 </script>
@@ -52,6 +73,10 @@
 <input type="button" class="btn" name="btn_del" value="删除"/>
 <input type="button" class="btn" name="btn_ok" value="完成自评"/>
 <input type="button" class="btn" name="btn_back" value="返回"/>
+
+<input type="button" class="btn" name="btn_1" value="测试1"/>
+<input type="button" class="btn" name="btn_2" value="测试2"/>
+
 </@layout.toolbar>
 
 <div class="container">
@@ -87,9 +112,30 @@
                                 <td id="N_SCORE_REAL" editor="textbox">实际得分</td>
                             <tr>
                         </thead>
-                        <tbody />
+                        <tbody>
+                            <#list _DETAIL_ as r>
+                                <tr>
+                                    <td id="SID" style="display:none;" editor="textbox">
+                                        <input type="hidden" name="${r_index}#SID" value=${r["SID"]}></input>
+                                    </td>
+                                    <td id="C_CATEGORY">${r["C_CATEGORY"]!}</td>
+                                    <td id="C_PROJECT">${r["C_PROJECT"]!}</td>
+                                    <td id="C_CONTENT">${r["C_CONTENT"]!}</td>
+                                    <td id="N_SCORE">${r["N_SCORE"]!}</td>
+                                    <td id="C_METHOD">${r["C_METHOD"]!}</td>
+                                    <td id="C_DESC" editor="textbox">
+                                        <input type="text" style="width:100%;padding:0px;margin:0px;" name="${r_index}#C_DESC" value=${r["C_DESC"]!}></input>
+                                    </td>
+                                    <td id="B_BLANK" editor="textbox">
+                                        <input type="checkbox" name="${r_index}#B_BLANK" value=${r["B_BLANK"]!}></input>
+                                    </td>
+                                    <td id="N_SCORE_REAL" editor="textbox">
+                                        <input type="text" style="width:100%;padding:0px;margin:0px;" name="${r_index}#N_SCORE_REAL" value=${r["N_SCORE_REAL"]!}></input>
+                                    </td>
+                                <tr>
+                            </#list>
+                        </tbody>
                     </table>
-                    <@layout.pagingbar />
                 </div>
             </@layout.row>
         </@layout.group>

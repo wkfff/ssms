@@ -7,10 +7,16 @@
  */
 package com.lanstar.controller.e;
 
+import java.util.Map;
+
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.db.JdbcRecordSet;
+import com.lanstar.db.ar.ARTable;
+import com.lanstar.db.statement.SqlBuilder;
 
 /**
  * 自评历史
@@ -32,6 +38,26 @@ public class grade_mController extends DefaultController {
         // TODO:根据企业的信息来设置
         context.setValue( "S_TANENT", "XX企业" );
         context.setValue( "P_PROFESSION", "1" );
-        return super.rec( context );
+        // 获取自评内容
+        String sid = context.getValue( "sid" );
+        ARTable arTable = context.DB.withTable( "SSM_GRADE_E_D" ).where( "R_STD=?",sid );
+        Map<String, String> filter = context.getFilter();
+        if ( !filter.isEmpty() ) arTable.where( StringHelper.join(filter.keySet(), " and ", false ), filter.values().toArray() );
+        JdbcRecordSet list = arTable.queryList();
+        return super.rec( context ).put( "_DETAIL_", list);
+    }
+    
+    /**
+     * 初始化企业自评表
+     * @param context
+     * @return
+     */
+    public ViewAndModel init(HandlerContext context){
+        // TODO:根据企业的专业从评分标准表中复制
+        String sql = "insert into SSM_GRADE_E_D() ";
+        SqlBuilder sqlBuilder = new SqlBuilder();
+        sqlBuilder.FROM( sql );
+        context.DB.execute( sqlBuilder );
+        return context.returnWith();
     }
 }
