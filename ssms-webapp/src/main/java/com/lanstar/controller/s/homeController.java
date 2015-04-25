@@ -14,7 +14,6 @@ import com.lanstar.core.handle.HandlerContext;
 
 /**
  * 首页
- *
  */
 public class homeController extends DefaultController {
     public homeController() {
@@ -25,8 +24,12 @@ public class homeController extends DefaultController {
     protected Class<? extends ActionValidator> getValidator() {
         return null;
     }
-    
+
     public ViewAndModel task( HandlerContext context ) {
         return context.returnWith();
+    }
+
+    public void settings( HandlerContext context ) {
+
     }
 }
