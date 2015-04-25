@@ -75,13 +75,15 @@
     菜单项
 -->
 <#macro menu items>
-    <#list items as item>
-        <#local class>tabs-item<#if item.title=vars.SELECTED_MENU>-selected</#if></#local>
-            <a href="${item.url}" class="${class}">
-                ${item.title}
-            </a>
-            
-    </#list>
+<div class="navbarbg clear">
+    <div class="navbar clear">
+        <ul class="nav">
+        <#list items as item>
+            <li><a href="${item.url}" class="<#if item.title=vars.SELECTED_MENU>selected</#if>">${item.title}</a></li>
+        </#list>
+        </ul>
+    </div>
+</div>
 </#macro>
 
 <#macro _edit_component name title="" desc="" span=12>

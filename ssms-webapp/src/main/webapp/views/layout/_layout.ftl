@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>${_TITLE_!"安全生产标准化管理系统"}</title>
-    <link rel="stylesheet" type="text/css" href="/resource/css/navigation.css">
     <link rel="stylesheet" href="/resource/css/base.css"/>
     <#--easyui-->
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/bootstrap/easyui.css">
@@ -24,33 +23,19 @@
 </#macro>
 
 <#macro indexLayout menuID header="" footer="">
-<#--设置菜单-->
+    <#--设置菜单-->
     <#assign SELECTED_MENU=menuID!"工作中心" in vars/>
 
     <@doLayout _header footer>
     <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'north'" class="header">
-            <span style="float:left;">
-                 <h2>${_TITLE_!"安全生产标准化管理系统"}</h2>
-            </span>
-            <span style="float:right;padding:20px;">
-                <a>欢迎您，${LANSTAR_IDENTITY.identityName!}</a>
-                <a href="javascript:changePwd();">修改密码</a>
-                <a>&nbsp;|&nbsp;</a>
-                <a href="javascript:window.location.href='/logout';">注销</a>
-            </span>
-
-            <div class="menu3">
-                <#include "${LANSTAR_IDENTITY.tanentType}_menu.ftl">
-            </div>
+        <div data-options="region:'north'" style="height: 80px">
+            <#include 'parts/header.ftl'/>
         </div>
         <div data-options="region:'center'">
             <#nested/>
         </div>
-        <div data-options="region:'south'" style="height:40px;">
-            <div style="text-align:center;line-height:100%;width:100%;padding-top:10px;overflow:hidden;">© 2015
-                福州蓝石电子有限公司
-            </div>
+        <div data-options="region:'south'" style="height: 50px">
+            <#include 'parts/copyright.ftl'/>
         </div>
     </div>
     </@doLayout>

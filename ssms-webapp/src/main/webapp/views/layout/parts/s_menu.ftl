@@ -1,4 +1,4 @@
-<#import "_component.ftl" as component/>
+<#import "/layout/_component.ftl" as component/>
 <#assign menus = [
     {"title": "工作中心", "url": "/index"},
     <#-- TODO: 根据专业进行配置-->
