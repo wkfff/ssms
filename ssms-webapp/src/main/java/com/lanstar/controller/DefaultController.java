@@ -18,7 +18,6 @@ import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +48,10 @@ public abstract class DefaultController extends BaseController {
         if ( !filter.isEmpty() ){
         List<String> list = new ArrayList<String>();
             for(String key:filter.keySet()){
-                list.add( filterFields.get( key ));
+                String f = filterFields.get( key );
+                // 添加默认规则处理，如果在过滤的map中没有找到，则用'='进行处理            by 张铮彬#2015-4-25
+                if (Strings.isNullOrEmpty( f )) f = String.format( "%s=?", key );
+                list.add( f );
             }
             arTable.where( StringHelper.join(list, " and ", false ), filter.values().toArray() );
         }
