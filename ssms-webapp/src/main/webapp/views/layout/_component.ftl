@@ -91,9 +91,9 @@
     </#if>
     <div <#if (title?length>0)>class="controls"</#if>>
         <#nested />
-        <#if (desc?length>0)>
+        <#--<#if (desc?length>0)>
             <p class="help-block">${desc}</p>
-        </#if>
+        </#if>-->
     </div>
 </div>
 </#macro>
@@ -148,7 +148,7 @@
 </#macro>
 
 <#macro form id title="">
-<form class="form-horizontal" id="${id}">
+<form id="${id}" method="post" class="form-inline">
 <#if (title?length>0)>
     <@group title>
         <#nested />
@@ -223,3 +223,16 @@
 </div>
 </#macro>
 
+
+
+<#macro dialog dialogId formId saveFunc>
+<div id="${dialogId}" class="easyui-dialog" data-options="closed:true, modal:true, buttons:'#${dialogId}-buttons'">
+    <form id="${formId}" method="post">
+        <#nested />
+    </form>
+</div>
+<div id="${dialogId}-buttons">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-ok'" onclick="${saveFunc}">保存</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+</#macro>

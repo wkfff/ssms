@@ -10,6 +10,7 @@ package com.lanstar.controller;
 
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.StringHelper;
+import com.lanstar.controller.easyui.EasyUIControllerHelper;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.DBPaging;
@@ -45,7 +46,7 @@ public abstract class DefaultController extends BaseController {
         if ( processor != null ) processor.process( arTable );
         DBPaging paging = context.getPaging();
         JdbcPageRecordSet list = arTable.queryPaging( paging );
-        return context.returnWith().set( list );
+        return context.returnWith().set( EasyUIControllerHelper.toDatagridResult( list ) );
     }
 
     /**
