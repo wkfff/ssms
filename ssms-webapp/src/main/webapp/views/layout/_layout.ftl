@@ -6,16 +6,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>${_TITLE_!"安全生产标准化管理系统"}</title>
-    <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap.css">
-    <!--[if lte IE 6]>
-    <link rel="stylesheet" type="text/css" href="/resource/css/bootstrap-ie6.css">
-    <![endif]-->
-    <!--[if lte IE 7]>
-    <link rel="stylesheet" type="text/css" href="/resource/css/ie.css">
-    <![endif]-->
-    <link id="patterncss" href="/resource/css/standard.css" rel="stylesheet" type="text/css">
-    <link id="stylecss" href="/resource/theme/skyblue/style.css" rel="stylesheet" type="text/css">
+    <#--easyui-->
+    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
+
     <#if (header?length>0)>${header}</#if>
 </head>
 <body class="skyblue frame-default frame-auto">
