@@ -45,15 +45,15 @@ public abstract class DefaultController extends BaseController {
         Map<String, String> filter = context.getFilter();
 //        if ( !filter.isEmpty() ) arTable.where( StringHelper.join(
 //                filter.keySet(), " and ", false ), filter.values().toArray() );
-        if ( !filter.isEmpty() ){
-        List<String> list = new ArrayList<String>();
-            for(String key:filter.keySet()){
+        if ( !filter.isEmpty() ) {
+            List<String> list = new ArrayList<String>();
+            for ( String key : filter.keySet() ) {
                 String f = filterFields.get( key );
                 // 添加默认规则处理，如果在过滤的map中没有找到，则用'='进行处理            by 张铮彬#2015-4-25
-                if (Strings.isNullOrEmpty( f )) f = String.format( "%s=?", key );
+                if ( Strings.isNullOrEmpty( f ) ) f = String.format( "%s=?", key );
                 list.add( f );
             }
-            arTable.where( StringHelper.join(list, " and ", false ), filter.values().toArray() );
+            arTable.where( StringHelper.join( list, " and ", false ), filter.values().toArray() );
         }
         if ( processor != null ) processor.process( arTable );
         DBPaging paging = context.getPaging();
@@ -79,7 +79,7 @@ public abstract class DefaultController extends BaseController {
         this.validatePara( context );
         String sid = context.getValue( "sid" );
         // 解决如果传递的SID是大写的时候，搜索不到的问题                 by 张铮彬#2015-4-25
-        if (Strings.isNullOrEmpty( sid )) sid = context.getValue( "SID" );
+        if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         ARTable table = context.DB.withTable( this.TABLENAME );
         this.mergerValues( table, context, MergerType.withSid( sid ) );
         // 根据sid的存在设置where语句
@@ -114,13 +114,15 @@ public abstract class DefaultController extends BaseController {
      * @return
      */
     public ViewAndModel del( HandlerContext context ) {
-        String sid = (String) context.getValue( "sid" );
+        String sid = context.getValue( "sid" );
+        // 解决如果传递的SID是大写的时候，搜索不到的问题                 by 张铮彬#2015-4-25
+        if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         if ( !Strings.isNullOrEmpty( sid ) ) {
             context.DB.withTable( this.TABLENAME ).where( "SID = ?", sid )
                       .delete();
         }
         return context.returnWith().set( "{}" );
     }
-    
-    public void setFilterFields(){}
+
+    public void setFilterFields() {}
 }
