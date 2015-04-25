@@ -8,10 +8,11 @@
     <title>${_TITLE_!"安全生产标准化管理系统"}</title>
     <link rel="stylesheet" href="/resource/css/base.css"/>
     <#--easyui-->
-    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/bootstrap/easyui.css">
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
     <#if (header?length>0)>${header}</#if>
 </head>
 <body>
