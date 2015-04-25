@@ -33,154 +33,42 @@
     </div>
 </div>
 
-<div class="navbar navbar-default">
-    <div class="navbar-inner">
-        <div class="container">
-            <div class="nav pull-right">
+<@layout.toolbar class="navbar-fixed-top" outer="<br><br>">
                 <input type="button" class="btn" name="btn_save"
                     value="保存"> <input type="button" class="btn"
                     name="btn_del" value="删除"> <input
                     type="button" class="btn" name="btn_back" value="返回">
-            </div>
-        </div>
-    </div>
-</div>
+</@layout.toolbar>
 
 <div class="container">
     <!--表单-->
-    <form class="form-horizontal" id="mainForm">
-        <fieldset>
-            <div id="legend">
-                <legend>基本信息</legend>
-            </div>
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="control-group">
-                        <!-- Text input-->
-                        <label class="control-label" for="C_NAME">单位名称:</label>
-                        <div class="controls">
-                            <input type="text" placeholder=""
-                                class="input-xxlarge" id="C_NAME"
-                                name="C_NAME">
-                            <p class="help-block">单位名称</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <@layout.form id="mainForm">
+        <@layout.group title="基本信息">
+            <@layout.row>
+                <@layout.textbox name="C_NAME" title="单位名称" desc="单位名称" />
+            </@layout.row>
+            <@layout.row>
+                <@layout.textbox name="S_PROVINCE" title="省" desc="省"  span=6 />
+                <@layout.textbox name="S_CITY" title="市" desc="市" span=6 />
+            </@layout.row>
+            <@layout.row>
+                <@layout.textbox name="S_COUNTY" title="县" desc="县"  span=6 />
+            </@layout.row>
+        </@layout.group>
+        <@layout.group title="联系方式">
+            <@layout.row>
+                <@layout.textbox name="C_ADDRE" title="通讯地址" desc="通讯地址"  />
+            </@layout.row>
+            <@layout.row>
+                <@layout.textbox name="C_FAX" title="传真" desc="传真"  span=6 />
+                <@layout.textbox name="C_TEL" title="固话" desc="固话" span=6 />
+            </@layout.row>
+            <@layout.row>
+                <@layout.textbox name="C_EMAIL" title="电子邮箱" desc="电子邮箱"  span=6 />
+                <@layout.textbox name="C_ZIP" title="邮政编码" desc="邮政编码" span=6 />
+            </@layout.row>
+        </@layout.group>
 
-            <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="S_PROVINCE">省:</label>
-                        <div class="controls">
-                            <input type="text" placeholder=""
-                                class="input-xlarge" id="S_PROVINCE"
-                                name="S_PROVINCE">
-                            <p class="help-block">省</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="S_CITY">市:</label>
-                        <div class="controls">
-                            <input type="text" placeholder=""
-                                class="input-xlarge" id="S_CITY"
-                                name="S_CITY">
-                            <p class="help-block">市</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="S_COUNTY">县:</label>
-                        <div class="controls">
-                            <input type="text" placeholder=""
-                                class="input-xlarge" id="S_COUNTY"
-                                name="S_COUNTY">
-                            <p class="help-block">县</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </fieldset>
-        <fieldset>
-            <div id="legend">
-                <legend>联系方式</legend>
-            </div>
-
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="control-group">
-                        <!-- Text input-->
-                        <label class="control-label" for="C_ADDRE">通讯地址:</label>
-                        <div class="controls">
-                            <input type="text" placeholder=""
-                                class="input-xxlarge" id="C_ADDRE"
-                                name="C_ADDRE">
-                            <p class="help-block">通讯地址</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="C_FAX">传真:</label>
-                        <div class="controls">
-                            <input type="text" placeholder=""
-                                class="input-xlarge" id="C_FAX"
-                                name="C_FAX">
-                            <p class="help-block">传真</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="span6">
-                    <div class="control-group">
-                        <label class="control-label" for="C_TEL">固话:</label>
-                        <div class="controls">
-                            <input type="text" placeholder=""
-                                class="input-xlarge" id="C_TEL"
-                                name="C_TEL">
-                            <p class="help-block">固话</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-fluid">
-                <div class="span6">
-                    <div class="control-group">
-                        <!-- Text input-->
-                        <label class="control-label" for="C_EMAIL">电子邮箱:</label>
-                        <div class="controls">
-                            <input type="text" placeholder=""
-                                class="input-xlarge" id="C_EMAIL"
-                                name="C_EMAIL">
-                            <p class="help-block">电子邮箱</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="span6">
-                    <div class="control-group">
-                        <!-- Text input-->
-                        <label class="control-label" for="C_ZIP">邮政编码:</label>
-                        <div class="controls">
-                            <input type="text" placeholder=""
-                                class="input-xlarge" id="C_ZIP"
-                                name="C_ZIP">
-                            <p class="help-block">邮政编码</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-
-    </form>
+    </@layout.form>
 </div>
 </@>

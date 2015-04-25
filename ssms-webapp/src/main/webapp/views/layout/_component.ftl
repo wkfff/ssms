@@ -124,8 +124,8 @@
 
 <#macro radio name title="" desc="" span=12>
 <@_edit_component name title desc span>
-<input type="radio" placeholder="" class="input-xlarge" id="${name}" name="${name}">男
-<input type="radio" placeholder="" class="input-xlarge" id="${name}" name="${name}">女
+<input type="radio" placeholder="" class="input-xlarge" id="${name}" name="${name}" value="男">男
+<input type="radio" placeholder="" class="input-xlarge" id="${name}" name="${name}" value="女">女
 </@_edit_component>
 </#macro>
 
