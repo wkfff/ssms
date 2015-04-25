@@ -1,4 +1,5 @@
-<#import "/layout/_list.ftl" as layout/>
+<#--<#import "/layout/_list.ftl" as layout/>-->
+<#import '/s/home/settings.ftl' as layout/>
 
 <#assign script>
 <script type="text/javascript">
@@ -56,7 +57,7 @@
 </script>
 </#assign>
 
-<@layout.doLayout script=script>
+<@layout.listIndex script=script>
 <table id="dg"></table>
 <div id="toolbar">
     <label for="C_NAME">企业名称:</label>
@@ -66,7 +67,8 @@
     <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-search', plain: true" onclick="doSearch()">查询</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-add', plain: true" onclick="doNew()">新增</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-edit', plain: true" onclick="editUser()">编辑</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-remove', plain: true" onclick="destroyUser()">删除</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-remove', plain: true"
+       onclick="destroyUser()">删除</a>
 </div>
 
 <div id="dlg" class="easyui-dialog" data-options="closed:true, modal:true, buttons:'#dlg-buttons'">
@@ -88,30 +90,30 @@
                 <@layout.row>
                     <@layout.textbox name="C_NAME" title="企业名称" desc="企业的详细名称" />
                 </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="S_STATE" title="企业状态" desc="企业状态" readonly=true span=6 />
-                <@layout.textbox name="S_PROVINCE" title="省份" desc="省份" span=6 />
-            </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="S_CITY" title="地市" desc="地市" span=6 />
-                <@layout.textbox name="S_COUNTY" title="县市" desc="县市" span=6 />
-            </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="C_NUMBER" title="注册号" desc="注册号" span=6 />
-                <@layout.textbox name="S_NATURE" title="企业性质" desc="企业性质" span=6 />
-            </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="N_SAFETY" title="专职安全管理员" desc="专职安全管理员" span=6 />
-                <@layout.textbox name="N_EMPLOYEE" title="企业员工总数" desc="企业员工总数" span=6 />
-            </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="N_INCOME" title="主营业务收入" desc="主营业务收入" span=6 />
-                <@layout.textbox name="N_ASSETS" title="固定资产" desc="固定资产" span=6 />
-            </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="N_SPECIAL" title="特种作业人员数" desc="特种作业人员数" span=6 />
-                <@layout.textbox name="C_SCOPE" title="营业范围" desc="营业范围" span=6 />
-            </@layout.row>
+                <@layout.row>
+                    <@layout.textbox name="S_STATE" title="企业状态" desc="企业状态" readonly=true span=6 />
+                    <@layout.textbox name="S_PROVINCE" title="省份" desc="省份" span=6 />
+                </@layout.row>
+                <@layout.row>
+                    <@layout.textbox name="S_CITY" title="地市" desc="地市" span=6 />
+                    <@layout.textbox name="S_COUNTY" title="县市" desc="县市" span=6 />
+                </@layout.row>
+                <@layout.row>
+                    <@layout.textbox name="C_NUMBER" title="注册号" desc="注册号" span=6 />
+                    <@layout.textbox name="S_NATURE" title="企业性质" desc="企业性质" span=6 />
+                </@layout.row>
+                <@layout.row>
+                    <@layout.textbox name="N_SAFETY" title="专职安全管理员" desc="专职安全管理员" span=6 />
+                    <@layout.textbox name="N_EMPLOYEE" title="企业员工总数" desc="企业员工总数" span=6 />
+                </@layout.row>
+                <@layout.row>
+                    <@layout.textbox name="N_INCOME" title="主营业务收入" desc="主营业务收入" span=6 />
+                    <@layout.textbox name="N_ASSETS" title="固定资产" desc="固定资产" span=6 />
+                </@layout.row>
+                <@layout.row>
+                    <@layout.textbox name="N_SPECIAL" title="特种作业人员数" desc="特种作业人员数" span=6 />
+                    <@layout.textbox name="C_SCOPE" title="营业范围" desc="营业范围" span=6 />
+                </@layout.row>
             </div>
             <div title="联系方式">
                 tab2
@@ -127,7 +129,8 @@
 </div>
 <div id="dlg-buttons">
     <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-ok'" onclick="doSave()">保存</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'" onclick="$('#dlg').dialog('close')">取消</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'"
+       onclick="$('#dlg').dialog('close')">取消</a>
 </div>
 </@>
 
