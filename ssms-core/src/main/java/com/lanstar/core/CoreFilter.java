@@ -36,6 +36,8 @@ public class CoreFilter implements Filter {
     public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain ) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+        req.setCharacterEncoding( "UTF-8" );
+        res.setCharacterEncoding( "UTF-8" );
         String target = req.getRequestURI();
         if ( contextPathLength != 0 )
             target = target.substring( contextPathLength );
