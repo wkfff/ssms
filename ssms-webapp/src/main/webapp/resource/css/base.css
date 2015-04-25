@@ -163,5 +163,8 @@ img {
 
 .easyui-tabs table {
     table-layout: fixed;
-    width: 100%;
+}
+
+form * {
+    vertical-align: top;
 }
