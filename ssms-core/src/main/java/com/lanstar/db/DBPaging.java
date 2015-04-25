@@ -11,8 +11,11 @@ package com.lanstar.db;
  * 分页
  */
 public class DBPaging {
-    public static final String PAGE_INDEX = "_paging[pageIndex]";
-    public static final String PAGE_SIZE = "_paging[pageSize]";
+    public static final String PAGE_INDEX = "page";
+    public static final String PAGE_SIZE = "rows";
+    
+//    public static final String PAGE_INDEX = "_paging[pageIndex]";
+//    public static final String PAGE_SIZE = "_paging[pageSize]";
    /* public static final String PAGE_DATA = "data";
 
     public static final String PAGING_TOTAL_NAME = "total";
