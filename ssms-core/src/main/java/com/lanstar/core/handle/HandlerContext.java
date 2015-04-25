@@ -174,13 +174,11 @@ public class HandlerContext implements AutoCloseable{
         Map<String, String> filter = new LinkedHashMap<String, String>();
         Map<String, String> para = getParameterMap();
         for ( String key : para.keySet() ) {
-            if ( key.startsWith( "_filter" ) ) {
+            if ( !key.equals( DBPaging.PAGE_INDEX ) &&  !key.equals( DBPaging.PAGE_SIZE )) {
                 String value = para.get( key );
                 if ( Strings.isNullOrEmpty( value ) ) continue;
                 if ( key.indexOf( "like" ) > -1 ) value = "%" + value + "%";
-                int beginIndex = key.indexOf( "[" ) + 1;
-                int endIndex = key.length() - 1;
-                filter.put( key.substring( beginIndex, endIndex ), value );
+                filter.put( key, value );
             }
         }
         return filter;

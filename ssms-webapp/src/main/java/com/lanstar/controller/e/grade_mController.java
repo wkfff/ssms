@@ -29,6 +29,12 @@ public class grade_mController extends DefaultController {
     }
 
     @Override
+    public void setFilterFields() {
+        filterFields.put( "T_START", "T_START >= ?" );
+        filterFields.put( "T_END", "T_END <= ?" );
+    }
+
+    @Override
     protected Class<? extends ActionValidator> getValidator() {
         return grade_mValidator.class;
     }

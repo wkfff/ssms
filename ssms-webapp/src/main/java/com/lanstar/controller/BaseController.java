@@ -26,11 +26,14 @@ import java.util.Map;
 public abstract class BaseController {
     protected final Map<String, Object> defaultValues = new HashMap<>();
     protected final String TABLENAME;
+    //参与过滤字段
+    protected final Map<String,String> filterFields = new HashMap<>();
 
     public BaseController( String tablename ) {
         TABLENAME = tablename;
         defaultValues.put( "T_CREATE", "@now()" );
         defaultValues.put( "T_UPDATE", "@now()" );
+        setFilterFields();
     }
 
     protected void mergerValues( ARTable table, HandlerContext context, MergerType mergerType ) {
@@ -101,4 +104,6 @@ public abstract class BaseController {
             return StringHelper.isBlank( sid ) ? forInsert : forUpdate;
         }
     }
+    
+    protected abstract void setFilterFields();
 }

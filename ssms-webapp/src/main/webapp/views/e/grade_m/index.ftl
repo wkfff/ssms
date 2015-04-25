@@ -1,120 +1,94 @@
-<#import "/layout/_mix.ftl" as layout/> 
+<#import "/layout/_list.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        var dg_complete = new datagrid({
-            gridId : "dg_complete",
-            dataUrl : "list.json",
-            delUrl : "dels.json",
-            addUrl : "rec.html",
-            openUrl : "rec.html"
+    function doSearch(id) {
+        $("#"+id).datagrid('load', {
+            T_START: $("input[name='T_START']","#"+id+"_tb").val(),
+            T_END: $("input[name='T_END']","#"+id+"_tb").val()
         });
-        dg_complete.doQuery();
-        
-        var dg_draft = new datagrid({
-            gridId : "dg_draft",
-            dataUrl : "list.json",
-            delUrl : "dels.json",
-            addUrl : "rec.html",
-            openUrl : "rec.html"
+    }
+    function doNew() {
+        $('#dlg').dialog('open').dialog('setTitle', '开始新的自评');
+    }
+    $(function () {
+        $('#dg_history').datagrid({
+            url: 'list.json',
+            idField: 'SID',
+            rownumbers: true,
+            pagination: true,
+            singleSelect: true,
+            fitColumns: true,
+            striped: true,
+            toolbar: '#dg_history_tb',
+            columns: [[
+                {field: 'C_NAME', title: '标题', width: 100},
+                {field: 'T_START', title: '自评开始时间', width: 100},
+                {field: 'T_END', title: '自评结束时间', width: 100},
+                {field: 'N_GET', title: '得分项', width: 100},
+                {field: 'N_DEDUCT', title: '扣分项', width: 100},
+                {field: 'N_LACK', title: '缺项', width: 100},
+                {field: '操作', title: '操作', width: 100}
+            ]]
         });
-        dg_draft.doQuery();
-        
-        $form.init({
-            dataUrl: "rec.json"
-        });
-        
-        $("input[name='btn_create']").click(function() {
-            $win.navigate('rec.html');
+        $('#dg_draft').datagrid({
+            url: 'list.json',
+            idField: 'SID',
+            rownumbers: true,
+            pagination: true,
+            singleSelect: true,
+            fitColumns: true,
+            striped: true,
+            toolbar: '#dg_draft_tb',
+            columns: [[
+                {field: 'C_NAME', title: '标题', width: 100},
+                {field: 'T_START', title: '自评开始时间', width: 100},
+                {field: 'T_END', title: '自评结束时间', width: 100},
+                {field: 'N_GET', title: '得分项', width: 100},
+                {field: 'N_DEDUCT', title: '扣分项', width: 100},
+                {field: 'N_LACK', title: '缺项', width: 100},
+                {field: '操作', title: '操作', width: 100}
+            ]]
         });
     });
 </script>
 </#assign>
 <@layout.doLayout script>
-<!--导航栏-->
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="">
-            <!--container-->
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <li class="active"><a href="#">首页 ></a></li>
-                    <li class="active"><a href="#">在线自评 ></a></li>
-                </ul>
-            </div>
-        </div>
+<div style="padding:10px;">
+
+    <div class="easyui-panel" style="padding:5px;">
+        <a href="#" class="easyui-linkbutton" data-options="plain: true">首页</a>
+        >
+        <a href="#" class="easyui-linkbutton" data-options="plain: true">在线自评</a>
+    </div>
+    
+    <div class="easyui-panel" style="padding:5px;background:#FAFAFA;border-top:0;">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-add', plain: false" onclick="doNew()">开始新的自评</a>
+    </div>
+    <br>
+    
+        历史<hr>
+    <table id="dg_history"></table>
+    <div id="dg_history_tb" style="padding:5px;height:auto">
+                自评日期从: <input class="easyui-datebox" style="width:90px" name="T_START">
+                至: <input class="easyui-datebox" style="width:90px" name="T_END">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_history')">查询</a>
+    </div>
+    <br>
+        草稿<hr>
+    <table id="dg_draft"></table>
+    <div id="dg_draft_tb" style="padding:5px;height:auto">
+                自评日期从: <input class="easyui-datebox" style="width:90px" name="T_START">
+                至: <input class="easyui-datebox" style="width:90px" name="T_END">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_draft')">查询</a>
     </div>
 </div>
 
-<@layout.toolbar class="navbar-fixed-top" outer="<br><br>">
-    <input type="button" name="btn_create" class="btn" value="开始新的自评">
-</@layout.toolbar>
-
-<div class="container">
-    <!--已完成-->
-    <@layout.group title="自评历史">
-    <div class="datagrid" id="dg_complete">
-        <div class="navbar navbar-default">
-            <div class="navbar-inner">
-            <form class="navbar-form pull-left form-search">
-                    &nbsp;&nbsp; <label class="checkbox">自评日期从</label>
-                    <input type="text" class="ui-date input-small" name="T_START" op="d" />
-                    <label class="checkbox">至</label>
-                    <input type="text" class="ui-date input-small" name="T_END" op="d" />
-                    <input type="button" name="btn_query" class="btn"value="查询">
-                    </label>
-                </form>
-            </div>
-        </div>
-
-        <table><thead><tr>
-            <td id="SID" style="display:none;"></td>
-            <td id="C_NAME">标题</td>
-            <td id="T_START">自评开始时间</td>
-            <td id="T_END">自评结束时间</td>
-            <td id="N_GET">得分项</td>
-            <td id="N_DEDUCT">扣分项</td>
-            <td id="N_LACK">缺项</td>
-            <td class="tdOperator">
-                <a href="rec.html" class="rowOperator">查看</a>
-            </td>
-        <tr></thead><tbody/></table>
-        <@layout.pagingbar />
-    </div>
-    </@layout.group>
-    
-    <!--草稿-->
-    <@layout.group title="草稿">
-    <div class="datagrid" id="dg_draft">
-        <div class="navbar navbar-default">
-            <div class="navbar-inner">
-            <form class="navbar-form pull-left form-search">
-                    &nbsp;&nbsp; <label class="checkbox">自评日期从</label>
-                    <input type="text" class="ui-date input-small" name="T_START" op="d" />
-                    <label class="checkbox">至</label>
-                    <input type="text" class="ui-date input-small" name="T_END" op="d" />
-                    <input type="button" name="btn_query" class="btn"value="查询">
-                    </label>
-                </form>
-            </div>
-        </div>
-
-        <table><thead><tr>
-            <td id="SID" style="display:none;"></td>
-            <td id="C_NAME">标题</td>
-            <td id="T_START">自评开始时间</td>
-            <td id="T_END">自评结束时间</td>
-            <td id="N_GET">得分项</td>
-            <td id="N_DEDUCT">扣分项</td>
-            <td id="N_LACK">缺项</td>
-            <td class="tdOperator">
-                <a href="rec.html" class="rowOperator">编辑</a>
-                <a href="dels.json" class="rowOperator">删除</a>
-            </td>
-        <tr></thead><tbody/></table>
-        <@layout.pagingbar />
-    </div>
-    </@layout.group>
+<div id="dlg" class="easyui-dialog" data-options="closed:true, modal:true, buttons:'#dlg-buttons',fit:true,draggable:false">
+        <iframe src="rec.html" frameborder=0 width=100% height=100%></iframe>
+</div>
+<div id="dlg-buttons">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-ok'" onclick="doSave()">保存</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'" onclick="$('#dlg').dialog('close')">取消</a>
 </div>
 
 </@layout.doLayout>

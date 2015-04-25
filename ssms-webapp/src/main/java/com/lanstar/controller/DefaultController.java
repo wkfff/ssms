@@ -17,6 +17,9 @@ import com.lanstar.db.DBPaging;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class DefaultController extends BaseController {
@@ -41,8 +44,15 @@ public abstract class DefaultController extends BaseController {
     protected ViewAndModel list( HandlerContext context, TableProcessor processor ) {
         ARTable arTable = context.DB.withTable( this.TABLENAME );
         Map<String, String> filter = context.getFilter();
-        if ( !filter.isEmpty() ) arTable.where( StringHelper.join(
-                filter.keySet(), " and ", false ), filter.values().toArray() );
+//        if ( !filter.isEmpty() ) arTable.where( StringHelper.join(
+//                filter.keySet(), " and ", false ), filter.values().toArray() );
+        if ( !filter.isEmpty() ){
+        List<String> list = new ArrayList<String>();
+            for(String key:filter.keySet()){
+                list.add( filterFields.get( key ));
+            }
+            arTable.where( StringHelper.join(list, " and ", false ), filter.values().toArray() );
+        }
         if ( processor != null ) processor.process( arTable );
         DBPaging paging = context.getPaging();
         JdbcPageRecordSet list = arTable.queryPaging( paging );
@@ -107,4 +117,6 @@ public abstract class DefaultController extends BaseController {
         }
         return context.returnWith().set( "{}" );
     }
+    
+    public void setFilterFields(){}
 }
