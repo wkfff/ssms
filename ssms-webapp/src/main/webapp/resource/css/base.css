@@ -1,22 +1,167 @@
-.easyui-tabs table{
-    table-layout: fixed;
-    width: 100%;
-}
-
-body {
+* {
     margin: 0;
     padding: 0;
 }
 
-.header {
-    height: 80px;
-    background-color: #FAFAFA;
-    color: #000;
-    padding-left: 10px;
-    overflow: hidden;
+ol, ul {
+    list-style: none
 }
 
-a:link, a:visited {
-    color: #005EAC;
+:focus {
+    outline: 0
+}
+
+table {
+    empty-cells: show
+}
+
+ins {
     text-decoration: none
+}
+
+del {
+    text-decoration: line-through
+}
+
+em {
+    font-style: normal
+}
+
+img {
+    border: 0;
+    vertical-align: middle
+}
+
+/*----------------------------------------------*/
+
+.header {
+    position: relative;
+    height: 79px;
+}
+
+.head {
+    padding: 0;
+    margin: 0 auto;
+    border-bottom: 0 solid #F00;
+}
+
+.head .head_left {
+    float: left;
+    width: 323px;
+    /*border: 1px solid #3C9;*/
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.head_left a{
+    text-decoration: none;
+    color: #000000;
+}
+
+.head .head_right {
+    float: right;
+    /*border: 1px solid #3C9;*/
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.navbarbg {
+    /*background: url("../img/cms/portal_title.png") repeat-x;*/
+    /*border: 1px solid #D2D5DA;*/
+    /*width: 995px;*/
+    /*margin: 0 auto;*/
+    position: absolute;
+    bottom: 0;
+}
+
+.navbar {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.nav {
+    padding: 0;
+    z-index: 10;
+    position: relative;
+}
+
+.nav li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    float: left;
+    font: 13px arial;
+
+}
+
+.nav li a {
+    display: block;
+    margin: 0 1px 0 0;
+    /*padding: 15px 5px;*/
+    width: 80px;
+    color: #000;
+    /*font-weight:bold;*/
+    text-align: center;
+    text-decoration: none;
+    line-height: 36px;
+}
+
+.nav li a:hover {
+    /*background: url(../img/cms/daohang_bs_bg.png) repeat-x;*/
+    background-color: #a7a7a7;
+    color: #FFF;
+}
+
+.nav div {
+    position: absolute;
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #D2D5DA;
+}
+
+.nav div a {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 5px 10px;
+    width: 90px;
+    white-space: nowrap;
+    text-align: center;
+    text-decoration: none;
+
+    background: #f5f5f5;
+    border-bottom: 1px solid #d3d3d3;
+
+    font: 12px arial;
+}
+
+.nav div a:hover {
+    background-color: #999999;
+    color: #FFF;
+}
+
+.nav .selected{
+    background-color: #BBBBBB;
+}
+
+/* 浮动清除 */
+.clear {
+    *zoom: 1; /*兼容IE6/7的清除浮动*/
+}
+
+/*兼容标准浏览器*/
+.clear:after {
+    content: ""; /*具体的值与清除浮动无关，尽可能的节省字符*/
+    clear: both;
+    overflow: hidden;
+    height: 0; /*0高度使其不占用布局空间*/
+    display: block; /*设置成块级元素*/
+}
+
+/*----------------------------------------*/
+
+.easyui-tabs table {
+    table-layout: fixed;
+    width: 100%;
 }

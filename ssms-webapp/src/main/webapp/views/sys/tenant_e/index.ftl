@@ -59,27 +59,20 @@
 <@layout.doLayout script=script>
 <table id="dg"></table>
 <div id="toolbar">
-    <span>企业名称:</span>
-    <input id="C_NAME" style="line-height:26px;border:1px solid #ccc">
+    <label for="C_NAME">企业名称:</label>
+    <input id="C_NAME" name="C_NAME" style="line-height:26px;border:1px solid #ccc">
     <span>地区:</span>
     <input id="productid" style="line-height:26px;border:1px solid #ccc">
     <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-search', plain: true" onclick="doSearch()">查询</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-add', plain: true" onclick="doNew()">新增</a>
     <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-edit', plain: true" onclick="editUser()">编辑</a>
-    <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-remove', plain: true"
-       onclick="destroyUser()">删除</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-remove', plain: true" onclick="destroyUser()">删除</a>
 </div>
 
 <div id="dlg" class="easyui-dialog" data-options="closed:true, modal:true, buttons:'#dlg-buttons'">
     <@layout.form id="fm">
         <div id="tt" class="easyui-tabs" style="width:500px;height:250px;">
             <div title="基本信息">
-                <style type="text/css">
-                    .easyui-tabs table{
-                        table-layout: fixed;
-                        width: 100%;
-                    }
-                </style>
                 <table>
                     <tr>
                         <td>企业名称</td>

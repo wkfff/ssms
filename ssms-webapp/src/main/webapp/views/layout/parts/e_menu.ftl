@@ -1,4 +1,4 @@
-<#import "_component.ftl" as component/>
+<#import "/layout/_component.ftl" as component/>
 <#assign menus = [
     {"title": "工作中心", "url": "/index"},
     {"title": "达标创建", "url": ""},
