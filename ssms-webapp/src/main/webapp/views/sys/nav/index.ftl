@@ -71,8 +71,6 @@
     }
 
     $(function () {
-        var panel = $('#navlyt').layout('panel', 'center').panel();
-
         $('#nav').tree({
             url: 'tree.json',
             onSelect: function (node) {
@@ -116,9 +114,7 @@
                 <table>
                     <tr>
                         <td><label for="C_NAME">导航名称</label></td>
-                        <td>
-                            <input id="C_NAME" name="C_NAME" type="text" class="easyui-validatebox" data-options="required:true"/>
-                        </td>
+                        <td><input id="C_NAME" name="C_NAME" type="text" class="easyui-validatebox" data-options="required:true"/></td>
                     </tr>
                     <tr>
                         <td><label for="C_URL">URL</label></td>
@@ -148,8 +144,9 @@
                     <table>
                         <tr>
                             <td><label for="C_NAME">导航名称</label></td>
-                            <td><input id="C_NAME" name="C_NAME" type="text" class="easyui-validatebox"
-                                       data-options="required:true"/></td>
+                            <td>
+                                <input id="C_NAME" name="C_NAME" type="text" class="easyui-validatebox" data-options="required:true"/>
+                            </td>
                         </tr>
                         <tr>
                             <td><label for="C_URL">URL</label></td>
