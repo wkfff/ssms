@@ -50,8 +50,8 @@
                     <!-- Text input-->
                       <label class="control-label" for="B_CONTROL">是否受控:</label>
                       <div class="controls">
-                        <input type="radio" placeholder="" class="input-xlarge"   name="B_CONTROL" id="B_CONTROL">受控
-                        <input type="radio" placeholder="" class="input-xlarge"   name="B_CONTROL" id="B_CONTROL">非受控
+                        <input type="radio" placeholder="" class="input-xlarge"   name="B_CONTROL" id="B_CONTROL" value="1">受控
+                        <input type="radio" placeholder="" class="input-xlarge"   name="B_CONTROL" id="B_CONTROL" value="0">非受控
                         <p class="help-block">是否受控</p>
                       </div>
                     </div>
