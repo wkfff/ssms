@@ -1,3 +1,5 @@
+var path = require('path');
+
 module.exports = function (grunt) {
     grunt.initConfig({
         watch: {
@@ -50,7 +52,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ts');
 
     grunt.event.on('watch', function (action, filepath) {
-        grunt.config('ts.build.src', [filepath, 'typings/tsd.d.ts']);
+        var d = '!dist/'+path.basename(filepath, '.ts')+'.d.ts';
+        grunt.config('ts.build.src', [filepath, 'typings/tsd.d.ts', 'dist/*.d.ts', d]);
     });
 
     grunt.registerTask('dev', ['ts', 'copy']);
