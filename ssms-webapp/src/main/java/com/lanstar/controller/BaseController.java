@@ -65,7 +65,9 @@ public abstract class BaseController {
                 lastValues.put( "P_TANENT", context.getIdentity().getTanentType() );
                 break;
         }
+        // 移除SID、sid。map考虑忽略大小写怎样？              by 张铮彬#2015-4-26
         lastValues.remove( "sid" );
+        lastValues.remove( "SID" );
         lastValues.remove( "T_UPDATE" );
         table.values( lastValues );
     }
