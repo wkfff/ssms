@@ -14,7 +14,7 @@
     function doSave() {
         var sid;
         $('#details').form('submit', {
-            url: "save.json",
+            url: "save.do",
             onSubmit: function (param) {
                 sid = param.SID;
                 return $(this).form('validate');
@@ -28,7 +28,7 @@
 
     function doDelete() {
         $('#details').form('submit', {
-            url: "del.json",
+            url: "del.do",
             success: function () {
                 $.messager.alert('提示信息', '删除成功!');
                 $('#nav').tree('reload');
@@ -44,7 +44,7 @@
 
     function doSaveDlg() {
         $('#dlg_fm').form('submit', {
-            url: 'save.json',
+            url: 'save.do',
             onSubmit: function () {
                 return $(this).form('validate');
             },
@@ -64,7 +64,7 @@
 
     function doDgDelete() {
         var node = $('#dg').datagrid("getSelected");
-        $.post('del.json', {sid: node.SID}, function () {
+        $.post('del.do', {sid: node.SID}, function () {
             $.messager.alert('提示信息', '删除成功!');
             $('#nav').tree('reload');
         });
