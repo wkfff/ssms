@@ -28,6 +28,10 @@ public class RenderFactory {
         return new JsonRender( new ModelRenderContext( model, context ) );
     }
 
+    public Render getActionDoRender( ModelBean model, RequestContext context ) {
+        return new JsonRender( new ModelRenderContext( model, context ) );
+    }
+
     public Render getHtmlRender( String html, RequestContext context ) {
         return new HtmlRender( html, new RequestRenderContext( context ) );
     }

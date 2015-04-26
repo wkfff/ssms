@@ -51,6 +51,9 @@
                 <entry key="json">
                     <bean class="com.lanstar.core.render.resolver.JsonRenderResolver"/>
                 </entry>
+                <entry key="do">
+                    <bean class="com.lanstar.core.render.resolver.ActionDoRenderResolver"/>
+                </entry>
             </map>
         </constructor-arg>
     </bean>
