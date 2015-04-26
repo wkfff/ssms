@@ -94,3 +94,25 @@
 .icon-large-chart{
 	background:url('icons/large_chart.png') no-repeat center center;
 }
+
+/*添加一些常用的图标*/
+.icon-home{
+    background:url('/resource/images/blue/home.png') no-repeat center center;
+    background-size:16px 16px;
+}
+.icon-new{
+    background:url('/resource/images/blue/new.png') no-repeat center center;
+    background-size:16px 16px;
+}
+.icon-history{
+    background:url('/resource/images/blue/history.png') no-repeat center center;
+    background-size:16px 16px;
+}
+.icon-draft{
+    background:url('/resource/images/blue/draft.png') no-repeat center center;
+    background-size:16px 16px;
+}
+.icon-star{
+    background:url('/resource/images/blue/star.png') no-repeat center center;
+    background-size:16px 16px;
+}

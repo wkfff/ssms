@@ -22,8 +22,6 @@ import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBPaging;
 import com.lanstar.service.attachtext.AttachTextService;
 import com.lanstar.service.file.FileService;
-
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -141,10 +139,11 @@ public class HandlerContext implements AutoCloseable{
             String[] values = p.get( key );
             String value = "";
             if (values==null || (values.length==1 && StringHelper.isBlank( values[0] ))) {
+                if (key.equals( "R_UPDATE" )||key.equals( "S_UPDATE" )||key.equals( "T_UPDATE" )||key.equals( "R_CREATE" )||key.equals( "S_CREATE" )||key.equals( "T_CREATE" )) continue;
                 if (key.startsWith( "N_" )) value = "0"; 
             }
             else
-                value = StringHelper.join( values, ",", false );
+                value = StringHelper.join( values, ",", false );            
             map.put( key, value );
         }
         return map;
@@ -177,7 +176,6 @@ public class HandlerContext implements AutoCloseable{
             if ( !key.equals( DBPaging.PAGE_INDEX ) &&  !key.equals( DBPaging.PAGE_SIZE )) {
                 String value = para.get( key );
                 if ( Strings.isNullOrEmpty( value ) ) continue;
-                if ( key.indexOf( "like" ) > -1 ) value = "%" + value + "%";
                 filter.put( key, value );
             }
         }

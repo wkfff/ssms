@@ -10,10 +10,6 @@
         <#--富文本编辑器-->
         <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
         <script type="text/javascript" src="/resource/js/texteditor.js"></script>
-        <style>
-            body{margin-top:100px;}
-            .help-block{visibility: ;color:#EEE;}
-        </style>
         <#if (header?length>0)>${header}</#if>
     </#local>
     <@layout.doLayout header=_header footer=script>
@@ -30,9 +26,6 @@
         <#--富文本编辑器-->
         <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
         <script type="text/javascript" src="/resource/js/texteditor.js"></script>
-        <style>
-            .help-block{visibility: ;color:#EEE;}
-        </style>
         <#if (header?length>0)>${header}</#if>
     </#local>
     <@layout.indexLayout menuID=menuID header=_header footer=script>

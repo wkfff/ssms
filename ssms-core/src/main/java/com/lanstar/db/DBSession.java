@@ -193,7 +193,7 @@ public class DBSession implements JdbcOperations, AutoCloseable {
         if (paging==null) {
             paging = new DBPaging();
             paging.setPageIndex( 1 );
-            paging.setPageSize( Integer.MIN_VALUE );
+            paging.setPageSize( Integer.MAX_VALUE );
         }
         JdbcPageRecordSet rs = new JdbcPageRecordSet( paging );
         rs.setTotal( getRecordsetSize( sqlStatement.getSql(), sqlStatement.getParams() ) );
