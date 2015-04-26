@@ -40,7 +40,9 @@ public abstract class BaseController {
         mergerValuesWithoutParaMap( table, context, mergerType );
         Map<String, Object> lastValues = new HashMap<>();
         lastValues.putAll( context.getParameterMap() );
+        // 移除SID、sid。map考虑忽略大小写怎样？              by 张铮彬#2015-4-26
         lastValues.remove( "sid" );
+        lastValues.remove( "SID" );
         lastValues.remove( "T_UPDATE" );
         table.values( lastValues );
     }
