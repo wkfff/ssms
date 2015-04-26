@@ -38,4 +38,6 @@ release.properties
 logs
 
 # nodejs
-/node_modules
+node_modules
+dist
+.tscache
