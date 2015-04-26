@@ -29,7 +29,7 @@ public class RenderFactory {
     }
 
     public Render getActionDoRender( ModelBean model, RequestContext context ) {
-        return new JsonRender( new ModelRenderContext( model, context ) );
+        return new ActionDoRender( new ModelRenderContext( model, context ) );
     }
 
     public Render getHtmlRender( String html, RequestContext context ) {
