@@ -3,7 +3,7 @@
 
 |名词         |对应英文       |说明
 |-------------|---------------|-----------------------
-|租户         |tanent         |企业、评审、政府统称为租户
+|租户         |tenant         |企业、评审、政府统称为租户
 
 # 一、数据库规约
 
@@ -203,8 +203,9 @@ public ViewAndModel index2(HandlerContext context) {
 
 ### 5) Render规约
 目前只支持两种规约输出格式：
-1. html，采用Freemarker视图模板文件输出内容
-2. json，输出为json格式
+1. html，采用Freemarker视图模板文件输出内容。
+2. json，输出为json格式，用于标识获取数据。
+3. do，输出为json格式，与json进行区别，用于标识执行操作。
 
 值搜索顺序：
 Model变量->本地变量 --> request --> url参数 --> session --> servletContext
