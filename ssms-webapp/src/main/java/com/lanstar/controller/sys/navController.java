@@ -10,12 +10,14 @@ package com.lanstar.controller.sys;
 
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
+import com.lanstar.controller.TableProcessor;
 import com.lanstar.controller.easyui.EasyUIControllerHelper;
 import com.lanstar.controller.easyui.TreeNode;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.handle.identity.TenantType;
 import com.lanstar.db.JdbcRecordSet;
+import com.lanstar.db.ar.ARTable;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,12 +44,14 @@ public class navController extends DefaultController {
 
     public ViewAndModel tree( HandlerContext context ) {
         JdbcRecordSet records = context.SYSTEM_DB.withTable( TABLENAME )
+                                                 .orderby( "R_SID, N_INDEX" )
                                                  .queryList();
         return context.returnWith().set( EasyUIControllerHelper.toTree( records, "SID", "R_SID", "C_NAME" ) );
     }
 
     public ViewAndModel navTree( HandlerContext context ) {
         JdbcRecordSet records = context.SYSTEM_DB.withTable( TABLENAME )
+                                                 .orderby( "R_SID, N_INDEX" )
                                                  .queryList();
         Collection<TreeNode> nodes = EasyUIControllerHelper.toTree( records, "SID", "R_SID", "C_NAME" );
         TreeNode node = findNode( nodes, IDENTITY_TYPE_NAV_MAP.get( context.getIdentity().getTenantType() ) );
@@ -63,5 +67,15 @@ public class navController extends DefaultController {
             if ( tmp != null ) return tmp;
         }
         return null;
+    }
+
+    @Override
+    public ViewAndModel list( HandlerContext context ) {
+        return list( context, new TableProcessor() {
+            @Override
+            public void process( ARTable arTable ) {
+                arTable.orderby( "R_SID, N_INDEX" );
+            }
+        } );
     }
 }
