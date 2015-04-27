@@ -40,7 +40,7 @@ public class grade_mController extends DefaultController {
     @Override
     public ViewAndModel rec( HandlerContext context ) {
         context.setValue( "_FLAG_", "0" );  //_FLAG_:0新建，-1历史，1草稿
-        //context.setValue( "S_TANENT", context.getIdentity().getTanentName() );
+        context.setValue( "S_TENANT", context.getIdentity().getTenantName());
         // TODO:根据企业的专业来设置
         context.setValue( "P_PROFESSION", "1" );
         return super.rec( context );
@@ -81,7 +81,7 @@ public class grade_mController extends DefaultController {
         SqlBuilder sqlBuilder = new SqlBuilder();
         sqlBuilder
                 .INSERT_INTO(
-                        "SSM_GRADE_E_D(R_SID,R_STD,C_CATEGORY,C_PROJECT,C_CONTENT,N_SCORE,C_METHOD,R_TENANT,S_TENANT,P_TANENT,N_STATE) "
+                        "SSM_GRADE_E_D(R_SID,R_STD,C_CATEGORY,C_PROJECT,C_CONTENT,N_SCORE,C_METHOD,R_TENANT,S_TENANT,P_TENANT,N_STATE) "
                                 + "select ?,SID,C_CATEGORY,C_PROJECT,C_CONTENT,N_SCORE,C_METHOD,?,?,?,0 from SSM_GRADE_STD where P_PROFESSION=?",
                         new Object[] { sid,
                                 context.getIdentity().getTenantId(),

@@ -62,9 +62,9 @@ public abstract class BaseController {
             case forInsert:
                 lastValues.put( "R_CREATE", usersid );
                 lastValues.put( "S_CREATE", username );
-                lastValues.put( "R_TANENT", context.getIdentity().getId() );
-                lastValues.put( "S_TANENT", context.getIdentity().getName() );
-                lastValues.put( "P_TANENT", context.getIdentity().getTenantType().getName() );
+                lastValues.put( "R_TENANT", context.getIdentity().getId() );
+                lastValues.put( "S_TENANT", context.getIdentity().getName() );
+                lastValues.put( "P_TENANT", context.getIdentity().getTenantType().getName() );
                 break;
         }
         // 移除SID、sid。map考虑忽略大小写怎样？              by 张铮彬#2015-4-26

@@ -50,7 +50,7 @@ public class FileService extends TenantService {
      * @throws SQLException
      */
     public List<AttachFile> list( String module, int recordId ) throws SQLException {
-        ARTable table = getTable().where( "R_TABLE=? and R_SID=? and R_TANENT=? and P_TANENT=?",
+        ARTable table = getTable().where( "R_TABLE=? and R_SID=? and R_TENANT=? and P_TENANT=?",
                 module,
                 recordId,
                 identity.getTenantId(),
@@ -93,9 +93,9 @@ public class FileService extends TenantService {
                 .value( "R_CREATE", identity.getId() )
                 .value( "S_CREATE", identity.getName() )
                 .value( "S_CREATE", identity.getName() )
-                .value( "R_TANENT", identity.getTenantId() )
-                .value( "S_TANENT", identity.getTenantName() )
-                .value( "P_TANENT", identity.getTenantType().getName() );
+                .value( "R_TENANT", identity.getTenantId() )
+                .value( "S_TENANT", identity.getTenantName() )
+                .value( "P_TENANT", identity.getTenantType().getName() );
 
         table.insert();
     }

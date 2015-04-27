@@ -34,7 +34,7 @@ public class AttachTextService extends TenantService {
     public String getContent( String tableName, String field, int sid ) throws SQLException {
         ARTable table = getTable()
                 .columns( "C_CONTENT" )
-                .where( "R_TABLE=? and R_FIELD=? and R_SID=? and R_TANENT=? and P_TANENT=?",
+                .where( "R_TABLE=? and R_FIELD=? and R_SID=? and R_TENANT=? and P_TENANT=?",
                         tableName, field, sid,
                         identity.getTenantId(),
                         identity.getTenantType().getName() );
@@ -51,12 +51,12 @@ public class AttachTextService extends TenantService {
                 .value( "R_FIELD", field )
                 .value( "R_SID", recordSId )
                 .value( "C_CONTENT", content )
-                .value( "R_TANENT", identity.getTenantId() )
-                .value( "S_TANENT", identity.getTenantName() )
-                .value( "P_TANENT", identity.getTenantType().getName() )
+                .value( "R_TENANT", identity.getTenantId() )
+                .value( "S_TENANT", identity.getTenantName() )
+                .value( "P_TENANT", identity.getTenantType().getName() )
                 .value( "R_UPDATE", identity.getTenantId() )
                 .value( "S_UPDATE", identity.getName() )
-                .where( "R_TABLE=? and R_FIELD=? and R_SID=? and R_TANENT=? and P_TANENT=?",
+                .where( "R_TABLE=? and R_FIELD=? and R_SID=? and R_TENANT=? and P_TENANT=?",
                         tableName, field, recordSId,
                         identity.getTenantId(),
                         identity.getTenantType().getName() );
