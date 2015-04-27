@@ -1,7 +1,7 @@
 <#import "_vars.ftl" as vars/>
 
-<#macro group title>
-<div class="easyui-panel" title="${title}" data-options="border:false">
+<#macro group title icon="">
+<div class="easyui-panel" title="${title}" data-options="border:false, <#if (icon?length > 0)>iconCls: 'icon-${icon}</#if>'">
     <#nested />
 </div>
 </#macro>
