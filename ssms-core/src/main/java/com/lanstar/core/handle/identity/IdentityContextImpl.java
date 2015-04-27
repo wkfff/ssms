@@ -55,11 +55,11 @@ class IdentityContextImpl implements IdentityContext {
     }
 
     @Override
-    public int getTanendId() {return identity.getTanendId();}
+    public int getTanendId() {return identity.getTenantId();}
 
     @Override
-    public String getTanentName() {return identity.getTanentName();}
+    public String getTenantName() {return identity.getTenantName();}
 
     @Override
-    public String getTanentType() {return identity.getTanentType();}
+    public TenantType getTenantType() {return identity.getTenantType();}
 }

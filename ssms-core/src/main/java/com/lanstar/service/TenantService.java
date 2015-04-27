@@ -18,7 +18,7 @@ import java.sql.SQLException;
 /**
  * 租户服务
  */
-public abstract class TanentService extends DBSessionHolder {
+public abstract class TenantService extends DBSessionHolder {
     protected final Identity identity;
 
     /**
@@ -26,7 +26,7 @@ public abstract class TanentService extends DBSessionHolder {
      *
      * @param identity 身份标识
      */
-    public TanentService( Identity identity ) {
+    public TenantService( Identity identity ) {
         this.identity = identity;
     }
 

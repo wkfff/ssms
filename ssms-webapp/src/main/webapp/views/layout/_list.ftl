@@ -10,13 +10,3 @@
         <#nested />
     </@>
 </#macro>
-
-<#macro doIndexLayout menuID script header="">
-    <#local _header>
-        <#if (header?length>0)>${header}</#if>
-    </#local>
-
-    <@layout.indexLayout menuID=menuID header=_header footer=script>
-        <#nested />
-    </@>
-</#macro>

@@ -8,6 +8,8 @@
 
 package com.lanstar.core.handle.identity.impl;
 
+import com.lanstar.core.handle.identity.TenantType;
+
 /**
  * 评审人员
  */
@@ -26,7 +28,7 @@ public class AuditIdentity extends AbstractIdentity {
      * 获取租户类型
      */
     @Override
-    public String getTanentType() {
-        return "R";
+    public TenantType getTenantType() {
+        return TenantType.REVIEW;
     }
 }

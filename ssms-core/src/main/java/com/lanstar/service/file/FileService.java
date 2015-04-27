@@ -15,7 +15,7 @@ import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.plugin.file.ResourcePlugin;
 import com.lanstar.plugin.file.ResourceService;
-import com.lanstar.service.TanentService;
+import com.lanstar.service.TenantService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class FileService extends TanentService {
+public class FileService extends TenantService {
     public static final String TABLENAME = "SYS_ATTACH_FILE";
     private final ResourceService resourceService;
 
@@ -53,8 +53,8 @@ public class FileService extends TanentService {
         ARTable table = getTable().where( "R_TABLE=? and R_SID=? and R_TANENT=? and P_TANENT=?",
                 module,
                 recordId,
-                identity.getTanendId(),
-                identity.getTanentType() );
+                identity.getTenantId(),
+                identity.getTenantType().getName() );
 
         JdbcRecordSet records = table.queryList();
         List<AttachFile> files = new ArrayList<>();
@@ -93,18 +93,18 @@ public class FileService extends TanentService {
                 .value( "R_CREATE", identity.getId() )
                 .value( "S_CREATE", identity.getName() )
                 .value( "S_CREATE", identity.getName() )
-                .value( "R_TANENT", identity.getTanendId() )
-                .value( "S_TANENT", identity.getTanentName() )
-                .value( "P_TANENT", identity.getTanentType() );
+                .value( "R_TANENT", identity.getTenantId() )
+                .value( "S_TANENT", identity.getTenantName() )
+                .value( "P_TANENT", identity.getTenantType().getName() );
 
         table.insert();
     }
 
     private String getFileLocation( String module, String filename, String extension ) {
-        // 规则：tanent/module/date[mounth]/file.ext
+        // 规则：tenant/module/date[mounth]/file.ext
         SimpleDateFormat format = new SimpleDateFormat( "yyyyMM" );
         return LocationBuilder.newInstance()
-                              .folder( identity.getTanentName() )
+                              .folder( identity.getTenantName() )
                               .folder( module )
                               .folder( format.format( new Date() ) )
                               .filename( filename ).extension( extension )

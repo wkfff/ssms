@@ -9,6 +9,7 @@
 package com.lanstar.core.handle.identity.impl;
 
 import com.lanstar.core.handle.identity.Identity;
+import com.lanstar.core.handle.identity.TenantType;
 import com.lanstar.db.DS;
 import com.lanstar.db.DbContext;
 
@@ -33,7 +34,7 @@ public class SystemIdentity implements Identity {
     }
 
     @Override
-    public int getTanendId() {
+    public int getTenantId() {
         return 0;
     }
 
@@ -41,7 +42,7 @@ public class SystemIdentity implements Identity {
      * 获取租户名称
      */
     @Override
-    public String getTanentName() {
+    public String getTenantName() {
         return "system";
     }
 
@@ -49,8 +50,8 @@ public class SystemIdentity implements Identity {
      * 获取租户类型
      */
     @Override
-    public String getTanentType() {
-        return "S";
+    public TenantType getTenantType() {
+        return TenantType.SYSTEM;
     }
 
     @Override

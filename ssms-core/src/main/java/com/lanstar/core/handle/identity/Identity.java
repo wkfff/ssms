@@ -26,20 +26,21 @@ public interface Identity {
     /**
      * 获取租户ID
      */
-    int getTanendId();
+    int getTenantId();
 
     /**
      * 获取租户名称
      */
-    String getTanentName();
+    String getTenantName();
 
     /**
      * 获取租户类型
      */
-    String getTanentType();
+    TenantType getTenantType();
 
     /**
      * 获取租户对应的数据库上下文
      */
     DbContext getDbContext() throws SQLException;
 }
+

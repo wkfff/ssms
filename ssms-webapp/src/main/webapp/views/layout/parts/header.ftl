@@ -8,5 +8,4 @@
             <a href="javascript:window.location.href='/logout';">注销</a>
         </div>
     </div>
-<#include "${LANSTAR_IDENTITY.tanentType}_menu.ftl">
 </div>

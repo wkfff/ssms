@@ -27,7 +27,7 @@ public class HomeHandler implements Handler {
         RequestContext requestContext = context.getRequestContext();
         String target = requestContext.getTarget();
         if ( target.equals( "/" ) || target.startsWith( "/index" ) ) {
-            String tenantType = context.getIdentity().getTanentType().toLowerCase();
+            String tenantType = context.getIdentity().getTenantType().getName().toLowerCase();
             RenderResolver resolver = RenderResolverFactory.me().getResolver("html" );
             ViewAndModel vam = new ViewAndModel().view( "/"+tenantType+"/home/index.ftl" );
             Render render = resolver.getRender( vam, requestContext );
