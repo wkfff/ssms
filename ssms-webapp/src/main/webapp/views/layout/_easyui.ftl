@@ -12,9 +12,9 @@
 </div>
 </#macro>
 
-<#macro button id title click icon="" plain="true">
+<#macro button id title click icon="" plain=true>
 <#local options>
-plain: ${plain}<#if (icon?length>0)>, iconCls: 'icon-${icon}'</#if>
+plain: ${plain?string}<#if (icon?length>0)>, iconCls: 'icon-${icon}'</#if>
 </#local>
 <a id="${id}" href="#" class="easyui-linkbutton" data-options="${options}" onclick="${click}">${title}</a>
 </#macro>
@@ -56,8 +56,8 @@ plain: ${plain}<#if (icon?length>0)>, iconCls: 'icon-${icon}'</#if>
     <#nested />
 </div>
 <div id="${id}-buttons">
-    <@button id="" title="保存" icon="ok" click="${okClick}"/>
-    <@button id="" title="取消" icon="cancel" click="$('#${id}').dialog('close')"/>
+    <@button id="" title="保存" icon="ok" click="${okClick}" plain=false/>
+    <@button id="" title="取消" icon="cancel" click="$('#${id}').dialog('close')" plain=false/>
 </div>
 </#macro>
 <#--
