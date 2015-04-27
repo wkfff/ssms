@@ -109,10 +109,21 @@ public class grade_mController extends DefaultController {
     public ViewAndModel history( HandlerContext context ) {
         return context.returnWith();
     }
+    
+    public ViewAndModel rec_history( HandlerContext context ) {
+        context.setValue( "_FLAG_", "0" );
+        return context.returnWith().view( "rec" );
+    }
 
     public ViewAndModel draft( HandlerContext context ) {
         return context.returnWith();
     }
+    
+    public ViewAndModel rec_draft( HandlerContext context ) {
+        context.setValue( "_FLAG_", "1" );
+        return context.returnWith().view( "rec" );
+    }
+    
 
     public ViewAndModel complete( HandlerContext context ) {
         String sid = context.getValue( "sid" );

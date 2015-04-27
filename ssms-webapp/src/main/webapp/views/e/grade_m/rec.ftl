@@ -9,7 +9,7 @@
     }
 
     function doNew(){
-        window.location.href='rec.html?refer=add';
+        window.location.href='rec.html';
     }
     
     function doSave(){
@@ -62,7 +62,7 @@
     }
     
     function doBack(){
-        window.location.href='${refer!}.html';
+        window.location.href='${_BACKURL_!}';
     }
     
     $.extend($.fn.datagrid.methods, {
@@ -101,7 +101,7 @@
             fitColumns: false,
             fit:true,
             border:false,
-            autoSave:false,
+            autoSave:true,
             striped: true,
             columns: [[
                 {field: 'C_CATEGORY', title: '类目', width: 100},
@@ -122,18 +122,17 @@
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    
     <div title="在线自评" data-options="region:'north',iconCls:'icon-star'" style="height:170px;overflow:hidden;border:0;">
           <div class="easyui-panel" style="border:0;background-color:#FAFAFA;padding:5px;">
-            <#if (refer=='add')>
+            <#if (_FLAG_=='')>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
             </#if>
             
-            <#if (refer=='history')>
+            <#if (_FLAG_=='0')>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
             </#if>
             
-            <#if (refer=='draft')>
+            <#if (_FLAG_=='1')>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-ok" onclick="doComplete()">完成自评</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-cancel" onclick="doDel()">删除</a> 
@@ -153,22 +152,22 @@
                         </tr>
                         <tr>
                             <td class="span2">自评日期:</td>
-                            <td class="span4"><input class="easyui-datebox" type="text" name="T_START" data-options="required:true,width:100"></input>
-                                                        至<input class="easyui-datebox" type="text" name="T_END" data-options="required:true,width:100"></input>
+                            <td class="span4"><input class="easyui-datebox" type="text" name="T_START" data-options="required:true,width:100" <#if (_FLAG_=='0')>disabled=true</#if>></input>
+                                                        至<input class="easyui-datebox" type="text" name="T_END" data-options="required:true,width:100" <#if (_FLAG_=='0')>disabled=true</#if>></input>
                             </td>
                             <td class="span2">自评组组长:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_LEADER" data-options="required:true"></input></td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_LEADER" data-options="required:true" <#if (_FLAG_=='0')>disabled=true</#if>></input></td>
                         </tr>
                         <tr>
                             <td class="span2">自评组主要成员:
-                            <td class="span10" colspan="3"><input class="easyui-textbox" type="text" name="C_MEMBERS" data-options="required:true,width:602"></input></td>
+                            <td class="span10" colspan="3"><input class="easyui-textbox" type="text" name="C_MEMBERS" data-options="required:true,width:602" <#if (_FLAG_=='0')>disabled=true</#if>></input></td>
                         </tr>
                     </table>
             </form>
         </div>
     </div>
     
-    <#if (refer!='add')>
+    <#if (_FLAG_!='')>
     <div data-options="region:'center'" style="border:0;">
         <table id="dg" class="easyui-datagrid" title="自评内容" />
     </div>

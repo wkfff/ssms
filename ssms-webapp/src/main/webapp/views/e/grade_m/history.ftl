@@ -9,7 +9,7 @@
     }
 
     function doOpen(sid) {
-        window.location.href = 'rec.html?refer=history&sid='+sid;
+        window.location.href = 'rec_history.html?sid='+sid;
     }
     function doClear(id) {
         $(".easyui-datebox").datebox("setValue", "");

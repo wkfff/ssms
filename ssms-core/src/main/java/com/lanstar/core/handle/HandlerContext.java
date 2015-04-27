@@ -143,7 +143,7 @@ public class HandlerContext implements AutoCloseable{
                 if (key.startsWith( "N_" )) value = "0"; 
             }
             else
-                value = StringHelper.join( values, ",", false );            
+                value = StringHelper.join( values, ",", false );
             map.put( key, value );
         }
         return map;
