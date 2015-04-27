@@ -113,7 +113,7 @@
             </@>
             <@layout.form id="details">
                 <table>
-                    <tr><@layout.td_textbox name="C_NAME" title="导航名称"/></tr>
+                    <tr><@layout.td_textbox name="C_NAME" title="导航名称" must=true/></tr>
                     <tr><@layout.td_textarea name="C_URL" title="URL"/></tr>
                     <tr><@layout.td_textarea name="C_DESC" title="描述"/></tr>
                 </table>
@@ -130,10 +130,10 @@
         </@>
 
 
-        <@layout.dialog id="dlg" okClick="doSaveDlg">
+        <@layout.dialog id="dlg" okClick="doSaveDlg()">
             <@layout.form id="dlg_fm">
                 <table>
-                    <tr><@layout.td_textbox name="C_NAME" title="导航名称"/></tr>
+                    <tr><@layout.td_textbox name="C_NAME" title="导航名称" must=true/></tr>
                     <tr><@layout.td_textarea name="C_URL" title="URL"/></tr>
                     <tr><@layout.td_textarea name="C_DESC" title="描述"/></tr>
                 </table>
