@@ -16,7 +16,7 @@
         <div style="padding:6px;">
             <ul class="easyui-tree">
                 <li>
-                            <span><a href="rec.html?refer=add" target="mainFrame">开始自评</a></span>
+                            <span><a href="rec.html" target="mainFrame">开始自评</a></span>
                         </li>
                         <li>
                             <span><a href="history.html" target="mainFrame">自评历史</a></span>

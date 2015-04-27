@@ -46,6 +46,7 @@ public class ActionHandler implements Handler {
         Action action = actionCache.getAction( meta );
         RenderResolver resolver = RenderResolverFactory.me().getResolver( meta.getRender() );
         try {
+            context.setValue( "_BACKURL_", requestContext.getReferer() );
             // 调度执行Action
             ViewAndModel vam = action.invoke( context );
             if ( vam == null ) vam = new ViewAndModel().view( getPath( meta, meta.getAction() ) );
