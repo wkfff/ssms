@@ -106,66 +106,41 @@
         <ul id="nav"></ul>
     </div>
     <div data-options="region:'center'">
-        <div class="easyui-panel" title="概要">
-            <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-save'" onclick="doSave()">保存</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-save'" onclick="doDelete()">删除</a>
-
-            <form id="details" method="post">
+        <@layout.group title="概要">
+            <@layout.toolbar>
+                <@layout.button id="" title="保存" icon="save" click="doSave()"/>
+                <@layout.button id="" title="删除" icon="remove" click="doDelete()"/>
+            </@>
+            <@layout.form id="details">
                 <table>
-                    <tr>
-                        <td><label for="C_NAME">导航名称</label></td>
-                        <td><input id="C_NAME" name="C_NAME" type="text" class="easyui-validatebox" data-options="required:true"/></td>
-                    </tr>
-                    <tr>
-                        <td><label for="C_URL">URL</label></td>
-                        <td><textarea id="C_URL" name="C_URL"></textarea></td>
-                    </tr>
-                    <tr>
-                        <td><label for="C_DESC">描述</label></td>
-                        <td><textarea id="C_DESC" name="C_DESC"></textarea></td>
-                    </tr>
+                    <tr><@layout.td_textbox name="C_NAME" title="导航名称"/></tr>
+                    <tr><@layout.td_textarea name="C_URL" title="URL"/></tr>
+                    <tr><@layout.td_textarea name="C_DESC" title="描述"/></tr>
                 </table>
-                <input type="hidden" name="SID"/>
-            </form>
-        </div>
-        <div class="easyui-panel" title="子节点列表">
+                <@layout.hidden name="SID"/>
+            </@>
+        </@>
+        <@layout.group title="子节点列表">
             <table id="dg"></table>
-            <div id="toolbar">
-                <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-add', plain: true" onclick="doNew()">新增</a>
-                <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-edit', plain: true" onclick="doEdit()">编辑</a>
-                <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-remove', plain: true" onclick="doDgDelete()">删除</a>
-            </div>
-        </div>
+            <@layout.toolbar id="toolbar">
+                <@layout.button id="" title="新增" icon="add" click="doNew()"/>
+                <@layout.button id="" title="编辑" icon="edit" click="doEdit()"/>
+                <@layout.button id="" title="删除" icon="remove" click="doDgDelete()"/>
+            </@>
+        </@>
 
-        <div id="dlg" class="easyui-dialog" data-options="closed:true, modal:true, buttons:'#dlg-buttons'">
-            <form id="dlg_fm" method="post">
-                <fieldset>
-                    <legend>基本信息</legend>
-                    <table>
-                        <tr>
-                            <td><label for="C_NAME">导航名称</label></td>
-                            <td>
-                                <input id="C_NAME" name="C_NAME" type="text" class="easyui-validatebox" data-options="required:true"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label for="C_URL">URL</label></td>
-                            <td><textarea id="C_URL" name="C_URL"></textarea></td>
-                        </tr>
-                        <tr>
-                            <td><label for="C_DESC">描述</label></td>
-                            <td><textarea id="C_DESC" name="C_DESC"></textarea></td>
-                        </tr>
-                    </table>
-                </fieldset>
-                <input type="hidden" name="R_SID"/>
-                <input type="hidden" name="SID"/>
-            </form>
-        </div>
-        <div id="dlg-buttons">
-            <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-ok'" onclick="doSaveDlg()">保存</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls: 'icon-cancel'" onclick="$('#dlg').dialog('close')">取消</a>
-        </div>
+
+        <@layout.dialog id="dlg" okClick="doSaveDlg">
+            <@layout.form id="dlg_fm">
+                <table>
+                    <tr><@layout.td_textbox name="C_NAME" title="导航名称"/></tr>
+                    <tr><@layout.td_textarea name="C_URL" title="URL"/></tr>
+                    <tr><@layout.td_textarea name="C_DESC" title="描述"/></tr>
+                </table>
+                <@layout.hidden name="R_SID"/>
+                <@layout.hidden name="SID"/>
+            </@>
+        </@>
     </div>
 </div>
 </@>
