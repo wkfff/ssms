@@ -13,6 +13,7 @@
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/resource/js/common.js"></script>
     <#if (header?length>0)>${header}</#if>
 </head>
 <body>

@@ -39,28 +39,13 @@ public class grade_mController extends DefaultController {
 
     @Override
     public ViewAndModel rec( HandlerContext context ) {
-        context.setValue( "S_TANENT", context.getIdentity().getTanentName() );
+        context.setValue( "_FLAG_", "0" );  //_FLAG_:0新建，-1历史，1草稿
+        //context.setValue( "S_TANENT", context.getIdentity().getTanentName() );
         // TODO:根据企业的专业来设置
         context.setValue( "P_PROFESSION", "1" );
-        // 获取自评内容
-        // String sid = context.getValue( "sid" );
-        // ARTable arTable = context.DB.withTable( "SSM_GRADE_E_D" ).where(
-        // "R_STD=?",sid );
-        // Map<String, String> filter = getFilter(context);
-        // if ( !filter.isEmpty() ) arTable.where(
-        // StringHelper.join(filter.keySet(), " and ", false ),
-        // filter.values().toArray() );
-        // JdbcRecordSet list = arTable.queryList();//.put( "_DETAIL_", list)
         return super.rec( context );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.lanstar.controller.DefaultController#save(com.lanstar.core.handle
-     * .HandlerContext)
-     */
     @Override
     public ViewAndModel save( HandlerContext context ) {
         this.validatePara( context );
@@ -70,6 +55,7 @@ public class grade_mController extends DefaultController {
         ARTable table = context.DB.withTable( this.TABLENAME );
         if ( MergerType.withSid( sid ).compareTo( MergerType.forInsert ) == 0 ) {
             table.value( "C_TITLE", context.getValue( "T_START" ) + "企业自评" );
+            table.value( "N_STATE", 0);
         }
         this.mergerValues( table, context, MergerType.withSid( sid ) );
         table.where( !StringHelper.isBlank( sid ) && !sid.equals( "null" ),
@@ -111,7 +97,7 @@ public class grade_mController extends DefaultController {
     }
     
     public ViewAndModel rec_history( HandlerContext context ) {
-        context.setValue( "_FLAG_", "0" );
+        context.setValue( "_FLAG_", "-1" );
         return context.returnWith().view( "rec" );
     }
 
@@ -124,7 +110,6 @@ public class grade_mController extends DefaultController {
         return context.returnWith().view( "rec" );
     }
     
-
     public ViewAndModel complete( HandlerContext context ) {
         String sid = context.getValue( "sid" );
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );

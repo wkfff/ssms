@@ -1,13 +1,16 @@
 <#import "/layout/_rec.ftl" as layout/>
 <#assign script>
-
+<style>
+    .datagrid-cell-c2-C_CONTENT,.datagrid-cell-c2-C_METHOD,.datagrid-cell-c2-C_DESC{
+        white-space:normal !important;
+    }
+    .datagrid-editable-input{
+        height:120px !important;
+    }
+</style>
 <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 
 <script type="text/javascript">
-    String.prototype.replaceAll = function(s1,s2) { 
-        return this.replace(new RegExp(s1,"gm"),s2); 
-    }
-
     function doNew(){
         window.location.href='rec.html';
     }
@@ -25,7 +28,7 @@
             },
             success: function(data){
                 $.messager.alert('保存','保存成功！');
-                window.location.href='rec.html?refer=draft&sid='+data.replaceAll('"','');
+                window.location.href='rec_draft.html?sid='+$str.replaceAll(data,'"','');
             }
         });
     }
@@ -62,7 +65,7 @@
     }
     
     function doBack(){
-        window.location.href='${_BACKURL_!}';
+        window.location.href='${referer!}';
     }
     
     $.extend($.fn.datagrid.methods, {
@@ -88,8 +91,9 @@
 
     $(function () {
         $('#formMain').form('load','rec.json?sid=${sid!}');
+        <#if (_FLAG_=='-1')>$form.disableForm('formMain',true);</#if>
         
-        $('#dg').edatagrid({
+        $('#dg').<#if (_FLAG_!='-1')>e</#if>datagrid({
             title:'自评内容',border:0,
             iconCls: 'icon-star',
             url: '/e/grade_d/list.json?R_SID=${sid!-1}',
@@ -99,6 +103,7 @@
             pagination: false,
             singleSelect: true,
             fitColumns: false,
+            autoRowHeight:true,
             fit:true,
             border:false,
             autoSave:true,
@@ -107,15 +112,18 @@
                 {field: 'C_CATEGORY', title: '类目', width: 100},
                 {field: 'C_PROJECT', title: '项目', width: 100},
                 {field: 'C_CONTENT', title: '内容', width: 250},
-                {field: 'N_SCORE', title: '标准分值',align:'center',width: 80},
-                {field: 'C_METHOD', title: '考评办法', width: 250},
-                {field: 'C_DESC', title: '自评描述', width: 250,editor:{type:'textarea',rows:'5'}},
+                {field: 'N_SCORE', title: '标准分值',align:'center',width: 70},
+                {field: 'C_METHOD', title: '考评办法', width: 350},
+                {field: 'C_DESC', title: '自评描述', width: 250,editor:{type:'textarea',options:{},height:'100%'}},
                 {field: 'B_BLANK', title: '是否缺项', width: 80,align:'center',editor:{type:'checkbox',options:{on:'1',off:'0'}},
                         formatter:function(value,row){
                             return value=='0'?'是':'否';
                         }},
                 {field: 'N_SCORE_REAL', title: '实际得分', align:'center',width: 80,editor:'numberbox'}
-            ]]
+            ]],
+            onLoadSuccess: function(data){
+                $(this).datagrid("autoMergeCells",["C_CATEGORY","C_PROJECT"]);
+            }
         });
     });
 </script>
@@ -124,11 +132,11 @@
 <div class="easyui-layout" data-options="fit:true" >
     <div title="在线自评" data-options="region:'north',iconCls:'icon-star'" style="height:170px;overflow:hidden;border:0;">
           <div class="easyui-panel" style="border:0;background-color:#FAFAFA;padding:5px;">
-            <#if (_FLAG_=='')>
+            <#if (_FLAG_=='0')>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
             </#if>
             
-            <#if (_FLAG_=='0')>
+            <#if (_FLAG_=='-1')>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
             </#if>
             
@@ -152,22 +160,22 @@
                         </tr>
                         <tr>
                             <td class="span2">自评日期:</td>
-                            <td class="span4"><input class="easyui-datebox" type="text" name="T_START" data-options="required:true,width:100" <#if (_FLAG_=='0')>disabled=true</#if>></input>
-                                                        至<input class="easyui-datebox" type="text" name="T_END" data-options="required:true,width:100" <#if (_FLAG_=='0')>disabled=true</#if>></input>
+                            <td class="span4"><input class="easyui-datebox" type="text" name="T_START" data-options="required:true,width:100"></input>
+                                                        至<input class="easyui-datebox" type="text" name="T_END" data-options="required:true,width:100" ></input>
                             </td>
                             <td class="span2">自评组组长:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_LEADER" data-options="required:true" <#if (_FLAG_=='0')>disabled=true</#if>></input></td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_LEADER" data-options="required:true"></input></td>
                         </tr>
                         <tr>
                             <td class="span2">自评组主要成员:
-                            <td class="span10" colspan="3"><input class="easyui-textbox" type="text" name="C_MEMBERS" data-options="required:true,width:602" <#if (_FLAG_=='0')>disabled=true</#if>></input></td>
+                            <td class="span10" colspan="3"><input class="easyui-textbox" type="text" name="C_MEMBERS" data-options="required:true,width:602"></input></td>
                         </tr>
                     </table>
             </form>
         </div>
     </div>
     
-    <#if (_FLAG_!='')>
+    <#if (_FLAG_!='0')>
     <div data-options="region:'center'" style="border:0;">
         <table id="dg" class="easyui-datagrid" title="自评内容" />
     </div>
