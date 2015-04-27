@@ -1,5 +1,6 @@
 <#import "/layout/_list.ftl" as layout>
 <#assign script>
+<script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 <script type="text/javascript">
     function doLoad(sid) {
         $.post('rec.json', {sid: sid}, function (result) {
@@ -82,18 +83,24 @@
             }
         });
 
-        $('#dg').datagrid({
+        $('#dg').edatagrid({
             idField: 'SID',
+            iconCls: 'icon-star',
             rownumbers: true,
             pagination: true,
             singleSelect: true,
             striped: true,
             toolbar: '#toolbar',
+            border: false,
+            autoSave: true,
+            fit:true,
+            updateUrl:'save.do',
             columns: [
                 [
                     {field: 'C_NAME', title: '导航名称', width: 100},
                     {field: 'C_URL', title: 'URL', width: 100},
-                    {field: 'C_DESC', title: '描述', width: 200}
+                    {field: 'C_DESC', title: '描述', width: 200},
+                    {field: 'N_INDEX', title: '排序号', width: 200, align: 'center', editor: 'numberbox'}
                 ]
             ]
         });
@@ -106,7 +113,7 @@
         <ul id="nav"></ul>
     </div>
     <div data-options="region:'center'">
-        <@layout.group title="概要">
+        <@layout.group title="概要" icon="star">
             <@layout.toolbar>
                 <@layout.button id="" title="保存" icon="save" click="doSave()"/>
                 <@layout.button id="" title="删除" icon="remove" click="doDelete()"/>
@@ -120,13 +127,11 @@
                 <@layout.hidden name="SID"/>
             </@>
         </@>
-        <@layout.group title="子节点列表">
-            <table id="dg"></table>
-            <@layout.toolbar id="toolbar">
-                <@layout.button id="" title="新增" icon="add" click="doNew()"/>
-                <@layout.button id="" title="编辑" icon="edit" click="doEdit()"/>
-                <@layout.button id="" title="删除" icon="remove" click="doDgDelete()"/>
-            </@>
+        <table title="子节点列表" id="dg"></table>
+        <@layout.toolbar id="toolbar">
+            <@layout.button id="" title="新增" icon="add" click="doNew()"/>
+            <@layout.button id="" title="编辑" icon="edit" click="doEdit()"/>
+            <@layout.button id="" title="删除" icon="remove" click="doDgDelete()"/>
         </@>
 
 
