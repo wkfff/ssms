@@ -93,7 +93,6 @@
             toolbar: '#toolbar',
             border: false,
             autoSave: true,
-            fit:true,
             updateUrl:'save.do',
             columns: [
                 [
