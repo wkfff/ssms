@@ -17,7 +17,7 @@ import com.lanstar.core.VAR_SCOPE;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.db.impl.SystemDbContext;
-import com.lanstar.core.handle.db.impl.TanentDbContext;
+import com.lanstar.core.handle.db.impl.TenantDbContext;
 import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBPaging;
 import com.lanstar.service.attachtext.AttachTextService;
@@ -31,7 +31,7 @@ public class HandlerContext implements AutoCloseable{
     /**
      * 租户库上下文
      */
-    public final HandlerDbContext TANENT_DB;
+    public final HandlerDbContext TENANT_DB;
     /**
      * 租户库上下文(只是CLENT_DB的别名字段)
      */
@@ -48,9 +48,9 @@ public class HandlerContext implements AutoCloseable{
      */
     HandlerContext( RequestContext context ) {
         this.context = context;
-        TANENT_DB = new TanentDbContext( context );
+        TENANT_DB = new TenantDbContext( context );
         SYSTEM_DB = new SystemDbContext();
-        DB = TANENT_DB;
+        DB = TENANT_DB;
     }
 
     /**
@@ -204,6 +204,6 @@ public class HandlerContext implements AutoCloseable{
     public void close() throws Exception {
         DB.close();
         SYSTEM_DB.close();
-        TANENT_DB.close();
+        TENANT_DB.close();
     }
 }

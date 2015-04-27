@@ -1,7 +1,7 @@
 /*
  * 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
  * 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
- * 文件名称：TanentDbContext.java
+ * 文件名称：TenantDbContext.java
  * 创建时间：2015-04-09
  * 创建用户：张铮彬
  */
@@ -15,10 +15,10 @@ import com.lanstar.db.DbException;
 
 import java.sql.SQLException;
 
-public class TanentDbContext extends HandlerDbContext {
+public class TenantDbContext extends HandlerDbContext {
     private RequestContext context;
 
-    public TanentDbContext( RequestContext context ) {
+    public TenantDbContext( RequestContext context ) {
         this.context = context;
     }
 

@@ -59,7 +59,7 @@ public interface IdentityContext {
 
     int getTanendId();
 
-    String getTanentName();
+    String getTenantName();
 
-    String getTanentType();
+    TenantType getTenantType();
 }

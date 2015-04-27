@@ -84,9 +84,9 @@ public class grade_mController extends DefaultController {
                         "SSM_GRADE_E_D(R_SID,R_STD,C_CATEGORY,C_PROJECT,C_CONTENT,N_SCORE,C_METHOD,R_TENANT,S_TENANT,P_TANENT,N_STATE) "
                                 + "select ?,SID,C_CATEGORY,C_PROJECT,C_CONTENT,N_SCORE,C_METHOD,?,?,?,0 from SSM_GRADE_STD where P_PROFESSION=?",
                         new Object[] { sid,
-                                context.getIdentity().getTanendId(),
-                                context.getIdentity().getTanentName(),
-                                context.getIdentity().getTanentType(),
+                                context.getIdentity().getTenantId(),
+                                context.getIdentity().getTenantName(),
+                                context.getIdentity().getTenantType().getName(),
                                 profession } );
         context.DB.execute( sqlBuilder );
         return context.returnWith();

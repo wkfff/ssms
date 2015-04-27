@@ -12,14 +12,14 @@ import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBSession;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.ar.ARTable;
-import com.lanstar.service.TanentService;
+import com.lanstar.service.TenantService;
 
 import java.sql.SQLException;
 
 /**
  * 附加文本服务
  */
-public class AttachTextService extends TanentService {
+public class AttachTextService extends TenantService {
     private static final String TABLENAME = "SYS_ATTACH_TEXT";
 
     /**
@@ -36,8 +36,8 @@ public class AttachTextService extends TanentService {
                 .columns( "C_CONTENT" )
                 .where( "R_TABLE=? and R_FIELD=? and R_SID=? and R_TANENT=? and P_TANENT=?",
                         tableName, field, sid,
-                        identity.getTanendId(),
-                        identity.getTanentType() );
+                        identity.getTenantId(),
+                        identity.getTenantType().getName() );
 
         JdbcRecord record = table.query();
         if ( record == null ) return null;
@@ -51,15 +51,15 @@ public class AttachTextService extends TanentService {
                 .value( "R_FIELD", field )
                 .value( "R_SID", recordSId )
                 .value( "C_CONTENT", content )
-                .value( "R_TANENT", identity.getTanendId() )
-                .value( "S_TANENT", identity.getTanentName() )
-                .value( "P_TANENT", identity.getTanentType() )
-                .value( "R_UPDATE", identity.getTanendId() )
+                .value( "R_TANENT", identity.getTenantId() )
+                .value( "S_TANENT", identity.getTenantName() )
+                .value( "P_TANENT", identity.getTenantType().getName() )
+                .value( "R_UPDATE", identity.getTenantId() )
                 .value( "S_UPDATE", identity.getName() )
                 .where( "R_TABLE=? and R_FIELD=? and R_SID=? and R_TANENT=? and P_TANENT=?",
                         tableName, field, recordSId,
-                        identity.getTanendId(),
-                        identity.getTanentType() );
+                        identity.getTenantId(),
+                        identity.getTenantType().getName() );
         if ( table.query() == null ) {
             table.value( "R_CREATE", identity.getId() )
                  .value( "S_CREATE", identity.getName() )

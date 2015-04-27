@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class TreeNode {
+public class TreeNode {
     private String id;
     private String text;
     private Map<String, Object> attributes;

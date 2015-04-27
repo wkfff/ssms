@@ -15,13 +15,13 @@ import com.lanstar.db.DbContext;
 import java.sql.SQLException;
 
 public abstract class AbstractIdentity implements Identity {
-    protected String getTanentDbCode() {
+    protected String getTenantDbCode() {
         // TODO: 要调整为根据当前用户的租户信息来获取
-        return "tanent01";
+        return "tenant01";
     }
 
     @Override
-    public int getTanendId() {
+    public int getTenantId() {
         // TODO: 获取租户ID
         return -1;
     }
@@ -30,13 +30,13 @@ public abstract class AbstractIdentity implements Identity {
      * 获取租户名称
      */
     @Override
-    public String getTanentName() {
+    public String getTenantName() {
         // TODO: 获取租户名称
         return null;
     }
 
     @Override
     public DbContext getDbContext() throws SQLException {
-        return DS.getDbContext( getTanentDbCode() );
+        return DS.getDbContext( getTenantDbCode() );
     }
 }
