@@ -85,48 +85,8 @@
                 });
             }
         });
-        
-        var editIndex = undefined;
-        function endEditing(){
-            if (editIndex == undefined){return true}
-            if ($('#dg').datagrid('validateRow', editIndex)){
-                $('#dg').datagrid('endEdit', editIndex);
-                editIndex = undefined;
-                return true;
-            } else {
-                return false;
-            }
-        }
-        function onClickCell(index, field){
-            if (endEditing()){
-                $('#dg').datagrid('selectRow', index)
-                        .datagrid('editCell', {index:index,field:field});
-                editIndex = index;
-            }
-        }
-        function onClickRow(index){
-            if (editIndex != index){
-                if (endEditing()){
-                    $('#dg').datagrid('selectRow', index)
-                            .datagrid('beginEdit', index);
-                    editIndex = index;
-                } else {
-                    $('#dg').datagrid('selectRow', editIndex);
-                }
-            }
-        }
-        function accept(){
-            if (endEditing()){
-                $('#dg').datagrid('acceptChanges');
-            }
-        }
-        function getChanges(){
-            var rows = $('#dg').datagrid('getChanges');
-            alert(rows.length+' rows are changed!');
-        }
-        
-    $(function () {
 
+    $(function () {
         $('#formMain').form('load','rec.json?sid=${sid!}');
         
         $('#dg').edatagrid({
