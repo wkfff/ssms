@@ -27,7 +27,7 @@ public abstract class BaseController {
     protected final Map<String, Object> defaultValues = new HashMap<>();
     protected final String TABLENAME;
     //参与过滤字段
-    protected final Map<String,String> filterFields = new HashMap<>();
+    protected final Map<String, String> filterFields = new HashMap<>();
 
     public BaseController( String tablename ) {
         TABLENAME = tablename;
@@ -81,9 +81,12 @@ public abstract class BaseController {
     private ActionValidator validator;
 
     protected void validatePara( HandlerContext context ) {
-        if ( validator != null ) {
-            validator = BeanHelper.newInstance( getValidator() );
-            validator.intercept( new ActionInvocation( context, null ) );
+        if ( validator == null ) {
+            Class<? extends ActionValidator> clazz = getValidator();
+            if ( clazz != null ) {
+                this.validator = BeanHelper.newInstance( clazz );
+                this.validator.intercept( new ActionInvocation( context, null ) );
+            }
         }
     }
 
@@ -108,6 +111,6 @@ public abstract class BaseController {
             return StringHelper.isBlank( sid ) ? forInsert : forUpdate;
         }
     }
-    
+
     protected abstract void setFilterFields();
 }

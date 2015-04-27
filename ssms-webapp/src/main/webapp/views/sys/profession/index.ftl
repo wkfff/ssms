@@ -1,89 +1,86 @@
 <#import "/layout/_list.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
-    var setting = {
-        gridId: "dg",
-        dataUrl: "list.json",
-        delUrl: "dels.json",
-        addUrl: "rec.html",
-        openUrl: "rec.html"
-    };
-
     $(document).ready(function () {
-        var dg = new datagrid(setting);
-        dg.doQuery();
+        $('#dg').datagrid({
+            url: 'list.json',
+            idField: 'SID',
+            iconCls: 'icon-star',
+            rownumbers: true,
+            pagination: true,
+            singleSelect: true,
+            striped: true,
+            toolbar: '#toolbar',
+            border: false,
+            columns: [
+                [
+                    {field: 'C_CODE', title: '专业代码', width: 100},
+                    {field: 'C_VALUE', title: '专业名称', width: 100}
+                ]
+            ]
+        });
     });
+
+    function doSearch() {
+        $('#dg').datagrid('load', {
+            C_CODE: $('#C_CODE').val(),
+            C_VALUE: $('#C_VALUE').val()
+        });
+    }
+
+    function doNew() {
+        $('#dlg').dialog('setTitle', '新增').dialog('open');
+        $('#fm').form('clear');
+    }
+
+    function doEdit() {
+        $('#dlg').dialog('setTitle', '编辑').dialog('open');
+        var node = $('#dg').datagrid("getSelected");
+        $('#fm').form('clear').form('load', node);
+    }
+
+    function doDelete() {
+        var item = $('#dg').datagrid("getSelected");
+        $.post('del.do', {sid: item.SID, C_CODE: item.C_CODE}, function () {
+            $.messager.alert('提示信息', '删除成功!');
+            $('#dg').datagrid('reload');
+        });
+    }
+
+    function doSave() {
+        // TODO: 用jquery.form进行处理，easyui的form没办法处理error。
+        $('#fm').form('submit', {
+            url: 'save.do',
+            onSubmit: function () {
+                return $(this).form('validate');
+            },
+            success: function () {
+                $.messager.alert('提示信息', '保存成功!');
+                $('#dlg').dialog('close');
+                $('#dg').datagrid('reload');
+            }
+        });
+    }
 </script>
 </#assign>
 <@layout.doLayout script>
-<!--导航栏-->
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class=""><!--container-->
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <li class="active">
-                        <a href="#">首页 ></a>
-                    </li>
-                    <li class="active">
-                        <a href="#">管理中心 ></a>
-                    </li>
-                    <li class="active">
-                        <a href="#">专业信息管理 ></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+<table id="dg"></table>
+    <@layout.toolbar id="toolbar">
+        <@layout.textbox name='C_CODE' title="专业代码" />
+        <@layout.textbox name='C_VALUE' title="专业名称" />
+        <@layout.button title="查询" icon="search" click="doSearch()"/>
+        <@layout.button title="新增" icon="add" click="doNew()"/>
+        <@layout.button title="编辑" icon="edit" click="doEdit()"/>
+        <@layout.button title="删除" icon="remove" click="doDelete()"/>
+    </@>
 
-<div class="">
-    <div class="datagrid" id="dg">
-        <div class="navbar navbar-default navbar-fixed-top"><br><br>
-            <div class="navbar-inner">
-                <form class="navbar-form pull-left form-search">&nbsp;&nbsp;
-                    <label class="checkbox">专业代码</label>
-                    <input type="text" name="C_CODE" style="width:60px;" query="C_CODE = ?" />
-                    <label class="checkbox">专业名称</label>
-                    <input type="text" name="C_VALUE" style="width:60px;" query="C_VALUE = ?"/>
-                    <input type="button" name="btn_query" class="btn" value="查询">
-                    <input type="button" name="btn_add" class="btn" value="新增">
-                    <input type="button" name="btn_open" class="btn" value="打开">
-                    <input type="button" name="btn_del" class="btn" value="删除"></label>
-                </form>
-            </div>
-        </div>
-
-        <table >
-            <thead>
-            <tr>
-                <td id="SID" style="display:none;"></td>
-                <td id="C_CODE">专业代码</td>
-                <td id="C_VALUE">专业名称</td>
-            <tr>
-            </thead>
-            <tbody/>
+    <@layout.dialog id="dlg" okClick="doSave()">
+        <@layout.form id="fm">
+        <table>
+            <tr><@layout.td_textbox name="C_CODE" title="专业代码" must=true/></tr>
+            <tr><@layout.td_textbox name="C_VALUE" title="专业名称" must=true/></tr>
         </table>
-
-        <div class="paging nav-bar">
-            <form class="form-search">
-                <label class="checkbox">
-                    每页显示
-                    <select name="_pageSize" class="input-mini">
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                        <option value="50">50</option>
-                    </select>
-                    共<span name="_recCount" class="navbar-text"></span>条,<span name="_pageCount" class="navbar-text"></span>页
-                    <input type="button" name="btn_first" value="首页" class="btn navbar-btn">
-                    <input type="button" name="btn_prev" value="上页" class="btn">
-                    <input type="text" name="_pageIndex" class="input-mini navbar-text" value="1"/>
-                    <input type="button" name="btn_next" value="下页" class="btn">
-                    <input type="button" name="btn_last" value="末页" class="btn">
-                </label>
-            </form>
-        </div></div>
-</div>
-</div>
+            <@layout.hidden name="SID"/>
+        </@>
+    </@>
 </@layout.doLayout>

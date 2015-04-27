@@ -25,7 +25,7 @@ public class professionController extends DefaultController {
 
     @Override
     protected Class<? extends ActionValidator> getValidator() {
-        return null;
+        return professionValidator.class;
     }
 
     /**
@@ -61,5 +61,12 @@ public class professionController extends DefaultController {
                  .save();
         }
         return result;
+    }
+
+    @Override
+    public ViewAndModel del( HandlerContext context ) {
+        String code = context.getValue( "C_CODE" );
+        context.DB.withTable( "SYS_STDTMP_FOLDER" ).where( "P_PROFESSION=?", code ).delete();
+        return super.del( context );
     }
 }
