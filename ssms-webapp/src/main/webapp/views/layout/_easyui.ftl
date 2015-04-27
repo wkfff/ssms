@@ -12,7 +12,7 @@
 </div>
 </#macro>
 
-<#macro button id title click icon="" plain=true>
+<#macro button title id="" click="" icon="" plain=true>
 <#local options>
 plain: ${plain?string}<#if (icon?length>0)>, iconCls: 'icon-${icon}'</#if>
 </#local>
@@ -33,22 +33,24 @@ plain: ${plain?string}<#if (icon?length>0)>, iconCls: 'icon-${icon}'</#if>
 <label for="${for}">${title}</label>
 </#macro>
 
-<#macro textbox name must=false>
-<input class="easyui-textbox" id="${name}" name="${name}" type="text" data-options="required:${must?string}, fit:true"/>
+<#macro textbox name title="" must=false fit=false>
+<#if (title?length>0)><@label title=title/></#if>
+<input class="easyui-textbox" id="${name}" name="${name}" type="text" data-options="required:${must?string}, fit:${fit?string}"/>
 </#macro>
 
-<#macro textarea name must=false>
-<input class="easyui-textbox" id="${name}" name="${name}" type="text" data-options="required:${must?string}, multiline:true, fit:true"/>
+<#macro textarea name title="" must=false fit=false>
+<#if (title?length>0)><@label title=title/></#if>
+<input class="easyui-textbox" id="${name}" name="${name}" type="text" data-options="required:${must?string}, multiline:true, fit:${fit?string}"/>
 </#macro>
 
 <#macro td_textbox name title must=false span=4>
 <td class="span2"><@label title=title for=name/></td>
-<td class="span${span}"><@textbox name=name must=must/></td>
+<td class="span${span}"><@textbox name=name must=must fit=true/></td>
 </#macro>
 
 <#macro td_textarea title name must=false span=4>
 <td class="span2"><@label title=title for=name/></td>
-<td class="span${span}"><@textarea name=name must=must/></td>
+<td class="span${span}"><@textarea name=name must=must fit=true/></td>
 </#macro>
 
 <#macro dialog id okClick>
