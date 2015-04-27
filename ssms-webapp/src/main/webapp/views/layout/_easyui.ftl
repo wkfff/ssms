@@ -55,9 +55,9 @@ plain: ${plain}<#if (icon?length>0)>, iconCls: 'icon-${icon}'</#if>
 <div id="${id}" class="easyui-dialog" data-options="closed:true, modal:true, buttons:'#${id}-buttons'">
     <#nested />
 </div>
-    <@layout.toolbar id="${id}-buttons">
-        <@layout.button id="" title="保存" icon="ok" click="${okClick}"/>
-        <@layout.button id="" title="取消" icon="cancel" click="$('#${id}').dialog('close')"/>
+    <@toolbar id="${id}-buttons">
+        <@button id="" title="保存" icon="ok" click="${okClick}"/>
+        <@button id="" title="取消" icon="cancel" click="$('#${id}').dialog('close')"/>
     </@>
 </#macro>
 <#--
