@@ -16,6 +16,7 @@
     <script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            if (window.top != window) window.top.location.href = "/login.html";
             $("#background-image").fullscreenBackground();
             $("#username").focus();
         });
