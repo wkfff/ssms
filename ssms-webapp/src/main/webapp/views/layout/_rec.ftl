@@ -1,5 +1,6 @@
 <#import "/layout/_layout.ftl" as layout/>
-<#include "/layout/_component.ftl"/>
+<#--<#include "/layout/_component.ftl"/>-->
+<#include "_easyui.ftl" />
 
 <#macro doLayout script="" header="">
     <#local _header>
