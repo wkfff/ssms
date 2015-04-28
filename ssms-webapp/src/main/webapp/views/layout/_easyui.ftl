@@ -12,11 +12,12 @@
 </div>
 </#macro>
 
-<#macro button title id="" click="" icon="" plain=true>
+<#macro button title desc="" id="" click="" icon="" plain=true>
 <#local options>
 plain: ${plain?string}<#if (icon?length>0)>, iconCls: 'icon-${icon}'</#if>
 </#local>
-<a id="${id}" href="#" class="easyui-linkbutton" data-options="${options}" onclick="${click}">${title}</a>
+<#if (desc?length > 0)><#local desc=title/></#if>
+<a id="${id}" href="#" class="easyui-linkbutton" data-options="${options}" onclick="${click}" title="${desc}">${title}</a>
 </#macro>
 
 <#macro form id>
@@ -33,14 +34,16 @@ plain: ${plain?string}<#if (icon?length>0)>, iconCls: 'icon-${icon}'</#if>
 <label for="${for}">${title}</label>
 </#macro>
 
-<#macro textbox name title="" must=false fit=false>
+<#macro textbox name id="" title="" must=false fit=false>
 <#if (title?length>0)><@label title=title/></#if>
-<input class="easyui-textbox" id="${name}" name="${name}" type="text" data-options="required:${must?string}, fit:${fit?string}"/>
+<#if (id?length>0)><#local _id=id/><#else><#local _id="${name}"/></#if>
+<input class="easyui-textbox" id="${_id}" name="${name}" type="text" data-options="required:${must?string}, fit:${fit?string}"/>
 </#macro>
 
-<#macro textarea name title="" must=false fit=false>
+<#macro textarea name id="" title="" must=false fit=false>
 <#if (title?length>0)><@label title=title/></#if>
-<input class="easyui-textbox" id="${name}" name="${name}" type="text" data-options="required:${must?string}, multiline:true, fit:${fit?string}"/>
+<#if (id?length>0)><#local _id=id/><#else><#local _id="${name}"/></#if>
+<input class="easyui-textbox" id="${_id}" name="${name}" type="text" data-options="required:${must?string}, multiline:true, fit:${fit?string}"/>
 </#macro>
 
 <#macro td_textbox name title must=false span=4>
