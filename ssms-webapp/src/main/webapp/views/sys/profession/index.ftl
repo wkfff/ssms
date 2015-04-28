@@ -15,7 +15,16 @@
             columns: [
                 [
                     {field: 'C_CODE', title: '专业代码', width: 100},
-                    {field: 'C_VALUE', title: '专业名称', width: 100}
+                    {field: 'C_VALUE', title: '专业名称', width: 100},
+                    {
+                        field: "_action",
+                        title: "操作",
+                        width: 80,
+                        align: 'center',
+                        formatter: function (value, row) {
+                            return "<a href='#' onclick='editorSTDTMP(\"" +row.C_CODE+"\")'>编辑模板</a>";
+                        }
+                    }
                 ]
             ]
         });
@@ -23,9 +32,15 @@
 
     function doSearch() {
         $('#dg').datagrid('load', {
-            C_CODE: $('#C_CODE').val(),
-            C_VALUE: $('#C_VALUE').val()
+            C_CODE: $('#code').val(),
+            C_VALUE: $('#value').val()
         });
+    }
+
+    function doClear() {
+        $('#code').textbox('setValue', null);
+        $('#value').textbox('setValue', null);
+        doSearch();
     }
 
     function doNew() {
@@ -61,14 +76,19 @@
             }
         });
     }
+
+    function editorSTDTMP(value){
+        window.location.href="/sys/stdtmp/index.html?profession="+value;
+    }
 </script>
 </#assign>
 <@layout.doLayout script>
 <table id="dg"></table>
     <@layout.toolbar id="toolbar">
-        <@layout.textbox name='C_CODE' title="专业代码" />
-        <@layout.textbox name='C_VALUE' title="专业名称" />
+        <@layout.textbox name='code' title="专业代码" />
+        <@layout.textbox name='value' title="专业名称" />
         <@layout.button title="查询" icon="search" click="doSearch()"/>
+        <@layout.button title="重置" desc="清空查询条件" icon="clear" click="doClear()"/>
         <@layout.button title="新增" icon="add" click="doNew()"/>
         <@layout.button title="编辑" icon="edit" click="doEdit()"/>
         <@layout.button title="删除" icon="remove" click="doDelete()"/>
