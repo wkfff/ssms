@@ -1,80 +1,149 @@
 <#import "/layout/_list.ftl" as layout/>
-<#assign header>
-<script type="text/javascript" src="/resource/js/jquery.ztree.all-3.5.min.js"></script>
-<link rel="stylesheet" href="/resource/css/zTreeStyle/zTreeStyle.css"/>
-<style type="text/css">
-    .side { position:absolute; left:0; top:60px; bottom:0; width:260px; overflow:auto; border-right: dashed 1px #cccccc}
-    .main { position:absolute; left:270px; top:60px; bottom:0; right:0; overflow:hidden;}
-    .main iframe { width:100%; height:100%;}
-    /*---ie6---*/
-    html { *padding:70px 10px;}
-    .side { *height:100%; *float:left; *width:260px; *position:relative; *top:0; *right:0; *bottom:0; *left:0;}
-    .main { *height:100%; *margin-left:210px; _margin-left:207px; *position:relative; *top:0; *right:0; *bottom:0; *left:0;}
-</style>
-</#assign>
 <#assign script>
 <script type="text/javascript">
-    function zTreeOnClick(event, treeId, treeNode) {
-        $('#mainFrame').attr("src", 'rec.html?sid='+treeNode.SID);
-    }
-
-    var setting = {
-        data: {
-            key: {
-                name: "C_NAME"
-            },
-            simpleData: {
-                enable: true,
-                idKey: "SID",
-                pIdKey: "R_SID"
-            }
-        },
-        callback: {
-            onClick: zTreeOnClick
+    var page = {
+        sid: null,
+        init: function () {
+            tree.init();
+            listChildren.init();
         }
     };
+    var tree = {
+        el: $('#nav'),
+        selectNode: null,
+        config: {
+            url: 'tree.json',
+            queryParams: {
+                profession: '${profession}'
+            },
+            onSelect: function (node) {
+                page.sid = node.id;
+                tree.selectNode = node;
+                recForm.load();
+                listChildren.load();
+            },
+            onLoadSuccess: function () {
+                var $this = $(this);
+                var node = tree.selectNode;
+                if (node) node = $this.tree('find', node.id);
+                if (!node) node = $this.tree('getRoot');
 
-    function loadTree(){
-        $.post('tree.json', {profession: '${profession}'}, function (result) {
-            if ($.isArray(result)) {
-                $.each(result, function (index, item) {
-                    item.open = true;
-                });
-                $.fn.zTree.init($("#treeDemo"), setting, result);
+                $this.tree('select', node.target)
             }
-        });
-    }
-
-    $(document).ready(function () {
-        loadTree();
-        $('#btnRefresh').click(function () {
-            loadTree();
-        });
-    });
+        },
+        init: function () {
+            this.el.tree(tree.config);
+        },
+        reload: function () {
+            this.el.tree('reload');
+        }
+    };
+    var recForm = {
+        el: $('#rec_fm'),
+        config: {
+            recUrl: 'rec.json',
+            saveUrl: 'save.do'
+        },
+        load: function () {
+            var $this = this;
+            $.post(this.config.recUrl, {sid: page.sid}, function (result) {
+                $this.loadData(result);
+            });
+        },
+        loadData: function (data) {
+            this.el.form('load', data);
+        },
+        save: function () {
+            var $el = this.el;
+            var url = this.config.saveUrl;
+            $el.form('submit', {
+                url: url,
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function () {
+                    $.messager.alert('提示信息', '保存成功!');
+                    tree.reload();
+                }
+            });
+        }
+    };
+    var listChildren = {
+        el: $('#list_children'),
+        config: {
+            idField: 'SID',
+            iconCls: 'icon-star',
+            rownumbers: true,
+            pagination: true,
+            singleSelect: true,
+            striped: true,
+            toolbar: '#list_children_tb',
+            border: false,
+            autoSave: true,
+            fit: true,
+            updateUrl: 'save.do',
+            onBeforeSave: function (index) {
+                listChildren.el.edatagrid('endEdit', index);
+                var data = listChildren.getSelect();
+                $.post('save.do', data, function(){
+                    // TODO: 添加处理
+                });
+                return false;
+            },
+            columns: [
+                [
+                    {field: 'C_NAME', title: '名称', width: '30%', editor: 'textbox'},
+                    {field: 'C_DESC', title: '描述', width: '30%', editor: 'textarea'},
+                    {field: 'N_INDEX', title: '排序号', width: '10%', align: 'center', editor: 'numberbox'}
+                ]
+            ]
+        },
+        init: function () {
+            this.el.edatagrid(this.config);
+        },
+        load: function () {
+            this.el.edatagrid({
+                url: 'list.json',
+                queryParams: {R_SID: page.sid}
+            });
+        },
+        addRow: function () {
+            this.el.edatagrid('addRow');
+        },
+        getSelect: function(){
+            return this.el.edatagrid('getSelected');
+        }
+    };
+    $(page.init);
 </script>
 </#assign>
-<@layout.doIndexLayout menuID="模板管理" script=script header=header>
-<div class="navbar navbar-inverse">
-    <div class="navbar-inner">
-        <div class="">
-            <!--container-->
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <li class="active"><a href="#">首页 ></a></li>
-                    <li class="active"><a href="#">管理中心 ></a></li>
-                    <li class="active"><a href="#">达标体系模板管理 ></a></li>
-                </ul>
+<@layout.doLayout script=script>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west', title:'功能导航', split:true" style="width: 200px">
+        <ul id="nav"></ul>
+    </div>
+    <div data-options="region:'center', header: '#bread'" style="overflow: hidden">
+        <div class="easyui-tabs" data-options="fit:true">
+            <div title="概要">
+                <@layout.toolbar>
+                    <@layout.button title="保存" icon="save" click="recForm.save()"/>
+                    <@layout.button title="删除" icon="cancel"/>
+                </@>
+                <@layout.form id="rec_fm">
+                    <table>
+                        <tr><@layout.td_textbox title="名称" name="C_NAME" must=true/></tr>
+                        <tr><@layout.td_textarea title="描述" name="C_DESC"/></tr>
+                    </table>
+                    <@layout.hidden 'SID'/>
+                </@>
+            </div>
+            <div title="子分类">
+                <@layout.toolbar id="list_children_tb">
+                    <@layout.button title="新增" icon="new" click="listChildren.addRow()" />
+                </@layout.toolbar>
+                <table id="list_children"></table>
             </div>
         </div>
     </div>
-</div>
-
-<div class="side" style="padding-left: 5px">
-    <input type="button" class="btn" value="刷新" id="btnRefresh"/>
-    <ul id="treeDemo" class="ztree"></ul>
-</div>
-
-<div class="main">
-    <iframe id="mainFrame" frameborder="0"></iframe>
 </div>
 </@>

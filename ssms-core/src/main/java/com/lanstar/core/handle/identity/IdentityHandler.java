@@ -29,33 +29,33 @@ public class IdentityHandler implements Handler {
     public void handle( HandlerContext context, HandleChain next ) throws ServletException, IOException {
         RequestContext requestContext = context.getRequestContext();
         if ( !requestContext.hasIdentityContext() ) {
-            String userSID = context.getValue( "username" );
-            // TODO: 向数据库查询用户名和密码信息
-            if ( StringHelper.isBlank( userSID )) {
-                // 登录信息无效要重定向到登录页
-                requestContext.redirect( "/login" );
-                return;
-            }
-            // 创建或者获取身份标识,临时测试使用
-            Identity identity;
-            if (userSID.startsWith( "E" ))
-                identity = new CompanyIdentity();
-            else if (userSID.startsWith( "R" ))
-                identity = new AuditIdentity();
-            else if (userSID.startsWith( "G" ))
-                identity = new GovernmentIdentity();
-            else 
-                identity = new SystemIdentity();
-            
-            // 绑定到请求上下文中
-            requestContext.bindIdentity( new IdentityContextImpl( identity ) );
-
-            // 使用带有身份标识的上下文继续后续处理
-            next.doHandle( context );
+            // 登录信息无效要重定向到登录页
+            requestContext.redirect( "/login" );
             return;
         }
 
         // 使用带有身份标识的上下文继续后续处理
         next.doHandle( context );
+    }
+
+    public static boolean login( RequestContext context, String tenentCode, String username, String password ) {
+        // TODO: 向数据库查询用户名和密码信息
+        if ( StringHelper.isBlank( username ) ) {
+            return false;
+        }
+        // 创建或者获取身份标识,临时测试使用
+        Identity identity;
+        if ( username.startsWith( "E" ) )
+            identity = new CompanyIdentity();
+        else if ( username.startsWith( "R" ) )
+            identity = new AuditIdentity();
+        else if ( username.startsWith( "G" ) )
+            identity = new GovernmentIdentity();
+        else
+            identity = new SystemIdentity();
+
+        // 绑定到请求上下文中
+        context.bindIdentity( new IdentityContextImpl( identity ) );
+        return true;
     }
 }

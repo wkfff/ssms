@@ -1,65 +1,94 @@
+<#macro login>
 <!doctype html>
-<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en"> <!--<![endif]-->
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>登录</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
-    <link rel="stylesheet" type="text/css" href="/resource/css/login.css"/>
-    <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/resource/js/jquery.fullscreenBackground.js"></script>
-    <script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            if (window.top != window) window.top.location.href = "/login.html";
-            $("#background-image").fullscreenBackground();
-            $("#username").focus();
-        });
-
-        function doLogin() {
-            //window.location.href='index.html';
-            //$("#login").submit();
-            //v=$.md5(document.getElementById("usrPasswd").value);
-            //md5加密
-            $("#usrPasswd").val($.md5($("#usrPasswd").val()));
-            document.getElementById("login").submit();
-        }
-    </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>${_TITLE_!"安全生产标准化管理系统"}</title>
+    <link rel="stylesheet" href="/resource/css/_base.css"/>
+    <link rel="stylesheet" href="/resource/css/login.css"/>
 </head>
-
 <body>
-<div id="content" class="box box_bg"></div>
+<div id="container">
+    <div id="bd">
+        <div class="login1">
+            <div class="login-top"><h1 class="logo"></h1></div>
+            <div class="login-input">
+                <p class="user ue-clear">
+                    <label>用户名</label>
+                    <input id="username" type="text"/>
+                </p>
 
-<div id="content1" class="box">
-    <div id="header">
-        <h1 class="title">安全生产标准化管理系统</h1>
+                <p class="password ue-clear">
+                    <label>密&nbsp;&nbsp;&nbsp;码</label>
+                    <input id="password" type="text"/>
+                </p>
+
+                <p class="yzm ue-clear">
+                    <label>验证码</label>
+                    <input id="yzm" type="text"/>
+                    <cite>X394D</cite>
+                </p>
+            </div>
+            <div class="login-btn ue-clear">
+                <a id="login" class="btn">登录</a>
+
+                <div class="remember ue-clear">
+                    <input type="checkbox" id="remember"/>
+                    <em></em>
+                    <label for="remember">记住密码</label>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <form id="login" name="login" method="post" action="/index">
-        <nobr>用户<input type="text" id="username" name="username" class="username"></nobr>
-        <nobr>密码<input type="password" id="usrPasswd" name="usrPasswd" class="password"></nobr>
-        <nobr>
-            <button type="button" onclick="doLogin();">登录</button>
-            <input type="checkbox" name="saveit" id="saveit"><label for="saveit" id="rember">记住用户名与密码</label>
-        </nobr>
-        <div class="error"><span></span></div>
-    </form>
-
-
 </div>
-
-<div id="footer">CopyRight 2015 All Rights Reserved 技术支持：福州磬基电子有限公司</div>
-
-
-<div id="background-image">
-    <img src="/resource/images/login/bg.jpg" width="1275" height="720"/>
-</div>
-
+<div id="ft">CopyRight&nbsp;2014&nbsp;&nbsp;版权所有&nbsp;&nbsp;uimaker.com专注于ui设计&nbsp;&nbsp;苏ICP备09003079号</div>
 </body>
+<script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+<script type="text/javascript" src="/resource/js/common.js"></script>
+<script type="text/javascript">
+    var height = $(window).height();
+    $("#container").height(height);
+    $("#bd").css("padding-top", height / 2 - $("#bd").height() / 2);
+
+    $(window).resize(function () {
+        var height = $(window).height();
+        $("#bd").css("padding-top", $(window).height() / 2 - $("#bd").height() / 2);
+        $("#container").height(height);
+
+    });
+
+    $('#remember').focus(function () {
+        $(this).blur();
+    });
+
+    $('#remember').click(function (e) {
+        checkRemember($(this));
+    });
+
+    function checkRemember($this) {
+        // TODO: 添加记住密码的逻辑
+        if (!-[1,]) {
+            if ($this.prop("checked")) {
+                $this.parent().addClass('checked');
+            } else {
+                $this.parent().removeClass('checked');
+            }
+        }
+    }
+
+    $('#login').click(function () {
+        var parms = {
+            username: $('#username').val(),
+            password: $('#password').val(),
+            tenant: null,
+            yzm: $('#yzm').val()
+        };
+        $.post('login', parms, function(){
+            window.location.href = "/index";
+        } )
+    });
+</script>
 </html>
-<#--TODO: 替换登录页-->
+</#macro>
+<@login/>

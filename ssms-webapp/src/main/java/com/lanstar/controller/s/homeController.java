@@ -7,29 +7,10 @@
  */
 package com.lanstar.controller.s;
 
-import com.lanstar.controller.ActionValidator;
-import com.lanstar.controller.DefaultController;
-import com.lanstar.core.ViewAndModel;
-import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.controller.HomeController;
 
 /**
  * 首页
  */
-public class homeController extends DefaultController {
-    public homeController() {
-        super( "SYS_TENANT_E" );
-    }
-
-    @Override
-    protected Class<? extends ActionValidator> getValidator() {
-        return null;
-    }
-
-    public ViewAndModel task( HandlerContext context ) {
-        return context.returnWith();
-    }
-
-    public void settings( HandlerContext context ) {
-
-    }
+public class homeController extends HomeController {
 }

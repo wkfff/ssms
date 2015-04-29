@@ -99,6 +99,7 @@
                     {field: 'C_NAME', title: '导航名称', width: 100},
                     {field: 'C_URL', title: 'URL', width: 100},
                     {field: 'C_DESC', title: '描述', width: 200},
+                    {field: 'C_ICON', title: '图标', width: 200, align: 'center', editor: 'textbox'},
                     {field: 'N_INDEX', title: '排序号', width: 200, align: 'center', editor: 'numberbox'}
                 ]
             ]
@@ -120,6 +121,7 @@
             <@layout.form id="details">
                 <table>
                     <tr><@layout.td_textbox name="C_NAME" title="导航名称" must=true/></tr>
+                    <tr><@layout.td_textbox name="C_ICON" title="图标"/></tr>
                     <tr><@layout.td_textarea name="C_URL" title="URL"/></tr>
                     <tr><@layout.td_textarea name="C_DESC" title="描述"/></tr>
                 </table>
@@ -138,6 +140,7 @@
             <@layout.form id="dlg_fm">
                 <table>
                     <tr><@layout.td_textbox name="C_NAME" title="导航名称" must=true/></tr>
+                    <tr><@layout.td_textbox name="C_ICON" title="图标"/></tr>
                     <tr><@layout.td_textarea name="C_URL" title="URL"/></tr>
                     <tr><@layout.td_textarea name="C_DESC" title="描述"/></tr>
                 </table>

@@ -7,8 +7,10 @@
  */
 package com.lanstar.core.handle;
 
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.handle.identity.IdentityHandler;
 import com.lanstar.core.render.Render;
 import com.lanstar.core.render.resolver.RenderResolver;
 import com.lanstar.core.render.resolver.RenderResolverFactory;
@@ -26,12 +28,22 @@ public class LoginHandler implements Handler {
         RequestContext requestContext = context.getRequestContext();
         // 获取请求目标
         String target = requestContext.getTarget();
-        RenderResolver resolver = RenderResolverFactory.me().getResolver( "html" );
-        ViewAndModel vam = new ViewAndModel();
         if ( target.equals( "/login" ) ) {
-            vam.view( "/login.ftl" );
-            Render render = resolver.getRender( vam, requestContext );
-            render.render();
+            String username = context.getValue( "username" );
+            String password = context.getValue( "password" );
+            String tenant = context.getValue( "tenant" );
+            if ( !StringHelper.isBlank( username, password, tenant ) ) {
+                IdentityHandler.login( requestContext, tenant, username, password );
+                RenderResolver resolver = RenderResolverFactory.me().getResolver( "do" );
+                Render render = resolver.getRender( new ViewAndModel().put( "state", "success" ), requestContext );
+                render.render();
+            }
+            else {
+                IdentityHandler.login( requestContext, tenant, username, password );
+                RenderResolver resolver = RenderResolverFactory.me().getResolver( "html" );
+                Render render = resolver.getRender( new ViewAndModel().view( "login.ftl" ), requestContext );
+                render.render();
+            }
             return;
         } else if ( target.equals( "/logout" ) ) {
             if ( requestContext.hasIdentityContext() ) {
@@ -43,5 +55,4 @@ public class LoginHandler implements Handler {
         }
         next.doHandle( context );
     }
-
 }

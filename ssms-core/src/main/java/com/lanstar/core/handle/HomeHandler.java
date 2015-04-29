@@ -8,10 +8,6 @@
 package com.lanstar.core.handle;
 
 import com.lanstar.core.RequestContext;
-import com.lanstar.core.ViewAndModel;
-import com.lanstar.core.render.Render;
-import com.lanstar.core.render.resolver.RenderResolver;
-import com.lanstar.core.render.resolver.RenderResolverFactory;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -28,10 +24,11 @@ public class HomeHandler implements Handler {
         String target = requestContext.getTarget();
         if ( target.equals( "/" ) || target.startsWith( "/index" ) ) {
             String tenantType = context.getIdentity().getTenantType().getName().toLowerCase();
-            RenderResolver resolver = RenderResolverFactory.me().getResolver("html" );
+            /*RenderResolver resolver = RenderResolverFactory.me().getResolver("html" );
             ViewAndModel vam = new ViewAndModel().view( "/"+tenantType+"/home/index.ftl" );
             Render render = resolver.getRender( vam, requestContext );
-            render.render();
+            render.render();*/
+            context.getRequestContext().forward( "/"+tenantType+"/home/index.html" );
         }
         else next.doHandle( context );
     }

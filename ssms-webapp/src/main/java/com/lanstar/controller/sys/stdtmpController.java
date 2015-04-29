@@ -10,6 +10,7 @@ package com.lanstar.controller.sys;
 
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
+import com.lanstar.helper.easyui.EasyUIControllerHelper;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.JdbcRecord;
@@ -25,7 +26,7 @@ public class stdtmpController extends DefaultController {
         JdbcRecordSet folder = context.SYSTEM_DB.withTable( "SYS_STDTMP_FOLDER" )
                                                 .where( "P_PROFESSION=?", profession )
                                                 .queryList();
-        return context.returnWith().set( folder );
+        return context.returnWith().set( EasyUIControllerHelper.toTree( folder, "SID", "R_SID", "C_NAME" ) );
     }
 
     @Override
