@@ -56,6 +56,8 @@ CREATE TABLE SYS_TENANT_E_USER
 (
   `SID`         INT(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `C_NAME`      VARCHAR(100) COMMENT '用户名',
+  `S_NAME`      VARCHAR(100) COMMENT '所属租户',
+  `R_SID`        INT(11)    COMMENT '所属租户编号',
   `P_SEX`       VARCHAR(32)      DEFAULT 1 COMMENT '性别',
   `S_SEX`       VARCHAR(100) COMMENT '性别',
   `T_BIRTH`     DATE COMMENT '出生日期',
@@ -306,6 +308,8 @@ CREATE TABLE SYS_TENANT_G_USER
 (
   `SID`         INT(11) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
   `C_NAME`      VARCHAR(100) COMMENT '用户名',
+  `S_NAME`      VARCHAR(100) COMMENT '所属租户',
+  `R_SID`        INT(11)    COMMENT '所属租户编号',
   `C_PASSWD`    VARCHAR(50) COMMENT '密码',
   `C_MOBILE`    VARCHAR(50) COMMENT '手机号',
   `C_TEL`       VARCHAR(50) COMMENT '办公电话',
