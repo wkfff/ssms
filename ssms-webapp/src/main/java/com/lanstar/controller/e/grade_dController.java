@@ -9,6 +9,8 @@ package com.lanstar.controller.e;
 
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
+import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.handle.HandlerContext;
 
 /**
  * 在线自评
@@ -23,4 +25,15 @@ public class grade_dController extends DefaultController {
     protected Class<? extends ActionValidator> getValidator() {
         return grade_dValidator.class;
     }
+
+    @Override
+    public ViewAndModel save( HandlerContext context ) {
+        // 统计项
+        String r_sid = context.getValue( "R_SID" ); 
+        String sql = "call P_GRADE_SUM(?)";
+        context.DB.getDBSession().execute( sql,new Object[]{r_sid} );
+        return super.save( context );
+    }
+    
+    
 }

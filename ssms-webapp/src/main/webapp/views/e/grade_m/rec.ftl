@@ -7,6 +7,9 @@
     .datagrid-editable-input{
         height:120px !important;
     }
+    .datagrid-row{
+        border-bottom:1px solid #000 !important;
+    }
 </style>
 <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 
@@ -107,22 +110,22 @@
             fit:true,
             border:false,
             autoSave:true,
-            striped: true,
+            striped: false,
             columns: [[
-                {field: 'C_CATEGORY', title: '类目', width: 100},
-                {field: 'C_PROJECT', title: '项目', width: 100},
-                {field: 'C_CONTENT', title: '内容', width: 250},
-                {field: 'N_SCORE', title: '标准分值',align:'center',width: 70},
+                {field: 'S_CATEGORY', title: '类目', width: 100},
+                {field: 'S_PROJECT', title: '项目', width: 100},
+                {field: 'C_CONTENT', title: '内容', width: 256},
+                {field: 'N_SCORE', title: '标准分值',align:'center',width: 60},
                 {field: 'C_METHOD', title: '考评办法', width: 350},
                 {field: 'C_DESC', title: '自评描述', width: 250,editor:{type:'textarea',options:{},height:'100%'}},
-                {field: 'B_BLANK', title: '是否缺项', width: 80,align:'center',editor:{type:'checkbox',options:{on:'1',off:'0'}},
+                {field: 'B_BLANK', title: '是否缺项', width: 60,align:'center',editor:{type:'checkbox',options:{on:'1',off:'0'}},
                         formatter:function(value,row){
-                            return value=='0'?'是':'否';
+                            return value=='1'?'是':'否';
                         }},
-                {field: 'N_SCORE_REAL', title: '实际得分', align:'center',width: 80,editor:'numberbox'}
+                {field: 'N_SCORE_REAL', title: '实际得分', align:'center',width: 60,editor:'numberbox'}
             ]],
             onLoadSuccess: function(data){
-                $(this).datagrid("autoMergeCells",["C_CATEGORY","C_PROJECT"]);
+                //$(this).datagrid("autoMergeCells",["S_CATEGORY","S_PROJECT"]);
             }
         });
     });

@@ -81,8 +81,8 @@ public class grade_mController extends DefaultController {
         SqlBuilder sqlBuilder = new SqlBuilder();
         sqlBuilder
                 .INSERT_INTO(
-                        "SSM_GRADE_E_D(R_SID,R_STD,C_CATEGORY,C_PROJECT,C_CONTENT,N_SCORE,C_METHOD,R_TENANT,S_TENANT,P_TENANT,N_STATE) "
-                                + "select ?,SID,C_CATEGORY,C_PROJECT,C_CONTENT,N_SCORE,C_METHOD,?,?,?,0 from SSM_GRADE_STD where P_PROFESSION=?",
+                        "SSM_GRADE_E_D(R_SID,R_STD,R_CATEGORY,S_CATEGORY,R_PROJECT,S_PROJECT,C_CONTENT,N_SCORE,C_METHOD,R_TENANT,S_TENANT,P_TENANT,N_STATE) "
+                                + "select ?,SID,R_CATEGORY,S_CATEGORY,R_PROJECT,S_PROJECT,C_CONTENT,N_SCORE,C_METHOD,?,?,?,0 from SSM_GRADE_STD where P_PROFESSION=?",
                         new Object[] { sid,
                                 context.getIdentity().getTenantId(),
                                 context.getIdentity().getTenantName(),

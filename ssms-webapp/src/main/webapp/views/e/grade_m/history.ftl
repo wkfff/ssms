@@ -16,7 +16,7 @@
     }
     $(function () {
         $('#dg_history').datagrid({
-            title:'自评历史',
+            //title:'自评历史',
             iconCls:'icon-star',
             url: 'list.json?N_STATE=1',
             idField: 'SID',

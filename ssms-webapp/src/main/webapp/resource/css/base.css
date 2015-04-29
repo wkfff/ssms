@@ -36,6 +36,10 @@ img {
 
 .header {
     position: relative;
+    height:40px;
+    color:#FFF;
+    padding:10px;
+    background: url("/resource/images/header_bg.jpg") repeat-x;
 }
 
 .head {
@@ -52,9 +56,9 @@ img {
     margin-top: 5px;
 }
 
-.head_left a{
+.head a{
     text-decoration: none;
-    color: #000000;
+    color: #EEE;
 }
 
 .head .head_right {
@@ -179,7 +183,10 @@ form * {
     background:#FAFAFA !important;
     padding:6px !important;
 }
-
+.panel-title a{
+	text-decoration: none;
+	color:#777;
+}
 .span12 {
     width: 940px
 }

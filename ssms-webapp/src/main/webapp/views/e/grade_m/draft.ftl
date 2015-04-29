@@ -34,7 +34,7 @@
     }
     $(function () {
         $('#dg_draft').datagrid({
-            title:'自评草稿',
+            //title:'自评草稿',
             iconCls:'icon-star',
             url: 'list.json?N_STATE=0',
             idField: 'SID',
