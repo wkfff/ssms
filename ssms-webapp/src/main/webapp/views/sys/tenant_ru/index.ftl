@@ -55,7 +55,7 @@ $(function () {
             {field: 'C_USER', title: '用户名称', width: 500},
             {field: 'C_POSITION', title: '职务', width: 200},
             {field: 'S_TENANT', title: '所属机构', width: 100},
-            {field: 'C_INSTUDRY', title: '行业', width: 160},
+            {field: 'T_BIRTH', title: '出生日期', width: 160},
             {field: 'S_DEGREE', title: '学位', width: 60},
             {field: 'SID', title: '操作', width: 160,align:'center',
                 formatter:function(value,row){
