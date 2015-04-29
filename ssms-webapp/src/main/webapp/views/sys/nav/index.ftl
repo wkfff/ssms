@@ -93,7 +93,7 @@
             toolbar: '#toolbar',
             border: false,
             autoSave: true,
-            updateUrl:'save.do',
+            updateUrl: 'save.do',
             columns: [
                 [
                     {field: 'C_NAME', title: '导航名称', width: 100},
@@ -109,7 +109,7 @@
 </#assign>
 <@layout.doLayout script=script>
 <div id="navlyt" class="easyui-layout" data-options="fit:true">
-    <div data-options="region:'west'" style="width: 200px">
+    <div data-options="region:'west', split:true" title="导航树" style="width: 200px">
         <ul id="nav"></ul>
     </div>
     <div data-options="region:'center'">
@@ -134,7 +134,6 @@
             <@layout.button id="" title="编辑" icon="edit" click="doEdit()"/>
             <@layout.button id="" title="删除" icon="remove" click="doDgDelete()"/>
         </@>
-
 
         <@layout.dialog id="dlg" okClick="doSaveDlg()">
             <@layout.form id="dlg_fm">
