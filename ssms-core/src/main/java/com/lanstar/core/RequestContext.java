@@ -10,6 +10,7 @@ package com.lanstar.core;
 
 import com.lanstar.app.App;
 import com.lanstar.app.ServletHelper;
+import com.lanstar.core.handle.Dispatcher;
 import com.lanstar.core.handle.identity.IdentityContext;
 
 import javax.servlet.ServletException;
@@ -71,18 +72,22 @@ public class RequestContext {
         response.sendRedirect( location );
     }
 
-    private Object getParameter( String name ) {
-        // TODO: 解码处理
-        return request.getParameter( name );
-    }
-
     /**
      * 转向请求到给定的地址
      *
-     * @param path 转向地址
+     * @param location 转向地址
      */
-    public void forward( String path ) throws ServletException, IOException {
-        request.getRequestDispatcher( path ).forward( request, response );
+    public void forward( String location ) throws ServletException, IOException {
+        String contextPath = ServletHelper.getContextPath();
+        if ( location.startsWith( "/" ) && location.startsWith( contextPath ) )
+            location = location.substring( contextPath.length() );
+
+        Dispatcher.me().dispatch( new RequestContext( location, request, response ) );
+    }
+
+    private Object getParameter( String name ) {
+        // TODO: 解码处理
+        return request.getParameter( name );
     }
 
     /**
