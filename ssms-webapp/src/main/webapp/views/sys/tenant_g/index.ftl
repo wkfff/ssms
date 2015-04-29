@@ -1,4 +1,5 @@
-<#import "/s/home/settings.ftl" as layout/> <#assign script>
+<#import "/layout/_list.ftl" as layout/>
+<#assign script>
 <script type="text/javascript">
     var setting = {
         gridId : "dg",
@@ -14,7 +15,7 @@
     });
 </script>
 </#assign> 
-<@layout.listIndex script>
+<@layout.doLayout script>
 <!--导航栏-->
 <div class="navbar navbar-inverse">
     <div class="navbar-inner">

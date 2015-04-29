@@ -3,22 +3,19 @@
 <#assign script>
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
-<script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
-    $('#formMain').form('load','rec.json?sid=${sid!}');
+    $('#formMain').form('load','rec.json?sid=${sid!}&pid=${pid}');
 });
- String.prototype.replaceAll = function(s1,s2) { 
-    return this.replace(new RegExp(s1,"gm"),s2); 
-} 
     function svaeRInfo(){
-        if(($("#C_PASSWD").val())!=(($("#C_PASSWD1").val()))){
+       if(($("#C_PASSWD").val())!=(($("#C_PASSWD1").val()))){
             alert("两次输入密码一致");
              return;
         }
         $("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
         $("#C_PASSWD1").val($.md5($("#C_PASSWD1").val()));
-        $("#C_PASSWD1").attr("disabled", "true")
+        $("#C_PASSWD1").attr("disabled", "true")  
         doSave();
     }
     
@@ -35,7 +32,7 @@ $(document).ready(function() {
             },
             success: function(data){
                 $.messager.alert('保存','保存成功！');
-                window.location.href='rec.html?refer=index&sid='+data.replaceAll('"','');
+                window.location.href='index.html?pid='+${pid!}
             }
         });
     }
@@ -75,7 +72,6 @@ $(document).ready(function() {
                             <td class="span2">用户名:</td>
                             <td class="span4">
                                 <input class="easyui-textbox" type="text" name="C_USER" data-options="required:true"   style="width: 100%" />
-                                <#--TODO缺少用户名字段-->
                              </td>
                              <td class="span2">姓名:</td>
                             <td class="span4">
@@ -91,16 +87,10 @@ $(document).ready(function() {
                         <tr>
                             <td class="span2">聘请证书编号:</td>
                             <td class="span4" ><input class="easyui-textbox" type="text" name="C_CERT" data-options="required:true" style="width: 100%" /></td>
-                            <td class="span2">行业:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_INSTUDRY" data-options="required:true" style="width: 100%" /></td>
-                        </tr>
-                        <tr>
                             <td class="span2">性别:</td>
                             <td class="span4" ><input  type="radio" name="S_SEX"  value="男"  />男
                                                <input  type="radio" name="S_SEX"  value="女" />女
                             </td>
-                            <td class="span2">专业:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="S_PROFESSION" style="width: 100%" /></td>
                         </tr>
                     </table>
                </div>
@@ -111,6 +101,10 @@ $(document).ready(function() {
                             <td class="span4" ><input class="easyui-textbox" type="text" name="C_TEL" style="width: 100%" /></td>
                             <td class="span2">手机:</td>
                             <td class="span4"><input class="easyui-textbox" type="text" name="C_MOBILE" style="width: 100%" /></td>
+                        </tr>
+                        <tr>
+                         <td><input type="hidden" name="S_NAME" value="${tenant.S_TENANT!}"><td>
+                        <td><input type="hidden" name="R_SID" value="${pid!}"><td>
                         </tr>
                     </table>
                    </div>
@@ -138,8 +132,8 @@ $(document).ready(function() {
                         <tr>
                             <td class="span2">密码:</td>
                             <td class="span4" ><input class="easyui-textbox" type="password" name="C_PASSWD" id="C_PASSWD" style="width: 100%" /></td>
-                            <td class="span2">重复密码:</td>
-                            <td class="span4"><input class="easyui-textbox"  type="password" name="C_PASSWD1" id="C_PASSWD1" style="width: 100%" /></td>
+                             <td class="span2">重复密码:</td>
+                            <td class="span4"><input class="easyui-textbox"  type="password"  id="C_PASSWD1" style="width: 100%" /></td>
                         </tr>
                         <tr>
                         <td><input type="button" class="btn" name="btn_reset" value="快速重置密码"/></td>

@@ -28,7 +28,7 @@ function doEdit(sid) {
     window.location.href = 'rec.html?refer=index&sid='+sid;
 }
 function doListUser(sid){
-	 window.location.href = '/sys/tenant_r/index.html?pid='+sid;
+	 window.location.href = '/sys/tenant_ru/index.html?pid='+sid;
 }
 function doClear(id) {
     $(".easyui-textbox").textbox("setValue", "");

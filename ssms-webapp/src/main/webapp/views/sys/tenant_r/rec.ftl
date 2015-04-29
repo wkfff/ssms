@@ -4,7 +4,7 @@
 <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 <script type="text/javascript">
  $(document).ready(function() {
-	 $('#formMain').form('load','rec.json?sid=${sid!}');
+		  $('#formMain').form('load','rec.json?sid=${sid!}');
  });
 String.prototype.replaceAll = function(s1,s2) { 
     return this.replace(new RegExp(s1,"gm"),s2); 
@@ -21,7 +21,8 @@ String.prototype.replaceAll = function(s1,s2) {
                 return isValid;
             },
             success: function(data){
-                window.location.href='rec.html?refer=index&sid='+data.replaceAll('"','');
+            	$.messager.alert("提示", "保存成功");
+                window.location.href='index.html?refer=index&sid='+data.replaceAll('"','');
             }
         });
     }
