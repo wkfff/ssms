@@ -19,7 +19,7 @@
 <#local _header>
 <link rel="stylesheet" href="/resource/css/base.css"/>
 <#--easyui-->
-<link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/bootstrap/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
 <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
@@ -42,7 +42,7 @@
 </#local>
 <#local _footer>
 <#--easyui-->
-<link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/bootstrap/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
 <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
@@ -93,7 +93,7 @@
             <div class="top-light"></div>
             <h1 class="logo"></h1>
             <div class="login-info ue-clear">
-                <div class="welcome ue-clear"><span>欢迎您,</span><a href="javascript:;" class="user-name">${LANSTAR_IDENTITY.identityName}</a></div>
+                <div class="welcome ue-clear"><span>欢迎您,</span><a href="javascript:;" class="user-name">${LANSTAR_IDENTITY.identityName!}</a></div>
                 <#--<div class="login-msg ue-clear">
                     <a href="javascript:;" class="msg-txt">消息</a>
                     <a href="javascript:;" class="msg-num">10</a>
