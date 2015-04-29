@@ -1,28 +1,15 @@
-<#--TODO缺少上传照片这个控件-->
 <#import "/layout/_rec.ftl" as layout/>
 <#assign script>
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
-<script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
 <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#formMain').form('load','rec.json?sid=${sid!}');
-});
- String.prototype.replaceAll = function(s1,s2) { 
+ $(document).ready(function() {
+	 $('#formMain').form('load','rec.json?sid=${sid!}');
+ });
+String.prototype.replaceAll = function(s1,s2) { 
     return this.replace(new RegExp(s1,"gm"),s2); 
-} 
-    function svaeRInfo(){
-        if(($("#C_PASSWD").val())!=(($("#C_PASSWD1").val()))){
-            alert("两次输入密码一致");
-             return;
         }
-        $("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
-        $("#C_PASSWD1").val($.md5($("#C_PASSWD1").val()));
-        $("#C_PASSWD1").attr("disabled", "true")
-        doSave();
-    }
-    
-    function doSave(){
+   function doSave(){
         //$.messager.progress();
         $('#formMain').form('submit', {
             url:'save.do?sid=${sid!}',
@@ -34,14 +21,12 @@ $(document).ready(function() {
                 return isValid;
             },
             success: function(data){
-                $.messager.alert('保存','保存成功！');
                 window.location.href='rec.html?refer=index&sid='+data.replaceAll('"','');
             }
         });
     }
-    
     function doDel(){
-        $.messager.confirm("删除确认", "您确认删除当前信息吗？", function (deleteAction) {
+        $.messager.confirm("删除确认", "您确认删除当前的信息吗？", function (deleteAction) {
                     if (deleteAction) {
                         $.get("del.do", {sid:'${sid!}'}, function (data) {
                             if (data == "true" || data== "\"\"") {
@@ -64,7 +49,7 @@ $(document).ready(function() {
 </#assign>
 <@layout.doLayout script>
      <div class="easyui-panel" style="border:0;background-color:#FAFAFA;padding:5px;">
-            <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="svaeRInfo()">保存</a>
+            <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
             <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-cancel" onclick="doDel()">删除</a> 
             <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
      </div>
@@ -72,35 +57,31 @@ $(document).ready(function() {
          <div class="easyui-panel" style="border:0;margin:10px" title="基本信息">
                     <table>
                         <tr>
-                            <td class="span2">用户名:</td>
-                            <td class="span4">
-                                <input class="easyui-textbox" type="text" name="C_USER" data-options="required:true"   style="width: 100%" />
-                                <#--TODO缺少用户名字段-->
-                             </td>
-                             <td class="span2">姓名:</td>
+                            <td class="span2">单位名称:</td>
                             <td class="span4">
                                 <input class="easyui-textbox" type="text" name="C_NAME" data-options="required:true" style="width: 100%" />
                              </td>
+                             <td class="span2">用户名:</td>
+                            <td class="span4">
+                                <input class="easyui-textbox" type="text" name="C_USER" data-options="required:true" style="width: 100%" />
+                             </td>
                         </tr>
                         <tr>
-                            <td class="span2">出生日期:</td>
-                            <td class="span4"><input class="easyui-datebox" type="text" name="T_BIRTH" style="width: 100%" /></td>
-                            <td class="span2">职务:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_POSITION" data-options="required:true" style="width: 100%"/></td>
+                            <td class="span2">注册号:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_NUMBER" style="width: 100%" /></td>
+                            <td class="span2">确定评审业务机关:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_ORG" editable="false" style="width: 100%" /></td>
                         </tr>
                         <tr>
-                            <td class="span2">聘请证书编号:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_CERT" data-options="required:true" style="width: 100%" /></td>
-                            <td class="span2">行业:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_INSTUDRY" data-options="required:true" style="width: 100%" /></td>
+                           <td class="span2">专职人员:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="N_FULLTIME" style="width: 100%" /></td>
+                            <td class="span2">评审专业级别:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="S_LEVEL" editable="false"  style="width: 100%" /></td>
                         </tr>
                         <tr>
-                            <td class="span2">性别:</td>
-                            <td class="span4" ><input  type="radio" name="S_SEX"  value="男"  />男
-                                               <input  type="radio" name="S_SEX"  value="女" />女
-                            </td>
-                            <td class="span2">专业:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="S_PROFESSION" style="width: 100%" /></td>
+                           <td class="span2">租户编码:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_CODE" style="width: 100%" /></td>
+                            <!-- TODO缺少该字段  该字段唯一要 编辑时该字段 不能修改-->
                         </tr>
                     </table>
                </div>
@@ -109,42 +90,30 @@ $(document).ready(function() {
                         <tr>
                             <td class="span2">固话:</td>
                             <td class="span4" ><input class="easyui-textbox" type="text" name="C_TEL" style="width: 100%" /></td>
-                            <td class="span2">手机:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_MOBILE" style="width: 100%" /></td>
-                        </tr>
-                    </table>
-                   </div>
-                   <div class="easyui-panel" style="border:0;margin:10px;" title="学历">
-                     <table>
-                        <tr>
-                            <td class="span2">毕业学校:</td>
-                            <td colspan="3"><input class="easyui-textbox" type="text" name="C_SCHOOL" style="width: 100%"  /></td>
+                            <td class="span2">电子邮箱:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_EMAIL" style="width: 100%" /></td>
                         </tr>
                         <tr>
-                            <td class="span2">学位:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="S_DEGREE" style="width: 100%"/></td>
-                            <td class="span2">学历:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="text" name="S_EDUCATION" style="width: 100%"/></td>
-                        </tr>
-                    </table>
-                  </div>
-                   <div class="easyui-panel" style="border:0;margin:10px;" title="工作简历">
-                      <div class="span12">
-                          <input class="easyui-textbox" name="C_RESUME" type="text" data-options="multiline:true" style="width: 100%; height: 32px"/>
-                      </div>
-                   </div>
-                    <div class="easyui-panel" style="border:0;margin:10px;" title="密码设置">
-                     <table>
-                        <tr>
-                            <td class="span2">密码:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="password" name="C_PASSWD" id="C_PASSWD" style="width: 100%" /></td>
-                            <td class="span2">重复密码:</td>
-                            <td class="span4"><input class="easyui-textbox"  type="password" name="C_PASSWD1" id="C_PASSWD1" style="width: 100%" /></td>
+                            <td class="span2">传真:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_FAX" style="width: 100%" /></td>
+                            <td class="span2">省份:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="S_PROVINCE" style="width: 100%" /></td>
                         </tr>
                         <tr>
-                        <td><input type="button" class="btn" name="btn_reset" value="快速重置密码"/></td>
+                            <td class="span2">市:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="S_CITY" style="width: 100%" /></td>
+                            <td class="span2">县:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="S_COUNTY" style="width: 100%" /></td>
+                        </tr>
+                        <tr>
+                            <td class="span2">地址:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_ADDR" style="width: 100%" /></td>
+                            <td class="span2">邮政编码:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_ZIP" style="width: 100%" /></td>
                         </tr>
                     </table>
                    </div>
             </form>
 </@>
+
+ 
