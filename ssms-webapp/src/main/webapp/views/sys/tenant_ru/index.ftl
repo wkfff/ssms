@@ -25,20 +25,24 @@ function doDel(sid) {
     
 }
 function doEdit(sid) {
-    window.location.href = 'rec.html?refer=index&sid='+sid;
+    window.location.href = 'rec.html?refer=index&sid='+sid+'&pid=${pid}';
 }
 function doClear(id) {
     $(".easyui-textbox").textbox("setValue", "");
 }
 function doNew(){
-	window.location.href = 'rec.html';
+	if(!${pid}){
+		$.messager.alert("提示", "所属租户不存在");
+		return;
+	}
+	window.location.href = 'rec.html?pid='+${pid};
 }
 
 $(function () {
     $('#dg_index').datagrid({
         title:'评审用户管理',
         iconCls:'icon-star',
-        url: 'list.json?R_TENANT="${pid!}"',
+        url: 'list.json?R_SID='+${pid!},
         idField: 'SID',
         rownumbers: true,
         pagination: true,
@@ -48,7 +52,7 @@ $(function () {
         border:false,
         toolbar: '#dg_index_tb',
         columns: [[
-            {field: 'C_NAME', title: '用户名称', width: 500},
+            {field: 'C_USER', title: '用户名称', width: 500},
             {field: 'C_POSITION', title: '职务', width: 200},
             {field: 'S_TENANT', title: '所属机构', width: 100},
             {field: 'C_INSTUDRY', title: '行业', width: 160},

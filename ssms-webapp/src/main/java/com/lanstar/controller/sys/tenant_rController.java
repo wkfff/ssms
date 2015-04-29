@@ -33,9 +33,7 @@ public class tenant_rController extends DefaultController {
     public ViewAndModel rec( HandlerContext context ) {
       //TODO 这边后面可以设默认值context.setValue( name, value );
         // 1. 从参数中读取pid值
-        String pid = context.getValue( "pid" );
-        JdbcRecord record = context.DB.withTable( "SYS_TENANT_R" ).where( "SID=?", pid ).query();
-        return super.rec( context ).put( "tenant", record );
+        return super.rec( context );
     }
 
     /*
@@ -45,7 +43,7 @@ public class tenant_rController extends DefaultController {
      */
     @Override
     protected Class<? extends ActionValidator> getValidator() {
-        return tenant_ruValidator.class;
+        return tenant_rValidator.class;
     }
 
 }

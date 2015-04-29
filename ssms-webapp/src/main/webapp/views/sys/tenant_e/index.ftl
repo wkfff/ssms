@@ -1,5 +1,4 @@
-<#--<#import "/layout/_list.ftl" as layout/>-->
-<#import '/s/home/settings.ftl' as layout/>
+<#import "/layout/_list.ftl" as layout/>
 
 <#assign script>
 <script type="text/javascript">
@@ -57,7 +56,7 @@
 </script>
 </#assign>
 
-<@layout.listIndex script=script>
+<@layout.doLayout script=script>
 <table id="dg"></table>
 <div id="toolbar">
     <label for="C_NAME">企业名称:</label>
