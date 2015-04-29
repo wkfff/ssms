@@ -11,6 +11,7 @@ import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.db.JdbcRecord;
 
 /**
  * 评审租户表
@@ -31,7 +32,10 @@ public class tenant_rController extends DefaultController {
     @Override
     public ViewAndModel rec( HandlerContext context ) {
       //TODO 这边后面可以设默认值context.setValue( name, value );
-        return super.rec( context );
+        // 1. 从参数中读取pid值
+        String pid = context.getValue( "pid" );
+        JdbcRecord record = context.DB.withTable( "SYS_TENANT_R" ).where( "SID=?", pid ).query();
+        return super.rec( context ).put( "tenant", record );
     }
 
     /*

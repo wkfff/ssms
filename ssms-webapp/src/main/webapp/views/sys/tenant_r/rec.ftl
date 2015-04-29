@@ -119,6 +119,8 @@
            </@layout.row>
        <input type="button" class="btn" name="btn_reset" value="快速重置密码"/>
       </@layout.group>
+        <input type="hidden" name="R_SID" value="${tenant.SID}"/>
+        <input type="hidden" name="S_NAME" value="${tenant.C_NAME}"/>
     </@layout.form>
 </div>
 </@>
