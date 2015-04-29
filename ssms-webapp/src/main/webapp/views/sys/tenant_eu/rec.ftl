@@ -1,109 +1,148 @@
-<#--缺少上传这个控件-->
-<#import "/s/home/settings.ftl" as layout/>
+<#--TODO缺少上传照片这个控件-->
+<#import "/layout/_rec.ftl" as layout/>
 <#assign script>
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
+
 <script type="text/javascript">
-    var setting = {
-            sid:$url.getUrlParam("sid"),
-            dataUrl:"rec.json",
-            saveUrl:"save.json",
-            delUrl: "del.json",
-            editor: "C_SUMMARY"
+$(document).ready(function() {
+    $('#formMain').form('load','rec.json?sid=${sid!}&pid=${pid}');
+});
+    function svaeRInfo(){
+       if(($("#C_PASSWD").val())!=(($("#C_PASSWD1").val()))){
+            alert("两次输入密码一致");
+             return;
+        }
+        $("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
+        $("#C_PASSWD1").val($.md5($("#C_PASSWD1").val()));
+        $("#C_PASSWD1").attr("disabled", "true")  
+        doSave();
     }
-    $(document).ready(function(){
-        $form.init(setting);
-    });
-     function svaeInfo(){
-    	if(($("#C_PASSWD").val())!=(($("#C_PASSWD1").val()))){
-    		alert("两次输入密码一致");
-    		 return;
-    	}
-    	$("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
-    	$("#C_PASSWD1").val($.md5($("#C_PASSWD1").val()));
-    	$("#C_PASSWD1").attr("disabled", "true")
-    	$form.doSave();
+    
+    function doSave(){
+        //$.messager.progress();
+        $('#formMain').form('submit', {
+            url:'save.do?sid=${sid!}',
+            onSubmit: function(){
+                var isValid = $(this).form('validate');
+                if (!isValid){
+                    //$.messager.progress('close');
+                }
+                return isValid;
+            },
+            success: function(data){
+                $.messager.alert('保存','保存成功！');
+                window.location.href='index.html?pid='+${pid!}
+            }
+        });
     }
+    
+    function doDel(){
+        $.messager.confirm("删除确认", "您确认删除当前信息吗？", function (deleteAction) {
+                    if (deleteAction) {
+                        $.get("del.do", {sid:'${sid!}'}, function (data) {
+                            if (data == "true" || data== "\"\"") {
+                                $.messager.alert("提示", "删除成功");
+                                window.location.href='rec.html';
+                            }
+                            else {
+                                $.messager.alert("提示", data);
+                            }
+                        });
+                    }
+        });
+    }
+    
+    function doBack(){
+        window.location.href='${Referer!}';
+    }
+  
 </script>
 </#assign>
-<@layout.recIndex script>
-
-<!--导航栏-->
-<div class="navbar navbar-inverse">
-      <div class="navbar-inner">
-        <div class="container">
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active">
-                <a href="#">首页 ></a>
-              </li>
-              <li class="active">
-                <a href="#">管理中心 ></a>
-              </li>
-              <li class="active">
-                <a href="#">企业用户管理 ></a>
-              </li>
-              <li class="active">
-                <a href="#">企业用户编辑</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-</div>
-
-<@layout.toolbar>
-               <input type="button" class="btn"  onclick="svaeInfo()" value="保存">
-               <input type="button" class="btn" name="btn_del" value="删除">
-               <input type="button" class="btn" name="btn_back" value="返回">
-</@layout.toolbar>
-<div class="container">
-<!--表单-->
-<@layout.form id="mainForm">
-     <@layout.group title="基本信息">
-       <@layout.row>
-                <@layout.textbox name="C_NAME" title="用户名" desc="用户名" />
-       </@layout.row>
-       <@layout.row>
-               <@layout.textbox name="T_BIRTH" title="企业状态" desc="出生日期" span=6 />
-               <@layout.textbox name="C_CARD" title="身份证" desc="身份证" span=6 />
-       </@layout.row>
-       <@layout.row>
-               <@layout.radio name="S_SEX" title="性别" desc="性别" span=6 />
-               <@layout.textbox name="C_DEPT" title="部门" desc="部门" span=6 />
-       </@layout.row>
-       <@layout.row>
-               <@layout.textbox name="C_POSITION" title="职位" desc="职位" span=6 />
-       </@layout.row>
-     </@layout.group>
-     
-     <@layout.group title="联系方式">
-       <@layout.row>
-               <@layout.textbox name="C_MOBILE" title="手机" desc="手机" span=6 />
-               <@layout.textbox name="C_TEL" title="固话" desc="固话" span=6 />
-       </@layout.row>
-       <@layout.row>
-               <@layout.textbox name="C_EMAIL" title="电子邮箱" desc="电子邮箱"/>
-       </@layout.row>
-     </@layout.group>
-     
-     <@layout.group title="学历">
-       <@layout.row>
-               <@layout.textbox name="C_SCHOOL" title="毕业学校" desc="毕业学校" span=6 />
-               <@layout.textbox name="S_DEGREE" title="学位" desc="学位" span=6 />
-       </@layout.row>
-       <@layout.row>
-               <@layout.textbox name="S_EDUCATION" title="学位" desc="学历" span=6 />
-       </@layout.row>
-     </@layout.group>
-     <@layout.group title="密码设置">
-       <@layout.row>
-               <@layout.textbox name="C_PASSWD" title="密码" desc="密码"  span=6/>
-               <@layout.textbox name="C_PASSWD1" title="重复密码" desc="重复密码"  span=6/>
-       </@layout.row>
-       <input type="button" class="btn" name="btn_reset" value="快速重置密码"/>
-     </@layout.group>
-    
-</@layout.form>
-</div>
+<@layout.doLayout script>
+     <div class="easyui-panel" style="border:0;background-color:#FAFAFA;padding:5px;">
+            <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="svaeRInfo()">保存</a>
+            <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-cancel" onclick="doDel()">删除</a> 
+            <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
+     </div>
+     <form id="formMain" method="post">
+         <div class="easyui-panel" style="border:0;margin:10px" title="基本信息">
+                    <table>
+                        <tr>
+                            <td class="span2">用户名:</td>
+                            <td class="span4">
+                                <input class="easyui-textbox" type="text" name="C_USER" data-options="required:true"   style="width: 100%" />
+                             </td>
+                             <td class="span2">姓名:</td>
+                            <td class="span4">
+                                <input class="easyui-textbox" type="text" name="C_NAME" data-options="required:true" style="width: 100%" />
+                                <!--缺少该字段  -->
+                             </td>
+                        </tr>
+                        <tr>
+                            <td class="span2">出生日期:</td>
+                            <td class="span4"><input class="easyui-datebox" type="text" name="T_BIRTH" style="width: 100%" /></td>
+                            <td class="span2">职务:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_POSITION" data-options="required:true" style="width: 100%"/></td>
+                        </tr>
+                        <tr>
+                            <td class="span2">身份证:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_CARD" data-options="required:true" style="width: 100%" /></td>
+                            <td class="span2">性别:</td>
+                            <td class="span4" ><input  type="radio" name="S_SEX"  value="男"  />男
+                                               <input  type="radio" name="S_SEX"  value="女" />女
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="span2">部门:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_DEPT"  style="width: 100%" /></td>
+                        </tr>
+                    </table>
+               </div>
+                 <div class="easyui-panel" style="border:0;margin:10px;" title="联系方式">
+                    <table>
+                        <tr>
+                            <td class="span2">固话:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_TEL" style="width: 100%" /></td>
+                            <td class="span2">手机:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_MOBILE" style="width: 100%" /></td>
+                        </tr>
+                        <tr>
+                            <td class="span2">电子邮件:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_EMAIL" style="width: 100%" /></td>
+                        </tr>
+                        <tr>
+                         <td><input type="hidden" name="S_NAME" value="${tenant.S_TENANT!}"><td>
+                        <td><input type="hidden" name="R_SID" value="${pid!}"><td>
+                        </tr>
+                    </table>
+                   </div>
+                   <div class="easyui-panel" style="border:0;margin:10px;" title="学历">
+                     <table>
+                        <tr>
+                            <td class="span2">毕业学校:</td>
+                            <td colspan="3"><input class="easyui-textbox" type="text" name="C_SCHOOL" style="width: 100%"  /></td>
+                        </tr>
+                        <tr>
+                            <td class="span2">学位:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="S_DEGREE" style="width: 100%"/></td>
+                            <td class="span2">学历:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="S_EDUCATION" style="width: 100%"/></td>
+                        </tr>
+                    </table>
+                  </div>
+                    <div class="easyui-panel" style="border:0;margin:10px;" title="密码设置">
+                     <table>
+                        <tr>
+                            <td class="span2">密码:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="password" name="C_PASSWD" id="C_PASSWD" style="width: 100%" /></td>
+                             <td class="span2">重复密码:</td>
+                            <td class="span4"><input class="easyui-textbox"  type="password"  id="C_PASSWD1" style="width: 100%" /></td>
+                        </tr>
+                        <tr>
+                        <td><input type="button" class="btn" name="btn_reset" value="快速重置密码"/></td>
+                        </tr>
+                    </table>
+                   </div>
+            </form>
 </@>
