@@ -12,6 +12,7 @@
             striped: true,
             toolbar: '#toolbar',
             border: false,
+            fit: true,
             columns: [
                 [
                     {field: 'C_CODE', title: '专业代码', width: 100},
@@ -22,7 +23,7 @@
                         width: 80,
                         align: 'center',
                         formatter: function (value, row) {
-                            return "<a href='#' onclick='editorSTDTMP(\"" +row.C_CODE+"\")'>编辑模板</a>";
+                            return "<a href='#' onclick='editorSTDTMP(\"" + row.C_CODE + "\")'>编辑模板</a>";
                         }
                     }
                 ]
@@ -77,30 +78,37 @@
         });
     }
 
-    function editorSTDTMP(value){
-        window.location.href="/sys/stdtmp/index.html?profession="+value;
+    function editorSTDTMP(value) {
+        window.location.href = "/sys/stdtmp/index.html?profession=" + value;
     }
 </script>
 </#assign>
 <@layout.doLayout script>
-<table id="dg"></table>
-    <@layout.toolbar id="toolbar">
-        <@layout.textbox name='code' title="专业代码" />
-        <@layout.textbox name='value' title="专业名称" />
-        <@layout.button title="查询" icon="search" click="doSearch()"/>
-        <@layout.button title="重置" desc="清空查询条件" icon="clear" click="doClear()"/>
-        <@layout.button title="新增" icon="add" click="doNew()"/>
-        <@layout.button title="编辑" icon="edit" click="doEdit()"/>
-        <@layout.button title="删除" icon="remove" click="doDelete()"/>
-    </@>
+    <@layout.group title="专业管理" border=true icon='title' fit=true>
+    <table id="dg"></table>
+        <@layout.toolbar id="toolbar">
+        <div style="border-bottom: 1px solid #cccccc; background: #FFFFFF">
+            <@layout.textbox name='code' title="专业代码" />
+            <@layout.textbox name='value' title="专业名称" />
+            <@layout.button title="查询" icon="search" click="doSearch()"/>
+            <@layout.button title="重置" desc="清空查询条件" icon="clear" click="doClear()"/>
+        </div>
+        <div>
+            <@layout.button title="新增" icon="add" click="doNew()"/>
+            <@layout.button title="编辑" icon="edit" click="doEdit()"/>
+            <@layout.button title="删除" icon="remove" click="doDelete()"/>
+        </div>
 
-    <@layout.dialog id="dlg" okClick="doSave()">
-        <@layout.form id="fm">
-        <table>
-            <tr><@layout.td_textbox name="C_CODE" title="专业代码" must=true/></tr>
-            <tr><@layout.td_textbox name="C_VALUE" title="专业名称" must=true/></tr>
-        </table>
-            <@layout.hidden name="SID"/>
+        </@>
+
+        <@layout.dialog id="dlg" okClick="doSave()">
+            <@layout.form id="fm">
+            <table>
+                <tr><@layout.td_textbox name="C_CODE" title="专业代码" must=true/></tr>
+                <tr><@layout.td_textbox name="C_VALUE" title="专业名称" must=true/></tr>
+            </table>
+                <@layout.hidden name="SID"/>
+            </@>
         </@>
     </@>
 </@layout.doLayout>
