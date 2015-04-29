@@ -30,11 +30,15 @@ function doEdit(sid) {
 function doClear(id) {
     $(".easyui-textbox").textbox("setValue", "");
 }
+function doNew(){
+	window.location.href = 'rec.html';
+}
+
 $(function () {
     $('#dg_index').datagrid({
         title:'评审用户管理',
         iconCls:'icon-star',
-        url: 'list.json',
+        url: 'list.json?R_TENANT="${pid!}"',
         idField: 'SID',
         rownumbers: true,
         pagination: true,
@@ -65,5 +69,6 @@ $(function () {
             职务:   <input class="easyui-textbox" style="width:90px" name="C_POSITION">
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_index')">查询</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_index')" title="清空查询条件">重置</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-new" plain="true" onclick="doNew()">新增</a>
 </div>
 </@>
