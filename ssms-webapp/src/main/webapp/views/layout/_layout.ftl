@@ -13,6 +13,7 @@
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
     <script type="text/javascript" src="/resource/js/common.js"></script>
     <#if (header?length>0)>${header}</#if>
 </head>
@@ -46,12 +47,12 @@
                             breadItems.push(parent);
                         }
                         var $breadContent = $('#bread_content');
-                        $breadContent.html('>');
+                        $breadContent.html(' > ');
                         for (var i = breadItems.length - 1; i >= 0; i--) {
                             var item = breadItems[i];
                             var url = item.attributes.C_URL;
                             $('<a></a>').attr('href', url).text(item.text).click(doBreadClick).appendTo($breadContent);
-                            $breadContent.append('>');
+                            $breadContent.append(' > ');
                         }
                     }
                 }
@@ -62,7 +63,7 @@
     </#local>
     <@doLayout _header script>
     <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'north'">
+        <div data-options="region:'north'" style="overflow:hidden;">
             <#include 'parts/header.ftl'/>
         </div>
         <div data-options="region:'west', title:'功能导航', split:true" style="width: 200px">
@@ -71,8 +72,11 @@
         <div data-options="region:'center', header: '#bread'" style="overflow: hidden">
             <iframe id="mainFrame" name="mainFrame" frameborder="0" width="100%" height="100%"></iframe>
         </div>
-        <div id="bread">
-            <a href="#">首页</a><span id="bread_content"></span>
+        <div id="bread" class="panel-header">
+            <div class="panel-title panel-with-icon">
+                <a href="#"> 首页</a><span id="bread_content"></span>
+                <div class="panel-icon icon-home"></div>
+            </div>
         </div>
         <div data-options="region:'south'" style="height: 50px">
             <#include 'parts/copyright.ftl'/>
