@@ -69,7 +69,7 @@ $(function () {
 <@layout.doLayout script>
 <table id="dg_index"></table>
 <div id="dg_index_tb" style="padding:5px;height:auto">
-            用户名: <input class="easyui-textbox" style="width:90px" name="C_NAME">
+            用户名: <input class="easyui-textbox" style="width:90px" name="C_USER">
             职务:   <input class="easyui-textbox" style="width:90px" name="C_POSITION">
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_index')">查询</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_index')" title="清空查询条件">重置</a>
