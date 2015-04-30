@@ -133,9 +133,9 @@ $(document).ready(function() {
                              <td class="span2">重复密码:</td>
                             <td class="span4"><input class="easyui-textbox"  type="password" <#if !sid??>required="true"</#if> id="C_PASSWD1" style="width: 100%" /></td>
                         </tr>
-                        <#--<tr>
+                        <!-- <tr>
                         <td><input type="button" class="btn" name="btn_reset" value="快速重置密码"/></td>
-                        </tr>-->
+                        </tr> -->
                     </table>
                    </div>
             </form>
