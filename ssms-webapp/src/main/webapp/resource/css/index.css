@@ -13,7 +13,7 @@ body{ font-family:'微软雅黑';background:#2a83cf;}
 #hd{  height:74px;background:url(../images/topbg.png) repeat-x;}
 #hd .hd-wrap{ position:relative;height:74px; background:url(../images/topline.png) no-repeat left bottom;}
 #hd .hd-wrap .top-light{ position:absolute; width:346px; height:74px; background:url(../images/toplight.png); top:0; left:0;}
-h1{ float:left; margin:14px 0 0 24px; width:246px; height:54px; background:url(../images/logo.png);position:relative;top:1;}
+h1{ float:left; margin:14px 0 0 24px; width:296px; height:54px; background:url(../images/logo.png);position:relative;top:1;}
 .login-info{ float:left; margin:38px 0 0 23px; height:18px;}
 .login-info .welcome{ float:left; padding-left:20px; width:90px; height:18px; line-height:18px; background:url(../images/topuser.png) no-repeat left bottom; font-size:14px; color:#fff;}
 .login-info .welcome span{ float:left;}
@@ -22,10 +22,10 @@ h1{ float:left; margin:14px 0 0 24px; width:246px; height:54px; background:url(.
 .login-info .login-msg a{ float:left; height:18px; line-height:18px;}
 .login-info .login-msg a.msg-txt{ float:left; padding-left:20px; width:28px; background:url(../images/topmail.png) no-repeat left center; color:#fff; font-size:14px;}
 .login-info .login-msg a.msg-num{ float:left; width:16px; height:9px; margin:6px 0 0 4px; background:url(../images/countbg.png); color:#fff; line-height:9px; font-size:9px; text-align: center;}
-.toolbar{ float:right; margin:20px 14px 0 0;}
-.toolbar a{ float:left; height:42px; line-height:42px;}
-.toolbar a.home-btn{ width:40px; padding-left:46px; background:url(../images/home.png) no-repeat left top; color:#fff; font-size:14px;}
-.toolbar a.quit-btn{ width:39px; background:url(../images/exit.png) no-repeat left top;}
+.tool_bar{ float:right; margin:20px 14px 0 0;}
+.tool_bar a{ float:left; height:42px; line-height:42px;}
+.tool_bar a.home-btn{ width:40px; padding-left:46px; background:url(../images/home.png) no-repeat left top; color:#fff; font-size:14px;}
+.tool_bar a.quit-btn{ width:39px; background:url(../images/exit.png) no-repeat left top;}
 
 /*页面主体*/
 #bd{ padding-top:6px; margin:0 4px; background:#fff url(../images/centertopbg.png) repeat-x left top;}

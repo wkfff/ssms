@@ -1,4 +1,4 @@
---自评统计项
+/*自评统计项*/
 DELIMITER $$
 DROP PROCEDURE IF EXISTS `P_GRADE_SUM`$$
 CREATE PROCEDURE P_GRADE_SUM(IN in_sid INT)  
@@ -30,4 +30,19 @@ CREATE PROCEDURE P_GRADE_SUM(IN in_sid INT)
 	AND t1.R_PROJECT='TOTAL';
     END$$
 
+/*自评完成处理*/
+DROP PROCEDURE IF EXISTS `P_GRADE_COMPLETE_SELF`$$
+CREATE PROCEDURE P_GRADE_COMPLETE_SELF(IN in_sid INT)  
+    BEGIN
+	/*更改状态*/
+	UPDATE SSM_GRADE_E_M set N_STATE=1 where SID=in_sid;
+
+	/*从自评报告模板生成*/
+	INSERT INTO SSM_GRADE_REPORT(R_SID,C_CONTENT)
+	select in_sid,t3.C_CONTENT from 
+	SSM_GRADE_E_M t1
+	left join SYS_TENANT_E_PROFESSION t2 on t1.r_tenant=t2.r_tenant
+	left join SSM_GRADE_REPORT_TMP t3 on t3.P_PROFESSION=t2.P_PROFESSION
+	where not exists(select 1 from SSM_GRADE_REPORT where r_sid=in_sid);
+    END$$
 DELIMITER ;

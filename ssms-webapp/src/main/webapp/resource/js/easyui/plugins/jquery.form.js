@@ -119,11 +119,26 @@ if(!_1c(_1a,val)){
 _19.find("input[name=\""+_1a+"\"]").val(val);
 _19.find("textarea[name=\""+_1a+"\"]").val(val);
 _19.find("select[name=\""+_1a+"\"]").val(val);
+ke(_1a,val);
 }
 }
 }
 _14.onLoadSuccess.call(_12,_18);
 _19.form("validate");
+};
+//KindEditor设置值,林峰
+function ke(name,val){
+	var cc=$(_12).find("textarea[name=\""+name+"\"]");
+	if(cc.length){
+		cc.each(function(){
+			var f=$(this);
+			if(f.hasClass("easyui-kindeditor")){
+				f.kindeditor("editor").html(val);
+				return true;
+			}
+		});
+	}
+	return false;
 };
 function _1b(_1d,val){
 var cc=$(_12).find("input[name=\""+_1d+"\"][type=radio], input[name=\""+_1d+"\"][type=checkbox]");

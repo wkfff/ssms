@@ -113,9 +113,7 @@ public class grade_mController extends DefaultController {
     public ViewAndModel complete( HandlerContext context ) {
         String sid = context.getValue( "sid" );
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
-
-        context.DB.withTable( this.TABLENAME ).where( "SID=?", sid )
-                .value( "N_STATE", 1 ).save();
+        context.DB.getDBSession().execute( "call P_GRADE_COMPLETE_SELF(?)", new Object[]{sid} );
         return context.returnWith().set( "" );
     }
 }

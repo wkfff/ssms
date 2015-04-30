@@ -18,6 +18,7 @@
 <#macro doLayout header="" footer="">
 <#local _header>
 <link rel="stylesheet" href="/resource/css/base.css"/>
+<link rel="stylesheet" href="/resource/css/fix.css"/>
 <#--easyui-->
 <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
 <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
@@ -99,7 +100,7 @@
                     <a href="javascript:;" class="msg-num">10</a>
                 </div>-->
             </div>
-            <div class="toolbar ue-clear">
+            <div class="tool_bar ue-clear">
                 <a href="index" class="home-btn">首页</a>
                 <a href="javascript:;" class="quit-btn exit"></a>
             </div>

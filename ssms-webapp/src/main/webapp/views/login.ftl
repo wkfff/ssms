@@ -42,7 +42,7 @@
         </div>
     </div>
 </div>
-<div id="ft">CopyRight&nbsp;2014&nbsp;&nbsp;版权所有&nbsp;&nbsp;uimaker.com专注于ui设计&nbsp;&nbsp;苏ICP备09003079号</div>
+<div id="ft">CopyRight&nbsp;2015&nbsp;&nbsp;版权所有&nbsp;&nbsp;福建永创意信息科技有限公司,福州蓝石电子有限公司 技术支持</div>
 </body>
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
 <script type="text/javascript" src="/resource/js/common.js"></script>

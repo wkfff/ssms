@@ -59,9 +59,11 @@ VALUES
   (19, 13, '在线自评', '', '', 0, 'admin', '2015-04-26 10:58:58', NULL, NULL, '2015-04-26 10:58:58', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
   (20, 16, '系统配置', '', '', 0, 'admin', '2015-04-27 11:33:24', NULL, NULL, '2015-04-27 11:33:24', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
   (21, 20, '系统导航配置', '/sys/nav/index.html', '', 0, 'admin', '2015-04-27 11:33:44', NULL, NULL, '2015-04-27 11:33:44', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (22, 18, '开始自评', '/e/grade_m/rec.html', '', -1, NULL, '2015-04-27 14:40:08', NULL, NULL, '2015-04-27 14:40:08', -1, NULL, 'E', NULL, NULL, NULL, NULL),
-  (23, 18, '自评历史', '/e/grade_m/history.html', '', -1, NULL, '2015-04-27 14:40:36', NULL, NULL, '2015-04-27 14:40:36', -1, NULL, 'E', NULL, NULL, NULL, NULL),
-  (24, 18, '自评草稿', '/e/grade_m/draft.html', '', -1, NULL, '2015-04-27 14:42:13', NULL, NULL, '2015-04-27 14:42:13', -1, NULL, 'E', NULL, NULL, NULL, NULL);
+  (22, 19, '开始自评', '/e/grade_m/rec.html', '', -1, NULL, '2015-04-27 14:40:08', NULL, NULL, '2015-04-27 14:40:08', -1, NULL, 'E', NULL, NULL, NULL, NULL),
+  (23, 19, '自评历史', '/e/grade_m/history.html', '', -1, NULL, '2015-04-27 14:40:36', NULL, NULL, '2015-04-27 14:40:36', -1, NULL, 'E', NULL, NULL, NULL, NULL),
+  (24, 19, '自评草稿', '/e/grade_m/draft.html', '', -1, NULL, '2015-04-27 14:42:13', NULL, NULL, '2015-04-27 14:42:13', -1, NULL, 'E', NULL, NULL, NULL, NULL),
+  (25, 19, '自评报告', '/e/grade_rep/index.html', '', -1, NULL, '2015-04-27 14:42:13', NULL, NULL, '2015-04-27 14:42:13', -1, NULL, 'E', NULL, NULL, NULL, NULL),
+  (26, 19, '自评结果', '/e/grade_result/index.html', '', -1, NULL, '2015-04-27 14:42:13', NULL, NULL, '2015-04-27 14:42:13', -1, NULL, 'E', NULL, NULL, NULL, NULL);
 
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS */;

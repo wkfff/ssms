@@ -71,34 +71,13 @@
         window.location.href='${referer!}';
     }
     
-    $.extend($.fn.datagrid.methods, {
-            editCell: function(jq,param){
-                return jq.each(function(){
-                    var opts = $(this).datagrid('options');
-                    var fields = $(this).datagrid('getColumnFields',true).concat($(this).datagrid('getColumnFields'));
-                    for(var i=0; i<fields.length; i++){
-                        var col = $(this).datagrid('getColumnOption', fields[i]);
-                        col.editor1 = col.editor;
-                        if (fields[i] != param.field){
-                            col.editor = null;
-                        }
-                    }
-                    $(this).datagrid('beginEdit', param.index);
-                    for(var i=0; i<fields.length; i++){
-                        var col = $(this).datagrid('getColumnOption', fields[i]);
-                        col.editor = col.editor1;
-                    }
-                });
-            }
-        });
-
     $(function () {
         $('#formMain').form('load','rec.json?sid=${sid!}');
         <#if (_FLAG_=='-1')>$form.disableForm('formMain',true);</#if>
         
         $('#dg').<#if (_FLAG_!='-1')>e</#if>datagrid({
             title:'自评内容',border:0,
-            iconCls: 'icon-star',
+            //iconCls: 'icon-star',
             url: '/e/grade_d/list.json?R_SID=${sid!-1}',
             updateUrl:'/e/grade_d/save.do',
             idField: 'SID',
@@ -108,7 +87,7 @@
             fitColumns: false,
             autoRowHeight:true,
             fit:true,
-            border:false,
+            //border:false,
             autoSave:true,
             striped: false,
             columns: [[
@@ -123,18 +102,21 @@
                             return value=='1'?'是':'否';
                         }},
                 {field: 'N_SCORE_REAL', title: '实际得分', align:'center',width: 60,editor:'numberbox'}
-            ]],
+            ]]
+            <#if (_FLAG_=='-1')>,
             onLoadSuccess: function(data){
-                //$(this).datagrid("autoMergeCells",["S_CATEGORY","S_PROJECT"]);
+                $(this).datagrid("autoMergeCells",["S_CATEGORY","S_PROJECT"]);
             }
+            </#if>
         });
     });
 </script>
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div title="在线自评" data-options="region:'north',iconCls:'icon-star'" style="height:170px;overflow:hidden;border:0;">
-          <div class="easyui-panel" style="border:0;background-color:#FAFAFA;padding:5px;">
+    <div title="在线自评" data-options="region:'north',collapsible:false" style="height:200px;overflow:hidden;">
+          
+          <div class="toolbar ue-clear">
             <#if (_FLAG_=='0')>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
             </#if>
@@ -179,7 +161,7 @@
     </div>
     
     <#if (_FLAG_!='0')>
-    <div data-options="region:'center'" style="border:0;">
+    <div data-options="region:'center'" >
         <table id="dg" class="easyui-datagrid" title="自评内容" />
     </div>
     </#if>

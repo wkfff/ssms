@@ -16,8 +16,8 @@
     }
     $(function () {
         $('#dg_history').datagrid({
-            //title:'自评历史',
-            iconCls:'icon-star',
+            title:'自评历史',
+            //iconCls:'icon-star',
             url: 'list.json?N_STATE=1',
             idField: 'SID',
             rownumbers: true,
@@ -25,7 +25,7 @@
             singleSelect: true,
             fitColumns: false,
             fit:true, 
-            border:false,
+            //border:false,
             toolbar: '#dg_history_tb',
             columns: [[
                 {field: 'C_TITLE', title: '标题', width: 500},
@@ -45,7 +45,7 @@
 </#assign>
 <@layout.doLayout script>
     <table id="dg_history"></table>
-    <div id="dg_history_tb" style="padding:5px;height:auto">
+    <div id="dg_history_tb" class="toolbar ue-clear">
             自评日期从: <input class="easyui-datebox" style="width:90px" name="T_START">
             至: <input class="easyui-datebox" style="width:90px" name="T_END">
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_history')">查询</a>

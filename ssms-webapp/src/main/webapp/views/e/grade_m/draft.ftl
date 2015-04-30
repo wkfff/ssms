@@ -34,8 +34,8 @@
     }
     $(function () {
         $('#dg_draft').datagrid({
-            //title:'自评草稿',
-            iconCls:'icon-star',
+            title:'自评草稿',
+            //iconCls:'icon-star',
             url: 'list.json?N_STATE=0',
             idField: 'SID',
             rownumbers: true,
@@ -44,7 +44,7 @@
             fitColumns: false,
             striped: true,
             fit:true, 
-            border:false,
+            //border:false,
             pageSize:20,
             toolbar: '#dg_draft_tb',
             columns: [[
