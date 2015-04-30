@@ -28,6 +28,19 @@
 <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 <script type="text/javascript" src="/resource/js/common.js"></script>
 <#if (header?length>0)>${header}</#if>
+<style type="text/css">
+    label{
+        line-height: 33px;
+    }
+</style>
+<script type="text/javascript">
+    $.fn.textbox.defaults.height = 33;
+    $.each($.parser.plugins, function (i, e) {
+        if ($.fn[e].defaults.height && $.fn[e].defaults.height < 30) {
+            $.fn[e].defaults.height = 33;
+        }
+    });
+</script>
 </#local>
 <#local _footer><#if (footer?length>0)>${footer}</#if>${vars.COMPONENT_INIT_SCRIPTS}<#--输出组件初始化脚本--></#local>
 <@base header=_header footer=_footer>

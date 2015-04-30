@@ -7,7 +7,7 @@
 </#macro>
 
 <#macro toolbar id="">
-<div id=${id} class="easyui-panel">
+<div id=${id}>
     <#nested />
 </div>
 </#macro>
