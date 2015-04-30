@@ -31,9 +31,10 @@ public class tenant_ruController extends DefaultController {
      */
     @Override
     public ViewAndModel rec( HandlerContext context ) {
-         String pid = context.getValue( "pid" );
-         JdbcRecord record= context.DB.withTable( "SYS_TENANT_R" ).where( "SID=?", pid ).query();
-        return  super.rec( context ).put( "tenant",record );
+        String pid = context.getValue( "pid" );
+        JdbcRecord record = context.DB.withTable( "SYS_TENANT_R" )
+                                      .where( "SID=?", pid ).query();
+        return super.rec( context ).put( "tenant", record );
     }
 
     /*

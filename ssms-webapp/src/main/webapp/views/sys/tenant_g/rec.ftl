@@ -1,74 +1,103 @@
-<#--缺少上传这个控件--> 
-<#import "/s/home/settings.ftl" as layout/> <#assign script>
+<#import "/layout/_rec.ftl" as layout/>
+<#assign script>
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
+<script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 <script type="text/javascript">
-    var setting = {
-        sid : $url.getUrlParam("sid"),
-        dataUrl : "rec.json",
-        saveUrl : "save.json",
-        delUrl : "del.json",
-        editor : "C_SUMMARY"
+ $(document).ready(function() {
+          $('#formMain').form('load','rec.json?sid=${sid!}');
+ });
+String.prototype.replaceAll = function(s1,s2) { 
+    return this.replace(new RegExp(s1,"gm"),s2); 
+        }
+   function doSave(){
+        //$.messager.progress();
+        $('#formMain').form('submit', {
+            url:'save.do?sid=${sid!}',
+            onSubmit: function(){
+                var isValid = $(this).form('validate');
+                if (!isValid){
+                    //$.messager.progress('close');
+                }
+                return isValid;
+            },
+            success: function(data){
+                $.messager.alert("提示", "保存成功");
+                window.location.href='index.html?refer=index&sid='+data.replaceAll('"','');
+            }
+        });
     }
-
-    $(document).ready(function() {
-        $form.init(setting);
-    });
+    function doDel(){
+        $.messager.confirm("删除确认", "您确认删除当前的信息吗？", function (deleteAction) {
+                    if (deleteAction) {
+                        $.get("del.do", {sid:'${sid!}'}, function (data) {
+                            if (data == "true" || data== "\"\"") {
+                                $.messager.alert("提示", "删除成功");
+                                window.location.href='rec.html';
+                            }
+                            else {
+                                $.messager.alert("提示", data);
+                            }
+                        });
+                    }
+        });
+    }
+    
+    function doBack(){
+        window.location.href='${Referer!}';
+    }
+  
 </script>
 </#assign>
- <@layout.recIndex script>
-
-<!--导航栏-->
-<div class="navbar navbar-inverse">
-    <div class="navbar-inner">
-        <div class="container">
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <li class="active"><a href="#">首页 ></a></li>
-                    <li class="active"><a href="#">管理中心 ></a></li>
-                    <li class="active"><a href="#">政府机构管理 ></a></li>
-                    <li class="active"><a href="#">政府机构编辑</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-
-<@layout.toolbar class="navbar-fixed-top" outer="<br><br>">
-                <input type="button" class="btn" name="btn_save"
-                    value="保存"> <input type="button" class="btn"
-                    name="btn_del" value="删除"> <input
-                    type="button" class="btn" name="btn_back" value="返回">
-</@layout.toolbar>
-
-<div class="container">
-    <!--表单-->
-    <@layout.form id="mainForm">
-        <@layout.group title="基本信息">
-            <@layout.row>
-                <@layout.textbox name="C_NAME" title="单位名称" desc="单位名称" />
-            </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="S_PROVINCE" title="省" desc="省"  span=6 />
-                <@layout.textbox name="S_CITY" title="市" desc="市" span=6 />
-            </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="S_COUNTY" title="县" desc="县"  span=6 />
-            </@layout.row>
-        </@layout.group>
-        <@layout.group title="联系方式">
-            <@layout.row>
-                <@layout.textbox name="C_ADDRE" title="通讯地址" desc="通讯地址"  />
-            </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="C_FAX" title="传真" desc="传真"  span=6 />
-                <@layout.textbox name="C_TEL" title="固话" desc="固话" span=6 />
-            </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="C_EMAIL" title="电子邮箱" desc="电子邮箱"  span=6 />
-                <@layout.textbox name="C_ZIP" title="邮政编码" desc="邮政编码" span=6 />
-            </@layout.row>
-        </@layout.group>
-
-    </@layout.form>
-</div>
+<@layout.doLayout script>
+     <div class="easyui-panel" style="border:0;background-color:#FAFAFA;padding:5px;">
+            <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
+            <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-cancel" onclick="doDel()">删除</a> 
+            <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
+     </div>
+     <form id="formMain" method="post">
+         <div class="easyui-panel" style="border:0;margin:10px" title="基本信息">
+                    <table>
+                        <tr>
+                            <td class="span2">租户编码:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_CODE"  style="width: 100%" /></td>
+                            <td class="span2">省:</td>
+                            <td class="span4"> <input class="easyui-textbox" type="text" name="S_PROVINCE"  data-options="required:true"  style="width: 100%" /></td>
+                        </tr>
+                        <tr>
+                            <td class="span2">单位名称:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_NAME" data-options="required:true" style="width: 100%" /></td>  
+                        </tr>
+                        <tr>
+                            <td class="span2">市:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="S_CITY"  data-options="required:true" style="width: 100%" /></td>
+                            <td class="span2">县:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="S_COUNTY"  data-options="required:true"  style="width: 100%" /></td>
+                        </tr>
+                    </table>
+               </div>
+                 <div class="easyui-panel" style="border:0;margin:10px;" title="联系方式">
+                    <table>
+                        <tr>
+                            <td class="span2">地址:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_ADDR" style="width: 100%" /></td>
+                            <td class="span2">电子邮箱:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_EMAIL" style="width: 100%" /></td>
+                        </tr>
+                        <tr>
+                            <td class="span2">固话:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_TEL" style="width: 100%" /></td>
+                            <td class="span2">邮政编码:</td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_ZIP" style="width: 100%" /></td>
+                        </tr>
+                        <tr>
+                            <td class="span2">传真:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_FAX" style="width: 100%" /></td>
+                        </tr>
+                        
+                    </table>
+                   </div>
+            </form>
 </@>
+
+ 
+
