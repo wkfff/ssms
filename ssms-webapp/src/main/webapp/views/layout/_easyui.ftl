@@ -1,13 +1,13 @@
 <#import "_vars.ftl" as vars/>
 
-<#macro group title icon="" border=false fit=false>
-<div class="easyui-panel" title="${title}" data-options="border:${border?string}, fit:${fit?string}, <#if (icon?length > 0)>iconCls: 'icon-${icon}</#if>'">
+<#macro group title border=false fit=false>
+<div class="easyui-panel" title="${title}" data-options="border:${border?string}, fit:${fit?string}">
     <#nested />
 </div>
 </#macro>
 
 <#macro toolbar id="">
-<div id=${id} class="easyui-panel">
+<div id=${id}>
     <#nested />
 </div>
 </#macro>

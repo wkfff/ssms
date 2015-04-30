@@ -42,7 +42,6 @@ function doNew(){
 $(function () {
     $('#dg_index').datagrid({
         title:'企业列表',
-        iconCls:'icon-star',
         url: 'list.json',
         idField: 'SID',
         rownumbers: true,
@@ -53,14 +52,14 @@ $(function () {
         border:false,
         toolbar: '#dg_index_tb',
         columns: [[
-            {field: 'C_NAME', title: '企业名称', width: 300},
-            {field: 'S_PROVINCE', title: '省份', width: 100},
-            {field: 'S_CITY', title: '地市', width: 100},
-            {field: 'S_COUNTY', title: '县市', width: 100},
-            {field: 'S_NATURE', title: '企业性质', width: 100},
-            {field: 'T_PAY', title: '缴费日期', width: 150},
-            {field: 'T_PAY_NEXT', title: '下次缴费日期', width: 150},
-            {field: 'SID', title: '操作', width: 220,align:'center',
+            {field: 'C_NAME', title: '企业名称', width: 200},
+            {field: 'S_PROVINCE', title: '省', width: 70},
+            {field: 'S_CITY', title: '市', width: 70},
+            {field: 'S_COUNTY', title: '区(县)', width: 70},
+            {field: 'S_NATURE', title: '企业性质', width: 70},
+            {field: 'T_PAY', title: '缴费日期', width: 100},
+            {field: 'T_PAY_NEXT', title: '下次缴费日期', width: 100},
+            {field: 'SID', title: '操作', width: 130,align:'center',
                 formatter:function(value,row){
                         return "<a href='#' onclick='doEdit("+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doListUser("+value+")'>用户列表</a>";
                     }}
