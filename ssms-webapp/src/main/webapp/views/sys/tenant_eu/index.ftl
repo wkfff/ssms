@@ -41,7 +41,6 @@ function doNew(){
 $(function () {
     $('#dg_index').datagrid({
         title:'企业用户管理',
-        iconCls:'icon-star',
         url: 'list.json?R_SID='+${pid!},
         idField: 'SID',
         rownumbers: true,

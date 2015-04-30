@@ -42,7 +42,6 @@ function doNew(){
 $(function () {
     $('#dg_index').datagrid({
         title:'政府机构列表',
-        iconCls:'icon-star',
         url: 'list.json',
         idField: 'SID',
         rownumbers: true,

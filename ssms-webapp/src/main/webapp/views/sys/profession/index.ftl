@@ -84,7 +84,7 @@
 </script>
 </#assign>
 <@layout.doLayout script>
-    <@layout.group title="专业管理" border=true icon='title' fit=true>
+    <@layout.group title="专业管理" border=true fit=true>
     <table id="dg"></table>
         <@layout.toolbar id="toolbar">
         <div style="border-bottom: 1px solid #cccccc; background: #FFFFFF">

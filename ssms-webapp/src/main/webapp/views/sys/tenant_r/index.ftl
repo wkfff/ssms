@@ -40,7 +40,6 @@ function doNew(){
 $(function () {
     $('#dg_index').datagrid({
         title:'评审机构列表',
-        iconCls:'icon-star',
         url: 'list.json',
         idField: 'SID',
         rownumbers: true,
