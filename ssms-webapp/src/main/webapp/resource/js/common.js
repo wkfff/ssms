@@ -101,10 +101,14 @@
     }
 }(jQuery);
 
-String.prototype.format = function () {
-    var args = arguments;
-    return this.replace(/\{(\d+)\}/g, function (m, i) {
-        return args[i] !== undefined ? args[i] : m;
-    });
-};
+if (!String.prototype.format) {
+    String.prototype.format = function () {
+        var formatted = this;
+        for (var i = 0; i < arguments.length; i++) {
+            var regexp = new RegExp('\\{' + i + '\\}', 'gi');
+            formatted = formatted.replace(regexp, arguments[i]);
+        }
+        return formatted;
+    };
+}
 
