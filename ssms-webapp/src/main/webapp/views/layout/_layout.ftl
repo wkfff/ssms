@@ -56,7 +56,7 @@
 </#local>
 <#local _footer>
 <#--easyui-->
-<link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
 <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
 <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
