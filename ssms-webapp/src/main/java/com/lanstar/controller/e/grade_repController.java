@@ -43,5 +43,4 @@ public class grade_repController extends DefaultController {
                 context.DB.withTable( this.TABLENAME ).where( "R_SID=?", r_sid )
                         .query() );
     }
-
 }

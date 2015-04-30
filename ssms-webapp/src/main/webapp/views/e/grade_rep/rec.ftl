@@ -67,29 +67,14 @@
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-
-    <div data-options="region:'west',split:true" title="自评报告" style="width:200px;">
-        <div style="padding:6px;">
-            <ul class="easyui-tree">
-                <li>
-                    <span><a href="#" onclick="loadData(5)">2015年企业自评</a></span>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div data-options="region:'center'" style="overflow:hidden;border:0;padding:0px;margin:0px;">
-        <div class="easyui-panel" style="border:0;background-color:#FAFAFA;padding:5px;">
-            <#if (_FLAG_!='-1')>
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-ok" onclick="doComplete()">完成报告</a>
-            </#if>
-            <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
+    <div data-options="region:'north'" style="overflow:hidden;border:0;padding:0px;margin:0px;">
+        <div class="toolbar ue-clear">
+                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="alert('暂未完成');">下载</a>
          </div>
-         
+    </div>
+    <div data-options="region:'center'" style="overflow:hidden;border:0;padding:0px;margin:0px;">
          <form id="formMain" method="post">
-                <textarea class="easyui-kindeditor" id="C_CONTENT" name="C_CONTENT" data-options="width:'100%',height:'600px'"></textarea>
-                <input type="text" id="R_SID" name="R_SID"/>
+                <textarea class="easyui-kindeditor" id="C_CONTENT" name="C_CONTENT" data-options="width:'100%',height:'600'"></textarea>
          </form>
     </div>
 </div>
