@@ -1,85 +1,37 @@
-/*
- * 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
- * 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
- * 文件名称：base.css
- * 创建时间：2015-04-29
- * 创建用户：张铮彬
- */
-
-:focus {
-    outline: 0
+/*css reset*/
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td , i{
+    margin:0;
+    padding:0;
+    border:0;
+    font-weight:inherit;
+    font-style:inherit;
+    font-size:100%;
+    font-family:inherit;
+    vertical-align:baseline;
 }
-
-.easyui-tabs table {
-    table-layout: fixed;
-}
-
-.datagrid-row-selected .datagrid-cell a {
-    color: #FFF;
-}
-
-.tree-node-selected a {
-    color: #FFF;
-}
-
-.panel-title a {
-    text-decoration: none;
-    color: #777;
-}
-
-.span12 {
-    width: 720px
-}
-
-.span11 {
-    width: 660px
-}
-
-.span10 {
-    width: 600px
-}
-
-.span9 {
-    width: 540px
-}
-
-.span8 {
-    width: 480px
-}
-
-.span7 {
-    width: 420px
-}
-
-.span6 {
-    width: 360px
-}
-
-.span5 {
-    width: 300px
-}
-
-.span4 {
-    width: 240px
-}
-
-.span3 {
-    width: 180px
-}
-
-.span2 {
-    width: 120px
-}
-
-.span1 {
-    width: 60px
-}
+body {line-height:1.5;}
+table {border-collapse: collapse;border-spacing:0;}
+caption, th, td ,b,strong{text-align:left;font-weight:normal;}
+table, td, th {vertical-align:middle;}
+blockquote:before, blockquote:after, q:before, q:after {content:"";}
+blockquote, q {quotes:"" "";}
+a img {border:none;}
+em,cite{font-style:normal;}
 
 
-/* 一条横线 */
-.hr {
-    height: 0;
-    border-top: 1px solid #CCCCCC;
-    margin-top: 5px;
-    margin-bottom: 5px
-}
+body { background:#fff; font: 12px/1.5 Tahoma,'宋体';color:#000;}
+h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#111;}
+a {text-decoration:none;cursor:pointer;}
+dl, dt, dd, ol, ul, li{ list-style:none;}
+
+/*some common class*/
+.left{float:left;}
+.right{float:right;}
+
+/*clear*/
+.ue-clear:after{content: "";display:block;height:0;clear:both;visibility:hidden;}
+.ue-clear{display:inline-block;}
+*html .ue-clear{height:1%;}
+.ue-clear{display:block; overflow:hidden;}
+
+.placeholder{color:#ddd;}

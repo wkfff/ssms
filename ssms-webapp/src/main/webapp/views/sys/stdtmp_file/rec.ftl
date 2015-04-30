@@ -15,7 +15,7 @@
                 success: function (result) {
                     result = $.parseJSON(result);
                     $.messager.alert('提示信息', '保存成功!', "info", function(){
-                        window.location.href = 'rec.html?sid='+result.SID+"&backURL=${referer!}";
+                        window.location.href = 'rec.html?sid='+result.SID+"&backURL=${backURL!referer}";
                     });
                 }
             });
@@ -73,7 +73,7 @@
                             <option <#if (P_TMPFILE?? && item.key=P_TMPFILE)>selected="selected"</#if> value="${item.key}">${item.value}</option>
                         </#list>
                     </select>
-                    <#if P_TMPFILE??><a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?pid=${SID}">[配置模板]</a></#if>
+                    <#if P_TMPFILE??><a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?pid=${SID}&backURL=${backURL!referer}">[配置模板]</a></#if>
                 </td>
             </tr>
             <tr>

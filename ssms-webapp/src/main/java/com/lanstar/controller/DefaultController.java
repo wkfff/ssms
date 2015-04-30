@@ -8,17 +8,17 @@
 
 package com.lanstar.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.StringHelper;
-import com.lanstar.helper.easyui.EasyUIControllerHelper;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.DBPaging;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
+import com.lanstar.helper.easyui.EasyUIControllerHelper;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class DefaultController extends BaseController {
     public DefaultController( String tablename ) {
@@ -59,7 +59,7 @@ public abstract class DefaultController extends BaseController {
      * 表单数据
      */
     public ViewAndModel rec( HandlerContext context ) {
-        String sid = (String) context.getValue( "sid" );
+        String sid = context.getValue( "sid" );
         return context.returnWith().set(
                 context.DB.withTable( this.TABLENAME ).where( "SID=?", sid )
                         .query() );
@@ -143,3 +143,8 @@ public abstract class DefaultController extends BaseController {
         return filter;
     }
 }
+
+
+/*
+    TODO: 添加返回字段的过滤，不应该返回所有字段，而是有选择的进行返回。
+ */

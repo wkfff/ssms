@@ -26,12 +26,7 @@ public class tenant_eController extends DefaultController {
      */
     @Override
     public ViewAndModel rec( HandlerContext context ) {
-        //默认值设置
-        context.setValue( "N_EMPLOYEE", 0 );
-        context.setValue( "N_SAFETY", 0 );
-        context.setValue( "N_SPECIAL", 0 );
-        context.setValue( "N_ASSETS", 0 );
-        context.setValue( "N_INCOME", 0 );
+        resolveMultiParameter( context, "SYS_PROFESSION" );
         return super.rec( context );
     }
 

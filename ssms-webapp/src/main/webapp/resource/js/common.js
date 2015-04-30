@@ -100,3 +100,11 @@
         }
     }
 }(jQuery);
+
+var plugins = ['textbox','filebox','combo','combobox','combotree','combogrid','numberbox','validatebox','searchbox','spinner','numberspinner','timespinner','datetimespinner','calendar', 'datebox', 'datetimebox', 'slider'];
+$.each(plugins, function (i, e) {
+    var plugin = $.fn[e];
+    var pluginDefaults = plugin.defaults;
+    if (pluginDefaults.width && pluginDefaults.width == 'auto') pluginDefaults.width = '100%';
+    pluginDefaults.height = 33;
+});

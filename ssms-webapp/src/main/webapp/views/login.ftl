@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>${_TITLE_!"安全生产标准化管理系统"}</title>
-    <link rel="stylesheet" href="/resource/css/_base.css"/>
+    <link rel="stylesheet" href="/resource/css/base.css"/>
     <link rel="stylesheet" href="/resource/css/login.css"/>
 </head>
 <body>

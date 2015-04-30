@@ -35,3 +35,7 @@
 .layout-expand-west .panel-title{
 	background:transparent !important;
 }
+
+label {
+    line-height: 33px;
+}

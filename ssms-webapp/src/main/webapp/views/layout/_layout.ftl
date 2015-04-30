@@ -16,6 +16,7 @@ ${footer}</html>
 
 <#macro doLayout header="" footer="">
     <#local _header><link rel="stylesheet" href="/resource/css/base.css"/>
+    <link rel="stylesheet" href="/resource/css/common.css"/>
     <link rel="stylesheet" href="/resource/css/fix.css"/>
     <#--easyui-->
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
@@ -26,21 +27,7 @@ ${footer}</html>
     <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
     <script type="text/javascript" src="/resource/js/core.js"></script>
     <script type="text/javascript" src="/resource/js/common.js"></script>
-    ${header}
-    <style type="text/css">
-        label {
-            line-height: 33px;
-        }
-    </style>
-    <script type="text/javascript">
-        var plugins = ['textbox','filebox','combo','combobox','combotree','combogrid','numberbox','validatebox','searchbox','spinner','numberspinner','timespinner','datetimespinner','calendar', 'datebox', 'datetimebox', 'slider'];
-        $.each(plugins, function (i, e) {
-            var plugin = $.fn[e];
-            var pluginDefaults = plugin.defaults;
-            if (pluginDefaults.width && pluginDefaults.width == 'auto') pluginDefaults.width = '100%';
-            pluginDefaults.height = 33;
-        });
-    </script></#local>
+    ${header}</#local>
     <#local _footer>${footer}${vars.COMPONENT_INIT_SCRIPTS}<#--输出组件初始化脚本--></#local>
     <@base header=_header footer=_footer>
         <#nested/>
@@ -48,9 +35,8 @@ ${footer}</html>
 </#macro>
 
 <#macro indexLayout>
-    <#local _header>
-    <link rel="stylesheet" href="/resource/css/base.css"/>
-    <link rel="stylesheet" href="/resource/css/_base.css"/>
+    <#local _header><link rel="stylesheet" href="/resource/css/base.css"/>
+    <link rel="stylesheet" href="/resource/css/common.css"/>
     <link rel="stylesheet" href="/resource/css/index.css"/>
     </#local>
     <#local _footer>
@@ -61,6 +47,8 @@ ${footer}</html>
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
+    <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
+    <script type="text/javascript" src="/resource/js/kindeditor/kindeditor-min.js"></script>
     <#--首页脚本-->
     <script type="text/javascript">
         $(".nav").on("click", "li", function () {
