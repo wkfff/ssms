@@ -6,6 +6,7 @@
         init: function () {
             tree.init();
             listChildren.init();
+            listFile.init();
         }
     };
     var tree = {
@@ -66,6 +67,11 @@
                     tree.reload();
                 }
             });
+        },
+        del: function () {
+            $.post('del.do', {sid: page.sid}, function () {
+                tree.reload();
+            })
         }
     };
     var listChildren = {
@@ -80,21 +86,28 @@
             toolbar: '#list_children_tb',
             border: false,
             autoSave: true,
-            fit: true,
             updateUrl: 'save.do',
             onBeforeSave: function (index) {
                 listChildren.el.edatagrid('endEdit', index);
                 var data = listChildren.getSelect();
-                $.post('save.do', data, function(){
-                    // TODO: 添加处理
+                data.R_SID = page.sid;
+                data.P_PROFESSION = tree.selectNode.attributes.P_PROFESSION;
+                data.S_PROFESSION = tree.selectNode.attributes.S_PROFESSION;
+                // 删除isNewRecord
+                data.isNewRecord = undefined;
+                $.post('save.do', data, function () {
+                    tree.reload();
                 });
                 return false;
             },
             columns: [
                 [
                     {field: 'C_NAME', title: '名称', width: '30%', editor: 'textbox'},
-                    {field: 'C_DESC', title: '描述', width: '30%', editor: 'textarea'},
-                    {field: 'N_INDEX', title: '排序号', width: '10%', align: 'center', editor: 'numberbox'}
+                    {field: 'C_DESC', title: '描述', width: '50%', editor: 'textarea'},
+                    {field: 'N_INDEX', title: '排序号', width: '10%', align: 'center', editor: 'numberbox'},
+                    {field: '_action', title: '操作', width: '60', align: 'center', formatter: function (value, row) {
+                        return '<a href="javascript:void;" onclick="listChildren.delRow(' +row.SID+')">删除</a>'
+                    }}
                 ]
             ]
         },
@@ -110,7 +123,63 @@
         addRow: function () {
             this.el.edatagrid('addRow');
         },
-        getSelect: function(){
+        delRow:function(sid){
+            var data = this.getSelect();
+            $.post('del.do', {sid: sid}, function () {
+                tree.reload();
+            })
+        },
+        getSelect: function () {
+            return this.el.edatagrid('getSelected');
+        }
+    };
+    var listFile = {
+        el: $('#list_file'),
+        config: {
+            idField: 'SID',
+            iconCls: 'icon-star',
+            rownumbers: true,
+            pagination: true,
+            singleSelect: true,
+            striped: true,
+            toolbar: '#list_file_tb',
+            border: false,
+            autoSave: true,
+            updateUrl: 'save.do',
+            onBeforeSave: function (index) {
+                listFile.el.edatagrid('endEdit', index);
+                var data = listFile.getSelect();
+                // 删除isNewRecord
+                data.isNewRecord = undefined;
+                data.R_SID = page.sid;
+                $.post('save.do', data, function () {
+                    // TODO: 添加处理
+                });
+                return false;
+            },
+            columns: [
+                [
+                    {field: 'C_NAME', title: '名称', width: '30%', editor: 'textbox'},
+                    {field: 'C_DESC', title: '描述', width: '50%', editor: 'textarea'},
+                    {field: 'N_INDEX', title: '排序号', width: '10%', align: 'center', editor: 'numberbox'},
+                    {field: '_action', title: '操作', width: '60', align: 'center'}
+                ]
+            ]
+        },
+        init: function () {
+            this.el.edatagrid(this.config);
+        },
+        load: function () {
+            this.el.edatagrid({
+                url: '/sys/stdtmp_file/list.json',
+                queryParams: {R_SID: page.sid}
+            });
+        },
+        addRow: function () {
+            this.el.edatagrid('addRow');
+
+        },
+        getSelect: function () {
             return this.el.edatagrid('getSelected');
         }
     };
@@ -123,27 +192,29 @@
         <ul id="nav"></ul>
     </div>
     <div data-options="region:'center', header: '#bread'" style="overflow: hidden">
-        <div class="easyui-tabs" data-options="fit:true">
-            <div title="概要">
-                <@layout.toolbar>
-                    <@layout.button title="保存" icon="save" click="recForm.save()"/>
-                    <@layout.button title="删除" icon="cancel"/>
-                </@>
-                <@layout.form id="rec_fm">
-                    <table>
-                        <tr><@layout.td_textbox title="名称" name="C_NAME" must=true/></tr>
-                        <tr><@layout.td_textarea title="描述" name="C_DESC"/></tr>
-                    </table>
-                    <@layout.hidden 'SID'/>
-                </@>
-            </div>
-            <div title="子分类">
-                <@layout.toolbar id="list_children_tb">
-                    <@layout.button title="新增" icon="new" click="listChildren.addRow()" />
-                </@layout.toolbar>
-                <table id="list_children"></table>
-            </div>
-        </div>
+        <div class="easyui-panel" title="概要">
+        <@layout.toolbar>
+            <@layout.button title="保存" icon="save" click="recForm.save()"/>
+            <@layout.button title="删除" icon="cancel" click="recForm.delRow()"/>
+        </@>
+        <@layout.form id="rec_fm">
+            <table>
+                <tr><@layout.td_textbox title="名称" name="C_NAME" must=true/></tr>
+                <tr><@layout.td_textarea title="描述" name="C_DESC"/></tr>
+            </table>
+            <@layout.hidden name='SID'/>
+        </@>
     </div>
-</div>
+    <div class="easyui-panel" title="子分类列表">
+        <@layout.toolbar id="list_children_tb">
+            <@layout.button title="新增" icon="new" click="listChildren.addRow()" />
+        </@layout.toolbar>
+        <table id="list_children"></table>
+    </div>
+    <div class="easyui-panel" title="文件列表">
+        <@layout.toolbar id="list_file_tb">
+            <@layout.button title="新增" icon="new" click="listChildren.addRow()" />
+        </@>
+        <table id="list_file"></table>
+    </div>
 </@>
