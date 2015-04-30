@@ -2,66 +2,88 @@
 
 <#assign script>
 <script type="text/javascript">
-    var setting = {
-        sid: $url.getUrlParam("sid"),
-        dataUrl: "rec.json",
-        saveUrl: "save.json",
-        delUrl: "del.json",
-        backUrl: '${Referer!}' // 设置回退的URL。referer是请求头，里面含有请求当前页面的页面地址。
-    };
-
-    $(document).ready(function () {
-        $form.init(setting);
-
-        $('#editorTmp').click(function () {
-            alert("编辑模板");
-        });
-    });
+    var form = {
+        el: $('#fm'),
+        save: function () {
+            this.el.form('submit', {
+                url: 'save.do',
+                onSubmit: function () {
+                    return $(this).form('validate');
+                },
+                success: function (result) {
+                    result = $.parseJSON(result);
+                    $.messager.alert('提示信息', '保存成功!', "info", function(){
+                        window.location.href = 'rec.html?sid='+result.SID+"&backURL=${referer!}";
+                    });
+                }
+            });
+        },
+        del: function () {
+            $.post('del.do', {sid: '${sid!}'}, function () {
+                form.back();
+            })
+        },
+        back: function () {
+            window.location.href = '${backURL!referer}'
+        }
+    }
 </script>
 <style type="text/css">
-    body {
-        margin: 0;
+    td {
+        vertical-align: top;
     }
 </style>
 </#assign>
 <@layout.doLayout script>
-
-    <@layout.toolbar class="navbar-fixed-top">
-    <input type="button" class="btn" name="btn_save" value="保存">
-    <input type="button" class="btn" name="btn_del" value="删除">
-    <input type="button" class="btn" name="btn_back" value="返回">
+<div class="easyui-panel" title="<#if sid??>编辑文件<#else>添加文件</#if>" fit="true" iconCls="icon-title">
+    <@layout.toolbar>
+        <@layout.button title="保存" icon="save" click="form.save()"/>
+        <@layout.button title="删除" icon="cancel" click="form.del()"/>
+        <@layout.button title="返回" icon="undo" click="form.back()"/>
     </@>
+    <form id="fm" method="post">
+        <table>
+            <tr>
+                <td class="span2"><label for="C_NAME">名称</label></td>
+                <td class="span4">
+                    <input type="text" id="C_NAME" name="C_NAME" class="easyui-textbox" required="true" style="width: 100%" value="${C_NAME!}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="span2"><label for="C_DESC">描述</label></td>
+                <td class="span4">
+                    <input type="text" id="C_DESC" name="C_DESC" class="easyui-textbox" multiline="true" style="width: 100%; height: 100px" value="${C_DESC!}"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="span2"><label for="N_CYCLE">更新周期</label></td>
+                <td class="span4">
+                    <input type="text" class="easyui-numberbox" id="N_CYCLE" name="N_CYCLE" value="${N_CYCLE!}"/>
+                    <select class="easyui-combobox" name="P_CYCLE">
+                        <#list _SYS_CYCLE_ as item>
+                            <option <#if (P_CYCLE?? && item.key=P_CYCLE)>selected="selected"</#if> value="${item.key}">${item.value}</option>
+                        </#list>
+                    </select>
+                    <label><input type="checkbox" name="" id=""/>是否提醒</label>
+                </td>
+            </tr>
+            <tr>
+                <td class="span2"><label for="P_TMPFILE">模板文件</label></td>
+                <td class="span4">
 
-<div class="container">
-    <@layout.form id="mainForm" title="基本信息">
-        <@layout.row>
-            <@layout.textbox name="C_NAME" title="名称" desc="目录名称" span=6/>
-            <@layout.textbox name="" title="所属分类" desc="" value=folder.C_NAME readonly=true span=6/>
-        </@layout.row>
-        <@layout.row>
-            <@layout.textarea "C_DESC" "描述" "目录描述"/>
-        </@layout.row>
-        <@layout.row>
-            <@layout.textbox name="N_CYCLE" title="更新周期" desc="更新周期配置" span=6/>
-            <@layout.parameter keyField="P_CYCLE" valueField="S_CYCLE" title="周期单位" items=_S_CYCLE_ span=6/>
-        </@layout.row>
-        <@layout.row>
-            <div class="control-group span12">
-                <div class="controls ui-checkbox">
-                    <label class="checkbox inline">
-                        <input type="checkbox" value="1" name="B_REMIND"> 是否提醒
-                    </label>
-                </div>
-            </div>
-        </@layout.row>
-        <@layout.row>
-            <@layout.parameter keyField="P_TMPFILE" valueField="S_TMPFILE" items=tmpfiles title="模板文件" desc="配置模板文件" span=10/>
-            <#if P_TMPFILE??><a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?pid=${SID}">[配置模板]</a></#if>
-        </@layout.row>
-        <@layout.row>
-            <@layout.editor name="C_EXPLAIN" title="政策解读" desc="配置政策解读信息" />
-        </@layout.row>
-        <input type="hidden" name="R_SID" value="${pid!}"/>
-    </@layout.form>
+                </td>
+            </tr>
+            <tr>
+                <td class="span2"><label for="C_EXPLAIN">政策解读</label></td>
+                <td class="span4">
+                    <input id="C_EXPLAIN" name="C_EXPLAIN" value="${C_EXPLAIN!}" type="text" class="easyui-textbox" required="true" multiline="true" style="width: 100%; height: 100px"/>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="SID" value="${SID!}"/>
+        <input type="hidden" name="P_TMPFILE" value="${P_TMPFILE!}"/>
+        <input type="hidden" name="R_SID" value="${R_SID!folder.SID}"/>
+        <input type="hidden" name="S_NAME" value="${S_NAME!folder.C_NAME}"/>
+    </form>
 </div>
-</@layout.doLayout>
+</@>

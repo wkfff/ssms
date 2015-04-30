@@ -22,6 +22,7 @@
                 tree.selectNode = node;
                 recForm.load();
                 listChildren.load();
+                listFile.load();
             },
             onLoadSuccess: function () {
                 var $this = $(this);
@@ -105,9 +106,15 @@
                     {field: 'C_NAME', title: '名称', width: '30%', editor: 'textbox'},
                     {field: 'C_DESC', title: '描述', width: '50%', editor: 'textarea'},
                     {field: 'N_INDEX', title: '排序号', width: '10%', align: 'center', editor: 'numberbox'},
-                    {field: '_action', title: '操作', width: '60', align: 'center', formatter: function (value, row) {
-                        return '<a href="javascript:void;" onclick="listChildren.delRow(' +row.SID+')">删除</a>'
-                    }}
+                    {
+                        field: '_action',
+                        title: '操作',
+                        width: '60',
+                        align: 'center',
+                        formatter: function (value, row) {
+                            if (row.SID) return '<a href="javascript:;" onclick="listChildren.delRow({0})">删除</a>'.format(row.SID);
+                        }
+                    }
                 ]
             ]
         },
@@ -123,9 +130,8 @@
         addRow: function () {
             this.el.edatagrid('addRow');
         },
-        delRow:function(sid){
-            var data = this.getSelect();
-            $.post('del.do', {sid: sid}, function () {
+        delRow: function (id) {
+            $.post('del.do', {sid: id}, function () {
                 tree.reload();
             })
         },
@@ -144,25 +150,20 @@
             striped: true,
             toolbar: '#list_file_tb',
             border: false,
-            autoSave: true,
-            updateUrl: 'save.do',
-            onBeforeSave: function (index) {
-                listFile.el.edatagrid('endEdit', index);
-                var data = listFile.getSelect();
-                // 删除isNewRecord
-                data.isNewRecord = undefined;
-                data.R_SID = page.sid;
-                $.post('save.do', data, function () {
-                    // TODO: 添加处理
-                });
-                return false;
-            },
             columns: [
                 [
                     {field: 'C_NAME', title: '名称', width: '30%', editor: 'textbox'},
                     {field: 'C_DESC', title: '描述', width: '50%', editor: 'textarea'},
                     {field: 'N_INDEX', title: '排序号', width: '10%', align: 'center', editor: 'numberbox'},
-                    {field: '_action', title: '操作', width: '60', align: 'center'}
+                    {
+                        field: '_action',
+                        title: '操作',
+                        width: '60',
+                        align: 'center',
+                        formatter: function (value, row) {
+                            return '<a href="javascript:;" onclick="listFile.editRow({0})">编辑</a> <a href="javascript:;" onclick="listFile.delRow({0})">删除</a>'.format(row.SID);
+                        }
+                    }
                 ]
             ]
         },
@@ -175,9 +176,19 @@
                 queryParams: {R_SID: page.sid}
             });
         },
+        reload: function () {
+            this.el.datagrid('reload');
+        },
         addRow: function () {
-            this.el.edatagrid('addRow');
-
+            window.location.href = '/sys/stdtmp_file/rec.html?pid=' + page.sid;
+        },
+        editRow: function (sid) {
+            window.location.href = '/sys/stdtmp_file/rec.html?sid=' + sid;
+        },
+        delRow: function (id) {
+            $.post('/sys/stdtmp_file/del.do', {sid: id}, function () {
+                listFile.reload();
+            })
         },
         getSelect: function () {
             return this.el.edatagrid('getSelected');
@@ -193,28 +204,31 @@
     </div>
     <div data-options="region:'center', header: '#bread'" style="overflow: hidden">
         <div class="easyui-panel" title="概要">
-        <@layout.toolbar>
-            <@layout.button title="保存" icon="save" click="recForm.save()"/>
-            <@layout.button title="删除" icon="cancel" click="recForm.delRow()"/>
-        </@>
-        <@layout.form id="rec_fm">
-            <table>
-                <tr><@layout.td_textbox title="名称" name="C_NAME" must=true/></tr>
-                <tr><@layout.td_textarea title="描述" name="C_DESC"/></tr>
-            </table>
-            <@layout.hidden name='SID'/>
-        </@>
+            <@layout.toolbar>
+                <@layout.button title="保存" icon="save" click="recForm.save()"/>
+                <@layout.button title="删除" icon="cancel" click="recForm.delRow()"/>
+            </@>
+            <@layout.form id="rec_fm">
+                <table>
+                    <tr><@layout.td_textbox title="名称" name="C_NAME" must=true/></tr>
+                    <tr><@layout.td_textarea title="描述" name="C_DESC"/></tr>
+                </table>
+                <@layout.hidden name='SID'/>
+            </@>
+        </div>
+        <div class="easyui-panel" title="子分类列表">
+            <@layout.toolbar id="list_children_tb">
+                <@layout.button title="新增" icon="new" click="listChildren.addRow()" />
+            </@layout.toolbar>
+            <table id="list_children"></table>
+        </div>
+        <div class="easyui-panel" title="文件列表">
+            <@layout.toolbar id="list_file_tb">
+                <@layout.button title="新增" icon="add" click="listFile.addRow()" />
+                <@layout.button title="编辑" icon="edit" click="listFile.editRow()" />
+            </@>
+            <table id="list_file"></table>
+        </div>
     </div>
-    <div class="easyui-panel" title="子分类列表">
-        <@layout.toolbar id="list_children_tb">
-            <@layout.button title="新增" icon="new" click="listChildren.addRow()" />
-        </@layout.toolbar>
-        <table id="list_children"></table>
-    </div>
-    <div class="easyui-panel" title="文件列表">
-        <@layout.toolbar id="list_file_tb">
-            <@layout.button title="新增" icon="new" click="listChildren.addRow()" />
-        </@>
-        <table id="list_file"></table>
-    </div>
+</div>
 </@>
