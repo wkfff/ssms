@@ -85,7 +85,6 @@
 
         $('#dg').edatagrid({
             idField: 'SID',
-            iconCls: 'icon-star',
             rownumbers: true,
             pagination: true,
             singleSelect: true,
@@ -113,7 +112,7 @@
         <ul id="nav"></ul>
     </div>
     <div data-options="region:'center'">
-        <@layout.group title="概要" icon="star">
+        <@layout.group title="概要">
             <@layout.toolbar>
                 <@layout.button id="" title="保存" icon="save" click="doSave()"/>
                 <@layout.button id="" title="删除" icon="remove" click="doDelete()"/>

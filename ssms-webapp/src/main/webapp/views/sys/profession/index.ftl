@@ -84,15 +84,16 @@
 </script>
 </#assign>
 <@layout.doLayout script>
-    <@layout.group title="专业管理" border=true icon='title' fit=true>
+    <@layout.group title="专业管理" border=true fit=true>
     <table id="dg"></table>
         <@layout.toolbar id="toolbar">
-        <div style="border-bottom: 1px solid #cccccc; background: #FFFFFF">
+        <div>
             <@layout.textbox name='code' title="专业代码" />
             <@layout.textbox name='value' title="专业名称" />
             <@layout.button title="查询" icon="search" click="doSearch()"/>
             <@layout.button title="重置" desc="清空查询条件" icon="clear" click="doClear()"/>
         </div>
+        <div class="hr" style="height: 0; border-top: 1px solid #CCCCCC; margin-top: 5px; margin-bottom: 5px"></div>
         <div>
             <@layout.button title="新增" icon="add" click="doNew()"/>
             <@layout.button title="编辑" icon="edit" click="doEdit()"/>

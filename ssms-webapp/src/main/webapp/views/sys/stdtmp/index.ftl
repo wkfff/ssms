@@ -168,10 +168,10 @@
             ]
         },
         init: function () {
-            this.el.edatagrid(this.config);
+            this.el.datagrid(this.config);
         },
         load: function () {
-            this.el.edatagrid({
+            this.el.datagrid({
                 url: '/sys/stdtmp_file/list.json',
                 queryParams: {R_SID: page.sid}
             });
@@ -191,7 +191,7 @@
             })
         },
         getSelect: function () {
-            return this.el.edatagrid('getSelected');
+            return this.el.datagrid('getSelected');
         }
     };
     $(page.init);
@@ -202,12 +202,13 @@
     <div data-options="region:'west', title:'功能导航', split:true" style="width: 200px">
         <ul id="nav"></ul>
     </div>
-    <div data-options="region:'center', header: '#bread'" style="overflow: hidden">
-        <div class="easyui-panel" title="概要">
+    <div data-options="region:'center'">
+        <div class="easyui-panel" title="概要" style="padding: 10px">
             <@layout.toolbar>
                 <@layout.button title="保存" icon="save" click="recForm.save()"/>
                 <@layout.button title="删除" icon="cancel" click="recForm.delRow()"/>
             </@>
+            <div class="hr"></div>
             <@layout.form id="rec_fm">
                 <table>
                     <tr><@layout.td_textbox title="名称" name="C_NAME" must=true/></tr>
