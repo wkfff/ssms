@@ -51,13 +51,13 @@ $(function () {
         border:false,
         toolbar: '#dg_index_tb',
         columns: [[
-            {field: 'C_NAME', title: '单位名称', width: 400},
-            {field: 'S_LEVEL', title: '评审专业级别', width: 100},
+            {field: 'C_NAME', title: '单位名称', width: 200},
+//            {field: 'S_LEVEL', title: '评审专业级别', width: 100},
             {field: 'C_NUMBER', title: '营业执照注册号', width: 200},
             {field: 'C_ADDR', title: '地址', width: 260},
-            {field: 'SID', title: '操作', width: 220,align:'center',
+            {field: 'SID', title: '操作', width: 120,align:'center',
                 formatter:function(value,row){
-                        return "<a href='#' onclick='doEdit("+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doListUser("+value+")'>用户列表</a>";
+                        return "<a href='#' onclick='doEdit("+value+")'>编辑</a> <a href='#' onclick='doDel("+value+")'>删除</a> <a href='#' onclick='doListUser("+value+")'>用户列表</a>";
                     }}
         ]]
     });

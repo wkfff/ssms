@@ -79,14 +79,14 @@ $(document).ready(function() {
                              </td>
                         </tr>
                         <tr>
-                            <td class="span2">出生日期:</td>
-                            <td class="span4"><input class="easyui-datebox" type="text" name="T_BIRTH" style="width: 100%" /></td>
+                            <td class="span2">聘请证书编号:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_CERT" style="width: 100%" /></td>
                             <td class="span2">职务:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_POSITION" data-options="required:true" style="width: 100%"/></td>
+                            <td class="span4"><input class="easyui-textbox" type="text" name="C_POSITION" style="width: 100%"/></td>
                         </tr>
                         <tr>
-                            <td class="span2">聘请证书编号:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_CERT" data-options="required:true" style="width: 100%" /></td>
+                            <td class="span2">出生日期:</td>
+                            <td class="span4"><input class="easyui-datebox" type="text" name="T_BIRTH" style="width: 100%" /></td>
                             <td class="span2">性别:</td>
                             <td class="span4" ><input  type="radio" name="S_SEX"  value="男"  />男
                                                <input  type="radio" name="S_SEX"  value="女" />女
@@ -131,13 +131,13 @@ $(document).ready(function() {
                      <table>
                         <tr>
                             <td class="span2">密码:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="password" name="C_PASSWD" id="C_PASSWD" style="width: 100%" /></td>
+                            <td class="span4" ><input class="easyui-textbox" type="password" name="C_PASSWD" id="C_PASSWD" <#if !sid??>required="true"</#if> style="width: 100%" /></td>
                              <td class="span2">重复密码:</td>
-                            <td class="span4"><input class="easyui-textbox"  type="password"  id="C_PASSWD1" style="width: 100%" /></td>
+                            <td class="span4"><input class="easyui-textbox"  type="password" <#if !sid??>required="true"</#if> id="C_PASSWD1" style="width: 100%" /></td>
                         </tr>
-                        <tr>
+                        <#--<tr>
                         <td><input type="button" class="btn" name="btn_reset" value="快速重置密码"/></td>
-                        </tr>
+                        </tr>-->
                     </table>
                    </div>
             </form>
