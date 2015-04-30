@@ -9,7 +9,8 @@
     }
 
     function doOpen(sid) {
-        window.location.href = 'rec_history.html?sid='+sid;
+        window.location.href = '/e/grade_m/result.html?sid='+sid;
+        //'rec_history.html?sid='+sid;
     }
     function doClear(id) {
         $(".easyui-datebox").datebox("setValue", "");

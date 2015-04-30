@@ -73,7 +73,7 @@
     
     $(function () {
         $('#formMain').form('load','rec.json?sid=${sid!}');
-        <#if (_FLAG_=='-1')>$form.disableForm('formMain',true);</#if>
+        <#if (_FLAG_=='-1' || _FLAG_=='-2')>$form.disableForm('formMain',true);</#if>
         
         $('#dg').<#if (_FLAG_!='-1')>e</#if>datagrid({
             title:'自评内容',border:0,
@@ -115,7 +115,7 @@
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
     <div title="在线自评" data-options="region:'north',collapsible:false" style="height:230px;overflow:hidden;">
-          
+          <#if (_FLAG_!='-2')>
           <div class="toolbar ue-clear">
             <#if (_FLAG_=='0')>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
@@ -132,7 +132,7 @@
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
             </#if>
          </div>
-         
+         </#if>
          <div class="easyui-panel" style="border:0;margin:10px;">
              <form id="formMain" method="post">
                     <table style="width:900px;" cellspacing="6">

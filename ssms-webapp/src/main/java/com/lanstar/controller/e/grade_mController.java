@@ -116,4 +116,14 @@ public class grade_mController extends DefaultController {
         context.DB.getDBSession().execute( "call P_GRADE_COMPLETE_SELF(?)", new Object[]{sid} );
         return context.returnWith().set( "" );
     }
+    
+    public ViewAndModel rec_result( HandlerContext context ) {
+        context.setValue( "_FLAG_", "-2" );
+        return context.returnWith().view( "rec" );
+    }
+    
+    public ViewAndModel result( HandlerContext context ) {
+        context.setValue( "_FLAG_", "-1" );
+        return context.returnWith();
+    }
 }
