@@ -136,9 +136,9 @@ String.prototype.replaceAll = function(s1,s2) {
                     <table>
                         <tr>
                             <td class="span2">达标等级:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="text" name="S_LEVEL" editable="false" style="width: 100%" /></td>
+                            <td class="span4" ><input class="easyui-datebox" type="text" name="S_LEVEL" editable="false" style="width: 100%" /></td>
                             <td class="span2">下次复审时间:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="T_EXAMINE_NEXT" editable="false" style="width: 100%" /></td>
+                            <td class="span4"><input class="easyui-datebox" type="text" name="T_EXAMINE_NEXT" editable="false" style="width: 100%" /></td>
                         </tr>
                         </table>
                      </div>
