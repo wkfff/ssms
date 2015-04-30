@@ -14,8 +14,6 @@ $(document).ready(function() {
              return;
         }
         $("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
-        $("#C_PASSWD1").val($.md5($("#C_PASSWD1").val()));
-        $("#C_PASSWD1").attr("disabled", "true")  
         doSave();
     }
     
