@@ -43,7 +43,7 @@ $(document).ready(function() {
                         $.get("del.do", {sid:'${sid!}'}, function (data) {
                             if (data == "true" || data== "\"\"") {
                                 $.messager.alert("提示", "删除成功");
-                                window.location.href='rec.html';
+                                window.location.href='index.html?pid='+${pid!}
                             }
                             else {
                                 $.messager.alert("提示", data);
