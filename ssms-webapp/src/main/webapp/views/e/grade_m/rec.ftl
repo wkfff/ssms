@@ -114,7 +114,7 @@
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div title="在线自评" data-options="region:'north',collapsible:false" style="height:200px;overflow:hidden;">
+    <div title="在线自评" data-options="region:'north',collapsible:false" style="height:230px;overflow:hidden;">
           
           <div class="toolbar ue-clear">
             <#if (_FLAG_=='0')>

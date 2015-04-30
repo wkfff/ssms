@@ -56,7 +56,7 @@
             <tr>
                 <td class="span1">更新周期</td>
                 <td class="span6">
-                    <input type="text" class="easyui-numberbox" id="N_CYCLE" name="N_CYCLE" value="${N_CYCLE!}"/>
+                    <input type="text" class="easyui-numberbox" id="N_CYCLE" name="N_CYCLE" value="${N_CYCLE!}" style="width: 80px"/>
                     <select class="easyui-combobox" id="P_CYCLE" name="P_CYCLE" style="width: 80px">
                         <#list _SYS_CYCLE_ as item>
                             <option <#if (P_CYCLE?? && item.key=P_CYCLE)>selected="selected"</#if> value="${item.key}">${item.value}</option>

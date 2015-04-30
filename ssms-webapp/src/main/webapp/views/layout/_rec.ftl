@@ -8,13 +8,7 @@
     <script type="text/javascript" src="/resource/js/upload.js"></script>
     <#--富文本编辑器-->
     <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
-    <script type="text/javascript" src="/resource/js/texteditor.js"></script>
-    <style type="text/css">
-        td {
-            padding-top: 5px;
-            padding-bottom: 5px;
-        }
-    </style>${header}</#local>
+    <script type="text/javascript" src="/resource/js/texteditor.js"></script>${header}</#local>
     <#local _script>${script}</#local>
     <@layout.doLayout header=_header footer=_script>
         <#nested />

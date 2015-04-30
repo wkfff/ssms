@@ -88,10 +88,15 @@
     <table id="dg"></table>
         <@layout.toolbar id="toolbar">
         <div>
-            <@layout.textbox name='code' title="专业代码" />
-            <@layout.textbox name='value' title="专业名称" />
-            <@layout.button title="查询" icon="search" click="doSearch()"/>
-            <@layout.button title="重置" desc="清空查询条件" icon="clear" click="doClear()"/>
+            <table>
+                <tr>
+                    <td>专业代码</td>
+                    <td><input class="easyui-textbox" id="code" type="text"/></td>
+                    <td>专业名称</td>
+                    <td><input class="easyui-textbox" id="value" type="text"/></td>
+                    <td><@layout.button title="查询" icon="search" click="doSearch()"/><@layout.button title="重置" desc="清空查询条件" icon="clear" click="doClear()"/></td>
+                </tr>
+            </table>
         </div>
         <div class="hr" style="height: 0; border-top: 1px solid #CCCCCC; margin-top: 5px; margin-bottom: 5px"></div>
         <div>

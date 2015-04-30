@@ -113,19 +113,22 @@
     </div>
     <div data-options="region:'center'">
         <@layout.group title="概要">
-            <@layout.toolbar>
-                <@layout.button id="" title="保存" icon="save" click="doSave()"/>
-                <@layout.button id="" title="删除" icon="remove" click="doDelete()"/>
-            </@>
-            <@layout.form id="details">
-                <table>
-                    <tr><@layout.td_textbox name="C_NAME" title="导航名称" must=true/></tr>
-                    <tr><@layout.td_textbox name="C_ICON" title="图标"/></tr>
-                    <tr><@layout.td_textarea name="C_URL" title="URL"/></tr>
-                    <tr><@layout.td_textarea name="C_DESC" title="描述"/></tr>
-                </table>
-                <@layout.hidden name="SID"/>
-            </@>
+            <div style="padding: 10px">
+                <@layout.toolbar>
+                    <@layout.button id="" title="保存" icon="save" click="doSave()"/>
+                    <@layout.button id="" title="删除" icon="remove" click="doDelete()"/>
+                </@>
+                <div class="hr"></div>
+                <@layout.form id="details">
+                    <table>
+                        <tr><@layout.td_textbox name="C_NAME" title="导航名称" must=true/></tr>
+                        <tr><@layout.td_textbox name="C_ICON" title="图标"/></tr>
+                        <tr><@layout.td_textarea name="C_URL" title="URL"/></tr>
+                        <tr><@layout.td_textarea name="C_DESC" title="描述"/></tr>
+                    </table>
+                    <@layout.hidden name="SID"/>
+                </@>
+            </div>
         </@>
         <table title="子节点列表" id="dg"></table>
         <@layout.toolbar id="toolbar">
