@@ -66,21 +66,20 @@
                 <td colspan="3">
                     <input class="easyui-textbox" type="text" name="C_NAME" data-options="required:true" style="width: 100%"/>
                 </td>
-
             </tr>
             <tr>
                 <td class="span2">评审机构注册号:</td>
                 <td class="span4"><input class="easyui-textbox" type="text" name="C_NUMBER" style="width: 100%"/></td>
                 <td class="span2">确定评审业务机关:</td>
                 <td class="span4">
-                    <input class="easyui-textbox" type="text" name="C_ORG" editable="false" style="width: 100%"/></td>
+                    <input class="easyui-textbox" type="text" name="C_ORG"  style="width: 100%"/></td>
             </tr>
             <tr>
                 <td class="span2">专职人员:</td>
                 <td class="span4"><input class="easyui-textbox" type="text" name="N_FULLTIME" style="width: 100%"/></td>
                 <td class="span2">评审专业级别:</td>
                 <td class="span4">
-                    <input class="easyui-textbox" type="text" name="S_LEVEL" editable="false" style="width: 100%"/></td>
+                    <input class="easyui-textbox" type="text" name="S_LEVEL"  style="width: 100%"/></td>
             </tr>
         </table>
     </div>

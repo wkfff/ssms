@@ -55,33 +55,42 @@ String.prototype.replaceAll = function(s1,s2) {
             <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
      </div>
      <form id="formMain" method="post">
-         <div class="easyui-panel" style="border:0;margin:10px" title="基本信息">
+                 <div class="easyui-panel" style="border:0;margin:10px" title="基本信息">
                     <table>
                         <tr>
                             <td class="span2">租户编码:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_CODE"  style="width: 100%" /></td>
-                            <td class="span2">省:</td>
-                            <td class="span4"> <input class="easyui-textbox" type="text" name="S_PROVINCE"  data-options="required:true"  style="width: 100%" /></td>
+                            <td  class="span10"><input class="easyui-textbox" type="text" name="C_CODE"  style="width: 100%" /></td>
                         </tr>
                         <tr>
                             <td class="span2">单位名称:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_NAME" data-options="required:true" style="width: 100%" /></td>  
-                        </tr>
-                        <tr>
-                            <td class="span2">市:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="S_CITY"  data-options="required:true" style="width: 100%" /></td>
-                            <td class="span2">县:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="S_COUNTY"  data-options="required:true"  style="width: 100%" /></td>
+                            <td colspan="3"><input class="easyui-textbox" type="text" name="C_NAME" data-options="required:true" style="width: 100%" /></td>  
                         </tr>
                     </table>
                </div>
                  <div class="easyui-panel" style="border:0;margin:10px;" title="联系方式">
                     <table>
                         <tr>
-                            <td class="span2">地址:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_ADDR" style="width: 100%" /></td>
                             <td class="span2">电子邮箱:</td>
                             <td class="span4"><input class="easyui-textbox" type="text" name="C_EMAIL" style="width: 100%" /></td>
+                            <td class="span2">传真:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_FAX" style="width: 100%" /></td>
+                        </tr>
+                        <tr>
+                           <td class="span2">地址:</td>
+                           <td colspan="3">
+                               <table style="width: 100%" cellpadding="0" cellspacing="0">
+                                  <tr>
+                                     <td>
+                                        <input class="easyui-textbox" type="text" name="S_PROVINCE" style="width: 60px"/>省
+                                        <input class="easyui-textbox" type="text" name="S_CITY" style="width: 60px"/>市
+                                        <input class="easyui-textbox" type="text" name="S_COUNTY" style="width: 60px"/>区(县)
+                                     </td>
+                                     <td>
+                                         <input class="easyui-textbox" type="text" name="C_ADDR" style="width: 100%"/>
+                                     </td>
+                                  </tr>
+                                </table>
+                            </td>
                         </tr>
                         <tr>
                             <td class="span2">固话:</td>
@@ -89,11 +98,6 @@ String.prototype.replaceAll = function(s1,s2) {
                             <td class="span2">邮政编码:</td>
                             <td class="span4"><input class="easyui-textbox" type="text" name="C_ZIP" style="width: 100%" /></td>
                         </tr>
-                        <tr>
-                            <td class="span2">传真:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_FAX" style="width: 100%" /></td>
-                        </tr>
-                        
                     </table>
                    </div>
             </form>

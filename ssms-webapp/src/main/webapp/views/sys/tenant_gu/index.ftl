@@ -51,9 +51,9 @@ $(function () {
         border:false,
         toolbar: '#dg_index_tb',
         columns: [[
-            {field: 'C_USER', title: '用户名', width: 500},
+            {field: 'C_USER', title: '用户名', width: 200},
             {field: 'C_POSITION', title: '职务', width: 210},
-            {field: 'T_BIRTH', title: '出生日期', width: 310},
+            {field: 'T_BIRTH', title: '出生日期', width: 210},
             {field: 'SID', title: '操作', width: 160,align:'center',
                 formatter:function(value,row){
                         return "<a href='#' onclick='doEdit("+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>";
