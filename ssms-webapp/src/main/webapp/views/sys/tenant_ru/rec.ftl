@@ -71,7 +71,7 @@ $(document).ready(function() {
                         <tr>
                             <td class="span2">用户名:</td>
                             <td class="span4">
-                                <input class="easyui-textbox" type="text" name="C_USER" data-options="required:true"   style="width: 100%" />
+                                <input class="easyui-textbox" type="text" name="C_USER" data-options="required:true"  <#if (refer=="edit")> editable="false" </#if>  style="width: 100%" />
                              </td>
                              <td class="span2">姓名:</td>
                             <td class="span4">
