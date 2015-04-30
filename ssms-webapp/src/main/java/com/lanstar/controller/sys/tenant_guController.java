@@ -9,6 +9,9 @@ package com.lanstar.controller.sys;
 
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
+import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.db.JdbcRecord;
 
 /**
  * @author Administrator
@@ -22,6 +25,14 @@ public class tenant_guController extends DefaultController {
     public tenant_guController() {
         super( "SYS_TENANT_G_USER" );
         // TODO Auto-generated constructor stub
+    }
+
+    @Override
+    public ViewAndModel rec( HandlerContext context ) {
+        String pid = context.getValue( "pid" );
+        JdbcRecord record = context.DB.withTable( "SYS_TENANT_G" )
+                                      .where( "SID=?", pid ).query();
+        return super.rec( context ).put( "tenant", record );
     }
 
     @Override

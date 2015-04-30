@@ -17,7 +17,7 @@ import com.lanstar.db.JdbcRecord;
  * @author Administrator
  *
  */
-public class tenant_euController extends DefaultController{
+public class tenant_euController extends DefaultController {
     public tenant_euController() {
         super( "SYS_TENANT_E_USER" );
     }
@@ -32,8 +32,9 @@ public class tenant_euController extends DefaultController{
     @Override
     public ViewAndModel rec( HandlerContext context ) {
         String pid = context.getValue( "pid" );
-        JdbcRecord record= context.DB.withTable( "SYS_TENANT_E" ).where( "SID=?", pid ).query();
-       return  super.rec( context ).put( "tenant",record );
+        JdbcRecord record = context.DB.withTable( "SYS_TENANT_E" )
+                                      .where( "SID=?", pid ).query();
+        return super.rec( context ).put( "tenant", record );
     }
 
     /*
