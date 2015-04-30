@@ -32,3 +32,6 @@
 .datagrid-row-alt{
     background-color:#eff6fa!important;
 }
+.layout-expand-west .panel-title{
+	background:transparent !important;
+}

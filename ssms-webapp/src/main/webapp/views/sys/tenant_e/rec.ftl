@@ -58,27 +58,21 @@ String.prototype.replaceAll = function(s1,s2) {
      <form id="formMain" method="post">
          <div class="easyui-panel" style="border:0;margin:10px" title="基本信息">
                     <table>
-                        <tr>
-                            <td class="span2">企业名称:</td>
-                            <td class="span4">
-                                <input class="easyui-textbox" type="text" name="C_NAME" data-options="required:true" style="width: 100%" />
-                             </td>
-                             <td class="span2">企业状态</td>
-                            <td class="span4">
-                                <input class="easyui-textbox" type="text" name="S_STATE" editable="false" style="width: 100%" />
-                             </td>
+                         <tr>
+                           <td class="span2">租户编码:</td>
+                           <td colspan="3"><input class="easyui-textbox" type="text" name="C_CODE" style="width: 100%" /></td>
                         </tr>
                         <tr>
-                            <td class="span2">省:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" data-options="required:true" name="S_PROVINCE" style="width: 100%" /></td>
-                            <td class="span2">市:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="S_CITY" data-options="required:true"  style="width: 100%" /></td>
+                           <td class="span2">企业名称:</td>
+                            <td colspan="3"><input class="easyui-textbox" type="text" name="C_NAME" data-options="required:true" style="width: 100%" /></td>
                         </tr>
                         <tr>
-                           <td class="span2">县:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="S_COUNTY" data-options="required:true" style="width: 100%" /></td>
                             <td class="span2">注册号:</td>
                             <td class="span4"><input class="easyui-textbox" type="text" name="C_NUMBER" style="width: 100%" /></td>
+                            <td class="span2">企业状态</td>
+                            <td class="span4">
+                                <input class="easyui-textbox" type="text" name="S_STATE"  style="width: 100%" />
+                             </td>
                         </tr>
                         <tr>
                            <td class="span2">企业性质:</td>
@@ -98,14 +92,9 @@ String.prototype.replaceAll = function(s1,s2) {
                             <td class="span2">营业范围:</td>
                             <td class="span4"><input class="easyui-textbox" type="text" name="C_SCOPE" style="width: 100%" /></td>
                         </tr>
-                        <tr>
-                           <td class="span2">租户编码:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_CODE" style="width: 100%" /></td>
-                            <!-- TODO缺少该字段  该字段唯一要 编辑时该字段 不能修改-->
-                        </tr>
                     </table>
                </div>
-                 <div class="easyui-panel" style="border:0;margin:10px;" title="联系方式">
+                <div class="easyui-panel" style="border:0;margin:10px;" title="联系方式">
                     <table>
                         <tr>
                             <td class="span2">固话:</td>
@@ -114,16 +103,31 @@ String.prototype.replaceAll = function(s1,s2) {
                             <td class="span4"><input class="easyui-textbox" type="text" name="C_EMAIL" style="width: 100%" /></td>
                         </tr>
                         <tr>
-                            <td class="span2">传真:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_FAX" style="width: 100%" /></td>
-                            <td class="span2">网站地址:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_WEBSITE" style="width: 100%" /></td>
+                           <td class="span2">地址:</td>
+                           <td colspan="3">
+                               <table style="width: 100%" cellpadding="0" cellspacing="0">
+                                  <tr>
+                                     <td>
+                                        <input class="easyui-textbox" type="text" name="S_PROVINCE" style="width: 60px"/>省
+                                        <input class="easyui-textbox" type="text" name="S_CITY" style="width: 60px"/>市
+                                        <input class="easyui-textbox" type="text" name="S_COUNTY" style="width: 60px"/>区(县)
+                                     </td>
+                                     <td>
+                                         <input class="easyui-textbox" type="text" name="C_ADDR" style="width: 100%"/>
+                                     </td>
+                                  </tr>
+                                </table>
+                            </td>
                         </tr>
                         <tr>
-                            <td class="span2">地址:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_ADDR" style="width: 100%" /></td>
+                            <td class="span2">传真:</td>
+                            <td class="span4" ><input class="easyui-textbox" type="text" name="C_FAX" style="width: 100%" /></td>
                             <td class="span2">邮政编码:</td>
                             <td class="span4"><input class="easyui-textbox" type="text" name="C_ZIP" style="width: 100%" /></td>
+                        </tr>
+                        <tr>
+                            <td class="span2">网站地址:</td>
+                            <td colspan="3" ><input class="easyui-textbox" type="text" name="C_WEBSITE" style="width: 100%" /></td>
                         </tr>
                     </table>
                    </div>
@@ -136,9 +140,9 @@ String.prototype.replaceAll = function(s1,s2) {
                     <table>
                         <tr>
                             <td class="span2">达标等级:</td>
-                            <td class="span4" ><input class="easyui-datebox" type="text" name="S_LEVEL" editable="false" style="width: 100%" /></td>
+                            <td class="span4" ><input class="easyui-datebox" type="text" name="S_LEVEL"  style="width: 100%" /></td>
                             <td class="span2">下次复审时间:</td>
-                            <td class="span4"><input class="easyui-datebox" type="text" name="T_EXAMINE_NEXT" editable="false" style="width: 100%" /></td>
+                            <td class="span4"><input class="easyui-datebox" type="text" name="T_EXAMINE_NEXT"  style="width: 100%" /></td>
                         </tr>
                         </table>
                      </div>

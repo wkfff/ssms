@@ -52,11 +52,11 @@ $(function () {
         border:false,
         toolbar: '#dg_index_tb',
         columns: [[
-            {field: 'C_NAME', title: '单位名称', width: 400},
-            {field: 'S_PROVINCE', title: '省', width: 110},
-            {field: 'S_CITY', title: '市', width: 110},
-            {field: 'S_COUNTY', title: '县', width: 110},
-            {field: 'C_ADDR', title: '地址', width: 260},
+            {field: 'C_NAME', title: '单位名称', width: 200},
+            {field: 'S_PROVINCE', title: '省', width:90},
+            {field: 'S_CITY', title: '市', width: 90},
+            {field: 'S_COUNTY', title: '区(县)', width: 90},
+            {field: 'C_ADDR', title: '地址', width: 110},
             {field: 'SID', title: '操作', width: 220,align:'center',
                 formatter:function(value,row){
                         return "<a href='#' onclick='doEdit("+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doListUser("+value+")'>用户列表</a>";

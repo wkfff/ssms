@@ -13,8 +13,6 @@ $(document).ready(function() {
              return;
         }
         $("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
-        $("#C_PASSWD1").val($.md5($("#C_PASSWD1").val()));
-        $("#C_PASSWD1").attr("disabled", "true")  
         doSave();
     }
     
@@ -129,13 +127,13 @@ $(document).ready(function() {
                      <table>
                         <tr>
                             <td class="span2">密码:</td>
-                            <td class="span4" ><input class="easyui-textbox" type="password" name="C_PASSWD" id="C_PASSWD" style="width: 100%" /></td>
+                            <td class="span4" ><input class="easyui-textbox" type="password" name="C_PASSWD" id="C_PASSWD"  data-options="required:true" style="width: 100%" /></td>
                              <td class="span2">重复密码:</td>
-                            <td class="span4"><input class="easyui-textbox"  type="password"  id="C_PASSWD1" style="width: 100%" /></td>
+                            <td class="span4"><input class="easyui-textbox"  type="password"  id="C_PASSWD1" data-options="required:true" style="width: 100%" /></td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                         <td><input type="button" class="btn" name="btn_reset" value="快速重置密码"/></td>
-                        </tr>
+                        </tr> -->
                     </table>
                    </div>
             </form>
