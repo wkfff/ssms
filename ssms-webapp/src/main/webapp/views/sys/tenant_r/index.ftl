@@ -25,7 +25,7 @@ function doDel(sid) {
     
 }
 function doEdit(sid) {
-    window.location.href = 'rec.html?refer=index&sid='+sid;
+    window.location.href = 'rec.html?refer=edit&sid='+sid;
 }
 function doListUser(sid){
 	 window.location.href = '/sys/tenant_ru/index.html?pid='+sid;
@@ -34,7 +34,7 @@ function doClear(id) {
     $(".easyui-textbox").textbox("setValue", "");
 }
 function doNew(){
-    window.location.href = 'rec.html';
+    window.location.href = 'rec.html?refer=new';
 }
 
 $(function () {

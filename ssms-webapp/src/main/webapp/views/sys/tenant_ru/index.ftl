@@ -3,7 +3,7 @@
 <script type="text/javascript">
 function doSearch(id) {
     $("#" + id).datagrid('load', {
-        C_NAME : $("input[name='C_NAME']", "#" + id + "_tb").val(),
+    	C_USER : $("input[name='C_USER']", "#" + id + "_tb").val(),
         C_POSITION : $("input[name='C_POSITION']", "#" + id + "_tb").val()
     });
 }
@@ -25,7 +25,7 @@ function doDel(sid) {
     
 }
 function doEdit(sid) {
-    window.location.href = 'rec.html?refer=index&sid='+sid+'&pid=${pid}';
+    window.location.href = 'rec.html?refer=edit&sid='+sid+'&pid=${pid}';
 }
 function doClear(id) {
     $(".easyui-textbox").textbox("setValue", "");
@@ -35,7 +35,7 @@ function doNew(){
 		$.messager.alert("提示", "所属租户不存在");
 		return;
 	}
-	window.location.href = 'rec.html?pid='+${pid};
+	window.location.href = 'rec.html?refer=new&pid='+${pid};
 }
 
 $(function () {
