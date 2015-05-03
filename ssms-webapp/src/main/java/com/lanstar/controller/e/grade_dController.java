@@ -7,8 +7,6 @@
  */
 package com.lanstar.controller.e;
 
-import java.util.Map;
-
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
@@ -18,6 +16,8 @@ import com.lanstar.db.DBPaging;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.helper.easyui.EasyUIControllerHelper;
+
+import java.util.Map;
 
 /**
  * 在线自评
@@ -55,11 +55,11 @@ public class grade_dController extends DefaultController {
         String type = context.getValue( "type" );
         ARTable arTable = context.DB.withTable( this.TABLENAME );
         //扣分
-        if (type.equals( "0" )){
+        if ( "0".equals( type ) ){
             arTable.where( " N_SCORE_REAL<N_SCORE and R_SID=?" ,r_sid);
-        }else if (type.equals( "1" )){//得分
+        }else if ( "1".equals( type ) ){//得分
             arTable.where( " N_SCORE_REAL=N_SCORE and R_SID=?" ,r_sid );
-        }else if (type.equals( "2" )){
+        }else if ( "2".equals( type ) ){
             arTable.where( " B_BLANK='1' and R_SID=?"  ,r_sid);
         }else{
             Map<String, String> filter = this.getFilter( context );
