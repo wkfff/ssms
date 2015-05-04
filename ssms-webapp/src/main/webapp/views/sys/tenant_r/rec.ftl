@@ -144,13 +144,13 @@
                     <table style="width: 100%" cellpadding="0"
                         cellspacing="0">
                         <tr>
-                            <td><input class="easyui-textbox"
+                            <td><input class="easyui-combobox"
                                 type="text" name="S_PROVINCE"
                                 id="S_PROVINCE" style="width: 60px" />省
-                                <input class="easyui-textbox"
+                                <input class="easyui-combobox"
                                 type="text" name="S_CITY" id="S_CITY"
                                 style="width: 60px" />市 <input
-                                class="easyui-textbox" type="text"
+                                class="easyui-combobox" type="text"
                                 name="S_COUNTY" id="S_COUNTY"
                                 style="width: 60px" />区(县)</td>
                             <td><input class="easyui-textbox"
