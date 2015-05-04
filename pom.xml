@@ -43,10 +43,21 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat6-maven-plugin</artifactId>
                 <version>2.2</version>
-
                 <configuration>
                     <path>/</path>
                     <port>80</port>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/</path>
+                    <url>http://42.121.129.201:8123/manager/text</url>
+                    <username>lanstar</username>
+                    <password>lanstar110606</password>
                 </configuration>
             </plugin>
         </plugins>

@@ -26,13 +26,13 @@
                         <id>default-war</id>
                         <phase>none</phase>
                     </execution>-->
-                    <execution>
+                    <!--<execution>
                         <id>war-exploded</id>
                         <phase>package</phase>
                         <goals>
                             <goal>exploded</goal>
                         </goals>
-                    </execution>
+                    </execution>-->
                 </executions>
             </plugin>
 

@@ -42,6 +42,13 @@
         </div>
     </div>
 </div>
+<div style="bottom: 90px; color: #10486b; left: 0; position: absolute; right: 0; text-align: center; z-index: 2;">
+    <p>用户暂时无密码，先使用用户名为如下特殊字符进行登录。</p>
+    <p>企业用户：E</p>
+    <p>评审：R<p/>
+    <p>政府：G</p>
+    <p>系统：S</p>
+</div>
 <div id="ft">CopyRight&nbsp;2015&nbsp;&nbsp;版权所有&nbsp;&nbsp;福建永创意信息科技有限公司,福州蓝石电子有限公司 技术支持</div>
 </body>
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
