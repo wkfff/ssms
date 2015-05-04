@@ -29,5 +29,5 @@
     <!-- 资源文件插件 -->
     <bean class="com.lanstar.plugin.file.ResourcePlugin"/>
     <!-- 控制台插件 -->
-    <bean class="com.lanstar.plugin.console.ConsolePlugin"/>
+    <!--<bean class="com.lanstar.plugin.console.ConsolePlugin"/>-->
 </beans>
