@@ -17,6 +17,7 @@ import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.Handler;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.render.Render;
+import com.lanstar.core.render.resolver.ForwardRenderResolver;
 import com.lanstar.core.render.resolver.RenderResolver;
 import com.lanstar.core.render.resolver.RenderResolverFactory;
 
@@ -45,6 +46,12 @@ public class ActionHandler implements Handler {
         }
         Action action = actionCache.getAction( meta );
         RenderResolver resolver = RenderResolverFactory.me().getResolver( meta.getRender() );
+        // 如果是转向的render，则直接转向就好了。
+        if ( resolver instanceof ForwardRenderResolver ) {
+            resolver.getRender( new ViewAndModel().view( requestContext.getTarget() ), requestContext )
+                    .render();
+            return;
+        }
         try {
             // 调度执行Action
             ViewAndModel vam = action.invoke( context );

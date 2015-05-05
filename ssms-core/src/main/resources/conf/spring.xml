@@ -54,6 +54,9 @@
                 <entry key="do">
                     <bean class="com.lanstar.core.render.resolver.ActionDoRenderResolver"/>
                 </entry>
+                <entry key="js">
+                    <bean class="com.lanstar.core.render.resolver.ForwardRenderResolver"/>
+                </entry>
             </map>
         </constructor-arg>
     </bean>
