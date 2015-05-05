@@ -21,7 +21,7 @@
     <table id="dg" data-bind="datagrid: grid">
         <thead>
         <tr>
-            <th field="C_NAME" width="400" editor="{ type:'validatebox', options:{ required:true }}">模板名称</th>
+            <th field="C_NAME" width="400" editor="{ type:'validatebox', options:{ required:true, validType:['length[0, 300]'] }}">模板名称</th>
             <th field="_action" width="400" formatter="formatter">操作</th>
         </tr>
         </thead>
