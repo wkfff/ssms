@@ -36,7 +36,7 @@
         $(".easyui-textbox").textbox("setValue", "");
     }
     function doNew() {
-        window.location.href = 'rec.html?refer=new';
+        window.location.href = 'reg.html';
     }
 
     $(function () {
@@ -80,6 +80,6 @@
     县:<input class="easyui-textbox" style="width:90px" name=" S_COUNTY">
     <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_index')">查询</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_index')" title="清空查询条件">重置</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-new" plain="true" onclick="doNew()">新增</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-new" plain="true" onclick="doNew()">注册新企业</a>
 </div>
 </@>
