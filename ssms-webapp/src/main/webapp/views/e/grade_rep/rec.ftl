@@ -51,9 +51,10 @@
         <#if (_FLAG_=='-1')>$form.disableForm('formMain',true);</#if>
         /*
         var editor = KindEditor.create('#C_CONTENT', {
-                width:'100%',height:'600',
+                width:'100%',
                 allowFileManager :false,
                 allowUpload:false,
+                autoHeightMode : true,
                 items : [
                     'fontname', 'fontsize',
                     '|', 'forecolor', 'hilitecolor', 'bold','italic', 'underline','removeformat',
@@ -62,19 +63,41 @@
                     '|', 'table','|','fullscreen'
                     ]
         });*/
+
+
+         KindEditor.ready(function(K) {
+                var h = $('.layout-body')[0].scrollHeight-35;
+                editor = K.create('#C_CONTENT', {
+                    width:'100%',height:h,border:0,
+                    //allowFileManager :false,
+                    //allowUpload:false,
+                    //autoHeightMode : true,
+                    themeType : 'simple',resizeType:0,
+                    items : [],
+                    afterCreate : function(id) {
+                        //editor.readonly();
+                        editor.toolbar.hide();
+                        K.ajax('/sys/attachtext/get.json?table=SSM_GRADE_E_M&field=C_CONTENT&sid=${sid!}', function(data) {
+                             window.editor.html(data);
+                        });
+                    }
+                 });
+        });
     });
 </script>
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div data-options="region:'north'" style="overflow:hidden;border:0;padding:0px;margin:0px;">
-        <div class="toolbar ue-clear">
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="alert('暂未完成');">下载</a>
+    <div class="easyui-panel" data-options="region:'center'" style="overflow:hidden;border:1;border-left:0;" title="自评报告">
+         <div class="toolbar ue-clear" style="border:0px;border-left:1px solid #c1d3de;">
+                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-download" onclick="alert('暂未完成');">下载</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
          </div>
-    </div>
-    <div data-options="region:'center'" style="overflow:hidden;border:0;padding:0px;margin:0px;">
          <form id="formMain" method="post">
-                <textarea class="easyui-kindeditor" id="C_CONTENT" name="C_CONTENT" data-options="width:'100%',height:'600'"></textarea>
+                <textarea  id="C_CONTENT" name="C_CONTENT" width=0 height=0></textarea>
+                <input type="text" name="table" value="SSM_GRADE_E_M" />
+                <input type="text" name="field" value="C_REPORT" />
+                <input type="text" name="sid" value="1" />
          </form>
     </div>
 </div>

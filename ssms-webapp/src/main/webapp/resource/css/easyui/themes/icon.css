@@ -62,7 +62,7 @@
     background: url('icons/redo.png') no-repeat center center;
 }
 
-.icon-back {
+.icon-back~ {
     background: url('icons/back.png') no-repeat center center;
 }
 
@@ -150,5 +150,13 @@
 
 .icon-title {
     background: url('icons/titleico.png') no-repeat center center;
+    background-size: 16px 16px;
+}
+.icon-download {
+    background: url('/resource/images/blue/download.png') no-repeat center center;
+    background-size: 16px 16px;
+}
+.icon-back {
+    background: url('/resource/images/blue/back.png') no-repeat center center;
     background-size: 16px 16px;
 }

@@ -58,10 +58,11 @@
             <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
          </div>
          
+         <@layout.texteditor table="SSM_GRADE_E_M" field="C_REPORT" sid=1/>
+        </@layout.doLayout>
+
          <form id="formMain" method="post">
                 <textarea class="easyui-kindeditor" id="C_CONTENT" name="C_CONTENT" data-options="width:'100%',height:'600px'"></textarea>
-                <input type="hidden" id="P_PROFESSION" name="P_PROFESSION"/>
-                <input type="hidden" id="S_PROFESSION" name="S_PROFESSION"/>
          </form>
     </div>
 </div>
