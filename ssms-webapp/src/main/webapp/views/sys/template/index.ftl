@@ -7,7 +7,7 @@
         return "<a href='#' onclick='editSTDTMP({0})'>编辑达标体系模板</a>".format(row.SID);
     }
 
-    ko.applyBindings(a);
+    ko.applyBindings(new viewModel());
 </script>
 </#assign>
 <@layout.doLayout script>
