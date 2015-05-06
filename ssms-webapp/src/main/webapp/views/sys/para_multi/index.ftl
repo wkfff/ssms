@@ -13,6 +13,10 @@ function doBack(){
       window.location.href="index.html"
 }
 function doList(id){
+	$('#value').hide();
+	$('#search').hide();
+	$('#clear').hide();
+	$('#back').linkbutton('enable');
     $('#dg_index').datagrid({
         title:'参数值列表',
         url: 'listV.json?sid='+id,
@@ -29,8 +33,8 @@ function doList(id){
         ]]
     });
 }
-
 $(function () {
+	$('#back').linkbutton('disable');
     $('#dg_index').datagrid({
         title:'参数列表',
         url: 'list.json',
@@ -57,13 +61,10 @@ $(function () {
 <@layout.doLayout script>
 <table id="dg_index"></table>
 <div id="dg_index_tb" style="padding:5px;height:auto">
-       <#if !sid??>
-             参数名: <input class="easyui-textbox" style="width:90px" name="C_NAME">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_index')">查询</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_index')" title="清空查询条件">重置</a>
-        <#else>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-undo" plain="true" onclick="doBack()" title="返回">返回</a>
-        </#if>
+        <span id="value"> 参数名: <input class="easyui-textbox"  style="width:90px" name="C_NAME"></span>
+        <a href="#" class="easyui-linkbutton" id="search" iconCls="icon-search" plain="true"   onclick="doSearch('dg_index')">查询</a>
+        <a href="#" class="easyui-linkbutton" id="clear" iconCls="icon-clear" plain="true" onclick="doClear('dg_index')" title="清空查询条件">重置</a>
+        <a href="#" class="easyui-linkbutton" id="back" iconCls="icon-undo" plain="true" onclick="doBack()" title="返回">返回</a>
 </div>
 
 </@>
