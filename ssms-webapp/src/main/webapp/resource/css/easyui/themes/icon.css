@@ -152,3 +152,12 @@
     background: url('icons/titleico.png') no-repeat center center;
     background-size: 16px 16px;
 }
+
+.icon-details {
+    background: url('icons/details.png') no-repeat center center;
+    background-size: 16px 16px;
+}
+.icon-table {
+    background: url('icons/table.png') no-repeat center center;
+    background-size: 16px 16px;
+}
