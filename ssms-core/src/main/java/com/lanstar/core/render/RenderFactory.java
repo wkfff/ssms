@@ -46,4 +46,8 @@ public class RenderFactory {
             }
         };
     }
+
+    public Render getForwardRender( String viewName, RequestContext requestContext ) {
+        return new ForwardRender(viewName, requestContext);
+    }
 }

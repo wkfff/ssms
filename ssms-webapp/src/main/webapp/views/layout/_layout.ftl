@@ -18,10 +18,15 @@ ${footer}</html>
     <#local _header><link rel="stylesheet" href="/resource/css/base.css"/>
     <link rel="stylesheet" href="/resource/css/common.css"/>
     <link rel="stylesheet" href="/resource/css/fix.css"/>
+    <#--knockout-->
+    <script type="text/javascript" src="/resource/js/knockout/knockout.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
+    <#--jquery-->
+    <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resource/js/jquery.json.min.js"></script>
     <#--easyui-->
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
-    <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>

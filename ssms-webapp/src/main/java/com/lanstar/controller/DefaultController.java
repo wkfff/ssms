@@ -8,6 +8,7 @@
 
 package com.lanstar.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.ViewAndModel;
@@ -16,8 +17,10 @@ import com.lanstar.db.DBPaging;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.helper.easyui.EasyUIControllerHelper;
+import com.lanstar.plugin.json.JsonHelper;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class DefaultController extends BaseController {
@@ -62,7 +65,7 @@ public abstract class DefaultController extends BaseController {
         String sid = context.getValue( "sid" );
         return context.returnWith().set(
                 context.DB.withTable( this.TABLENAME ).where( "SID=?", sid )
-                        .query() );
+                          .query() );
     }
 
     /**
@@ -88,6 +91,30 @@ public abstract class DefaultController extends BaseController {
         return context.returnWith().put( "SID", sid );
     }
 
+    @SuppressWarnings("unchecked")
+    public void batchSave( HandlerContext context ) {
+        String dataStr = context.getValue( "data" );
+        int count = 0;
+        if ( StringHelper.isBlank( dataStr ) ) return;
+        List<Object> list = JsonHelper.parseArray( dataStr );
+        for ( Object o : list ) {
+            JSONObject map = (JSONObject) o;
+            String sid = String.valueOf( map.get( "SID" ) );
+            if ( sid == null || sid.startsWith( "_" ) ) {
+                map.remove( "SID" );
+                sid = null;
+            }
+            ARTable table = context.DB.withTable( this.TABLENAME );
+            this.mergerValuesWithoutParaMap( table, context, MergerType.withSid( sid ) );
+            table.values( map );
+            // 根据sid的存在设置where语句
+            table.where( !StringHelper.isBlank( sid ), "SID=?", sid )
+                 .save();
+            count++;
+        }
+        context.setValue( "count", count );
+    }
+
     /**
      * 列表.删除
      */
@@ -95,7 +122,7 @@ public abstract class DefaultController extends BaseController {
         String ids = (String) context.getValue( "ids" );
         if ( !Strings.isNullOrEmpty( ids ) ) {
             context.DB.withTable( this.TABLENAME )
-                    .where( "SID in (" + ids + ")" ).delete();
+                      .where( "SID in (" + ids + ")" ).delete();
         }
         return context.returnWith().set( "{}" );
     }
@@ -113,9 +140,9 @@ public abstract class DefaultController extends BaseController {
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         if ( !Strings.isNullOrEmpty( sid ) ) {
             context.DB.withTable( this.TABLENAME ).where( "SID = ?", sid )
-                    .delete();
+                      .delete();
         }
-        return context.returnWith().set("");
+        return context.returnWith().set( "" );
     }
 
     @Override
@@ -131,7 +158,7 @@ public abstract class DefaultController extends BaseController {
 
         for ( String key : map.keySet() ) {
             if ( key.equals( DBPaging.PAGE_INDEX )
-                    || key.equals( DBPaging.PAGE_SIZE )|| key.equals( "sid" ) ) continue;
+                    || key.equals( DBPaging.PAGE_SIZE ) || key.equals( "sid" ) ) continue;
             String value = map.get( key );
             if ( Strings.isNullOrEmpty( value ) ) continue;
             String f = this.filterFields.get( key );
