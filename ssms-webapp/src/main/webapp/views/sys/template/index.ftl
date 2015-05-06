@@ -6,7 +6,8 @@
         if (row.SID === undefined || row.SID.toString().startsWith("_")) return;
         return "<a href='#' onclick='editSTDTMP({0})'>编辑达标体系模板</a>".format(row.SID);
     }
-    ko.applyBindings(new viewModel());
+
+    ko.applyBindings(a);
 </script>
 </#assign>
 <@layout.doLayout script>
