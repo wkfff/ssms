@@ -1,6 +1,7 @@
 <#import "/layout/_list.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
+var sid;
 function doSearch(id) {
     $("#" + id).datagrid('load', {
         C_NAME : $("input[name='C_NAME']", "#" + id + "_tb").val()
@@ -14,6 +15,9 @@ function doBack(){
 }
 function doEdit(sid) {
     window.location.href = 'rec.html?sid='+sid;
+}
+function doAdd() {
+    window.location.href = 'rec.html?refer=add&sid='+this.sid;
 }
 function doDel(sid) {
     $.messager.confirm("删除确认", "您确认删除选定的记录吗？", function (deleteAction) {
@@ -35,11 +39,13 @@ function doNew(){
     window.location.href = 'rec.html';
 }
 function doList(id){
+	sid=id;
 	$('#value').hide();
 	$('#search').hide();
 	$('#clear').hide();
 	$('#new').hide();
-	$('#back').linkbutton('enable');
+	$('#back').show();
+	$('#add').show();
     $('#dg_index').datagrid({
         title:'参数值列表',
         url: 'listV.json?sid='+id,
@@ -63,7 +69,8 @@ function doList(id){
     });
 }
 $(function () {
-	$('#back').linkbutton('disable');
+	$('#back').hide();
+	$('#add').hide();
     $('#dg_index').datagrid({
         title:'参数列表',
         url: 'list.json',
@@ -77,7 +84,6 @@ $(function () {
         toolbar: '#dg_index_tb',
         columns: [[
             {field: 'C_NAME', title: '参数名', width: 200},
-            {field: 'C_CODE', title: '参数编码', width: 200},
             {field: 'SID', title: '参数值', width: 120,align:'center',
                 formatter:function(value,row){
                         return "<a href='#' onclick='doList("+value+")'>查看</a>";
@@ -94,6 +100,7 @@ $(function () {
         <a href="#" class="easyui-linkbutton" id="search" iconCls="icon-search" plain="true"   onclick="doSearch('dg_index')">查询</a></span>
         <a href="#" class="easyui-linkbutton" id="clear" iconCls="icon-clear" plain="true" onclick="doClear('dg_index')" title="清空查询条件">重置</a>
         <a href="#" class="easyui-linkbutton" id="new" iconCls="icon-new" plain="true" onclick="doNew()">新增</a>
+        <a href="#" class="easyui-linkbutton" id="add" iconCls="icon-new" plain="true" onclick="doAdd()">新增</a>
         <a href="#" class="easyui-linkbutton" id="back" iconCls="icon-undo" plain="true" onclick="doBack()" title="返回">返回</a>
 </div>
 

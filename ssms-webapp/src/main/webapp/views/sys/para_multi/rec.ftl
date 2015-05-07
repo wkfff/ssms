@@ -4,41 +4,45 @@
     src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 <!--  <script type="text/javascript" src="/resource/js/cascade.js"></script>-->
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#formMain').form('load', 'rec.json?sid=${sid!}');
-    });
-    String.prototype.replaceAll = function(s1, s2) {
-        return this.replace(new RegExp(s1, "gm"), s2);
-    }
-    function doSave() {
-        //$.messager.progress();
-        $('#formMain').form(
-                'submit',
-                {
-                    url : 'save.do?sid=${sid!}',
-                    onSubmit : function() {
-                        var isValid = $(this).form('validate');
-                        if (!isValid) {
-                            //$.messager.progress('close');
-                        }
-                        return isValid;
-                    },
-                    success : function(data) {
-                        $.messager.alert("提示", "保存成功");
-                        window.location.href = 'index.html?id='
-                                + data.replaceAll('"', '');
-                    }
-                });
-    }
-    function doBack() {
-    	window.location.href="index.html";
-    }
+	$(document).ready(function() {
+		$('#formMain').form('load', 'rec.json?refer=${refer!}&sid=${sid!}');
+	});
+	String.prototype.replaceAll = function(s1, s2) {
+		return this.replace(new RegExp(s1, "gm"), s2);
+	}
+	function doSave() {
+		//$.messager.progress();
+		var ur='save.do?sid=${sid!}';
+	    if("${refer!}"=="add"){
+			ur='save.do';
+		}		 
+		$('#formMain').form(
+				'submit',
+				{
+					url : ur,
+					onSubmit : function() {
+						var isValid = $(this).form('validate');
+						if (!isValid) {
+							//$.messager.progress('close');
+						}
+						return isValid;
+					},
+					success : function(data) {
+						$.messager.alert("提示", "保存成功");
+						window.location.href = 'index.html?id='
+								+ data.replaceAll('"', '');
+					}
+				});
+	}
+	function doBack() {
+		window.location.href = "index.html";
+	}
 </script>
 </#assign> <@layout.doLayout script>
 <div class="easyui-panel"
     style="border: 0; background-color: #FAFAFA; padding: 5px;">
     <a href="#" class="easyui-linkbutton" data-options="plain: true"
-        iconCls="icon-save" onclick="doSave()">保存</a>  <a href="#"
+        iconCls="icon-save" onclick="doSave()">保存</a> <a href="#"
         class="easyui-linkbutton" data-options="plain: true"
         iconCls="icon-undo" onclick="doBack()">返回</a>
 </div>
@@ -47,17 +51,20 @@
         title="参数信息">
         <table>
             <tr>
-                <td class="span2">参数编号:</td>
-                <td colspan="3"><input class="easyui-textbox"
-                    data-options="required:true" 
-                    type="text" name="C_CODE" style="width: 100%" /></td>
-            </tr>
-            <tr>
                 <td class="span2">参数名:</td>
                 <td colspan="3"><input class="easyui-textbox"
                     type="text" name="C_NAME"
-                    data-options="required:true" style="width: 100%" />
-                </td>
+                    data-options="required:true"<#if sid??>
+                    editable="false"</#if> <#if refer??>editable="false"
+                    value="${C_NAME!}" </#if> style="width: 100%" /></td>
+            </tr>
+            <tr>
+                <td class="span2">参数编号:</td>
+                <td colspan="3"><input class="easyui-textbox"
+                    data-options="required:true"<#if refer??>
+                    editable="true"<#elseif sid??>editable="false"
+                    </#if> type="text" name="C_CODE" style="width: 100%"
+                    /></td>
             </tr>
             <tr>
                 <td class="span2">参数值:</td>
