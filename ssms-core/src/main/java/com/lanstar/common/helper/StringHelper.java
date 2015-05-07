@@ -407,11 +407,12 @@ public final class StringHelper {
     }
 
     public static boolean equalsIgnoreCase( String v, String... args ) {
+
         for ( String arg : args ) {
             if ( v == null ) {
-                if ( Objects.equals( null, arg ) ) return false;
-            } else if ( !v.equalsIgnoreCase( arg ) ) return false;
+                if ( Objects.equals( null, arg ) ) return true;
+            } else if ( v.equalsIgnoreCase( arg ) ) return true;
         }
-        return true;
+        return false;
     }
 }
