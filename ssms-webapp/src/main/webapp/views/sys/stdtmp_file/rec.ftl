@@ -26,15 +26,16 @@
     };
     var events = {
         saveClick: function () {
-            $.post('save.do', model, function (result) {
-                if (result.SID)
-                    $.messager.alert("提示", "保存成功", "info", function () {
-                        window.location.href = 'rec.html?sid=' + result.SID + "&backURL=${backURL!referer!}";
-                    });
-                else {
-                    $.messager.alert("提示", "保存失败", "warning");
-                }
-            }, "json")
+            if ($form.validate($('.form')))
+                $.post('save.do', model, function (result) {
+                    if (result.SID)
+                        $.messager.alert("提示", "保存成功", "info", function () {
+                            window.location.href = 'rec.html?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                        });
+                    else {
+                        $.messager.alert("提示", "保存失败", "warning");
+                    }
+                }, "json")
         }
     };
 
@@ -80,7 +81,8 @@
         <label class="label">模板文件</label>
         <span class="control">
             <input data-bind="comboboxSource:tmpfilesSource,comboboxValue:P_TMPFILE,comboboxText:S_TMPFILE,easyuiOptions:paramViewSettings" required="true"/>
-            <#if P_TMPFILE??><a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?pid=${SID}&backURL=${backURL!referer!}">[配置模板]</a></#if>
+            <#if P_TMPFILE??>
+                <a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?pid=${SID}&backURL=${backURL!referer!}">[配置模板]</a></#if>
         </span>
     </p>
 

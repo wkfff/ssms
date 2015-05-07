@@ -79,13 +79,6 @@ ko.bindingHandlers.form = {
     update: function (element, valueAccessor) {
     }
 };
-ko.bindingHandlers.formValue = {
-    init: function (element, valueAccessor) {
-    },
-    update: function (element, valueAccessor) {
-        $(element).form('load', ko.unwrap(valueAccessor()));
-    }
-};
 
 (function () {
     var utils;
@@ -115,7 +108,7 @@ ko.bindingHandlers.formValue = {
                 // 设置上两个有意义的数据
                 options.$element = $(element);
                 options[componentTypeName] = function () {
-                    $.fn[componentTypeName].apply($(element), arguments)
+                    return $.fn[componentTypeName].apply($(element), arguments)
                 };
                 if (extOptions) {
                     $.extend(options, extOptions);
@@ -1164,7 +1157,7 @@ ko.bindingHandlers.formValue = {
     ko.bindingHandlers.textareaValue = {
         init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var curValue, options, refreshValueFun, value;
-            utils.component.ensureComponentInited(element, "textbox", allBindingsAccessor, {multiline:true});
+            utils.component.ensureComponentInited(element, "textbox", allBindingsAccessor, {multiline: true});
             options = $(element).textbox('options');
             value = valueAccessor();
             if (value() == null) {
@@ -1201,6 +1194,37 @@ ko.bindingHandlers.formValue = {
         update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var value = ko.unwrap(valueAccessor());
             $(element).prop('checked', value === 1);
+        }
+    };
+
+    ko.bindingHandlers.treeValue = {
+        init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var curValue, options, refreshValueFun, value;
+            utils.component.ensureComponentInited(element, "tree", allBindingsAccessor);
+            options = $(element).tree('options');
+            value = valueAccessor();
+            refreshValueFun = function (oriFun) {
+                return function () {
+                    value(options.value);
+                    return oriFun != null ? oriFun.apply($(element), arguments) : void 0;
+                };
+            };
+            options.onSelect = refreshValueFun(options.onSelect)
+        },
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var value;
+            value = ko.utils.unwrapObservable(valueAccessor());
+            if ($(element).tree('getSelected') !== value) {
+                return $(element).tree('select', value);
+            }
+        }
+    };
+
+    ko.bindingHandlers.formValue = {
+        init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        },
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            $(element).form('load', ko.unwrap(valueAccessor()));
         }
     };
 }).call(this);

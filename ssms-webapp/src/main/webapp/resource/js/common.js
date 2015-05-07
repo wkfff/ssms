@@ -108,3 +108,14 @@ $.each(plugins, function (i, e) {
     if (pluginDefaults.width && pluginDefaults.width == 'auto') pluginDefaults.width = '100%';
     pluginDefaults.height = 33;
 });
+
+$form.validate = function (element) {
+    if ($.fn.validatebox) {
+        var t = $(element);
+        t.find(".validatebox-text:not(:disabled)").validatebox("validate");
+        var items = t.find(".validatebox-invalid");
+        items.filter(":not(:disabled):first").focus();
+        return items.length == 0;
+    }
+    return true;
+};
