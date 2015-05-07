@@ -20,15 +20,16 @@
                 <form class="form" method="post" data-bind="form: rec, formValue: rec.data">
                     <p class="ue-clear">
                         <label>名称：</label>
-                    <span class="control">
-                        <input class="easyui-textbox" type="text" name="C_NAME"/>
-                    </span>
+                        <span class="control">
+                            <input class="easyui-textbox" type="text" name="C_NAME"/>
+                        </span>
                     </p>
+
                     <p class="ue-clear">
                         <label>描述：</label>
-                    <span class="control">
-                        <input class="easyui-textbox" type="text" name="C_DESC" multiline="true"/>
-                    </span>
+                        <span class="control">
+                            <input class="easyui-textbox" type="text" name="C_DESC" multiline="true"/>
+                        </span>
                     </p>
                     <input type="hidden" name="SID"/>
                     <input type="hidden" name="R_TEMPLATE" value="${R_SID}"/>
