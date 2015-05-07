@@ -1,0 +1,1 @@
+mvn package tomcat7:redeploy

@@ -1,14 +1,27 @@
 <#import "/layout/_rec.ftl" as layout/>
 <#assign script>
 <style>
-    .datagrid-cell-c2-C_CONTENT,.datagrid-cell-c2-C_METHOD,.datagrid-cell-c2-C_DESC{
+    .datagrid-cell{
         white-space:normal !important;
     }
     .datagrid-editable-input{
         height:120px !important;
     }
-    .datagrid-row{
-        border-bottom:1px solid #000 !important;
+    .panel-header{
+        padding:5px !important;
+    }
+    .db_tb{
+        height:15px;
+        line-height:15px;
+        font-size:12;
+        vertial-align:top;
+        margin:0 0 0 2px;
+    }
+    .db_tb input{
+        margin-top:1px;
+    }
+    .db_tb a{
+        width:90px;
     }
 </style>
 <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
@@ -53,17 +66,25 @@
     }
     
     function doComplete(){
-        $.messager.confirm("完成确认", "您确认完成当前的自评吗？", function (action) {
+        $.get("check.json", {sid:'${sid!}'}, function (data) {
+            if (data && data>0) {
+                $.messager.alert("提示", "自评还有未填写的项，请填写后再完成自评！");
+            }
+            else {
+                $.messager.confirm("完成确认", "您确认完成当前的自评吗？", function (action) {
                     if (action) {
                         $.get("complete.do", {sid:'${sid!}'}, function (data) {
                             if (data == "true" || data== "\"\"") {
                                 $.messager.alert("提示", "自评完成");
+                                window.location.href='/e/grade_rep/rec.html?sid=${sid!}';
                             }
                             else {
                                 $.messager.alert("提示", data);
                             }
                         });
                     }
+                });
+            }
         });
     }
     
@@ -71,13 +92,24 @@
         window.location.href='${referer!}';
     }
     
+    function doShow(v){
+        var chk = $('.db_tb input')[0].checked;
+        if (typeof(v)=='undefined'){
+            chk = !chk;
+            $('.db_tb input')[0].checked = chk;
+        }
+        if (chk) {
+            $('#dg').datagrid({url:'/e/grade_d/list.json?R_SID=${sid!-1}&type=3'});
+            //$('#dg').edatagrid('reload');
+        }else{
+            $('#dg').datagrid({url:'/e/grade_d/list.json?R_SID=${sid!-1}'});
+        }
+    }
+    
     $(function () {
         $('#formMain').form('load','rec.json?sid=${sid!}');
-        <#if (_FLAG_=='-1' || _FLAG_=='-2')>$form.disableForm('formMain',true);</#if>
-        
-        $('#dg').<#if (_FLAG_!='-1')>e</#if>datagrid({
-            title:'自评内容',border:0,
-            //iconCls: 'icon-star',
+        $('#dg').edatagrid({
+            title:'自评内容',
             url: '/e/grade_d/list.json?R_SID=${sid!-1}',
             updateUrl:'/e/grade_d/save.do',
             idField: 'SID',
@@ -86,53 +118,39 @@
             singleSelect: true,
             fitColumns: false,
             autoRowHeight:true,
-            fit:true,
-            //border:false,
             autoSave:true,
+            fit:true,
+            border:false,
             striped: false,
             columns: [[
                 {field: 'S_CATEGORY', title: '类目', width: 100},
                 {field: 'S_PROJECT', title: '项目', width: 100},
                 {field: 'C_CONTENT', title: '内容', width: 256},
-                {field: 'N_SCORE', title: '标准分值',align:'center',width: 60},
+                {field: 'N_SCORE', title: '标准分值',align:'center',width: 65},
                 {field: 'C_METHOD', title: '考评办法', width: 350},
                 {field: 'C_DESC', title: '自评描述', width: 250,editor:{type:'textarea',options:{},height:'100%'}},
-                {field: 'B_BLANK', title: '是否缺项', width: 60,align:'center',editor:{type:'checkbox',options:{on:'1',off:'0'}},
+                {field: 'B_BLANK', title: '是否缺项', width: 65,align:'center',editor:{type:'checkbox',options:{on:'1',off:'0'}},
                         formatter:function(value,row){
                             return value=='1'?'是':'否';
                         }},
-                {field: 'N_SCORE_REAL', title: '实际得分', align:'center',width: 60,editor:'numberbox'}
-            ]]
-            <#if (_FLAG_=='-1')>,
+                {field: 'N_SCORE_REAL', title: '实际得分', align:'center',width: 65,editor:'numberbox'}
+            ]],
             onLoadSuccess: function(data){
-                $(this).datagrid("autoMergeCells",["S_CATEGORY","S_PROJECT"]);
+                //$(this).datagrid("autoMergeCells",["S_CATEGORY","S_PROJECT"]);
             }
-            </#if>
         });
     });
 </script>
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div title="在线自评" data-options="region:'north',collapsible:false" style="height:230px;overflow:hidden;">
-          <#if (_FLAG_!='-2')>
+    <div title="在线自评" data-options="region:'north',collapsible:true" style="height:230px;overflow:hidden;">
           <div class="toolbar ue-clear">
-            <#if (_FLAG_=='0')>
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
-            </#if>
-            
-            <#if (_FLAG_=='-1')>
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
-            </#if>
-            
-            <#if (_FLAG_=='1')>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-ok" onclick="doComplete()">完成自评</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-cancel" onclick="doDel()">删除</a> 
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
-            </#if>
          </div>
-         </#if>
          <div class="easyui-panel" style="border:0;margin:10px;">
              <form id="formMain" method="post">
                     <table cellspacing="6">
@@ -160,11 +178,15 @@
         </div>
     </div>
     
-    <#if (_FLAG_!='0')>
     <div data-options="region:'center'" >
-        <table id="dg" class="easyui-datagrid" title="自评内容" />
+        <table id="dg" class="easyui-datagrid" title="自评内容" data-options="tools:'#db_tb'"/>
+        <div id="db_tb">
+            <div class="db_tb">
+                <input type="checkbox" onclick="doShow(this.checked)"></input>
+                <a href="javascript:void(0)" onclick="javascript:doShow()">只显示未完成项</a>
+            </div>
+        </div>
     </div>
-    </#if>
 </div>
 
 </@layout.doLayout>

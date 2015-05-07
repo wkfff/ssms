@@ -71,11 +71,8 @@ function viewModel() {
             });
         }
     };
-    self.editSTDTMP = function () {
-        alert(1);
-    };
 }
 
 var editSTDTMP = function (sid) {
-    alert(sid);
+    window.location.href = '/sys/stdtmp/index.html?R_SID='+sid;
 };

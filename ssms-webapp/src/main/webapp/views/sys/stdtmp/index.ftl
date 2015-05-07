@@ -1,234 +1,59 @@
 <#import "/layout/_list.ftl" as layout/>
 <#assign script>
+<script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">
-    var page = {
-        sid: null,
-        init: function () {
-            tree.init();
-            listChildren.init();
-            listFile.init();
-        }
-    };
-    var tree = {
-        el: $('#nav'),
-        selectNode: null,
-        config: {
-            url: 'tree.json',
-            queryParams: {
-                profession: '${profession}'
-            },
-            onSelect: function (node) {
-                page.sid = node.id;
-                tree.selectNode = node;
-                recForm.load();
-                listChildren.load();
-                listFile.load();
-            },
-            onLoadSuccess: function () {
-                var $this = $(this);
-                var node = tree.selectNode;
-                if (node) node = $this.tree('find', node.id);
-                if (!node) node = $this.tree('getRoot');
-
-                $this.tree('select', node.target)
-            }
-        },
-        init: function () {
-            this.el.tree(tree.config);
-        },
-        reload: function () {
-            this.el.tree('reload');
-        }
-    };
-    var recForm = {
-        el: $('#rec_fm'),
-        config: {
-            recUrl: 'rec.json',
-            saveUrl: 'save.do'
-        },
-        load: function () {
-            var $this = this;
-            $.post(this.config.recUrl, {sid: page.sid}, function (result) {
-                $this.loadData(result);
-            });
-        },
-        loadData: function (data) {
-            this.el.form('load', data);
-        },
-        save: function () {
-            var $el = this.el;
-            var url = this.config.saveUrl;
-            $el.form('submit', {
-                url: url,
-                onSubmit: function () {
-                    return $(this).form('validate');
-                },
-                success: function () {
-                    $.messager.alert('提示信息', '保存成功!');
-                    tree.reload();
-                }
-            });
-        },
-        del: function () {
-            $.post('del.do', {sid: page.sid}, function () {
-                tree.reload();
-            })
-        }
-    };
-    var listChildren = {
-        el: $('#list_children'),
-        config: {
-            idField: 'SID',
-            iconCls: 'icon-star',
-            rownumbers: true,
-            pagination: true,
-            singleSelect: true,
-            striped: true,
-            toolbar: '#list_children_tb',
-            border: false,
-            autoSave: true,
-            updateUrl: 'save.do',
-            onBeforeSave: function (index) {
-                listChildren.el.edatagrid('endEdit', index);
-                var data = listChildren.getSelect();
-                data.R_SID = page.sid;
-                data.P_PROFESSION = tree.selectNode.attributes.P_PROFESSION;
-                data.S_PROFESSION = tree.selectNode.attributes.S_PROFESSION;
-                // 删除isNewRecord
-                data.isNewRecord = undefined;
-                $.post('save.do', data, function () {
-                    tree.reload();
-                });
-                return false;
-            },
-            columns: [
-                [
-                    {field: 'C_NAME', title: '名称', width: '30%', editor: 'textbox'},
-                    {field: 'C_DESC', title: '描述', width: '50%', editor: 'textarea'},
-                    {field: 'N_INDEX', title: '排序号', width: '10%', align: 'center', editor: 'numberbox'},
-                    {
-                        field: '_action',
-                        title: '操作',
-                        width: '60',
-                        align: 'center',
-                        formatter: function (value, row) {
-                            if (row.SID) return '<a href="javascript:;" onclick="listChildren.delRow({0})">删除</a>'.format(row.SID);
-                        }
-                    }
-                ]
-            ]
-        },
-        init: function () {
-            this.el.edatagrid(this.config);
-        },
-        load: function () {
-            this.el.edatagrid({
-                url: 'list.json',
-                queryParams: {R_SID: page.sid}
-            });
-        },
-        addRow: function () {
-            this.el.edatagrid('addRow');
-        },
-        delRow: function (id) {
-            $.post('del.do', {sid: id}, function () {
-                tree.reload();
-            })
-        },
-        getSelect: function () {
-            return this.el.edatagrid('getSelected');
-        }
-    };
-    var listFile = {
-        el: $('#list_file'),
-        config: {
-            idField: 'SID',
-            iconCls: 'icon-star',
-            rownumbers: true,
-            pagination: true,
-            singleSelect: true,
-            striped: true,
-            toolbar: '#list_file_tb',
-            border: false,
-            columns: [
-                [
-                    {field: 'C_NAME', title: '名称', width: '30%', editor: 'textbox'},
-                    {field: 'C_DESC', title: '描述', width: '50%', editor: 'textarea'},
-                    {field: 'N_INDEX', title: '排序号', width: '10%', align: 'center', editor: 'numberbox'},
-                    {
-                        field: '_action',
-                        title: '操作',
-                        width: '60',
-                        align: 'center',
-                        formatter: function (value, row) {
-                            return '<a href="javascript:;" onclick="listFile.editRow({0})">编辑</a> <a href="javascript:;" onclick="listFile.delRow({0})">删除</a>'.format(row.SID);
-                        }
-                    }
-                ]
-            ]
-        },
-        init: function () {
-            this.el.datagrid(this.config);
-        },
-        load: function () {
-            this.el.datagrid({
-                url: '/sys/stdtmp_file/list.json',
-                queryParams: {R_SID: page.sid}
-            });
-        },
-        reload: function () {
-            this.el.datagrid('reload');
-        },
-        addRow: function () {
-            window.location.href = '/sys/stdtmp_file/rec.html?pid=' + page.sid;
-        },
-        editRow: function (sid) {
-            window.location.href = '/sys/stdtmp_file/rec.html?sid=' + sid;
-        },
-        delRow: function (id) {
-            $.post('/sys/stdtmp_file/del.do', {sid: id}, function () {
-                listFile.reload();
-            })
-        },
-        getSelect: function () {
-            return this.el.datagrid('getSelected');
-        }
-    };
-    $(page.init);
+    ko.applyBindings(new viewModel({template: ${R_SID}}));
 </script>
 </#assign>
 <@layout.doLayout script=script>
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'west', title:'功能导航', split:true" style="width: 200px">
-        <ul id="nav"></ul>
+        <ul data-bind="tree: tree"></ul>
     </div>
-    <div data-options="region:'center'">
-        <div class="easyui-panel" title="概要" style="padding: 10px">
-            <@layout.toolbar>
-                <@layout.button title="保存" icon="save" click="recForm.save()"/>
-                <@layout.button title="删除" icon="cancel" click="recForm.delRow()"/>
-            </@>
-            <div class="hr"></div>
-            <@layout.form id="rec_fm">
-                <table>
-                    <tr><@layout.td_textbox title="名称" name="C_NAME" must=true/></tr>
-                    <tr><@layout.td_textarea title="描述" name="C_DESC"/></tr>
+    <div data-options="region:'center', border:false">
+        <div class="easyui-tabs" fit="true">
+            <div title="概要" iconCls="icon-details">
+                <div class="z-toolbar">
+                    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: rec.saveClick">保存</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-cancel" data-bind="click: rec.removeClick">删除</a>
+                </div>
+                <form class="form" method="post" data-bind="form: rec, formValue: rec.data">
+                    <p class="ue-clear">
+                        <label>名称：</label>
+                    <span class="control">
+                        <input class="easyui-textbox" type="text" name="C_NAME"/>
+                    </span>
+                    </p>
+                    <p class="ue-clear">
+                        <label>描述：</label>
+                    <span class="control">
+                        <input class="easyui-textbox" type="text" name="C_DESC" multiline="true"/>
+                    </span>
+                    </p>
+                    <input type="hidden" name="SID"/>
+                </form>
+            </div>
+            <div title="子分类" iconCls="icon-table" data-bind="with: items">
+                <div id="items_toolbar" class="z-toolbar">
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" data-bind="click: deleteClick">删除</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" data-bind="click:saveClick">保存</a>
+                </div>
+                <table data-bind="datagrid: $data">
+                    <thead>
+                    <tr>
+                        <th field="C_NAME" width="100" editor="{ type:'validatebox', options:{ required:true, validType:['length[0, 300]'] }}">名称</th>
+                        <th field="C_DESC" width="200" editor="{ type:'textarea', options:{ validType:['length[0, 1000]'] }}">描述</th>
+                        <th field="N_INDEX" width="80" align="center" editor="{ type:'numberbox', options: {required:true} }">排序</th>
+                    </tr>
+                    </thead>
                 </table>
-                <@layout.hidden name='SID'/>
-            </@>
-        </div>
-        <div class="easyui-panel" title="子分类列表">
-            <@layout.toolbar id="list_children_tb">
-                <@layout.button title="新增" icon="new" click="listChildren.addRow()" />
-            </@layout.toolbar>
-            <table id="list_children"></table>
-        </div>
-        <div class="easyui-panel" title="文件列表">
-            <@layout.toolbar id="list_file_tb">
-                <@layout.button title="新增" icon="add" click="listFile.addRow()" />
-                <@layout.button title="编辑" icon="edit" click="listFile.editRow()" />
-            </@>
-            <table id="list_file"></table>
+            </div>
+            <div title="文件" iconCls="icon-table" style="padding: 2px">
+                <iframe id="iframe" frameborder="0" width="100%" height="99%" data-bind="attr: {src: fileUrl}"></iframe>
+            </div>
         </div>
     </div>
 </div>
