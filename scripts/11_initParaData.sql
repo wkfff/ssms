@@ -18,36 +18,40 @@ VALUES
   (13, 'SYS_CYCLE', '02', '季', NULL, NULL, NULL, NULL, NULL, '2015-04-30 10:11:47', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (14, 'SYS_CYCLE', '03', '年', NULL, NULL, NULL, NULL, NULL, '2015-04-30 10:11:56', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
--- 初始化工贸模型
-INSERT INTO `SYS_STDTMP_FOLDER` (`SID`, `C_NAME`, `R_SID`, `C_DESC`, `C_LOGO`, `P_PROFESSION`, `S_PROFESSION`, `R_CREATE`, `S_CREATE`, `T_CREATE`, `R_UPDATE`, `S_UPDATE`, `T_UPDATE`, `R_TENANT`, `S_TENANT`, `P_TENANT`, `N_STATE`, `B_DELETE`, `N_INDEX`, `N_VERSION`)
+-- 初始化模板数据
+INSERT INTO `SYS_TEMPLATE` (`SID`, `C_NAME`, `R_CREATE`, `S_CREATE`, `T_CREATE`, `R_UPDATE`, `S_UPDATE`, `T_UPDATE`, `R_TENANT`, `S_TENANT`, `P_TENANT`, `N_STATE`, `B_DELETE`, `N_INDEX`, `N_VERSION`)
 VALUES
-  (1, '工贸达标体系模板', 0, 'adfdfe', NULL, '01', '工贸', 0, 'admin', '2015-04-20 11:41:52', 0, 'admin', '2015-04-21 22:35:54', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (4, '安全生产目标', 1, '安全生产目标', NULL, '01', '工贸', 0, 'admin', '2015-04-21 10:36:28', 0, 'admin', '2015-04-21 22:36:36', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (7, '目标', 4, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:36:52', NULL, NULL, '2015-04-21 22:36:52', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (8, '监测与考核', 4, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:37:09', NULL, NULL, '2015-04-21 22:37:09', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (9, '组织机构和职责', 1, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:50:14', NULL, NULL, '2015-04-21 22:50:14', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (10, '安全投入', 1, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:50:23', NULL, NULL, '2015-04-21 22:50:23', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (11, '法律法规', 1, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:50:40', NULL, NULL, '2015-04-21 22:50:40', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (12, '教育培训', 1, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:50:49', 0, 'admin', '2015-04-21 22:51:05', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (13, '生产设备设施', 1, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:51:22', NULL, NULL, '2015-04-21 22:51:22', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (14, '组织机构与人员', 9, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:51:44', NULL, NULL, '2015-04-21 22:51:44', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (15, '职责', 9, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:51:52', NULL, NULL, '2015-04-21 22:51:52', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (16, '安全生产费用', 10, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:52:23', NULL, NULL, '2015-04-21 22:52:23', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (17, '相关保险', 10, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:52:31', NULL, NULL, '2015-04-21 22:52:31', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (18, '法律法规、标准规范', 11, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:52:46', NULL, NULL, '2015-04-21 22:52:46', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (19, '规章制度', 11, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:52:57', NULL, NULL, '2015-04-21 22:52:57', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (20, '操作规程', 11, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:53:05', NULL, NULL, '2015-04-21 22:53:05', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (21, '评估', 11, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:53:14', NULL, NULL, '2015-04-21 22:53:14', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (22, '文件和档案管理', 11, '', NULL, '01', '工贸', 0, 'admin', '2015-04-21 22:53:23', NULL, NULL, '2015-04-21 22:53:23', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (23, '教育培训管理', 12, '', NULL, '01', '工贸', 0, 'admin', '2015-04-22 10:36:55', NULL, NULL, '2015-04-22 10:36:55', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (24, '安全生产管理人员教育培训', 12, '', NULL, '01', '工贸', 0, 'admin', '2015-04-22 10:37:12', NULL, NULL, '2015-04-22 10:37:12', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (25, '操作岗位人员教育培训', 12, '', NULL, '01', '工贸', 0, 'admin', '2015-04-22 10:39:10', NULL, NULL, '2015-04-22 10:39:10', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (26, '特种作业人员教育培训', 12, '', NULL, '01', '工贸', 0, 'admin', '2015-04-22 10:39:25', NULL, NULL, '2015-04-22 10:39:25', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (27, '其他人员教育培训', 12, '', NULL, '01', '工贸', 0, 'admin', '2015-04-22 10:39:35', NULL, NULL, '2015-04-22 10:39:35', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (28, '安全文化建设', 12, '', NULL, '01', '工贸', 0, 'admin', '2015-04-22 10:39:46', NULL, NULL, '2015-04-22 10:39:46', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (29, '生产设备设施建设', 13, '', NULL, '01', '工贸', 0, 'admin', '2015-04-22 10:40:04', NULL, NULL, '2015-04-22 10:40:04', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (30, '设备设施运行管理', 13, '', NULL, '01', '工贸', 0, 'admin', '2015-04-22 10:40:18', NULL, NULL, '2015-04-22 10:40:18', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
-  (31, '设备设施到货验收和报废拆除', 13, '', NULL, '01', '工贸', 0, 'admin', '2015-04-22 10:57:20', NULL, NULL, '2015-04-22 10:57:20', 0, 'admin', 'S', NULL, NULL, NULL, NULL);
+  (2, '工贸通用模板', 0, 'admin', '2015-05-05 21:25:23', NULL, NULL, '2015-05-05 21:25:23', 0, 'admin', 'S', NULL, NULL, NULL, NULL);
+-- 初始化工贸模型
+INSERT INTO `SYS_STDTMP_FOLDER` (`SID`, `R_TEMPLATE`, `C_NAME`, `R_SID`, `C_DESC`, `C_LOGO`, `R_CREATE`, `S_CREATE`, `T_CREATE`, `R_UPDATE`, `S_UPDATE`, `T_UPDATE`, `R_TENANT`, `S_TENANT`, `P_TENANT`, `N_STATE`, `B_DELETE`, `N_INDEX`, `N_VERSION`)
+VALUES
+  (1, 2, '工贸达标体系模板', 0, '', NULL, 0, 'admin', '2015-04-20 11:41:52', 0, 'admin', '2015-05-06 14:24:54', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (4, 2, '安全生产目标', 1, '安全生产目标', '', 0, 'admin', '2015-04-21 10:36:28', 0, 'admin', '2015-05-06 10:54:01', 0, 'admin', 'S', 0, '', 1, 0),
+  (7, 2, '目标', 4, '目标', NULL, 0, 'admin', '2015-04-21 22:36:52', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, 1, NULL),
+  (8, 2, '监测与考核', 4, '', NULL, 0, 'admin', '2015-04-21 22:37:09', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (9, 2, '组织机构和职责', 1, '组织机构和职责', '', 0, 'admin', '2015-04-21 22:50:14', 0, 'admin', '2015-05-06 10:54:01', 0, 'admin', 'S', 0, '', 2, 0),
+  (10, 2, '安全投入', 1, '', '', 0, 'admin', '2015-04-21 22:50:23', 0, 'admin', '2015-05-06 10:54:01', 0, 'admin', 'S', 0, '', 3, 0),
+  (11, 2, '法律法规', 1, '', '', 0, 'admin', '2015-04-21 22:50:40', 0, 'admin', '2015-05-06 10:54:01', 0, 'admin', 'S', 0, '', 4, 0),
+  (12, 2, '教育培训', 1, '', '', 0, 'admin', '2015-04-21 22:50:49', 0, 'admin', '2015-05-06 10:54:01', 0, 'admin', 'S', 0, '', 5, 0),
+  (13, 2, '生产设备设施', 1, '', '', 0, 'admin', '2015-04-21 22:51:22', 0, 'admin', '2015-05-06 10:54:01', 0, 'admin', 'S', 0, '', 6, 0),
+  (14, 2, '组织机构与人员', 9, '', NULL, 0, 'admin', '2015-04-21 22:51:44', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (15, 2, '职责', 9, '', NULL, 0, 'admin', '2015-04-21 22:51:52', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (16, 2, '安全生产费用', 10, '', NULL, 0, 'admin', '2015-04-21 22:52:23', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (17, 2, '相关保险', 10, '', NULL, 0, 'admin', '2015-04-21 22:52:31', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (18, 2, '法律法规、标准规范', 11, '', NULL, 0, 'admin', '2015-04-21 22:52:46', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (19, 2, '规章制度', 11, '', NULL, 0, 'admin', '2015-04-21 22:52:57', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (20, 2, '操作规程', 11, '', NULL, 0, 'admin', '2015-04-21 22:53:05', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (21, 2, '评估', 11, '', NULL, 0, 'admin', '2015-04-21 22:53:14', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (22, 2, '文件和档案管理', 11, '', NULL, 0, 'admin', '2015-04-21 22:53:23', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (23, 2, '教育培训管理', 12, '', NULL, 0, 'admin', '2015-04-22 10:36:55', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (24, 2, '安全生产管理人员教育培训', 12, '', NULL, 0, 'admin', '2015-04-22 10:37:12', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (25, 2, '操作岗位人员教育培训', 12, '', NULL, 0, 'admin', '2015-04-22 10:39:10', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (26, 2, '特种作业人员教育培训', 12, '', NULL, 0, 'admin', '2015-04-22 10:39:25', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (27, 2, '其他人员教育培训', 12, '', NULL, 0, 'admin', '2015-04-22 10:39:35', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (28, 2, '安全文化建设', 12, '', NULL, 0, 'admin', '2015-04-22 10:39:46', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (29, 2, '生产设备设施建设', 13, '', NULL, 0, 'admin', '2015-04-22 10:40:04', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (30, 2, '设备设施运行管理', 13, '', NULL, 0, 'admin', '2015-04-22 10:40:18', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL),
+  (31, 2, '设备设施到货验收和报废拆除', 13, '', NULL, 0, 'admin', '2015-04-22 10:57:20', NULL, NULL, '2015-05-06 10:54:01', 0, 'admin', 'S', NULL, NULL, NULL, NULL);
 
 -- 初始化导航
 INSERT INTO `SYS_NAV` (`SID`, `R_SID`, `C_NAME`, `C_URL`, `C_DESC`, `R_CREATE`, `S_CREATE`, `T_CREATE`, `R_UPDATE`, `S_UPDATE`, `T_UPDATE`, `R_TENANT`, `S_TENANT`, `P_TENANT`, `N_STATE`, `B_DELETE`, `N_INDEX`, `N_VERSION`, `C_ICON`)
@@ -57,21 +61,24 @@ VALUES
   (14, 3, '评审端导航', '', '', 0, 'admin', '2015-04-26 10:57:26', 0, 'admin', '2015-04-29 16:48:10', 0, 'admin', 'S', 0, '', 0, 0, ''),
   (15, 3, '政府端导航', '', '', 0, 'admin', '2015-04-26 10:57:33', 0, 'admin', '2015-04-29 16:48:11', 0, 'admin', 'S', 0, '', 0, 0, ''),
   (16, 3, '系统运维端导航', '', '', 0, 'admin', '2015-04-26 10:57:46', 0, 'admin', '2015-04-29 16:48:12', 0, 'admin', 'S', 0, '', 0, 0, ''),
-  (17, 13, '工作中心', '/index', '', 0, 'admin', '2015-04-26 10:58:17', NULL, NULL, '2015-04-26 10:58:17', 0, 'admin', 'S', NULL, NULL, NULL, NULL, NULL),
   (18, 13, '达标创建', '', '', 0, 'admin', '2015-04-26 10:58:42', -1, NULL, '2015-04-27 14:40:42', 0, 'admin', 'S', NULL, NULL, NULL, NULL, NULL),
   (19, 13, '在线自评', '', '', 0, 'admin', '2015-04-26 10:58:58', NULL, NULL, '2015-04-26 10:58:58', 0, 'admin', 'S', NULL, NULL, NULL, NULL, NULL),
   (20, 16, '系统配置', '', '', 0, 'admin', '2015-04-27 11:33:24', 0, 'admin', '2015-04-29 15:45:50', 0, 'admin', 'S', 0, '', 3, 0, 'nav-info'),
-  (21, 20, '系统导航配置', '/sys/nav/index.html', '', 0, 'admin', '2015-04-27 11:33:44', NULL, NULL, '2015-04-27 11:33:44', 0, 'admin', 'S', NULL, NULL, NULL, NULL, NULL),
+  (21, 20, '系统导航配置', '/sys/nav/index.html', '', 0, 'admin', '2015-04-27 11:33:44', 0, 'admin', '2015-04-30 23:24:02', 0, 'admin', 'S', 0, '', 0, 0, ''),
   (22, 19, '开始自评', '/e/grade_m/rec.html', '', -1, NULL, '2015-04-27 14:40:08', NULL, NULL, '2015-04-27 14:40:08', -1, NULL, 'E', NULL, NULL, NULL, NULL, NULL),
   (23, 19, '自评历史', '/e/grade_m/history.html', '', -1, NULL, '2015-04-27 14:40:36', NULL, NULL, '2015-04-27 14:40:36', -1, NULL, 'E', NULL, NULL, NULL, NULL, NULL),
   (24, 19, '自评草稿', '/e/grade_m/draft.html', '', -1, NULL, '2015-04-27 14:42:13', NULL, NULL, '2015-04-27 14:42:13', -1, NULL, 'E', NULL, NULL, NULL, NULL, NULL),
   (25, 19, '自评报告', '/e/grade_rep/index.html', '', -1, NULL, '2015-04-27 14:42:13', NULL, NULL, '2015-04-27 14:42:13', -1, NULL, 'E', NULL, NULL, NULL, NULL, NULL),
   (26, 19, '自评结果', '/e/grade_result/index.html', '', -1, NULL, '2015-04-27 14:42:13', NULL, NULL, '2015-04-27 14:42:13', -1, NULL, 'E', NULL, NULL, NULL, NULL, NULL),
-  (25, 20, '专业管理', '/sys/profession/index.html', '', 0, 'admin', '2015-04-27 23:44:33', NULL, NULL, '2015-04-27 23:44:33', 0, 'admin', 'S', NULL, NULL, NULL, NULL, NULL),
-  (26, 16, '租户管理', '', '', 0, 'admin', '2015-04-28 09:35:16', 0, 'admin', '2015-04-29 16:43:13', 0, 'admin', 'S', 0, '', 2, 0, 'agency'),
-  (27, 26, '企业租户管理', '/sys/tenant_e/index.html', '', 0, 'admin', '2015-04-28 09:36:07', NULL, NULL, '2015-04-28 09:36:07', 0, 'admin', 'S', NULL, NULL, NULL, NULL, NULL),
-  (28, 26, '政府租户管理', '/sys/tenant_g/index.html', '', 0, 'admin', '2015-04-28 09:37:51', 0, 'admin', '2015-04-28 09:38:35', 0, 'admin', 'S', NULL, NULL, NULL, NULL, NULL),
-  (29, 26, '评审机构租户管理', '/sys/tenant_r/index.html', '', 0, 'admin', '2015-04-28 09:40:12', 0, 'admin', '2015-04-29 11:21:44', 0, 'admin', 'S', NULL, NULL, NULL, NULL, NULL);
+  (27, 20, '专业管理', '/sys/profession/index.html', '', 0, 'admin', '2015-04-27 23:44:33', 0, 'admin', '2015-04-30 23:24:11', 0, 'admin', 'S', 0, '', 0, 0, ''),
+  (28, 16, '租户管理', '', '', 0, 'admin', '2015-04-28 09:35:16', 0, 'admin', '2015-04-29 16:43:13', 0, 'admin', 'S', 0, '', 2, 0, 'agency'),
+  (29, 28, '企业租户管理', '/sys/tenant_e/index.html', '', 0, 'admin', '2015-04-28 09:36:07', 0, 'admin', '2015-04-30 22:51:41', 0, 'admin', 'S', 0, '', 0, 0, ''),
+  (30, 28, '政府租户管理', '/sys/tenant_g/index.html', '', 0, 'admin', '2015-04-28 09:37:51', 0, 'admin', '2015-04-30 22:51:41', 0, 'admin', 'S', 0, '', 0, 0, ''),
+  (31, 28, '评审机构租户管理', '/sys/tenant_r/index.html', '', 0, 'admin', '2015-04-28 09:40:12', 0, 'admin', '2015-04-30 22:51:42', 0, 'admin', 'S', 0, '', 0, 0, ''),
+  (32, 15, '通知公告', '', '', 0, 'admin', '2015-05-01 07:59:44', NULL, NULL, '2015-05-01 07:59:44', 0, 'admin', 'S', NULL, NULL, NULL, NULL, ''),
+  (33, 32, '已发布的通知公告', '/g/notice/publics.html', '', 0, 'admin', '2015-05-01 08:00:19', 0, 'admin', '2015-05-01 08:02:43', 0, 'admin', 'S', NULL, NULL, NULL, NULL, ''),
+  (34, 32, '草稿箱', '/g/notice/drafts.html', '', 0, 'admin', '2015-05-01 08:00:35', 0, 'admin', '2015-05-01 08:02:48', 0, 'admin', 'S', NULL, NULL, NULL, NULL, ''),
+  (35, 20, '模板管理', '/sys/template/index.html', '', 0, 'admin', '2015-05-05 11:50:44', NULL, NULL, '2015-05-05 11:50:44', 0, 'admin', 'S', NULL, NULL, NULL, NULL, '');
 
 
 INSERT INTO `SYS_PARA_AREA` (`SID`, `C_CODE`, `C_VALUE`, `C_PY_CODE`, `R_PARENT`, `N_LEVEL`, `R_CREATE`, `S_CREATE`, `T_CREATE`, `R_UPDATE`, `S_UPDATE`, `T_UPDATE`, `R_TENANT`, `S_TENANT`, `P_TENANT`, `N_STATE`, `B_DELETE`, `N_INDEX`, `N_VERSION`)
