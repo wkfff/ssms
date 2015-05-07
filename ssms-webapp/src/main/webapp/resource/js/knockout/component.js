@@ -12,21 +12,77 @@ ko.bindingHandlers.datagrid = {
         rownumbers: true,
         pagination: true,
         singleSelect: true,
-        striped: true,
+        striped: false,
         border: false,
         fit: true
     },
     init: function (element, valueAccessor) {
-        var config = valueAccessor();
+        var config = ko.unwrap(valueAccessor());
         config.$element = function () {
             return $(element);
         };
         config.datagrid = function () {
             return $.fn.datagrid.apply($(element), arguments);
         };
-        config = $.extend({}, ko.bindingHandlers.datagrid.DefaultConfig, config);
-        $(element).addClass('easyui-datagrid').datagrid(config);
+        if (ko.isObservable(config.queryParams)) {
+            config.queryParams.subscribe(function (newValue) {
+                $(element).datagrid({
+                    queryParams: newValue
+                })
+            });
+        }
+        var _config = config = $.extend({}, ko.bindingHandlers.datagrid.DefaultConfig, config);
+        if (ko.isObservable(config.queryParams))
+            _config = $.extend({}, config, {queryParams: ko.unwrap(config.queryParams) || null});
+        $(element).addClass('easyui-datagrid').datagrid(_config);
     },
     update: function (element, valueAccessor) {
+    }
+};
+
+ko.bindingHandlers.tree = {
+    DefaultConfig: {},
+    init: function (element, valueAccessor) {
+        var config = ko.unwrap(valueAccessor());
+        config.$element = function () {
+            return $(element);
+        };
+        config.tree = function () {
+            return $.fn.tree.apply($(element), arguments);
+        };
+        if (ko.isObservable(config.queryParams)) {
+            config.queryParams.subscribe(function (newValue) {
+                $(element).tree({
+                    queryParams: newValue
+                })
+            });
+        }
+        var _config = config = $.extend({}, ko.bindingHandlers.tree.DefaultConfig, config);
+        if (ko.isObservable(config.queryParams))
+            _config = $.extend({}, config, {queryParams: ko.unwrap(config.queryParams) || null});
+        $(element).tree(_config);
+    },
+    update: function (element, valueAccessor) {
+    }
+};
+
+ko.bindingHandlers.form = {
+    init: function (element, valueAccessor) {
+        var config = ko.unwrap(valueAccessor());
+        config.$element = function () {
+            return $(element);
+        };
+        config.form = function () {
+            return $.fn.form.apply($(element), arguments);
+        };
+    },
+    update: function (element, valueAccessor) {
+    }
+};
+ko.bindingHandlers.formValue = {
+    init: function (element, valueAccessor) {
+    },
+    update: function (element, valueAccessor) {
+        $(element).form('load', ko.unwrap(valueAccessor()));
     }
 };
