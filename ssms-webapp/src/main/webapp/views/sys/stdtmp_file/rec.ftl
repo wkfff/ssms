@@ -41,12 +41,6 @@
 
     ko.applyBindings($.extend({}, model, settings, events));
 </script>
-<style type="text/css">
-    td {
-        vertical-align: top;
-        line-height: 30px;
-    }
-</style>
 </#assign>
 <@layout.doLayout script>
 <div class="z-toolbar">
