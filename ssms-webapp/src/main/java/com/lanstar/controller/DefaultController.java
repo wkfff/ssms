@@ -80,9 +80,9 @@ public abstract class DefaultController extends BaseController {
         ARTable table = context.DB.withTable( this.TABLENAME );
         this.mergerValues( table, context, MergerType.withSid( sid ) );
         // 根据sid的存在设置where语句
-        table.where( StringHelper.vaildValue(sid), "SID=?", sid ).save();
+        table.where( StringHelper.vaildValue( sid ), "SID=?", sid ).save();
 
-        if ( StringHelper.isBlank( sid ) || sid.equals( "null" ) ) {
+        if ( !StringHelper.vaildValue( sid ) ) {
             sid = Integer.toString( context.DB.getSID() );
         }
 
@@ -117,7 +117,7 @@ public abstract class DefaultController extends BaseController {
      * 列表.删除
      */
     public ViewAndModel dels( HandlerContext context ) {
-        String ids = (String) context.getValue( "ids" );
+        String ids = context.getValue( "ids" );
         if ( !Strings.isNullOrEmpty( ids ) ) {
             context.DB.withTable( this.TABLENAME )
                       .where( "SID in (" + ids + ")" ).delete();
