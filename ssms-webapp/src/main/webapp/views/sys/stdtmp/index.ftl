@@ -31,6 +31,7 @@
                     </span>
                     </p>
                     <input type="hidden" name="SID"/>
+                    <input type="hidden" name="R_TEMPLATE" value="${R_SID}"/>
                 </form>
             </div>
             <div title="子分类" iconCls="icon-table" data-bind="with: items">
