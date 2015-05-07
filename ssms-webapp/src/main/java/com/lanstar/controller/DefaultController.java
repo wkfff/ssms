@@ -80,9 +80,7 @@ public abstract class DefaultController extends BaseController {
         ARTable table = context.DB.withTable( this.TABLENAME );
         this.mergerValues( table, context, MergerType.withSid( sid ) );
         // 根据sid的存在设置where语句
-        // TODO：一律过滤"null"值？
-        table.where( !StringHelper.isBlank( sid ) && !sid.equals( "null" ),
-                "SID=?", sid ).save();
+        table.where( StringHelper.vaildValue(sid), "SID=?", sid ).save();
 
         if ( StringHelper.isBlank( sid ) || sid.equals( "null" ) ) {
             sid = Integer.toString( context.DB.getSID() );
@@ -108,7 +106,7 @@ public abstract class DefaultController extends BaseController {
             this.mergerValuesWithoutParaMap( table, context, MergerType.withSid( sid ) );
             table.values( map );
             // 根据sid的存在设置where语句
-            table.where( !StringHelper.isBlank( sid ), "SID=?", sid )
+            table.where( StringHelper.vaildValue( sid ), "SID=?", sid )
                  .save();
             count++;
         }

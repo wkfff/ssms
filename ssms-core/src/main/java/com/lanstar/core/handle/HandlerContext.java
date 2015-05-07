@@ -144,6 +144,9 @@ public class HandlerContext implements AutoCloseable{
             }
             else
                 value = StringHelper.join( values, ",", false );
+            value = StringHelper.removeBlank( value );
+            // 全局忽略null、undefined和空白字符串             by 张铮彬#2015-5-7
+            if (!StringHelper.vaildValue( value )) continue;
             map.put( key, value );
         }
         return map;

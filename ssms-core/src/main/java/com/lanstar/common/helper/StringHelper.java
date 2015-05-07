@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * 字符串工具类
@@ -399,5 +400,18 @@ public final class StringHelper {
         if ( str.trim().compareToIgnoreCase( "true" ) == 0 ) return true;
         else if ( str.trim().compareToIgnoreCase( "false" ) == 0 ) return false;
         return defvalue;
+    }
+
+    public static boolean vaildValue( String v ) {
+        return !isBlank( v ) && !equalsIgnoreCase(v, "null", "undefined");
+    }
+
+    public static boolean equalsIgnoreCase( String v, String... args ) {
+        for ( String arg : args ) {
+            if ( v == null ) {
+                if ( Objects.equals( null, arg ) ) return false;
+            } else if ( !v.equalsIgnoreCase( arg ) ) return false;
+        }
+        return true;
     }
 }

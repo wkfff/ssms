@@ -105,8 +105,7 @@ public class para_multiController extends BaseController {
         ARTable table = context.DB.withTable( this.TABLENAME );
         this.mergerValues( table, context, MergerType.withSid( sid ) );
         // 根据sid的存在设置where语句
-        // TODO：一律过滤"null"值？
-        table.where( !StringHelper.isBlank( sid ) && !sid.equals( "null" ),
+        table.where( StringHelper.vaildValue( sid ) && !sid.equals( "null" ),
                      "SID=?", sid ).save();
 
         if ( StringHelper.isBlank( sid ) || sid.equals( "null" ) ) {

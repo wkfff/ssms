@@ -21,9 +21,9 @@ public class stdtmpController extends DefaultController {
     }
 
     public ViewAndModel tree( HandlerContext context ) {
-        String profession = context.getValue( "profession" );
+        String template = context.getValue( "template" );
         JdbcRecordSet folder = context.SYSTEM_DB.withTable( "SYS_STDTMP_FOLDER" )
-                                                .where( "P_PROFESSION=?", profession )
+                                                .where( "R_TEMPLATE=?", template )
                                                 .queryList();
         return context.returnWith().set( EasyUIControllerHelper.toTree( folder, "SID", "R_SID", "C_NAME" ) );
     }

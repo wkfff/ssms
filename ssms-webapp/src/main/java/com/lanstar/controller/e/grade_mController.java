@@ -61,7 +61,7 @@ public class grade_mController extends DefaultController {
             table.value( "N_STATE", 0);
         }
         this.mergerValues( table, context, MergerType.withSid( sid ) );
-        table.where( !StringHelper.isBlank( sid ) && !sid.equals( "null" ),
+        table.where( StringHelper.vaildValue( sid ) && !sid.equals( "null" ),
                 "SID=?", sid ).save();
 
         if ( StringHelper.isBlank( sid ) || sid.equals( "null" ) ) {

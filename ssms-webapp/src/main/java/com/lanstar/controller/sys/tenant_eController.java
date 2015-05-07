@@ -39,4 +39,8 @@ public class tenant_eController extends DefaultController {
     protected Class<? extends ActionValidator> getValidator() {
         return tenant_eValidator.class;
     }
+
+    public void reg(HandlerContext context){
+        resolveMultiParameter( context, "SYS_PROFESSION" );
+    }
 }
