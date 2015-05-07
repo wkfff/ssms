@@ -90,9 +90,7 @@ td {
 /*表单主体*/
 .form {
     padding-top: 21px;
-    border: 1px solid #c1d3de;
-    border-top: none;
-    border-bottom: none;
+    padding-bottom: 21px;
 }
 
 .form p {
@@ -140,4 +138,11 @@ td {
 
 .form p textarea {
     overflow: auto;
+}
+
+.z-toolbar {
+    padding-left: 21px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #CCCCCC;
 }
