@@ -35,13 +35,44 @@ public class para_areaController extends DefaultController {
     }
 
     public ViewAndModel tree( HandlerContext context ) {
-        JdbcRecordSet records = context.SYSTEM_DB.withTable( TABLENAME )
-                                                 .orderby( "R_PARENT, N_INDEX" )
-                                                 .queryList();
+        JdbcRecordSet records = context.DB.withTable( TABLENAME )
+                                          .orderby( "N_LEVEL ,C_PY_CODE " )
+                                          .queryList();
+        /*Map<String, TreeNode> map = new HashMap<>();
+        Map<String, TreeNode> rootMap = new HashMap<>();
+        TreeNode item ;
+        for ( JdbcRecord record : records ) {
+            String id = record.getString( "SID" );
+            String text = record.getString( "C_VALUE" );
+            String pid = record.getString( "R_PARENT" );
+            // 取出所有根节点
+            item = map.get( pid );
+            if ( item == null ) {
+                item = new TreeNode( id, text, record );
+                map.put( id, item );
+                rootMap.put( id, item );
+            }
+        }
+        for ( JdbcRecord record : records ) {
+            String id = record.getString( "SID" );
+            String text = record.getString( "C_VALUE" );
+            String pid = record.getString( "R_PARENT" );
+            // 先试着根据父id取树节点，如果取不到则当前节点就当一个根节点。后续要再验证一次就是了。
+            item = map.get( pid );
+            if ( item == null ) {
+                item = new TreeNode( id, text, record );
+                map.put( id, item );
+                rootMap.put( id, item );
+            } else {
+                TreeNode e = new TreeNode( id, text, record );
+                item.getChildren().add( e );
+                map.put( id, e );
+            }
+            if ( item.getChildren().size() > 0 ) rootMap.remove( id );
+        }*/
         return context.returnWith()
-                      .set( EasyUIControllerHelper.toTree( records, "SID",
-                                                           "R_PARENT",
-                                                           "C_VALUE" ));
+                      .set( EasyUIControllerHelper.toTree( records, "SID", "R_PARENT", "C_VALUE" ) );
+        
     }
 
 }

@@ -7,10 +7,6 @@
  */
 package com.lanstar.controller.sys;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.controller.ActionValidator;
@@ -18,7 +14,6 @@ import com.lanstar.controller.BaseController;
 import com.lanstar.controller.TableProcessor;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.db.DBPaging;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
 
@@ -27,7 +22,6 @@ import com.lanstar.db.ar.ARTable;
  *
  */
 public class para_multiController extends BaseController {
-
     /**
      * @param tablename
      */
@@ -41,10 +35,26 @@ public class para_multiController extends BaseController {
      */
     public ViewAndModel rec( HandlerContext context ) {
         String sid = context.getValue( "sid" );
-        return context.returnWith().set(
-                                         context.DB.withTable( this.TABLENAME )
-                                                   .where( "SID=?", sid )
-                                                   .query() );
+        String refer="";
+        refer = context.getValue( "refer" );
+        if (refer!=null&&refer!="") {
+            String c_name = context.DB.withTable( this.TABLENAME )
+                                      .where( "SID=?", sid ).query()
+                                      .getString( "C_NAME" );
+            context.setValue("C_NAME", c_name );
+            sid=null;
+            return context.returnWith()
+                          .set(
+                                context.DB.withTable( this.TABLENAME ).where( "SID=?", sid ).query()
+                                         );
+        }else {
+            return context.returnWith()
+                          .set(
+                                context.DB.withTable( this.TABLENAME )
+                                          .where( "SID=?", sid )
+                                          .query() );
+        }
+
     }
 
     /**
@@ -64,9 +74,10 @@ public class para_multiController extends BaseController {
     protected ViewAndModel list( HandlerContext context,
             TableProcessor processor ) {
         String sql = "select * from sys_para_multi  group by C_NAME";
-        String name=(String)  context.getParameterMap().get( "C_NAME" );
-        if (name!=null &&name!=""){
-            sql="select * from sys_para_multi  group by C_NAME "+"having C_NAME="+"'"+name+"'";
+        String name = (String) context.getParameterMap().get( "C_NAME" );
+        if ( name != null && name != "" ) {
+            sql = "select * from sys_para_multi  group by C_NAME "
+                    + "having C_NAME=" + "'" + name + "'";
         }
         JdbcRecordSet list = context.DB.getDBSession().query( sql, null );
         return context.returnWith()
@@ -144,5 +155,5 @@ public class para_multiController extends BaseController {
         // TODO Auto-generated method stub
 
     }
-   
+
 }

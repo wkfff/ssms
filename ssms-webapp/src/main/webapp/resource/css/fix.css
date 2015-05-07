@@ -13,6 +13,10 @@
 .panel-title{
     padding-left:22px; font-weight:bold; font-size:14px; font-family:'宋体'; color:#000000; background:url(../images/titleico.png) no-repeat left center !important;
 }
+.panel-title a {
+    text-decoration: none;
+    color: #777;
+}
 .panel-body,.datagrid-toolbar,.datagrid-pager,.datagrid-td-rownumber{
     background-color:#FFF !important;
 }
@@ -34,4 +38,7 @@
 }
 label {
     line-height: 33px;
+}
+.datagrid-row-selected .datagrid-cell a,.tree-node-selected a {
+    color: #FFF;
 }

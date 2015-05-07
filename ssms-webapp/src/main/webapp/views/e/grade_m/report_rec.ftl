@@ -36,7 +36,7 @@
                     'justifyfull', 'insertorderedlist','insertunorderedlist',
                     '|', 'table','|','fullscreen'
                     ],
-                    afterCreate : function(id) {
+                    afterCreate : function() {
                         K.ajax('/sys/attachtext/get.json?table=SSM_GRADE_E_M&field=content&sid=${sid!}', function(data) {
                              editor.html(data);
                         });

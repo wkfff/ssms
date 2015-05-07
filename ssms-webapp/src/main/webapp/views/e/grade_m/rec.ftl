@@ -1,14 +1,11 @@
 <#import "/layout/_rec.ftl" as layout/>
 <#assign script>
 <style>
-    .datagrid-cell-c2-C_CONTENT,.datagrid-cell-c2-C_METHOD,.datagrid-cell-c2-C_DESC{
+    .datagrid-cell{
         white-space:normal !important;
     }
     .datagrid-editable-input{
         height:120px !important;
-    }
-    .datagrid-row{
-        border-bottom:1px solid #000 !important;
     }
 </style>
 <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
@@ -119,6 +116,7 @@
           <div class="toolbar ue-clear">
             <#if (_FLAG_=='0')>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
             </#if>
             
             <#if (_FLAG_=='-1')>

@@ -2,26 +2,41 @@
 <#assign script>
 <script type="text/javascript">
 function doBack(){
-        window.location.href='${referer!}';
-    }
+   window.location.href='${referer!}';
+}
+$(function () {
+    $('#tt').tabs({
+        border:false,
+        onSelect:function(title,index){
+            if (index==1){
+                $('#tab'+index).html('<iframe frameborder="0" width="100%" height="100%" src="sum_ded.html?sid=${sid!}" ></iframe>');
+            }
+            if (index==2){
+                $('#tab'+index).html('<iframe frameborder="0" width="100%" height="100%" src="report_rec.html?sid=${sid!}" ></iframe>');
+            }
+        }
+    });
+})
 </script>
 </#assign>
 <@layout.doLayout script>
-<div class="easyui-layout" data-options="fit:true" >
-    <div class="toolbar ue-clear" id="tb">
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack();">返回</a>
-         </div>
+<div class="easyui-layout" data-options="fit:true,border:false" >
+    <div data-options="region:'north'" border="false" class="toolbar" style="overflow:hidden;">
+        <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack();">返回</a>
+    </div>
+    <div data-options="region:'center'" style="overflow:hidden;padding:0px;">
     <!--暂时先用框架页-->
-    <div class="easyui-tabs" style="width:100%;" data-options="fit:true">
-        <div title="评分结果" style="padding:0px">
-            <iframe frameborder="0" width="100%" height="100%" src="rec_result.html?sid=${sid!}" ></iframe>
+    <div id="tt" class="easyui-tabs" style="width:100%;height:auto" data-options="fit:true,border:false">
+        <div id="tab0" title="评分汇总" style="overflow:hidden;">
+            <iframe id="frm1" frameborder="0" width="100%" height="100%" src="sum.html?sid=${sid!}" ></iframe>
         </div>
-        <div title="自评报告" style="padding:0px" >
-            <iframe frameborder="0" width="100%" height="100%" src="/e/grade_rep/rec.html?sid=${sid!}" ></iframe>
+        <div id="tab1" title="扣分汇总" style="overflow:hidden;" >
+            <iframe id="frm2" frameborder="0" width="100%" height="100%" src="" ></iframe>
         </div>
-        <div title="评分汇总" style="padding:0px">
-            <iframe frameborder="0" width="100%" height="100%" src="/e/grade_d/sum.html?sid=${sid!}" ></iframe>
+        <div id="tab2" title="自评报告" style="overflow:hidden;">
+            <iframe id="frm3" frameborder="0" width="100%" height="100%" src="" ></iframe>
         </div>
+    </div>
     </div>
 </div>
 </@layout.doLayout>

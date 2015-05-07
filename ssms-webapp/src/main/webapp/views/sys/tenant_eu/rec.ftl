@@ -13,7 +13,8 @@ $(document).ready(function() {
             alert("两次输入密码一致");
              return;
         }
-        $("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
+       var  v=$("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
+       $("input[name='C_PASSWD']").val(v.val())
         doSave();
     }
     

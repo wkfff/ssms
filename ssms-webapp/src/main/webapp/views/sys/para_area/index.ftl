@@ -14,6 +14,5 @@
     <div data-options="region:'center', split:true" title="地区列表" style="width: 50%">
         <ul id="area"></ul>
     </div>
-    
 </div>
 </@>

@@ -36,9 +36,10 @@
                 {field: 'N_GET', title: '得分项', width: 60},
                 {field: 'N_DEDUCT', title: '扣分项', width: 60},
                 {field: 'N_LACK', title: '缺项', width: 60},
-                {field: 'SID', title: '查看', width: 180,align:'center',
+                {field: 'SID', title: '查看', width: 80,align:'center',
                     formatter:function(value,row){
-                            return "<a href='#' onclick='doOpen(\"history_rec\","+value+")'>自评结果</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"history_rep\","+value+")'>自评报告</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"/e/grade_d/sum\","+value+")'>汇总统计</a>";
+                            /*return "<a href='#' onclick='doOpen(\"history_rec\","+value+")'>自评结果</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"history_rep\","+value+")'>自评报告</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"/e/grade_d/sum\","+value+")'>汇总统计</a>";*/
+                            return "<a href='#' onclick='doOpen(\"result\","+value+")'>查看</a>";
                         }}
             ]]
         });
@@ -52,9 +53,5 @@
             至: <input class="easyui-datebox" style="width:90px" name="T_END">
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_history')">查询</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_history')" title="清空查询条件">重置</a>
-    </div>
-
-    <div id="dlg" title="自评" class="easyui-dialog" data-options="closed:true, modal:true,fit:true,draggable:false">
-        <iframe id="dlg_frm" src="" frameborder=0 width=100% height=96% scrolling="auto"></iframe>
     </div>
 </@layout.doLayout>
