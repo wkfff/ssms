@@ -98,7 +98,8 @@ td {
     padding-left: 31px;
 }
 
-.form p label {
+.form p label:first-child,
+.form p .label {
     float: left;
     width: 100px;
     text-align: left;
@@ -106,6 +107,8 @@ td {
 
 .form p .control {
     float: left;
+    margin-left: 15px;
+    color: #959595;
 }
 
 .form p input[type="text"] {
@@ -114,12 +117,6 @@ td {
 
 .form p.long-input input[type="text"]{
     width: 472px;
-}
-
-.form p span {
-    float: left;
-    margin-left: 15px;
-    color: #959595;
 }
 
 .form p span em {
