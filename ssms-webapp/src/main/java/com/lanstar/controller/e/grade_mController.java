@@ -18,11 +18,10 @@ import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.statement.SqlBuilder;
 
 /**
- * 在线自评
- * _FLAG_:0新建，1草稿，-1历史，-2：
+ * 在线自评 _FLAG_:0新建，1草稿，-1历史，-2：
  */
 public class grade_mController extends DefaultController {
-    
+
     public grade_mController() {
         super( "SSM_GRADE_E_M" );
     }
@@ -40,12 +39,13 @@ public class grade_mController extends DefaultController {
 
     @Override
     public ViewAndModel rec( HandlerContext context ) {
-        context.setValue( "_FLAG_", "0" );  
-        context.setValue( "S_TENANT", context.getIdentity().getTenantName());
+        context.setValue( "_FLAG_", "0" );
+        context.setValue( "S_TENANT", context.getIdentity().getTenantName() );
         // TODO:根据企业的专业来设置
         context.setValue( "P_PROFESSION", "1" );
         return super.rec( context );
     }
+
     /**
      * 保存
      */
@@ -58,7 +58,7 @@ public class grade_mController extends DefaultController {
         ARTable table = context.DB.withTable( this.TABLENAME );
         if ( MergerType.withSid( sid ).compareTo( MergerType.forInsert ) == 0 ) {
             table.value( "C_TITLE", context.getValue( "T_START" ) + "企业自评" );
-            table.value( "N_STATE", 0);
+            table.value( "N_STATE", 0 );
         }
         this.mergerValues( table, context, MergerType.withSid( sid ) );
         table.where( !StringHelper.isBlank( sid ) && !sid.equals( "null" ),
@@ -74,7 +74,7 @@ public class grade_mController extends DefaultController {
 
     /**
      * 初始化企业自评表
-     * 
+     *
      * @param context
      * @return
      */
@@ -83,10 +83,11 @@ public class grade_mController extends DefaultController {
         // TODO:根据企业的专业从评分标准表中复制
         SqlBuilder sqlBuilder = new SqlBuilder();
         sqlBuilder
-                .INSERT_INTO(
-                        "SSM_GRADE_E_D(R_SID,R_STD,R_CATEGORY,S_CATEGORY,R_PROJECT,S_PROJECT,C_CONTENT,N_SCORE,C_METHOD,R_TENANT,S_TENANT,P_TENANT,N_STATE) "
-                                + "select ?,SID,R_CATEGORY,S_CATEGORY,R_PROJECT,S_PROJECT,C_CONTENT,N_SCORE,C_METHOD,?,?,?,0 from SSM_GRADE_STD where P_PROFESSION=?",
-                        new Object[] { sid,
+        .INSERT_INTO(
+                "SSM_GRADE_E_D(R_SID,R_STD,R_CATEGORY,S_CATEGORY,R_PROJECT,S_PROJECT,C_CONTENT,N_SCORE,C_METHOD,R_TENANT,S_TENANT,P_TENANT,N_STATE) "
+                        + "select ?,SID,R_CATEGORY,S_CATEGORY,R_PROJECT,S_PROJECT,C_CONTENT,N_SCORE,C_METHOD,?,?,?,0 from SSM_GRADE_STD where P_PROFESSION=?",
+                        new Object[] {
+                                sid,
                                 context.getIdentity().getTenantId(),
                                 context.getIdentity().getTenantName(),
                                 context.getIdentity().getTenantType().getName(),
@@ -94,74 +95,84 @@ public class grade_mController extends DefaultController {
         context.DB.execute( sqlBuilder );
         return context.returnWith();
     }
+
     /**
      * 自评历史.列表
      */
     public ViewAndModel history( HandlerContext context ) {
         return context.returnWith();
     }
-    
+
     /**
      * 自评历史.查看自评结果
      */
     public ViewAndModel history_rec( HandlerContext context ) {
         return super.rec( context );
     }
+
     /**
      * 自评历史.查看自评报告
      */
     public ViewAndModel history_rep( HandlerContext context ) {
         return super.rec( context );
     }
-    
+
     /**
      * 自评草稿.列表
      */
     public ViewAndModel draft( HandlerContext context ) {
         return context.returnWith();
     }
+
     /**
      * 自评草稿.编辑
      */
     public ViewAndModel draft_rec( HandlerContext context ) {
         return super.rec( context );
     }
+
     /**
      * 自评报告.编辑
      */
     public ViewAndModel report_rec( HandlerContext context ) {
         return super.rec( context );
     }
+
     /**
      * 自评完成
      */
     public ViewAndModel complete( HandlerContext context ) {
         String sid = context.getValue( "sid" );
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
-        context.DB.getDBSession().execute( "call P_GRADE_COMPLETE_SELF(?)", new Object[]{sid} );
+        context.DB.getDBSession().execute( "call P_GRADE_COMPLETE_SELF(?)",
+                new Object[] { sid } );
         return context.returnWith().set( "" );
     }
-    
+
     public ViewAndModel rec_result( HandlerContext context ) {
         context.setValue( "_FLAG_", "-2" );
         return context.returnWith().view( "rec" );
     }
-    
+
     public ViewAndModel result( HandlerContext context ) {
         context.setValue( "_FLAG_", "-1" );
         return context.returnWith();
     }
+
     /**
      * 验证自评内容是否都已经填写
+     * 
      * @param context
      * @return 大于0时说明还有未填写内容
      */
-    public ViewAndModel check(HandlerContext context ) {
+    public ViewAndModel check( HandlerContext context ) {
         String sid = context.getValue( "sid" );
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
-        JdbcRecord r = context.DB.getDBSession().first( "SELECT F_GRADE_CHECK(?) N", new Object[]{sid} );
-        return context.returnWith().set(r.get( "N" ));
+        JdbcRecord r = context.DB.getDBSession().first(
+                "SELECT F_GRADE_CHECK(?) N", new Object[] { sid } );
+        return context.returnWith().set( r.get( "N" ) );
     }
+
     /**
      * 删除主表时同时删除从表
      */
@@ -171,8 +182,36 @@ public class grade_mController extends DefaultController {
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         if ( !Strings.isNullOrEmpty( sid ) ) {
             context.DB.withTable( "SSM_GRADE_E_D" ).where( "R_SID = ?", sid )
-                      .delete();
+                    .delete();
         }
         return super.del( context );
+    }
+
+    /**
+     * 评分汇总表
+     */
+    public ViewAndModel sum( HandlerContext context ) {
+        String sid = context.getValue( "sid" );
+        ARTable arTable = context.DB.withTable( this.TABLENAME );
+        String name = StringHelper.empty( arTable.where( "SID = ?", sid )
+                .query().getString( "S_TENANT" ), "佚名" );
+        arTable = context.DB.withTable( "V_GRADE_SUM" );
+        arTable.where( "R_SID = ?", sid );
+        return context.returnWith().put( "list", arTable.queryList() )
+                .put( "S_TENANT", name );
+    }
+
+    /**
+     * 扣分项汇总表
+     */
+    public ViewAndModel sum_ded( HandlerContext context ) {
+        String sid = context.getValue( "sid" );
+        ARTable arTable = context.DB.withTable( this.TABLENAME );
+        String name = StringHelper.empty( arTable.where( "SID = ?", sid )
+                .query().getString( "S_TENANT" ), "佚名" );
+        arTable = context.DB.withTable( "V_GRADE_SUM_DED" );
+        arTable.where( "R_SID = ?", sid );
+        return context.returnWith().put( "list", arTable.queryList() )
+                .put( "S_TENANT", name );
     }
 }

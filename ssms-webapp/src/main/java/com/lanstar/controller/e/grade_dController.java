@@ -52,14 +52,14 @@ public class grade_dController extends DefaultController {
         String r_sid = context.getValue( "R_SID" );
         String type = context.getValue( "type" );
         ARTable arTable = context.DB.withTable( this.TABLENAME );
-        //扣分
-        if ( "0".equals( type ) ){
-            arTable.where( " N_SCORE_REAL<N_SCORE and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?" ,r_sid);
+        
+        if ( "0".equals( type ) ){//扣分
+            arTable.where( " IFNULL(N_SCORE_REAL,0)<IFNULL(N_SCORE,0) and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?" ,r_sid);
         }else if ( "1".equals( type ) ){//得分
-            arTable.where( " N_SCORE_REAL=N_SCORE and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?" ,r_sid );
-        }else if ( "2".equals( type ) ){
+            arTable.where( " IFNULL(N_SCORE_REAL,0)=IFNULL(N_SCORE,0) and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?" ,r_sid );
+        }else if ( "2".equals( type ) ){//缺项
             arTable.where( " IFNULL(B_BLANK,'0')='1' and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?"  ,r_sid);
-        }else if ( "3".equals( type ) ){
+        }else if ( "3".equals( type ) ){//未填写项
             arTable.where( " N_SCORE_REAL IS NULL and IFNULL(B_BLANK,'0') <>\"1\" and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?"  ,r_sid);
         }else{
             Map<String, String> filter = this.getFilter( context );

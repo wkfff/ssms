@@ -14,6 +14,7 @@ public class JdbcRecord extends LinkedCaseInsensitiveMap<Object> {
     private static final long serialVersionUID = 3629559736555206157L;
 
     public String getString( String key ) {
-        return String.valueOf( get( key ) );
+        Object value = get( key );
+        return value==null?"":String.valueOf( get( key ) );
     }
 }
