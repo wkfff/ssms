@@ -112,6 +112,11 @@ ko.bindingHandlers.formValue = {
                 if (utils.isFunction(options)) {
                     options = options();
                 }
+                // 设置上两个有意义的数据
+                options.$element = $(element);
+                options[componentTypeName] = function () {
+                    $.fn[componentTypeName].apply($(element), arguments)
+                };
                 if (extOptions) {
                     $.extend(options, extOptions);
                 }
@@ -448,8 +453,8 @@ ko.bindingHandlers.formValue = {
         update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var value;
             value = ko.utils.unwrapObservable(valueAccessor());
-            if ($(element).combobox('getValue') !== value) {
-                return $(element).combobox('setValue', value);
+            if ($(element).combobox('getText') !== value) {
+                return $(element).combobox('setText', value);
             }
         }
     };

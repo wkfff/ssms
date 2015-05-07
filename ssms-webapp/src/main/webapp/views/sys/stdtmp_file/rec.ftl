@@ -9,9 +9,12 @@
         P_CYCLE: ko.observable(${P_CYCLE!}),
         S_CYCLE: ko.observable('${S_CYCLE!}'),
         B_REMIND: ko.observable(${B_REMIND!}),
-        P_TMPFILE: ko.observable(${P_TMPFILE!}),
+        P_TMPFILE: ko.observable('${P_TMPFILE!}'),
         S_TMPFILE: ko.observable('${S_TMPFILE!}'),
-        C_EXPLAIN: ko.observable('${C_EXPLAIN!}')
+        C_EXPLAIN: ko.observable('${C_EXPLAIN!}'),
+        SID: ko.observable(${SID!}),
+        R_SID: ko.observable(${R_SID!folder.SID}),
+        S_NAME: ko.observable(${S_NAME!folder.C_NAME})
     };
     var settings = {
         cycleSource: ko.observableArray(${json(_SYS_CYCLE_)}),
@@ -24,10 +27,14 @@
     var events = {
         saveClick: function () {
             $.post('save.do', model, function (result) {
-                $.messager.alert("提示", "保存成功", "info", function () {
-                    window.location.href = window.location.href;
-                });
-            })
+                if (result.SID)
+                    $.messager.alert("提示", "保存成功", "info", function () {
+                        window.location.href = 'rec.html?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                    });
+                else {
+                    $.messager.alert("提示", "保存失败", "warning");
+                }
+            }, "json")
         }
     };
 
@@ -49,7 +56,7 @@
     <p class="ue-clear">
         <label class="label">名称</label>
         <span class="control">
-            <input data-bind="textboxValue: C_NAME"/>
+            <input data-bind="textboxValue: C_NAME" required="true"/>
         </span>
     </p>
 
@@ -72,9 +79,8 @@
     <p class="ue-clear">
         <label class="label">模板文件</label>
         <span class="control">
-            <input data-bind="comboboxSource:tmpfilesSource,comboboxValue:P_TMPFILE,comboboxText:S_TMPFILE,easyuiOptions:paramViewSettings"/>
-            <#if P_TMPFILE??>
-                <a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?pid=${SID}&backURL=${backURL!referer!}">[配置模板]</a></#if>
+            <input data-bind="comboboxSource:tmpfilesSource,comboboxValue:P_TMPFILE,comboboxText:S_TMPFILE,easyuiOptions:paramViewSettings" required="true"/>
+            <#if P_TMPFILE??><a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?pid=${SID}&backURL=${backURL!referer!}">[配置模板]</a></#if>
         </span>
     </p>
 
