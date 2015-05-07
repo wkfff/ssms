@@ -25,7 +25,7 @@
         
     }
     function doEdit(sid) {
-        window.location.href = 'rec_draft.html?sid='+sid;
+        window.location.href = 'draft_rec.html?sid='+sid;
     }
 
     function doClear(id) {

@@ -8,11 +8,11 @@ function doBack(){
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div class="toolbar ue-clear">
+    <div class="toolbar ue-clear" id="tb">
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack();">返回</a>
          </div>
     <!--暂时先用框架页-->
-    <div class="easyui-tabs" style="width:100%;height:0px;" data-options="fit:true">
+    <div class="easyui-tabs" style="width:100%;" data-options="fit:true">
         <div title="评分结果" style="padding:0px">
             <iframe frameborder="0" width="100%" height="100%" src="rec_result.html?sid=${sid!}" ></iframe>
         </div>

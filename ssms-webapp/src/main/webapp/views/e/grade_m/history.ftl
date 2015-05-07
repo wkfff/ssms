@@ -8,9 +8,10 @@
         });
     }
 
-    function doOpen(sid) {
-        window.location.href = '/e/grade_m/result.html?sid='+sid;
+    function doOpen(url,sid) {
+        //window.location.href = '/e/grade_m/result.html?sid='+sid;
         //'rec_history.html?sid='+sid;
+        window.location.href = url+'.html?sid='+sid;
     }
     function doClear(id) {
         $(".easyui-datebox").datebox("setValue", "");
@@ -29,15 +30,15 @@
             //border:false,
             toolbar: '#dg_history_tb',
             columns: [[
-                {field: 'C_TITLE', title: '标题', width: 500},
+                {field: 'C_TITLE', title: '标题', width: 450},
                 {field: 'T_START', title: '自评开始日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
                 {field: 'T_END', title: '自评结束日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
                 {field: 'N_GET', title: '得分项', width: 60},
                 {field: 'N_DEDUCT', title: '扣分项', width: 60},
                 {field: 'N_LACK', title: '缺项', width: 60},
-                {field: 'SID', title: '操作', width: 80,align:'center',
+                {field: 'SID', title: '查看', width: 180,align:'center',
                     formatter:function(value,row){
-                            return "<a href='#' onclick='doOpen("+value+")'>查看</a>";
+                            return "<a href='#' onclick='doOpen(\"history_rec\","+value+")'>自评结果</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"history_rep\","+value+")'>自评报告</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"/e/grade_d/sum\","+value+")'>汇总统计</a>";
                         }}
             ]]
         });

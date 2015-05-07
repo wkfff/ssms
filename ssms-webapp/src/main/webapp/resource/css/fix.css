@@ -29,13 +29,9 @@
 .datagrid-header{
     background:url(../images/tablelistbg.png) repeat-x;
 }
-.datagrid-row-alt{
-    background-color:#eff6fa!important;
-}
 .layout-expand-west .panel-title{
 	background:transparent !important;
 }
-
 label {
     line-height: 33px;
 }

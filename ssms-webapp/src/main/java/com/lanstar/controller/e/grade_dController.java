@@ -32,10 +32,11 @@ public class grade_dController extends DefaultController {
     protected Class<? extends ActionValidator> getValidator() {
         return grade_dValidator.class;
     }
-
+    /**
+     * 保存时统计项
+     */
     @Override
     public ViewAndModel save( HandlerContext context ) {
-        // 统计项
         String r_sid = context.getValue( "R_SID" ); 
         String sql = "call P_GRADE_SUM(?)";
         context.DB.getDBSession().execute( sql,new Object[]{r_sid} );
@@ -46,9 +47,6 @@ public class grade_dController extends DefaultController {
         return context.returnWith();
     }
 
-    /* (non-Javadoc)
-     * @see com.lanstar.controller.DefaultController#list(com.lanstar.core.handle.HandlerContext)
-     */
     @Override
     public ViewAndModel list( HandlerContext context ) {
         String r_sid = context.getValue( "R_SID" );
@@ -56,11 +54,13 @@ public class grade_dController extends DefaultController {
         ARTable arTable = context.DB.withTable( this.TABLENAME );
         //扣分
         if ( "0".equals( type ) ){
-            arTable.where( " N_SCORE_REAL<N_SCORE and R_SID=?" ,r_sid);
+            arTable.where( " N_SCORE_REAL<N_SCORE and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?" ,r_sid);
         }else if ( "1".equals( type ) ){//得分
-            arTable.where( " N_SCORE_REAL=N_SCORE and R_SID=?" ,r_sid );
+            arTable.where( " N_SCORE_REAL=N_SCORE and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?" ,r_sid );
         }else if ( "2".equals( type ) ){
-            arTable.where( " B_BLANK='1' and R_SID=?"  ,r_sid);
+            arTable.where( " IFNULL(B_BLANK,'0')='1' and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?"  ,r_sid);
+        }else if ( "3".equals( type ) ){
+            arTable.where( " N_SCORE_REAL IS NULL and IFNULL(B_BLANK,'0') <>\"1\" and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?"  ,r_sid);
         }else{
             Map<String, String> filter = this.getFilter( context );
             if ( !filter.isEmpty() ) {
