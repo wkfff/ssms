@@ -40,6 +40,9 @@ abstract class AbstractFreemarkerProcessor {
         // a good choice in most applications:
         cfg.setDefaultEncoding( "UTF-8" );
 
+        // 添加JSON扩展方法               by 张铮彬#2015-5-7
+        cfg.setSharedVariable( "json", new JsonMethod(  ) );
+
         // Sets how errors will appear.
         // During web page *development* TemplateExceptionHandler.HTML_DEBUG_HANDLER is better.
         cfg.setTemplateExceptionHandler( TemplateExceptionHandler.HTML_DEBUG_HANDLER );
