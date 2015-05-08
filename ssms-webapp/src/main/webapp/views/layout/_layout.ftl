@@ -34,9 +34,10 @@ ${footer}</html>
     <script type="text/javascript" src="/resource/js/core.js"></script>
     <script type="text/javascript" src="/resource/js/common.js"></script>
     ${header}</#local>
-    <#local _footer>${footer}${vars.COMPONENT_INIT_SCRIPTS}<#--输出组件初始化脚本--></#local>
+    <#local _footer>${footer}</#local>
     <@base header=_header footer=_footer>
         <#nested/>
+        ${vars.COMPONENT_INIT_SCRIPTS}<#--输出组件初始化脚本-->
     </@base>
 </#macro>
 
