@@ -4,6 +4,12 @@
     .datagrid-cell{
         white-space:normal !important;
     }
+    .datagrid-cell-c2-B_BLANK{
+        text-align:center !important;
+    }
+    .datagrid-cell-c2-B_BLANK input{
+        width:100%;
+    }
     .datagrid-editable-input{
         height:120px !important;
     }
@@ -89,7 +95,7 @@
     }
     
     function doBack(){
-        window.location.href='${referer!}';
+        window.location.href='draft.html';//${referer!}
     }
     
     function doShow(v){
@@ -105,7 +111,9 @@
             $('#dg').datagrid({url:'/e/grade_d/list.json?R_SID=${sid!-1}'});
         }
     }
-    
+    function doReport(){
+        window.location.href='report_rec.html?sid=${sid!}';
+    }
     $(function () {
         $('#formMain').form('load','rec.json?sid=${sid!}');
         $('#dg').edatagrid({
@@ -148,6 +156,7 @@
           <div class="toolbar ue-clear">
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-ok" onclick="doComplete()">完成自评</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-details" onclick="doReport()">自评报告</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-cancel" onclick="doDel()">删除</a> 
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
          </div>

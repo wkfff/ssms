@@ -16,9 +16,13 @@
     }
 
     function doDownload(){
-        
+        alert('该功能暂未实现！');
     }
     
+    function doPrint(){
+        alert('该功能暂未实现！');
+    }
+
     function doBack(){
         window.location.href='${referer!}';
     }
@@ -52,6 +56,7 @@
          <div class="toolbar ue-clear" style="border:0px;border-left:1px solid #c1d3de;">
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave();">保存</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-download" onclick="doDownload();">下载</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-print" onclick="doPrint()">打印</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
          </div>
          <form id="formMain">

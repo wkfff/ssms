@@ -12,7 +12,7 @@ $(function () {
                 $('#tab'+index).html('<iframe frameborder="0" width="100%" height="100%" src="sum_ded.html?sid=${sid!}" ></iframe>');
             }
             if (index==2){
-                $('#tab'+index).html('<iframe frameborder="0" width="100%" height="100%" src="report_rec.html?sid=${sid!}" ></iframe>');
+                $('#tab'+index).html('<iframe frameborder="0" width="100%" height="100%" src="history_rep.html?sid=${sid!}" ></iframe>');
             }
         }
     });
