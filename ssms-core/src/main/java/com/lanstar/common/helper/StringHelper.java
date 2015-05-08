@@ -403,7 +403,7 @@ public final class StringHelper {
     }
 
     public static boolean vaildValue( String v ) {
-        return !isBlank( v ) && !equalsIgnoreCase(v, "null", "undefined");
+        return !equalsIgnoreCase(v, "null", "undefined");
     }
 
     public static boolean equalsIgnoreCase( String v, String... args ) {
