@@ -50,7 +50,7 @@
             striped: true,
             //fit:true, 
             collapsible:true,
-            border:false,
+            //border:false,
             pageSize:20,
             height:300,
             toolbar: '#dg_draft_tb',
@@ -79,7 +79,7 @@
             fitColumns: false,
             //fit:true, 
             collapsible:true,
-            border:false,
+            //border:false,
             height:300,
             toolbar: '#dg_history_tb',
             columns: [[
@@ -105,7 +105,8 @@
         <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-new" onclick="doNew();">开始新的自评</a>
         <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack();">返回</a>
     </div>
-
+    
+    <div style="padding:5px;">
     <table id="dg_draft"></table>
         <div id="dg_draft_tb" style="padding:5px;height:auto">
                 自评日期从: <input class="easyui-datebox" style="width:90px" name="T_START">
@@ -121,5 +122,6 @@
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_history')">查询</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_history')" title="清空查询条件">重置</a>
         </div>
+      </div>
 </div>
 </@layout.doLayout>

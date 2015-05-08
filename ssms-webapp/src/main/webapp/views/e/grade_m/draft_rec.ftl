@@ -4,6 +4,12 @@
     .datagrid-cell{
         white-space:normal !important;
     }
+    .datagrid-cell-c2-B_BLANK{
+        text-align:center !important;
+    }
+    .datagrid-cell-c2-B_BLANK input{
+        width:100%;
+    }
     .datagrid-editable-input{
         height:120px !important;
     }
@@ -33,6 +39,7 @@
     
     function doSave(){
         //$.messager.progress();
+        endEditing();
         $('#formMain').form('submit', {
             url:'save.do?sid=${sid!}',
             onSubmit: function(){
@@ -89,7 +96,7 @@
     }
     
     function doBack(){
-        window.location.href='${referer!}';
+        window.location.href='draft.html';//${referer!}
     }
     
     function doShow(v){
@@ -105,10 +112,56 @@
             $('#dg').datagrid({url:'/e/grade_d/list.json?R_SID=${sid!-1}'});
         }
     }
-    
+    function doReport(){
+        window.location.href='report_rec.html?sid=${sid!}';
+    }
+    var editIndex = undefined;
+    function endEditing(){
+        if (editIndex == undefined){return true}
+        if ($('#dg').datagrid('validateRow', editIndex)){
+            var row = $('#dg').datagrid('getRows')[editIndex];
+            var v1 = row['N_SCORE'];
+            var ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'N_SCORE_REAL'});
+            var v2 = ed?ed.target.val():0;
+            if (v1<v2){
+                alert('实际得分不能大于标准分值！');
+                return false;
+            }
+            
+            $('#dg').datagrid('endEdit', editIndex);
+            editIndex = undefined;
+            
+            //var rows = $('#dg').datagrid('getChanges');
+            //alert(rows.length);
+            
+            var opts = $('#dg').datagrid('options');
+            var url = opts.updateUrl;
+            if (url){
+                    $.post(url, row, function(data){});
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function onClickRow(index){
+        var v = $('#dg').datagrid('getRows')[index]['S_PROJECT'];
+        if (v=='小计' || v=='总计'){
+            return;
+        }
+        if (editIndex != index){
+            if (endEditing()){
+                $('#dg').datagrid('selectRow', index)
+                        .datagrid('beginEdit', index);
+                editIndex = index;
+            } else {
+                $('#dg').datagrid('selectRow', editIndex);
+            }
+        }
+    }
     $(function () {
         $('#formMain').form('load','rec.json?sid=${sid!}');
-        $('#dg').edatagrid({
+        $('#dg').datagrid({
             title:'自评内容',
             url: '/e/grade_d/list.json?R_SID=${sid!-1}',
             updateUrl:'/e/grade_d/save.do',
@@ -131,12 +184,20 @@
                 {field: 'C_DESC', title: '自评描述', width: 250,editor:{type:'textarea',options:{},height:'100%'}},
                 {field: 'B_BLANK', title: '是否缺项', width: 65,align:'center',editor:{type:'checkbox',options:{on:'1',off:'0'}},
                         formatter:function(value,row){
+                            var s = row['S_PROJECT'];
+                            if (s=='小计' || s == '总计') return '';
                             return value=='1'?'是':'否';
                         }},
                 {field: 'N_SCORE_REAL', title: '实际得分', align:'center',width: 65,editor:'numberbox'}
             ]],
             onLoadSuccess: function(data){
                 //$(this).datagrid("autoMergeCells",["S_CATEGORY","S_PROJECT"]);
+            },
+            onClickRow:onClickRow,
+            rowStyler: function(index,row){
+                if (row.S_PROJECT == '小计' || row.S_PROJECT == '总计'){
+                    return 'background-color:#FAFAFA;color:#000;font-weight:bold;';
+                }
             }
         });
     });
@@ -148,6 +209,7 @@
           <div class="toolbar ue-clear">
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-ok" onclick="doComplete()">完成自评</a>
+                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-details" onclick="doReport()">自评报告</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-cancel" onclick="doDel()">删除</a> 
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
          </div>
