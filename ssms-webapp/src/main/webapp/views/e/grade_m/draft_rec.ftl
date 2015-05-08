@@ -196,7 +196,7 @@
             onClickRow:onClickRow,
             rowStyler: function(index,row){
                 if (row.S_PROJECT == '小计' || row.S_PROJECT == '总计'){
-                    return 'background-color:#FAFAFA;font-weight:bold;';
+                    return 'background-color:#FAFAFA;color:#000;font-weight:bold;';
                 }
             }
         });
