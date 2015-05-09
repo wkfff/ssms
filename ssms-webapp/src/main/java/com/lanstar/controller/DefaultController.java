@@ -8,6 +8,10 @@
 
 package com.lanstar.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.StringHelper;
@@ -15,14 +19,11 @@ import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.DBPaging;
 import com.lanstar.db.JdbcRecord;
+import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.helper.easyui.EasyUIControllerHelper;
 import com.lanstar.plugin.json.JsonHelper;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public abstract class DefaultController extends BaseController {
     public DefaultController( String tablename ) {
@@ -54,9 +55,14 @@ public abstract class DefaultController extends BaseController {
         }
         if ( processor != null ) processor.process( arTable );
         DBPaging paging = context.getPaging();
-        JdbcPageRecordSet list = arTable.queryPaging( paging );
-        return context.returnWith().set(
-                EasyUIControllerHelper.toDatagridResult( list ) );
+        if ( paging == null ) {
+            JdbcRecordSet list = arTable.queryList();
+            return context.returnWith().set( list );
+        } else {
+            JdbcPageRecordSet list = arTable.queryPaging( paging );
+            return context.returnWith().set(
+                    EasyUIControllerHelper.toDatagridResult( list ) );
+        }
     }
 
     /**
@@ -67,7 +73,8 @@ public abstract class DefaultController extends BaseController {
 
         JdbcRecord record = null;
         if ( StringHelper.vaildValue( sid ) ) {
-            record = context.DB.withTable( this.TABLENAME ).where( "SID=?", sid ).query();
+            record = context.DB.withTable( this.TABLENAME )
+                    .where( "SID=?", sid ).query();
         }
         return context.returnWith().set( record );
     }
@@ -93,7 +100,6 @@ public abstract class DefaultController extends BaseController {
         return context.returnWith().put( "SID", sid );
     }
 
-    @SuppressWarnings("unchecked")
     public void batchSave( HandlerContext context ) {
         String dataStr = context.getValue( "data" );
         int count = 0;
@@ -107,11 +113,11 @@ public abstract class DefaultController extends BaseController {
                 sid = null;
             }
             ARTable table = context.DB.withTable( this.TABLENAME );
-            this.mergerValuesWithoutParaMap( table, context, MergerType.withSid( sid ) );
+            this.mergerValuesWithoutParaMap( table, context,
+                    MergerType.withSid( sid ) );
             table.values( map );
             // 根据sid的存在设置where语句
-            table.where( StringHelper.vaildValue( sid ), "SID=?", sid )
-                 .save();
+            table.where( StringHelper.vaildValue( sid ), "SID=?", sid ).save();
             count++;
         }
         context.setValue( "count", count );
@@ -124,7 +130,7 @@ public abstract class DefaultController extends BaseController {
         String ids = context.getValue( "ids" );
         if ( !Strings.isNullOrEmpty( ids ) ) {
             context.DB.withTable( this.TABLENAME )
-                      .where( "SID in (" + ids + ")" ).delete();
+                    .where( "SID in (" + ids + ")" ).delete();
         }
         return context.returnWith().set( "{}" );
     }
@@ -142,7 +148,7 @@ public abstract class DefaultController extends BaseController {
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         if ( !Strings.isNullOrEmpty( sid ) ) {
             context.DB.withTable( this.TABLENAME ).where( "SID = ?", sid )
-                      .delete();
+                    .delete();
         }
         return context.returnWith().set( "" );
     }
@@ -173,7 +179,6 @@ public abstract class DefaultController extends BaseController {
     }
 }
 
-
 /*
-    TODO: 添加返回字段的过滤，不应该返回所有字段，而是有选择的进行返回。
+ * TODO: 添加返回字段的过滤，不应该返回所有字段，而是有选择的进行返回。
  */

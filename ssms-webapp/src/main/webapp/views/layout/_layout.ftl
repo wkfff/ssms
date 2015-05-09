@@ -53,8 +53,6 @@ ${footer}</html>
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
-    <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
     <script type="text/javascript" src="/resource/js/kindeditor/kindeditor-min.js"></script>
     <#--首页脚本-->
     <script type="text/javascript">
