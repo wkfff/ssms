@@ -86,14 +86,12 @@ public abstract class DefaultController extends BaseController {
         // 先验证下参数
         this.validatePara( context );
         String sid = context.getValue( "sid" );
-        // 解决如果传递的SID是大写的时候，搜索不到的问题 by 张铮彬#2015-4-25
-        if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         ARTable table = context.DB.withTable( this.TABLENAME );
         this.mergerValues( table, context, MergerType.withSid( sid ) );
         // 根据sid的存在设置where语句
-        table.where( StringHelper.vaildValue( sid ), "SID=?", sid ).save();
+        table.where( !StringHelper.isBlank( sid ) && StringHelper.vaildValue( sid ), "SID=?", sid ).save();
 
-        if ( !StringHelper.vaildValue( sid ) ) {
+        if ( StringHelper.isBlank( sid ) || !StringHelper.vaildValue( sid ) ) {
             sid = Integer.toString( context.DB.getSID() );
         }
 
@@ -117,7 +115,8 @@ public abstract class DefaultController extends BaseController {
                     MergerType.withSid( sid ) );
             table.values( map );
             // 根据sid的存在设置where语句
-            table.where( StringHelper.vaildValue( sid ), "SID=?", sid ).save();
+            table.where( !StringHelper.isBlank( sid ) && StringHelper.vaildValue( sid ), "SID=?", sid )
+                 .save();
             count++;
         }
         context.setValue( "count", count );
@@ -144,8 +143,6 @@ public abstract class DefaultController extends BaseController {
      */
     public ViewAndModel del( HandlerContext context ) {
         String sid = context.getValue( "sid" );
-        // 解决如果传递的SID是大写的时候，搜索不到的问题 by 张铮彬#2015-4-25
-        if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         if ( !Strings.isNullOrEmpty( sid ) ) {
             context.DB.withTable( this.TABLENAME ).where( "SID = ?", sid )
                     .delete();

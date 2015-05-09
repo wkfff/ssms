@@ -80,6 +80,14 @@ ko.bindingHandlers.form = {
     }
 };
 
+ko.bindingHandlers.formValue = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    },
+    update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        $(element).form('load', ko.unwrap(valueAccessor()));
+    }
+};
+
 (function () {
     var utils;
 
@@ -731,7 +739,7 @@ ko.bindingHandlers.form = {
     };
 
     (function () {
-        var bindDatagridDisposeEvent, getIdField;
+        var bindDatagridDisposeEvent, getIdField, getEditingRow;
         bindDatagridDisposeEvent = function (element) {
             return ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
                 if (utils.component.checkComponentInited(element, "datagrid")) {
@@ -1264,7 +1272,7 @@ ko.bindingHandlers.form = {
 
     ko.bindingHandlers.treeValue = {
         init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            var curValue, options, refreshValueFun, value;
+            var options, refreshValueFun, value;
             utils.component.ensureComponentInited(element, "tree", allBindingsAccessor);
             options = $(element).tree('options');
             value = valueAccessor();
@@ -1285,11 +1293,95 @@ ko.bindingHandlers.form = {
         }
     };
 
-    ko.bindingHandlers.formValue = {
-        init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        },
-        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            $(element).form('load', ko.unwrap(valueAccessor()));
+    (function () {
+        function getEditor(element, valueAccessor, allBindingsAccessor) {
+            var editor = $.data(element, 'htmledit');
+            if (editor == null) {
+                editor = KindEditor.create(element, {
+                    uploadUrl: '',
+                    allowFileManager: false,
+                    allowUpload: false,
+                    items: [
+                        'fontname',
+                        'fontsize',
+                        '|',
+                        'forecolor',
+                        'hilitecolor',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'removeformat',
+                        '|',
+                        'justifyleft',
+                        'justifycenter',
+                        'justifyright',
+                        'justifyfull',
+                        'insertorderedlist',
+                        'insertunorderedlist',
+                        '|',
+                        'table',
+                        '|',
+                        'fullscreen'
+                    ],
+                    afterChange: function () {
+                        valueAccessor()(editor.html());
+                    }
+                });
+
+                var allBindings = allBindingsAccessor();
+                var options = allBindings['htmleditOptions'] || {};
+                if (utils.isFunction(options)) {
+                    options = options();
+                }
+                options.$element = $(element);
+                options.save = function () {
+                    var postData = {
+                        table: options.table,
+                        field: options.field,
+                        sid: options.sid,
+                        content: editor.html()
+                    };
+                    $.post('/sys/attachtext/save.json', postData);
+                };
+                options.load = function () {
+                    $.post("/sys/attachtext/get.json", {
+                        table: options.table,
+                        field: options.field,
+                        sid: options.sid
+                    }, function (result) {
+                        valueAccessor()(result);
+                    });
+                };
+                options.htmledit = editor;
+                $.data(element, 'htmledit', editor);
+                $.data(element, 'htmleditOptions', options);
+            }
+            return editor;
         }
-    };
+
+        ko.bindingHandlers.htmleditOptions = {
+            init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            },
+            update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            }
+        };
+        ko.bindingHandlers.htmleditValue = {
+            init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var editor = getEditor(element, valueAccessor, allBindingsAccessor);
+                var options = $.data(element, 'htmleditOptions');
+                var value = valueAccessor();
+                if (value()==null) options.load();
+                if (value() != editor.html()) {
+                    editor.html(value());
+                }
+            },
+            update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var editor = getEditor(element, valueAccessor, allBindingsAccessor);
+                var value = ko.unwrap(valueAccessor());
+                if (value != editor.html()) {
+                    editor.html(value);
+                }
+            }
+        };
+    })();
 }).call(this);

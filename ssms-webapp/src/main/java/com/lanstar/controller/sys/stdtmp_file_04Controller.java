@@ -10,23 +10,14 @@ package com.lanstar.controller.sys;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
 
-/**
- * @author Administrator
- *
- */
 public class stdtmp_file_04Controller extends DefaultController {
 
-    /**
-     * @param tablename
-     */
     public stdtmp_file_04Controller() {
         super( "SYS_STDTMP_FILE_04" );
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     protected Class<? extends ActionValidator> getValidator() {
-        // TODO Auto-generated method stub
         return stdtmp_file_04Validator.class;
     }
 

@@ -9,9 +9,6 @@ package com.lanstar.controller.sys;
 
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
-import com.lanstar.core.ViewAndModel;
-import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.db.JdbcRecord;
 
 public class stdtmp_file_03Controller extends DefaultController {
     public stdtmp_file_03Controller() {
@@ -22,14 +19,5 @@ public class stdtmp_file_03Controller extends DefaultController {
     protected Class<? extends ActionValidator> getValidator() {
 
         return stdtmp_file_03Validator.class;
-    }
-
-    @Override
-    public ViewAndModel rec( HandlerContext context ) {
-        String pid = context.getValue( "pid" );
-        JdbcRecord record = context.DB.withTable( "SYS_STDTMP_FILE" )
-                                      .where( "SID=?", pid )
-                                      .query();
-        return super.rec( context ).put( "fileInfo", record );
     }
 }

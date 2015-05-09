@@ -20,13 +20,15 @@ import com.lanstar.core.handle.db.impl.SystemDbContext;
 import com.lanstar.core.handle.db.impl.TenantDbContext;
 import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBPaging;
+import com.lanstar.service.StandardTemplateService;
 import com.lanstar.service.attachtext.AttachTextService;
 import com.lanstar.service.file.FileService;
-import java.util.HashMap;
+import org.springframework.util.LinkedCaseInsensitiveMap;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class HandlerContext implements AutoCloseable{
+public class HandlerContext implements AutoCloseable {
     private final RequestContext context;
     /**
      * 租户库上下文
@@ -128,25 +130,25 @@ public class HandlerContext implements AutoCloseable{
 
     /**
      * 获取参数
-     *
-     * @return
      */
     @SuppressWarnings("unchecked")
     public Map<String, String> getParameterMap() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new LinkedCaseInsensitiveMap<>();
         Map<String, String[]> p = getRequestContext().getRequest().getParameterMap();
         for ( String key : p.keySet() ) {
             String[] values = p.get( key );
             String value = "";
-            if (values==null || (values.length==1 && StringHelper.isBlank( values[0] ))) {
-                if (key.equals( "R_UPDATE" )||key.equals( "S_UPDATE" )||key.equals( "T_UPDATE" )||key.equals( "R_CREATE" )||key.equals( "S_CREATE" )||key.equals( "T_CREATE" )) continue;
-                if (key.startsWith( "N_" )) value = "0"; 
-            }
-            else
+            if ( values == null || (values.length == 1 && StringHelper.isBlank( values[0] )) ) {
+                // TODO 粗暴的处理
+                if ( key.equals( "R_UPDATE" ) || key.equals( "S_UPDATE" ) || key.equals( "T_UPDATE" ) || key
+                        .equals( "R_CREATE" ) || key.equals( "S_CREATE" ) || key.equals( "T_CREATE" ) ) continue;
+                if ( key.startsWith( "N_" ) ) value = "0";
+                else if ( key.startsWith( "T_" ) ) continue;
+            } else
                 value = StringHelper.join( values, ",", false );
             value = StringHelper.removeBlank( value );
-            // 全局忽略null、undefined和空白字符串             by 张铮彬#2015-5-7
-            if (!StringHelper.vaildValue( value )) continue;
+            // 全局忽略null、undefined             by 张铮彬#2015-5-7
+            if ( !StringHelper.vaildValue( value ) ) continue;
             map.put( key, value );
         }
         return map;
@@ -154,8 +156,6 @@ public class HandlerContext implements AutoCloseable{
 
     /**
      * 获取分页信息
-     *
-     * @return
      */
     public DBPaging getPaging() {
         DBPaging paging = new DBPaging();
@@ -169,14 +169,12 @@ public class HandlerContext implements AutoCloseable{
 
     /**
      * 获取过滤条件
-     *
-     * @return
      */
     public Map<String, String> getFilter() {
-        Map<String, String> filter = new LinkedHashMap<String, String>();
+        Map<String, String> filter = new LinkedHashMap<>();
         Map<String, String> para = getParameterMap();
         for ( String key : para.keySet() ) {
-            if ( !key.equals( DBPaging.PAGE_INDEX ) &&  !key.equals( DBPaging.PAGE_SIZE )) {
+            if ( !key.equals( DBPaging.PAGE_INDEX ) && !key.equals( DBPaging.PAGE_SIZE ) ) {
                 String value = para.get( key );
                 if ( Strings.isNullOrEmpty( value ) ) continue;
                 filter.put( key, value );
@@ -189,14 +187,18 @@ public class HandlerContext implements AutoCloseable{
      * 获取文件服务
      */
     public FileService getFileService() {
-        return new FileService( getRequestContext().getIdentityContxt().getIdentity() );
+        return new FileService( getRequestContext().getIdentityContxt().getIdentity(), DB );
     }
 
     /**
      * 获取附加文本服务
      */
     public AttachTextService getAttachTextService() {
-        return new AttachTextService( getRequestContext().getIdentityContxt().getIdentity() );
+        return new AttachTextService( getIdentity(), DB );
+    }
+
+    public StandardTemplateService getStandardTemplateService() {
+        return new StandardTemplateService( getIdentity(), DB );
     }
 
     public Identity getIdentity() {

@@ -9,6 +9,7 @@
 package com.lanstar.service.file;
 
 import com.lanstar.common.io.LocationBuilder;
+import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
@@ -34,8 +35,8 @@ public class FileService extends TenantService {
      *
      * @param identity 租户用户身份标识
      */
-    public FileService( Identity identity ) {
-        super( identity );
+    public FileService( Identity identity, HandlerDbContext dbContext ) {
+        super( identity, dbContext );
         resourceService = ResourcePlugin.me().getResourceService();
     }
 
@@ -112,6 +113,6 @@ public class FileService extends TenantService {
     }
 
     private ARTable getTable() throws SQLException {
-        return new ARTable( getDBSession() ).table( TABLENAME );
+        return dbContext.withTable( TABLENAME );
     }
 }
