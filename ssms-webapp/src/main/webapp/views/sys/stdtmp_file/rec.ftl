@@ -76,7 +76,7 @@
         <span class="control">
             <input data-bind="comboboxSource:tmpfilesSource,comboboxValue:P_TMPFILE,comboboxText:S_TMPFILE,easyuiOptions:paramViewSettings" required="true"/>
             <#if P_TMPFILE??>
-                <a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?pid=${SID}&backURL=${backURL!referer!}">[配置模板]</a></#if>
+                <a href="/sys/stdtmp_file_${P_TMPFILE}/rec.html?sid=${R_TMPFILE}&backURL=${backURL!referer!}">[配置模板]</a></#if>
         </span>
     </p>
 

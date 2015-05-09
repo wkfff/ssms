@@ -139,13 +139,15 @@ public class HandlerContext implements AutoCloseable {
             String[] values = p.get( key );
             String value = "";
             if ( values == null || (values.length == 1 && StringHelper.isBlank( values[0] )) ) {
+                // TODO 粗暴的处理
                 if ( key.equals( "R_UPDATE" ) || key.equals( "S_UPDATE" ) || key.equals( "T_UPDATE" ) || key
                         .equals( "R_CREATE" ) || key.equals( "S_CREATE" ) || key.equals( "T_CREATE" ) ) continue;
                 if ( key.startsWith( "N_" ) ) value = "0";
+                else if ( key.startsWith( "T_" ) ) continue;
             } else
                 value = StringHelper.join( values, ",", false );
             value = StringHelper.removeBlank( value );
-            // 全局忽略null、undefined和空白字符串             by 张铮彬#2015-5-7
+            // 全局忽略null、undefined             by 张铮彬#2015-5-7
             if ( !StringHelper.vaildValue( value ) ) continue;
             map.put( key, value );
         }
