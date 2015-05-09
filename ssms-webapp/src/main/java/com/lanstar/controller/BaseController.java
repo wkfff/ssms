@@ -108,7 +108,7 @@ public abstract class BaseController {
         forInsert;
 
         public static MergerType withSid( String sid ) {
-            return StringHelper.isBlank( sid ) ? forInsert : forUpdate;
+            return StringHelper.isBlank( sid ) && !StringHelper.vaildValue( sid ) ? forInsert : forUpdate;
         }
     }
 
