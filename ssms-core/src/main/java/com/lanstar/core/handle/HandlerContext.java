@@ -22,7 +22,8 @@ import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBPaging;
 import com.lanstar.service.attachtext.AttachTextService;
 import com.lanstar.service.file.FileService;
-import java.util.HashMap;
+import org.springframework.util.LinkedCaseInsensitiveMap;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -133,7 +134,7 @@ public class HandlerContext implements AutoCloseable{
      */
     @SuppressWarnings("unchecked")
     public Map<String, String> getParameterMap() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new LinkedCaseInsensitiveMap<>();
         Map<String, String[]> p = getRequestContext().getRequest().getParameterMap();
         for ( String key : p.keySet() ) {
             String[] values = p.get( key );

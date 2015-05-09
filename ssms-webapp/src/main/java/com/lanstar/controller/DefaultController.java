@@ -79,8 +79,6 @@ public abstract class DefaultController extends BaseController {
         // 先验证下参数
         this.validatePara( context );
         String sid = context.getValue( "sid" );
-        // 解决如果传递的SID是大写的时候，搜索不到的问题 by 张铮彬#2015-4-25
-        if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         ARTable table = context.DB.withTable( this.TABLENAME );
         this.mergerValues( table, context, MergerType.withSid( sid ) );
         // 根据sid的存在设置where语句
@@ -138,8 +136,6 @@ public abstract class DefaultController extends BaseController {
      */
     public ViewAndModel del( HandlerContext context ) {
         String sid = context.getValue( "sid" );
-        // 解决如果传递的SID是大写的时候，搜索不到的问题 by 张铮彬#2015-4-25
-        if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         if ( !Strings.isNullOrEmpty( sid ) ) {
             context.DB.withTable( this.TABLENAME ).where( "SID = ?", sid )
                       .delete();
