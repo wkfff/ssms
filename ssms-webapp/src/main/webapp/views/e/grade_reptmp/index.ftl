@@ -35,7 +35,6 @@
     $(function () {
         $('#dg').datagrid({
             title:'自评报告模板',
-            iconCls:'icon-star',
             url: 'list.json',
             idField: 'SID',
             rownumbers: true,

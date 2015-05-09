@@ -103,7 +103,6 @@
 <div>
     <div class="toolbar">
         <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-new" onclick="doNew();">开始新的自评</a>
-        <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack();">返回</a>
     </div>
     
     <div style="padding:5px;">
