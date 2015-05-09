@@ -8,8 +8,8 @@
 
 package com.lanstar.service.attachtext;
 
+import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.identity.Identity;
-import com.lanstar.db.DBSession;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.service.TenantService;
@@ -27,8 +27,8 @@ public class AttachTextService extends TenantService {
      *
      * @param identity 身份标识
      */
-    public AttachTextService( Identity identity ) {
-        super( identity );
+    public AttachTextService( Identity identity, HandlerDbContext dbContext ) {
+        super( identity, dbContext );
     }
 
     public String getContent( String tableName, String field, int sid ) throws SQLException {
@@ -71,10 +71,6 @@ public class AttachTextService extends TenantService {
     }
 
     private ARTable getTable() throws SQLException {
-        return getTable( getDBSession() );
-    }
-
-    private ARTable getTable( DBSession session ) {
-        return new ARTable( session ).table( TABLENAME );
+        return dbContext.withTable( TABLENAME );
     }
 }
