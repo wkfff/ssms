@@ -14,7 +14,7 @@
         C_EXPLAIN: ko.observable('${C_EXPLAIN!}'),
         SID: ko.observable(${SID!}),
         R_SID: ko.observable(${R_SID!folder.SID}),
-        S_NAME: ko.observable(${S_NAME!folder.C_NAME})
+        S_NAME: ko.observable('${S_NAME!folder.C_NAME}')
     };
     var settings = {
         cycleSource: ko.observableArray(${json(_SYS_CYCLE_)}),
