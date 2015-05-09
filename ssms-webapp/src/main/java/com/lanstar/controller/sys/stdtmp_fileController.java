@@ -8,17 +8,14 @@
 
 package com.lanstar.controller.sys;
 
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.JdbcRecord;
-import com.lanstar.plugin.staticcache.CacheManager;
-import com.lanstar.plugin.staticcache.impl.StandardTemplateCache;
-import com.lanstar.service.parameter.Parameter;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.lanstar.db.ar.ARTable;
+import com.lanstar.service.StandardTemplateService;
 
 public class stdtmp_fileController extends DefaultController {
     public stdtmp_fileController() {
@@ -42,13 +39,44 @@ public class stdtmp_fileController extends DefaultController {
 
         resolveMultiParameter( context, "SYS_CYCLE" );
 
-        List<Parameter> list = new ArrayList<>(  );
-        StandardTemplateCache templateCache = CacheManager.me().getCache( StandardTemplateCache.class );
-        for ( String key : templateCache.getKeys() ) {
-            list.add( new Parameter( key, templateCache.getValue( key ) ) );
-        }
         return super.rec( context )
                     .put( "folder", record )
-                    .put( "tmpfiles", list );
+                    .put( "tmpfiles", StandardTemplateService.listStandardTemplate() );
+    }
+
+    @Override
+    public ViewAndModel save( HandlerContext context ) {
+        // 先验证下参数
+        this.validatePara( context );
+
+        // 创建模板文件的记录
+        String tmpfile = context.getValue( "P_TMPFILE" );
+        int fileSid = context.getStandardTemplateService().newFile( tmpfile );
+
+        String sid = context.getValue( "sid" );
+        ARTable table = context.DB.withTable( this.TABLENAME );
+        this.mergerValues( table, context, MergerType.withSid( sid ) );
+        if ( !StringHelper.isBlank( sid ) && StringHelper.vaildValue( sid ) ) table.where( "SID=?", sid );
+        else table.value( "R_TMPFILE", fileSid );
+
+        table.save();
+
+        if ( StringHelper.isBlank( sid ) || !StringHelper.vaildValue( sid ) ) {
+            sid = Integer.toString( context.DB.getSID() );
+        }
+
+        return context.returnWith().put( "SID", sid );
+    }
+
+    @Override
+    public ViewAndModel del( HandlerContext context ) {
+        String sid = context.getValue( "sid" );
+        if ( !StringHelper.isBlank( sid ) ) {
+            JdbcRecord record = context.DB.withTable( TABLENAME ).where( "SID=?", sid ).query();
+            String fileType = record.getString( "P_TMPFILE" );
+            String fileSid = record.getString( "R_TMPFILE" );
+            context.getStandardTemplateService().delFile( fileType, fileSid );
+        }
+        return super.del( context );
     }
 }
