@@ -79,6 +79,7 @@ ${footer}</html>
         $(".nav>.current").prev().css({"borderColor": "#7ac47f"});
         $(".nav").on("click", "li", function (e) {
             var aurl = $(this).find("a").attr("date-src");
+            if(aurl=="") return;
             $("#iframe").attr("src", aurl);
             $(".nav>li").css({"borderColor": "#dbe9f1"});
             $(".nav>.current").prev().css({"borderColor": "#7ac47f"});
@@ -128,7 +129,7 @@ ${footer}</html>
                         </li>
                         <#list nav as map>
                             <li class="${map.attributes.C_ICON!"office"}">
-                                <div class="nav-header"><a href="javascript:;" class="ue-clear"><span>${map.text}</span><i class="icon"></i></a>
+                                <div class="nav-header"><a href="javascript:;"  date-src="${map.attributes.C_URL!""}" class="ue-clear"><span>${map.text}</span><i class="icon"></i></a>
                                 </div>
                                 <#if (map.children?size>0)>
                                     <ul class="subnav">

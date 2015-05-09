@@ -17,9 +17,6 @@ import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.statement.SqlBuilder;
 
-/**
- * 在线自评 _FLAG_:0新建，1草稿，-1历史，-2：
- */
 public class grade_mController extends DefaultController {
 
     public grade_mController() {
@@ -39,7 +36,6 @@ public class grade_mController extends DefaultController {
 
     @Override
     public ViewAndModel rec( HandlerContext context ) {
-        context.setValue( "_FLAG_", "0" );
         context.setValue( "S_TENANT", context.getIdentity().getTenantName() );
         // TODO:根据企业的专业来设置
         context.setValue( "P_PROFESSION", "1" );
@@ -148,14 +144,10 @@ public class grade_mController extends DefaultController {
                 new Object[] { sid } );
         return context.returnWith().set( "" );
     }
-
-    public ViewAndModel rec_result( HandlerContext context ) {
-        context.setValue( "_FLAG_", "-2" );
-        return context.returnWith().view( "rec" );
-    }
-
+    /**
+     * 自评结果
+     */
     public ViewAndModel result( HandlerContext context ) {
-        context.setValue( "_FLAG_", "-1" );
         return context.returnWith();
     }
 
