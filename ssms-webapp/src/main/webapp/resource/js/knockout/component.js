@@ -743,6 +743,19 @@ ko.bindingHandlers.form = {
             var _ref;
             return (_ref = $(element).datagrid('options').idField) != null ? _ref : 'id';
         };
+        getEditingRow = function (element) {
+            var rows = $('.datagrid-body .datagrid-row-editing', $(element).parent());
+            if (rows.length == 0) return;
+            var finder = $(element).datagrid('options').finder;
+            var index = $(rows[0]).attr('datagrid-row-index');
+            var data = finder.getRow(element, index);
+            var idField = getIdField(element);
+            return {
+                index: $(element).datagrid('getRowIndex', data[idField]),
+                row: data
+            };
+        };
+
         ko.bindingHandlers.datagridSource = {
             init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                 var $datagrid, onLoadSuccess, options;
@@ -840,7 +853,7 @@ ko.bindingHandlers.form = {
                 }
             }
         };
-        return ko.bindingHandlers.datagridValue = {
+        ko.bindingHandlers.datagridValue = {
             init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                 var curValue, events, funName, options, updateValFunc, value;
                 utils.component.ensureComponentInited(element, "datagrid", allBindingsAccessor, {
@@ -905,6 +918,58 @@ ko.bindingHandlers.form = {
                     }
                 } else {
                     return $(element).datagrid('unselectAll');
+                }
+            }
+        };
+
+        ko.bindingHandlers.datagridEditValue = {
+            init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var curValue, options, value;
+                utils.component.ensureComponentInited(element, "datagrid", allBindingsAccessor, {
+                    singleSelect: true
+                });
+                value = valueAccessor();
+                options = $(element).datagrid('options');
+                options.singleSelect = true;
+                var events = {
+                    onClickRow: options.onClickRow,
+                    onDblClickRow: options.onDblClickRow
+                };
+                options.onClickRow = function (index, row) {
+                    var v = value();
+                    // 如果有值，则停止当前的行的编辑
+                    if (v) value(null);
+                    return events.onClickRow ? events.onClickRow.apply(this, arguments) : void 0;
+                };
+                options.onDblClickRow = function (index, row) {
+                    value(row);
+                    return events.onDblClickRow ? events.onDblClickRow.apply(this, arguments) : void 0;
+                };
+
+                curValue = getEditingRow(element);
+                if (!value()) {
+                    value(curValue);
+                }
+
+                return bindDatagridDisposeEvent(element);
+            },
+            update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                var value = ko.utils.unwrapObservable(valueAccessor());
+                var curValue = getEditingRow(element);
+                var idField = getIdField(element);
+                if (curValue && value === curValue.row) return;
+                if (curValue) {
+                    // 如果验证通过则结束当前编辑行
+                    if (!$(element).datagrid('validateRow', curValue.index)) {
+                        $(element).datagrid('selectRecord', curValue.row[idField]);
+                        valueAccessor()(curValue.row);
+                        return;
+                    }
+                    $(element).datagrid('endEdit', curValue.index);
+                }
+                if (value) {
+                    var rowIndex = $(element).datagrid('getRowIndex', value[idField]);
+                    $(element).datagrid('beginEdit', rowIndex);
                 }
             }
         };
@@ -1205,7 +1270,7 @@ ko.bindingHandlers.form = {
             value = valueAccessor();
             refreshValueFun = function (oriFun) {
                 return function () {
-                    value(options.value);
+                    value($(element).tree('getSelected'));
                     return oriFun != null ? oriFun.apply($(element), arguments) : void 0;
                 };
             };

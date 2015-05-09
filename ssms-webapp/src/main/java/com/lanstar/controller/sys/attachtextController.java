@@ -8,6 +8,7 @@
 
 package com.lanstar.controller.sys;
 
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandleException;
 import com.lanstar.core.handle.HandlerContext;
@@ -36,9 +37,11 @@ public class attachtextController {
         AttachTextService service = context.getAttachTextService();
         String table = context.getValue( "table" );
         String field = context.getValue( "field" );
-        int sid = Integer.parseInt( (String) context.getValue( "sid" ) );
+        String sid = context.getValue( "sid" );
         try {
-            return context.returnWith().set( service.getContent( table, field, sid ) );
+            String content = null;
+            if ( StringHelper.vaildValue( sid ) ) content = service.getContent( table, field, Integer.parseInt( sid ) );
+            return context.returnWith().set( content );
         } catch ( SQLException e ) {
             throw new HandleException( e );
         }

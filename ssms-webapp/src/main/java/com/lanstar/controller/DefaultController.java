@@ -14,6 +14,7 @@ import com.lanstar.common.helper.StringHelper;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.DBPaging;
+import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.helper.easyui.EasyUIControllerHelper;
@@ -63,9 +64,12 @@ public abstract class DefaultController extends BaseController {
      */
     public ViewAndModel rec( HandlerContext context ) {
         String sid = context.getValue( "sid" );
-        return context.returnWith().set(
-                context.DB.withTable( this.TABLENAME ).where( "SID=?", sid )
-                          .query() );
+
+        JdbcRecord record = null;
+        if ( StringHelper.vaildValue( sid ) ) {
+            record = context.DB.withTable( this.TABLENAME ).where( "SID=?", sid ).query();
+        }
+        return context.returnWith().set( record );
     }
 
     /**
