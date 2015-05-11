@@ -65,7 +65,10 @@
                     formatter:function(value,row){
                             return "<a href='#' onclick='doOpen(\"draft_rec\","+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>";
                     }}
-            ]]
+            ]],
+            onLoadSuccess: function(data){
+                $(this).datagrid("getPanel").panel("setTitle","自评草稿["+data.total+"]");
+            }
         });
         
         $('#dg_history').datagrid({
@@ -94,7 +97,10 @@
                             /*return "<a href='#' onclick='doOpen(\"history_rec\","+value+")'>自评结果</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"history_rep\","+value+")'>自评报告</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"/e/grade_d/sum\","+value+")'>汇总统计</a>";*/
                             return "<a href='#' onclick='doOpen(\"result\","+value+")'>查看</a>";
                         }}
-            ]]
+            ]],
+            onLoadSuccess: function(data){
+                $(this).datagrid("getPanel").panel("setTitle","自评历史["+data.total+"]");
+            }
         });
     });
 </script>

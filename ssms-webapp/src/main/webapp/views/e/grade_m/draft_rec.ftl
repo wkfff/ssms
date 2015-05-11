@@ -1,6 +1,9 @@
 <#import "/layout/_rec.ftl" as layout/>
 <#assign script>
 <style>
+    .table td{
+        padding:5px;
+    }
     .datagrid-cell{
         white-space:normal !important;
     }
@@ -30,7 +33,6 @@
         width:90px;
     }
 </style>
-<script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 
 <script type="text/javascript">
     function doNew(){
@@ -215,7 +217,7 @@
          </div>
          <div class="easyui-panel" style="border:0;margin:10px;">
              <form id="formMain" method="post">
-                    <table cellspacing="6">
+                    <table class="table">
                         <tr>
                             <td class="span2">自评单位:</td>
                             <td class="span10" colspan="3">

@@ -172,9 +172,8 @@ CREATE TABLE SSM_GRADE_R_D
 
 	`SID`		INT(11) 	NOT NULL auto_increment COMMENT '自增主键',
 	`R_SID`			INT(11)	NOT NULL	 COMMENT '评审主表编号',
-	`R_DID`			INT(11)	NOT NULL	 COMMENT '明细项编号',
+	`R_DID`			INT(11)	NOT NULL	 COMMENT '自评明细项编号',
 	`C_DESC`			VARCHAR(2000)	 COMMENT '评审描述',
-	`B_BLANK`			CHAR(1)	 COMMENT '是否缺项',
 	`N_SCORE_REAL`			INT	 COMMENT '实际得分',
 	`R_CREATE`			INT(11)	 COMMENT '创建人编号',
 	`S_CREATE`			VARCHAR(50)	 COMMENT '创建人',

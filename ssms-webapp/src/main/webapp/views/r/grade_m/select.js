@@ -6,18 +6,18 @@ function ViewModel(templateId) {
         comboCity: ko.observable(),
         comboCounty: ko.observable(),
         selectItem: ko.observable(),
-        selectIndex: ko.pureComputed(function () {
-            var row = model.selectItem();
-            if (row) return settings.gridSettings.datagrid('getRowIndex', row);
-        }),
         sid: ko.observable()
     };
     model.comboPro.subscribe(function (newValue) {
         if (!newValue) return;
+        if (settings.comboCountySettings.combobox){
+            settings.comboCountySettings.combobox("clear");
+            settings.comboCountySettings.combobox("loadData",[]);
+        }
         if (settings.comboCitySettings.combobox)
             settings.comboCitySettings.combobox({
                 url: "/sys/para_area/list.json",
-                queryParams: {R_PARENT: newValue.id}
+                queryParams: {R_PARENT: newValue}
             })
     });
     model.comboCity.subscribe(function (newValue) {
@@ -25,42 +25,37 @@ function ViewModel(templateId) {
         if (settings.comboCountySettings.combobox)
             settings.comboCountySettings.combobox({
                 url: "/sys/para_area/list.json",
-                queryParams: {R_PARENT: newValue.id}
+                queryParams: {R_PARENT: newValue}
             })
     });
     model.comboCounty.subscribe(function (newValue) {
         if (!newValue) return;
         if (settings.gridSettings.datagrid)
             settings.gridSettings.datagrid({
-                url: "list.json",
-                queryParams: {R_SID: newValue.id}
+                url: "/sys/tenant_e/list.json",
+                queryParams: {P_COUNTY: newValue}
             })
     });
     
     var settings = {
         comboProSettings:{
             url:'/sys/para_area/list.json?N_LEVEL=1',
-            method:'get',
-            valueField:'C_CODE',
-            textField:'C_VALUE',
-            panelHeight:'auto'
+            valueField:'SID',
+            textField:'C_VALUE'
         },
         comboCitySettings:{
-        	url:'/sys/para_area/list.json',
-            method:'get',
-            valueField:'id',
-            textField:'text',
-            panelHeight:'auto'
+            //url:'/sys/para_area/list.json',
+            valueField:'SID',
+            textField:'C_VALUE'
         },
         comboCountySettings:{
-        	url:'/sys/para_area/list.json',
-            method:'get',
-            valueField:'id',
-            textField:'text',
-            panelHeight:'auto'
+            //url:'/sys/para_area/list.json',
+            valueField:'SID',
+            textField:'C_VALUE'
         },
         gridSettings: {
             idField: 'SID',
+            url: "/r/grade_m/list_e.json",//测试用
             rownumbers: true,
             pagination: true,
             fit: true,
@@ -70,12 +65,32 @@ function ViewModel(templateId) {
                     {
                         field: 'C_NAME',
                         title: '企业名称',
+                        width: 200
+                    },
+                    {
+                        field: 'C_TITLE',
+                        title: '标题',
                         width: 300
+                    },
+                    {
+                        field: 'SID',
+                        title: '评审',
+                        width: 60,
+                        align:'center',
+                        formatter:function(value,row){
+                                return "<a href='#'>评审</a>";
+                        }
                     }
                 ]
             ],
             onDblClickRow: function () {
-                events.editClick();
+                events.gridEvents.editClick();
+            },
+            onClickCell:function(index, field, value){
+                if (field=='SID'){
+                    self.sid(value);
+                    events.gridEvents.editClick();
+                }
             }
         }
     };
@@ -84,12 +99,10 @@ function ViewModel(templateId) {
         gridEvents: {
             refreshClick: function () {
                 settings.gridSettings.datagrid('reload');
-            }, queryClick: function () {
-                
             }, editClick: function () {
-                var sid = model.sid();
-                var url = '/r/grade/rec.html?sid={0}'.format(sid);
-                alert(url);
+                var sid = self.sid();//企业自评主表SID
+                var url = 'rec_new.html?R_EID={0}'.format(sid);
+               window.location.href = url;
             }
         }
     };

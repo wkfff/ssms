@@ -29,7 +29,7 @@ public class ActionCache extends Cache<Action> {
             LogHelper.debug( ActionCache.class, "加载Action[%s]", key );
             Controller controller = controllerCache.getValue( meta );
             action = controller.getValue( meta.getAction() );
-            if ( action == null ) throw new NoSuchActionException( "无法找到对应的Action!" );
+            if ( action == null ) throw new NoSuchActionException( "无法找到对应的Action["+meta.getAction()+"]!" );
             put( key, action );
         }
 
