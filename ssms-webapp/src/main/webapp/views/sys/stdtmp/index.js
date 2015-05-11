@@ -32,16 +32,16 @@ function ViewModel(templateId) {
     model.selectedNode.subscribe(function (newValue) {
         if (!newValue) return;
         model.sid(newValue.id);
+    });
+    model.sid.subscribe(function (newValue) {
+        $.post('rec.json', {sid: newValue}, function (result) {
+            ko.mapping.fromJS(result, model.rec);
+        });
         if (settings.gridSettings.datagrid)
             settings.gridSettings.datagrid({
                 url: "list.json",
-                queryParams: {R_SID: newValue.id}
+                queryParams: {R_SID: newValue}
             })
-    });
-    model.sid.subscribe(function (newValue) {
-        $.post('rec.json', {sid: model.sid()}, function (result) {
-            ko.mapping.fromJS(result, model.rec);
-        });
     });
 
     var settings = {
