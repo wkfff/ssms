@@ -62,7 +62,7 @@ ko.applyBindings($.extend({},model,events,settings, extModel));
     <div class="easyui-panel" title="正文" style="padding: 6px">
         <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
     </div>
-    <div class="easyui-panel" title="编制信息" style="padding-bottom: 10px;">
+    <div class="easyui-panel" title="发布信息" style="padding-bottom: 10px;">
         <p class="ue-clear">
             <label>发布部门</label>
             <span class="control">
