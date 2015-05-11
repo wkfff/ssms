@@ -1,75 +1,95 @@
 <#import "/layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
-    var setting = {
-        sid: $url.getUrlParam("sid"),
-        dataUrl: "rec.json",
-        saveUrl: "save.json",
-        delUrl: "del.json"
-    };
-
-    $(document).ready(function () {
-        $form.init(setting);
-    });
+var model={
+        C_NAME:ko.observable('${C_NAME!}'),
+        T_TIME:ko.observable('${T_TIME!}'),
+        C_USER_01:ko.observable('${C_USER_01!}'),
+        C_ADDR:ko.observable('${C_ADDR!}'),
+        S_TYPE:ko.observable('${S_TYPE!}'),
+        N_TIME:ko.observable('${N_TIME!}'),
+        C_USER_02:ko.observable('${C_USER_02!}'),
+        SID:'${SID!}'
+};
+var extModel={
+        htmlContent:ko.observable()
+}
+var settings={
+         htmleditSettings: {
+                table: "STDTMP_FILE_04",
+                field: 'C_CONTENT',
+                sid: '${SID!}',
+            }
+}
+var events={
+        saveClick: function(){
+            $.post('save.do',model,function(result){
+                if(result.SID){
+                    $.messager.alert("提示","保存成功","info",function(){
+                        window.location.href='rec.html?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                    })
+                }else{
+                    $.messager.alert("提示","保存失败","warning");
+                }
+            },'json')
+            settings.htmleditSettings.save();
+        }
+}
+ko.applyBindings($.extend({},model,settings,extModel,events));
 </script>
 </#assign>
 <@layout.doLayout script>
-<!--导航栏-->
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <li class="active"><a href="#">首页 ></a></li>
-                    <li class="active"><a href="#">达标创建 ></a></li>
-                    <li class="active"><a href="#">培训教育></a></li>
-                    <li class="active"><a href="#">教育培训管理></a></li>
-                    <li class="active"><a href="#">安全培训教育制度</a></li>
-                </ul>
-            </div>
-        </div>
+<div class="z-toolbar">
+    <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+    <a class="easyui-linkbutton" onclick="window.location.href='${referer}&backURL=${backURL}'" plain="true" iconCls="icon-undo">返回</a>
+</div>
+<form class="form" method="post" style="padding:10px 31px;">
+    <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
+        <p class="long-input ue-clear">
+            <label>文件名称</label>
+            <span class="control">
+                <input data-bind="textboxValue: C_NAME"/>
+            </span>
+        </p>
+        <p class="long-input ue-clear">
+            <label>培训日期</label>
+            <span class="control">
+                <input data-bind="dateboxValue: T_TIME"/>
+            </span>
+        </p>
+        <p class="long-input ue-clear">
+            <label>教育人</label>
+            <span class="control">
+                <input data-bind="textboxValue: C_USER_01"/>
+            </span>
+        </p>
+        <p class="long-input ue-clear">
+            <label>培训地址</label>
+            <span class="control">
+                <input data-bind="textboxValue: C_ADDR"/>
+            </span>
+        </p>
+        <p class="long-input ue-clear">
+            <label>培训种类</label>
+            <span class="control">
+                <input data-bind="textboxValue: S_TYPE"/>
+            </span>
+        </p>
+        <p class="long-input ue-clear">
+            <label>学时</label>
+            <span class="control">
+                <input data-bind="textboxValue: N_TIME"/>
+            </span>
+        </p>
+        <p class="long-input ue-clear">
+            <label>记录人</label>
+            <span class="control">
+                <input data-bind="textboxValue: C_USER_02"/>
+            </span>
+        </p>
     </div>
-</div>
-
-<@layout.toolbar class="navbar-fixed-top" outer="<br><br>">
-<input type="button" class="btn" name="btn_save" value="保存"/>
-<input type="button" class="btn" name="btn_back" value="返回"/>
-</@layout.toolbar>
-
-<div class="container">
-    <@layout.form id="mainForm">
-         <@layout.group title="概要">
-            <@layout.row>
-                <@layout.textbox name="C_NAME" title="文件名称" desc="文件名称" />
-            </@layout.row>
-           <@layout.row>
-                <@layout.textbox name="T_TIME" title="培训日期" desc="培训日期" span=6 />
-                <@layout.textbox name="C_USER_01" title="教育人" desc="教育人" span=6  />
-            </@layout.row>
-             <@layout.row>
-                <@layout.textbox name="C_ADDR" title="培训地址" desc="培训地址" span=6 />
-                <@layout.textbox name="S_TYPE" title="培训种类" desc="培训种类" span=6  />
-            </@layout.row>
-            <@layout.row>
-                <@layout.textbox name="N_TIME" title="学时" desc="学时" span=6 />
-                <@layout.textbox name="C_USER_02" title="记录人" desc="记录人" span=6  />
-            </@layout.row>
-        </@layout.group>
-        <@layout.group title="正文">
-           <@layout.doLayout script>
-               <input id="download" type="button" class="btn" value="下载"/>
-               <input id="import_template" type="button" class="btn" value="导入模版"/>
-               <input id="open_template" type="button" class="btn" value="打开模版"/>
-           <@layout.texteditor table="demoTable" field="demoTable" sid=0/>
-           </@layout.doLayout>
-        </@layout.group>
-        <@layout.group title="政策解读">
-          <@layout.row>
-            <#if fileInfo??>
-            <div>${fileInfo.C_EXPLAIN}</div>
-            </#if>
-          </@layout.row>
-        </@layout.group>
-    </@layout.form>
-</div>
-</@layout.doLayout>
+    <div class="easyui-panel" title="正文" style="padding: 6px">
+               <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
+    </div>
+</form>
+</@>
