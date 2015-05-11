@@ -12,7 +12,7 @@ import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
 
 public class industryController extends DefaultController {
-    public industryController( String tablename ) {
+    public industryController( ) {
         super( "SYS_INDUSTRY" );
     }
 
