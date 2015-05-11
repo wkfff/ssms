@@ -123,7 +123,7 @@ function ViewModel() {
                 settings.gridSettings.datagrid('reload');
             }, addClick: function () {
                 if (settings.gridSettings.datagrid('validateRow', model.selectIndex())) {
-                    var row = {SID: utils.uuid(), R_SID: model.sid(), R_TEMPLATE: templateId};
+                    var row = {SID: utils.uuid(), R_SID: model.sid()};
                     settings.gridSettings.datagrid('appendRow', row);
                     model.editItem(row);
                 }
