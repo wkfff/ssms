@@ -2,10 +2,10 @@
  * 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
  * 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
  * 文件名称：index.js
- * 创建时间：2015-05-06
+ * 创建时间：2015-05-11
  * 创建用户：张铮彬
  */
-function ViewModel(templateId) {
+function ViewModel() {
     var self = this;
 
     var model = {
@@ -19,14 +19,11 @@ function ViewModel(templateId) {
         sid: ko.observable(),
         rec: ko.mapping.fromJS({
             C_NAME: null,
+            C_ICON: null,
+            C_URL: null,
             C_DESC: null,
-            SID: null,
-            R_TEMPLATE: templateId
-        }),
-        fileUrl: ko.pureComputed(function () {
-            var sid = model.sid();
-            if (!sid) return;
-            return '/sys/stdtmp_file/index.html?R_SID={0}'.format(sid);
+            R_SID: null,
+            SID: null
         })
     };
     model.selectedNode.subscribe(function (newValue) {
@@ -34,7 +31,7 @@ function ViewModel(templateId) {
         model.sid(newValue.id);
     });
     model.sid.subscribe(function (newValue) {
-        $.post('rec.json', {sid: newValue}, function (result) {
+        $.post('rec.json', {sid: model.sid()}, function (result) {
             ko.mapping.fromJS(result, model.rec);
         });
         if (settings.gridSettings.datagrid)
@@ -47,7 +44,6 @@ function ViewModel(templateId) {
     var settings = {
         treeSettings: {
             url: 'tree.json',
-            queryParams: {template: templateId},
             onLoadSuccess: function () {
                 var node = settings.treeSettings.tree('getRoot');
                 if (node.id !== model.sid()) {
@@ -69,6 +65,18 @@ function ViewModel(templateId) {
                         title: '名称',
                         width: 100,
                         editor: {type: 'validatebox', options: {required: true, validType: ['length[0, 300]']}}
+                    },
+                    {
+                        field: 'C_ICON',
+                        title: '名称',
+                        width: 100,
+                        editor: {type: 'validatebox', options: {validType: ['length[0, 64]']}}
+                    },
+                    {
+                        field: 'C_URL',
+                        title: 'URL',
+                        width: 100,
+                        editor: {type: 'validatebox', options: {validType: ['length[0, 300]']}}
                     },
                     {
                         field: 'C_DESC',
@@ -115,7 +123,7 @@ function ViewModel(templateId) {
                 settings.gridSettings.datagrid('reload');
             }, addClick: function () {
                 if (settings.gridSettings.datagrid('validateRow', model.selectIndex())) {
-                    var row = {SID: utils.uuid(), R_SID: model.sid(), R_TEMPLATE: templateId};
+                    var row = {SID: utils.uuid(), R_SID: model.sid()};
                     settings.gridSettings.datagrid('appendRow', row);
                     model.editItem(row);
                 }

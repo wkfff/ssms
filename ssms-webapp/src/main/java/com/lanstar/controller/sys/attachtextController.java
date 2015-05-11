@@ -24,10 +24,10 @@ public class attachtextController {
         AttachTextService service = context.getAttachTextService();
         String table = context.getValue( "table" );
         String field = context.getValue( "field" );
-        int sid = Integer.parseInt( (String) context.getValue( "sid" ) );
+        String sid = context.getValue( "sid" );
         String content = context.getValue( "content" );
         try {
-            service.save( table, field, sid, content );
+            if ( StringHelper.vaildValue( sid ) ) service.save( table, field, Integer.parseInt( sid ), content );
         } catch ( SQLException e ) {
             throw new HandleException( e );
         }

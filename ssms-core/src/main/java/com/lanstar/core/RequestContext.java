@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,9 +86,14 @@ public class RequestContext {
         Dispatcher.me().dispatch( new RequestContext( location, request, response ) );
     }
 
+    @SuppressWarnings("rawtypes")
     private Object getParameter( String name ) {
-        // TODO: 解码处理
-        return request.getParameter( name );
+        Enumeration names = request.getParameterNames();
+        while ( names.hasMoreElements() ) {
+            String s = (String) names.nextElement();
+            if (name.equalsIgnoreCase( s )) return request.getParameter( s );
+        }
+        return null;
     }
 
     /**
