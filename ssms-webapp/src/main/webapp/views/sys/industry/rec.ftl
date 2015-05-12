@@ -4,7 +4,6 @@
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
         R_TEMPLATE: ko.observable('${R_TEMPLATE!}'),
-        R_INDUSTRY: ko.observable('${R_INDUSTRY!}'),
         SID: '${SID!}',
     };
     var events = {
@@ -21,7 +20,6 @@
         }
     };
     var settings = {
-		industrySource: ko.observableArray(${json(industry)}),
 		templateSource: ko.observableArray(${json(template)}),
             paramViewSettings: {
                 valueField: 'key',
@@ -37,9 +35,9 @@
     <a class="easyui-linkbutton" onclick="window.location.href='index.html'" plain="true" iconCls="icon-undo">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
-    <div class="easyui-panel" title="专业信息" style="padding-bottom: 10px;">
+    <div class="easyui-panel" title="行业信息" style="padding-bottom: 10px;">
         <p class="long-input ue-clear">
-            <label>专业名称</label>
+            <label>行业名称</label>
             <span class="control">
                 <input data-bind="textboxValue: C_NAME"/>
             </span>
@@ -48,12 +46,6 @@
             <label>默认模板</label>
             <span class="control">
                 <input data-bind="comboboxSource:templateSource,comboboxValue:R_TEMPLATE,easyuiOptions:paramViewSettings" required="true"/>
-            </span>
-        </p> 
-        <p class="long-input ue-clear">
-            <label>所属行业</label>
-            <span class="control">
-                <input data-bind="comboboxSource:industrySource,comboboxValue:R_INDUSTRY,easyuiOptions:paramViewSettings" required="true"/>
             </span>
         </p> 
      </div>
