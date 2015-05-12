@@ -15,20 +15,18 @@ import com.lanstar.db.JdbcRecord;
  * 企业人员
  */
 public class EnterpriseIdentity extends AbstractIdentity {
-    private final JdbcRecord record;
-
     public EnterpriseIdentity( JdbcRecord record ) {
-        this.record = record;
+        super( record );
     }
 
     @Override
     public int getId() {
-        return (int) record.get( "SID" );
+        return -1;
     }
 
     @Override
     public String getName() {
-        return record.getString( "C_NAME" );
+        return null;
     }
 
     /**

@@ -8,23 +8,22 @@
 
 package com.lanstar.service.enterprise;
 
-import com.lanstar.service.OperateContext;
+import com.lanstar.service.IdentityContext;
+import com.lanstar.service.TenantContext;
 import com.lanstar.service.TenantService;
 
 class ProfessionTemplateService extends TenantService {
     protected final int professionId;
     // 模板项目列表，该列表中的所有内容都是应该被克隆的，因此请把要克隆的东西放到这个列表中。
-    private final ClonableList<OperateContext> list = new ClonableList<>();
+    private final ClonableList<TenantContext> list = new ClonableList<>();
 
-    ProfessionTemplateService( int professionId, OperateContext operator ) {
+    ProfessionTemplateService( int professionId, IdentityContext operator ) {
         super( operator );
         this.professionId = professionId;
 
         // TODO: 添加需要被克隆的内容
         // 达标体系模板
         list.add( new StandardTemplateFolderSet( this ) );
-        // 自评模板
-        // list.add( new StandardTemplateFolderSet( this ) );
     }
 
     /**
@@ -33,14 +32,14 @@ class ProfessionTemplateService extends TenantService {
      * @param professionId 专业id
      * @param operator     操作者
      */
-    public static ProfessionTemplateService forProfession( int professionId, OperateContext operator ) {
+    public static ProfessionTemplateService forProfession( int professionId, IdentityContext operator ) {
         return new ProfessionTemplateService( professionId, operator );
     }
 
     /**
      * 克隆模板到目标租户中
      */
-    public void cloneTo( OperateContext target ) {
+    public void cloneTo( TenantContext target ) {
         list.cloneTo( target );
     }
 

@@ -8,11 +8,7 @@
 
 package com.lanstar.core.handle.identity;
 
-import com.lanstar.db.DbContext;
-
-import java.sql.SQLException;
-
-public interface Identity {
+public interface Identity extends Tenant {
     /**
      * 获取用户ID
      */
@@ -22,25 +18,5 @@ public interface Identity {
      * 获取用户名
      */
     String getName();
-
-    /**
-     * 获取租户ID
-     */
-    int getTenantId();
-
-    /**
-     * 获取租户名称
-     */
-    String getTenantName();
-
-    /**
-     * 获取租户类型
-     */
-    TenantType getTenantType();
-
-    /**
-     * 获取租户对应的数据库上下文
-     */
-    DbContext getDbContext() throws SQLException;
 }
 

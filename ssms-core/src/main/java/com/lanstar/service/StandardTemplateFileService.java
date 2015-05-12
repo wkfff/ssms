@@ -23,7 +23,7 @@ public class StandardTemplateFileService extends TenantService {
     /**
      * 根据身份标识获取租户服务
      */
-    public StandardTemplateFileService( OperateContext context ) {
+    public StandardTemplateFileService( IdentityContext context ) {
         super( context );
     }
 
@@ -55,18 +55,18 @@ public class StandardTemplateFileService extends TenantService {
      */
     public int newFile( String code ) {
         ARTable table = getTable( getTableName( code ) )
-                .value( "R_CREATE", getOperateContext().getId() )
-                .value( "S_CREATE", getOperateContext().getName() )
+                .value( "R_CREATE", getIdentityContext().getId() )
+                .value( "S_CREATE", getIdentityContext().getName() )
                 .value( "T_CREATE", "@now()" )
-                .value( "R_CREATE", getOperateContext().getId() )
-                .value( "S_CREATE", getOperateContext().getName() )
-                .value( "S_CREATE", getOperateContext().getName() )
-                .value( "R_TENANT", getOperateContext().getTenantId() )
-                .value( "S_TENANT", getOperateContext().getTenantName() )
-                .value( "P_TENANT", getOperateContext().getTenantType().getName() );
+                .value( "R_CREATE", getIdentityContext().getId() )
+                .value( "S_CREATE", getIdentityContext().getName() )
+                .value( "S_CREATE", getIdentityContext().getName() )
+                .value( "R_TENANT", getIdentityContext().getTenantId() )
+                .value( "S_TENANT", getIdentityContext().getTenantName() )
+                .value( "P_TENANT", getIdentityContext().getTenantType().getName() );
 
         table.insert();
-        return getOperateContext().getDbContext().getSID();
+        return getIdentityContext().getDbContext().getSID();
     }
 
     /**
@@ -80,6 +80,6 @@ public class StandardTemplateFileService extends TenantService {
     }
 
     private ARTable getTable( String tableName ) {
-        return getOperateContext().withTable( tableName );
+        return getIdentityContext().withTable( tableName );
     }
 }

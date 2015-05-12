@@ -9,34 +9,11 @@
 package com.lanstar.core.handle.identity.impl;
 
 import com.lanstar.core.handle.identity.Identity;
-import com.lanstar.db.DS;
-import com.lanstar.db.DbContext;
+import com.lanstar.core.handle.identity.JdbcTenant;
+import com.lanstar.db.JdbcRecord;
 
-import java.sql.SQLException;
-
-public abstract class AbstractIdentity implements Identity {
-    protected String getTenantDbCode() {
-        // TODO: 要调整为根据当前用户的租户信息来获取
-        return "tenant01";
-    }
-
-    @Override
-    public int getTenantId() {
-        // TODO: 获取租户ID
-        return -1;
-    }
-
-    /**
-     * 获取租户名称
-     */
-    @Override
-    public String getTenantName() {
-        // TODO: 获取租户名称
-        return null;
-    }
-
-    @Override
-    public DbContext getDbContext() throws SQLException {
-        return DS.getDbContext( getTenantDbCode() );
+public abstract class AbstractIdentity extends JdbcTenant implements Identity {
+    public AbstractIdentity( JdbcRecord record ) {
+        super( record );
     }
 }

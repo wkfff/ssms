@@ -14,7 +14,7 @@ import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.plugin.file.ResourcePlugin;
 import com.lanstar.plugin.file.ResourceService;
-import com.lanstar.service.OperateContext;
+import com.lanstar.service.IdentityContext;
 import com.lanstar.service.TenantService;
 
 import java.io.IOException;
@@ -32,8 +32,8 @@ public class FileService extends TenantService {
     /**
      * 使用租户身份来进行文件服务管理
      */
-    public FileService( OperateContext operateContext ) {
-        super( operateContext );
+    public FileService( IdentityContext identityContext ) {
+        super( identityContext );
         resourceService = ResourcePlugin.me().getResourceService();
     }
 
@@ -51,8 +51,8 @@ public class FileService extends TenantService {
         ARTable table = getTable().where( "R_TABLE=? and R_SID=? and R_TENANT=? and P_TENANT=?",
                 module,
                 recordId,
-                getOperateContext().getTenantId(),
-                getOperateContext().getTenantType().getName() );
+                getIdentityContext().getTenantId(),
+                getIdentityContext().getTenantType().getName() );
 
         JdbcRecordSet records = table.queryList();
         List<AttachFile> files = new ArrayList<>();
@@ -85,15 +85,15 @@ public class FileService extends TenantService {
                 .value( "N_LENGTH", length )
                 .value( "C_PATH", fullPath )
                 .value( "P_SERVER", resourceService.getServerCode() )
-                .value( "R_CREATE", getOperateContext().getId() )
-                .value( "S_CREATE", getOperateContext().getName() )
+                .value( "R_CREATE", getIdentityContext().getId() )
+                .value( "S_CREATE", getIdentityContext().getName() )
                 .value( "T_CREATE", "@now()" )
-                .value( "R_CREATE", getOperateContext().getId() )
-                .value( "S_CREATE", getOperateContext().getName() )
-                .value( "S_CREATE", getOperateContext().getName() )
-                .value( "R_TENANT", getOperateContext().getTenantId() )
-                .value( "S_TENANT", getOperateContext().getTenantName() )
-                .value( "P_TENANT", getOperateContext().getTenantType().getName() );
+                .value( "R_CREATE", getIdentityContext().getId() )
+                .value( "S_CREATE", getIdentityContext().getName() )
+                .value( "S_CREATE", getIdentityContext().getName() )
+                .value( "R_TENANT", getIdentityContext().getTenantId() )
+                .value( "S_TENANT", getIdentityContext().getTenantName() )
+                .value( "P_TENANT", getIdentityContext().getTenantType().getName() );
 
         table.insert();
     }
@@ -102,7 +102,7 @@ public class FileService extends TenantService {
         // 规则：tenant/module/date[mounth]/file.ext
         SimpleDateFormat format = new SimpleDateFormat( "yyyyMM" );
         return LocationBuilder.newInstance()
-                              .folder( getOperateContext().getTenantName() )
+                              .folder( getIdentityContext().getTenantName() )
                               .folder( module )
                               .folder( format.format( new Date() ) )
                               .filename( filename ).extension( extension )
@@ -110,6 +110,6 @@ public class FileService extends TenantService {
     }
 
     private ARTable getTable() throws SQLException {
-        return getOperateContext().withTable( TABLENAME );
+        return getIdentityContext().withTable( TABLENAME );
     }
 }

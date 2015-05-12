@@ -9,14 +9,14 @@
 package com.lanstar.service.enterprise;
 
 import com.lanstar.core.handle.identity.TenantType;
-import com.lanstar.service.OperateContext;
+import com.lanstar.service.IdentityContext;
 import com.lanstar.service.TenantService;
 
 public final class EnterpriseTenantService extends TenantService {
     /**
      * 根据身份标识获取租户服务
      */
-    public EnterpriseTenantService( OperateContext context ) {
+    public EnterpriseTenantService( IdentityContext context ) {
         super( context );
     }
 
@@ -32,7 +32,7 @@ public final class EnterpriseTenantService extends TenantService {
         String sign = TenantType.ENTERPRISE.getName().toUpperCase() + code;
         // 生成租户编码tenantCode：租户特征码+4位顺序码
         Object[] params = { sign, 4, sign + "@" };
-        Object[] objects = getOperateContext().call( "SP_GETSEQVALUE", params );
+        Object[] objects = getIdentityContext().call( "SP_GETSEQVALUE", params );
         return (String) objects[2];
     }
 
@@ -44,6 +44,6 @@ public final class EnterpriseTenantService extends TenantService {
      * @return 租户专业服务
      */
     public EnterpriseProfessionService getProfessionService( String tenantCode ) {
-        return EnterpriseProfessionService.forTenant( tenantCode, getOperateContext() );
+        return EnterpriseProfessionService.forTenant( tenantCode, getIdentityContext() );
     }
 }

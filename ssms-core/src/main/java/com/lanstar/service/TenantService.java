@@ -12,21 +12,21 @@ package com.lanstar.service;
  * 租户服务
  */
 public abstract class TenantService implements AutoCloseable {
-    private final OperateContext operateContext;
+    private final IdentityContext identityContext;
 
     /**
      * 根据身份标识获取租户服务
      */
-    public TenantService( OperateContext operateContext ) {
-        this.operateContext = operateContext;
+    public TenantService( IdentityContext identityContext ) {
+        this.identityContext = identityContext;
     }
 
     @Override
     public void close() throws Exception {
-        operateContext.close();
+        identityContext.close();
     }
 
-    public OperateContext getOperateContext() {
-        return operateContext;
+    public IdentityContext getIdentityContext() {
+        return identityContext;
     }
 }

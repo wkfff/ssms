@@ -10,9 +10,9 @@ package com.lanstar.service.enterprise;
 
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.ar.ARTable;
-import com.lanstar.service.OperateContext;
+import com.lanstar.service.TenantContext;
 
-class StandardTemplateFile implements IClonable<OperateContext> {
+class StandardTemplateFile implements IClonable<TenantContext> {
     private final ProfessionTemplateService service;
     private final JdbcRecord file;
     private final int sid;
@@ -24,7 +24,7 @@ class StandardTemplateFile implements IClonable<OperateContext> {
     }
 
     @Override
-    public void cloneTo( OperateContext target ) {
+    public void cloneTo( TenantContext target ) {
         ARTable fileTable = target.withTable( "SSM_STDTMP_FILE" )
                                   .values( file )
                                   .value( "R_SID", sid )
@@ -36,7 +36,7 @@ class StandardTemplateFile implements IClonable<OperateContext> {
 
         String code = file.getString( "P_TMPFILE" );
         String sid = file.getString( "R_TMPFILE" );
-        JdbcRecord tmpFile = service.getOperateContext().withTable( "SYS_STDTMP_FILE_" + code ).where( "SID=?", sid )
+        JdbcRecord tmpFile = service.getIdentityContext().withTable( "SYS_STDTMP_FILE_" + code ).where( "SID=?", sid )
                                     .query();
         ARTable table = target.withTable( "SSM_STDTMP_FILE_" + code ).values( tmpFile );
         table.getValues().remove( "SID" );

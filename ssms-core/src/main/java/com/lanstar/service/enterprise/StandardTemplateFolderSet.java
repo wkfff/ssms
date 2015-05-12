@@ -10,13 +10,13 @@ package com.lanstar.service.enterprise;
 
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
-import com.lanstar.service.OperateContext;
+import com.lanstar.service.TenantContext;
 
 /**
  * 达标体系目录集合，作为克隆对象存在。
  */
-class StandardTemplateFolderSet implements IClonable<OperateContext> {
-    private final ClonableList<OperateContext> list = new ClonableList<>();
+class StandardTemplateFolderSet implements IClonable<TenantContext> {
+    private final ClonableList<TenantContext> list = new ClonableList<>();
     private ProfessionTemplateService service;
 
     public StandardTemplateFolderSet( ProfessionTemplateService service ) {
@@ -24,9 +24,9 @@ class StandardTemplateFolderSet implements IClonable<OperateContext> {
     }
 
     @Override
-    public void cloneTo( OperateContext target ) {
+    public void cloneTo( TenantContext target ) {
         // 模板目录树
-        JdbcRecordSet records = service.getOperateContext().getDbContext().getDBSession()
+        JdbcRecordSet records = service.getIdentityContext().getDbContext().getDBSession()
                                        .query( "SELECT B.* FROM SYS_PROFESSION A\n"
                                                + "INNER JOIN `SYS_STDTMP_FOLDER` B ON A.`R_TEMPLATE` = B.`R_TEMPLATE`\n"
                                                + "WHERE A.SID = ?", new Object[] { service.getProfessionId() } );

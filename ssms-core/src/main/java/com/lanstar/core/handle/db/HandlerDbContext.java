@@ -8,6 +8,7 @@
 
 package com.lanstar.core.handle.db;
 
+import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBSession;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
@@ -81,5 +82,18 @@ public abstract class HandlerDbContext extends DBSessionHolder {
      */
     public int getSID() {
         return getDBSession().getSID();
+    }
+
+    public static void injection( ARTable table, Identity identity, boolean withUpdate ) {
+        table.value( "R_UPDATE", identity.getId() );
+        table.value( "S_UPDATE", identity.getName() );
+        if ( !withUpdate ) {
+            table.value( "R_CREATE", identity.getId() );
+            table.value( "S_CREATE", identity.getName() );
+            table.value( "T_CREATE", "@now()" );
+            table.value( "R_TENANT", identity.getTenantId() );
+            table.value( "S_TENANT", identity.getName() );
+            table.value( "P_TENANT", identity.getTenantType().getName() );
+        }
     }
 }

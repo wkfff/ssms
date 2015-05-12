@@ -21,7 +21,7 @@ import com.lanstar.core.handle.db.impl.SystemDbContext;
 import com.lanstar.core.handle.db.impl.TenantDbContext;
 import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBPaging;
-import com.lanstar.service.OperateContext;
+import com.lanstar.service.IdentityContext;
 import com.lanstar.service.StandardTemplateFileService;
 import com.lanstar.service.TenantService;
 import com.lanstar.service.attachtext.AttachTextService;
@@ -195,8 +195,8 @@ public class HandlerContext implements AutoCloseable {
         TenantService service = serviceMap.get( type );
         if ( service != null ) return (T) service;
         try {
-            Constructor<T> constructor = type.getConstructor( OperateContext.class );
-            T instance = constructor.newInstance( new OperateContext( getIdentity(), DB ) );
+            Constructor<T> constructor = type.getConstructor( IdentityContext.class );
+            T instance = constructor.newInstance( new IdentityContext( getIdentity(), DB ) );
             serviceMap.put( type, instance );
             return instance;
         } catch ( NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e ) {

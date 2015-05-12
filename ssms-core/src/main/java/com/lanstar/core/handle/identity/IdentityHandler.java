@@ -47,11 +47,11 @@ public class IdentityHandler implements Handler {
         // 创建或者获取身份标识,临时测试使用
         Identity identity;
         if ( username.startsWith( "E" ) )
-            identity = new EnterpriseIdentity(new JdbcRecord());
+            identity = new EnterpriseIdentity( new JdbcRecord() );
         else if ( username.startsWith( "R" ) )
-            identity = new AuditIdentity();
+            identity = new AuditIdentity( new JdbcRecord() );
         else if ( username.startsWith( "G" ) )
-            identity = new GovernmentIdentity();
+            identity = new GovernmentIdentity( new JdbcRecord() );
         else
             identity = new SystemIdentity();
 

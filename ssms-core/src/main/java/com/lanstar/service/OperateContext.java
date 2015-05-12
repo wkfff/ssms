@@ -10,27 +10,15 @@ package com.lanstar.service;
 
 import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.identity.Identity;
-import com.lanstar.core.handle.identity.TenantType;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.statement.SqlBuilder;
 
-public class OperateContext implements AutoCloseable {
-    private final Identity identity;
-    private final HandlerDbContext dbContext;
+public abstract class OperateContext implements AutoCloseable {
+    protected final HandlerDbContext dbContext;
 
-    /**
-     * @param identity 身份标识
-     */
-    public OperateContext( Identity identity, HandlerDbContext dbContext ) {
-        this.identity = identity;
-        this.dbContext = dbContext;
-    }
-
-    public Identity getIdentity() {
-        return identity;
-    }
+    public OperateContext( HandlerDbContext dbContext ) {this.dbContext = dbContext;}
 
     public HandlerDbContext getDbContext() {
         return dbContext;
@@ -56,48 +44,24 @@ public class OperateContext implements AutoCloseable {
 
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
-     * @param sqlBuilder
      */
     public int execute( SqlBuilder sqlBuilder ) {return dbContext.execute( sqlBuilder );}
 
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
-     * @param sqlBuilder
      */
     public JdbcRecord first( SqlBuilder sqlBuilder ) {return dbContext.first( sqlBuilder );}
 
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
-     * @param sqlBuilder
      */
     public JdbcRecordSet query( SqlBuilder sqlBuilder ) {return dbContext.query( sqlBuilder );}
 
     public Object[] call( String spname, Object[] params ) {return dbContext.call( spname, params );}
 
-    /**
-     * 获取用户ID
-     */
-    public int getId() {return identity.getId();}
-
-    /**
-     * 获取租户ID
-     */
-    public int getTenantId() {return identity.getTenantId();}
-
-    /**
-     * 获取租户类型
-     */
-    public TenantType getTenantType() {return identity.getTenantType();}
-
-    /**
-     * 获取租户名称
-     */
-    public String getTenantName() {return identity.getTenantName();}
-
-    /**
-     * 获取用户名
-     */
-    public String getName() {return identity.getName();}
+    public static void injection( ARTable table, Identity identity, boolean withUpdate ) {
+        HandlerDbContext.injection( table, identity, withUpdate );
+    }
 
     @Override
     public void close() throws Exception {

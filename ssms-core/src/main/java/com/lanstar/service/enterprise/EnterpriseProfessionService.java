@@ -8,20 +8,23 @@
 
 package com.lanstar.service.enterprise;
 
-import com.lanstar.core.handle.db.impl.TenantDbContext;
-import com.lanstar.core.handle.identity.impl.EnterpriseIdentity;
+import com.lanstar.core.handle.identity.JdbcTenant;
+import com.lanstar.core.handle.identity.Tenant;
+import com.lanstar.core.handle.identity.TenantType;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
-import com.lanstar.service.OperateContext;
+import com.lanstar.db.ar.ARTable;
+import com.lanstar.service.IdentityContext;
+import com.lanstar.service.TenantContext;
 import com.lanstar.service.TenantService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class EnterpriseProfessionService extends TenantService {
-    private final OperateContext target;
+    private final TenantContext target;
 
-    EnterpriseProfessionService( OperateContext target, OperateContext operator ) {
+    EnterpriseProfessionService( TenantContext target, IdentityContext operator ) {
         super( operator );
         this.target = target;
     }
@@ -32,12 +35,17 @@ public final class EnterpriseProfessionService extends TenantService {
         target.close();
     }
 
-    public static EnterpriseProfessionService forTenant( String tenantCode, OperateContext operator ) {
+    public static EnterpriseProfessionService forTenant( String tenantCode, IdentityContext operator ) {
         final JdbcRecord record = operator.withTable( "SYS_TENANT_E" ).where( "C_CODE=?", tenantCode )
                                           .query();
 
-        EnterpriseIdentity identity = new EnterpriseIdentity( record );
-        return new EnterpriseProfessionService( new OperateContext( identity, new TenantDbContext( identity ) ), operator );
+        Tenant tenant = new JdbcTenant( record ) {
+            @Override
+            public TenantType getTenantType() {
+                return TenantType.ENTERPRISE;
+            }
+        };
+        return new EnterpriseProfessionService( new TenantContext( tenant ), operator );
     }
 
     /**
@@ -66,30 +74,16 @@ public final class EnterpriseProfessionService extends TenantService {
      * @return 专业ID列表
      */
     public List<Integer> listTenantProfession() {
-        JdbcRecordSet records = getOperateContext().withTable( "SYS_TENANT_E_PROFESSION" )
-                                                   .where( "R_TENANT=? AND S_TENANT=? AND P_TENANT=?",
-                                                           getOperateContext().getTenantId(),
-                                                           getOperateContext().getTenantName(),
-                                                           getOperateContext().getTenantType().getName() ).queryList();
+        JdbcRecordSet records = getIdentityContext().withTable( "SYS_TENANT_E_PROFESSION" )
+                                                    .where( "R_TENANT=? AND S_TENANT=? AND P_TENANT=?",
+                                                            target.getTenantId(),
+                                                            target.getTenantName(),
+                                                            target.getTenantType().getName() ).queryList();
         List<Integer> professions = new ArrayList<>();
         for ( JdbcRecord record : records ) {
             professions.add( (Integer) record.get( "SID" ) );
         }
         return professions;
-    }
-
-    /**
-     * 移除当前企业的指定专业
-     *
-     * @param professionId 专业ID
-     */
-    public void removeProfession( int professionId ) {
-        getOperateContext().withTable( "SYS_TENANT_E_PROFESSION" )
-                           .where( "R_TENANT=? AND S_TENANT=? AND P_TENANT=? AND P_PROFESSION=?",
-                                   getOperateContext().getTenantId(),
-                                   getOperateContext().getTenantName(),
-                                   getOperateContext().getTenantType().getName(),
-                                   professionId ).delete();
     }
 
     /**
@@ -103,21 +97,32 @@ public final class EnterpriseProfessionService extends TenantService {
         JdbcRecord profession = pickProfession( professionId );
 
         // 1. 设置企业与专业的关联关系
-        getOperateContext().withTable( "SYS_TENANT_E_PROFESSION" )
-                           .value( "P_PROFESSION", professionId )
-                           .value( "S_PROFESSION", profession.getString( "C_NAME" ) )
-                           .value( "R_CREATE", getOperateContext().getId() )
-                           .value( "S_CREATE", getOperateContext().getName() )
-                           .value( "T_CREATE", "@now()" )
-                           .value( "R_UPDATE", getOperateContext().getTenantId() )
-                           .value( "S_UPDATE", getOperateContext().getName() )
-                           .value( "R_TENANT", getOperateContext().getTenantId() )
-                           .value( "S_TENANT", getOperateContext().getTenantName() )
-                           .value( "P_TENANT", getOperateContext().getTenantType().getName() )
-                           .save();
+        ARTable table = getIdentityContext().withTable( "SYS_TENANT_E_PROFESSION" );
+        IdentityContext.injection( table, getIdentityContext().getIdentity(), false );
+
+        table.value( "P_PROFESSION", professionId )
+             .value( "S_PROFESSION", profession.getString( "C_NAME" ) )
+             .value( "R_TENANT", target.getTenantId() )
+             .value( "S_TENANT", target.getTenantName() )
+             .value( "P_TENANT", target.getTenantType().getName() )
+             .save();
 
         // 克隆模板
-        ProfessionTemplateService.forProfession( professionId, getOperateContext() ).cloneTo( target );
+        ProfessionTemplateService.forProfession( professionId, getIdentityContext() ).cloneTo( target );
+    }
+
+    /**
+     * 移除当前企业的指定专业
+     *
+     * @param professionId 专业ID
+     */
+    public void removeProfession( int professionId ) {
+        getIdentityContext().withTable( "SYS_TENANT_E_PROFESSION" )
+                            .where( "R_TENANT=? AND S_TENANT=? AND P_TENANT=? AND P_PROFESSION=?",
+                                    target.getTenantId(),
+                                    target.getTenantName(),
+                                    target.getTenantType().getName(),
+                                    professionId ).delete();
     }
 
     /**
@@ -128,9 +133,9 @@ public final class EnterpriseProfessionService extends TenantService {
      * @return 如果返回true则表示有该专业，否则返回false。
      */
     public boolean hasProfession( int professionId ) {
-        return getOperateContext().withTable( "SYS_TENANT_E_PROFESSION" )
-                                  .where( "R_TENANT=? AND P_PROFESSION=?", getOperateContext().getId(), professionId )
-                                  .query() != null;
+        return getIdentityContext().withTable( "SYS_TENANT_E_PROFESSION" )
+                                   .where( "R_TENANT=? AND P_PROFESSION=?", target.getTenantId(), professionId )
+                                   .query() != null;
     }
 
     /**
@@ -141,6 +146,6 @@ public final class EnterpriseProfessionService extends TenantService {
      * @return 专业信息
      */
     protected JdbcRecord pickProfession( int professionId ) {
-        return getOperateContext().withTable( "SYS_PROFESSION" ).where( "SID=?", professionId ).query();
+        return getIdentityContext().withTable( "SYS_PROFESSION" ).where( "SID=?", professionId ).query();
     }
 }

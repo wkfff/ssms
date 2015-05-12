@@ -9,11 +9,16 @@
 package com.lanstar.core.handle.identity.impl;
 
 import com.lanstar.core.handle.identity.TenantType;
+import com.lanstar.db.JdbcRecord;
 
 /**
  * 政府人员
  */
 public class GovernmentIdentity extends AbstractIdentity {
+    public GovernmentIdentity( JdbcRecord record ) {
+        super( record );
+    }
+
     @Override
     public int getId() {
         return -1;

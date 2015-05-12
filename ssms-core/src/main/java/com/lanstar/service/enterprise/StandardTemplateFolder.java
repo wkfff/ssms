@@ -11,9 +11,9 @@ package com.lanstar.service.enterprise;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
-import com.lanstar.service.OperateContext;
+import com.lanstar.service.TenantContext;
 
-class StandardTemplateFolder implements IClonable<OperateContext> {
+class StandardTemplateFolder implements IClonable<TenantContext> {
     private final ProfessionTemplateService service;
     private final JdbcRecord folderRecord;
 
@@ -23,7 +23,7 @@ class StandardTemplateFolder implements IClonable<OperateContext> {
     }
 
     @Override
-    public void cloneTo( OperateContext target ) {
+    public void cloneTo( TenantContext target ) {
         ARTable table = target.withTable( "SSM_STDTMP_FOLDER" )
                               .values( folderRecord )
                               .value( "R_TENANT", target.getTenantId() )
@@ -35,10 +35,10 @@ class StandardTemplateFolder implements IClonable<OperateContext> {
         int sid = target.getDbContext().getSID();
 
         // 目录下的文件
-        JdbcRecordSet files = service.getOperateContext().withTable( "SYS_STDTMP_FILE" )
+        JdbcRecordSet files = service.getIdentityContext().withTable( "SYS_STDTMP_FILE" )
                                      .where( "R_SID=?", folderRecord.get( "SID" ) )
                                      .queryList();
-        ClonableList<OperateContext> fileList = new ClonableList<>();
+        ClonableList<TenantContext> fileList = new ClonableList<>();
         for ( JdbcRecord file : files ) {
             fileList.add( new StandardTemplateFile( service, file, sid ) );
         }
