@@ -26,10 +26,10 @@ function doDel(sid) {
                         if (data == "true" || data== "\"\"") {
                             $.messager.alert("提示", "删除选定的记录成功");
                             $("#dg_index").datagrid("reload");
-                            $("#dg_index").datagrid("clearSelections");
                         }
                         else {
                             $.messager.alert("提示", data);
+                            window.location.href=window.location.href;
                         }
                     });
                 }
