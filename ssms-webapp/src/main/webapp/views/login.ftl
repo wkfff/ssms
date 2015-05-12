@@ -92,6 +92,10 @@
             window.location.href = "/index";
         } )
     });
+
+    if (top != window) {
+        top.window.location.href = window.location.href;
+    }
 </script>
 </html>
 </#macro>
