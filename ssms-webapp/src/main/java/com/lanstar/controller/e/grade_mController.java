@@ -140,7 +140,7 @@ public class grade_mController extends DefaultController {
     public ViewAndModel complete( HandlerContext context ) {
         String sid = context.getValue( "sid" );
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
-        context.DB.getDBSession().execute( "call P_GRADE_COMPLETE_SELF(?)",
+        context.DB.getDBSession().execute( "call P_GRADE_COMPLETE_E(?)",
                 new Object[] { sid } );
         return context.returnWith().set( "" );
     }
@@ -161,7 +161,7 @@ public class grade_mController extends DefaultController {
         String sid = context.getValue( "sid" );
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         JdbcRecord r = context.DB.getDBSession().first(
-                "SELECT F_GRADE_CHECK(?) N", new Object[] { sid } );
+                "SELECT F_GRADE_CHECK_E(?) N", new Object[] { sid } );
         return context.returnWith().set( r.get( "N" ) );
     }
 

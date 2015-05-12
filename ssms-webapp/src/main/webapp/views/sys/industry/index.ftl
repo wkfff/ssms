@@ -45,7 +45,7 @@ $(document).ready(function () {
             fit: true,
             columns: [
                 [
-                    {field: 'C_NAME', title: '专业名称', width: 150},
+                    {field: 'C_NAME', title: '行业名称', width: 150},
                     {field: 'SID', title: '操作', width: 150,align:'center',
                         formatter:function(value,row){
                                 return "<a href='#' onclick='doEdit("+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>";
@@ -57,13 +57,13 @@ $(document).ready(function () {
 </script>
 </#assign>
 <@layout.doLayout script>
-    <@layout.group title="专业管理" border=true fit=true>
+    <@layout.group title="行业管理" border=true fit=true>
     <table id="dg_index"></table>
         <@layout.toolbar id="dg_index_tb">
         <div>
             <table>
                 <tr>
-                    <td>专业名称：</td>
+                    <td>行业名称：</td>
                     <td><input class="easyui-textbox"  name="C_NAME"  type="text"/></td>
                     <td>
                         <@layout.button title="查询" icon="search" click="doSearch('dg_index')"/>

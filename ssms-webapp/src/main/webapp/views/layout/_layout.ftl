@@ -30,7 +30,6 @@ ${footer}</html>
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
     <script type="text/javascript" src="/resource/js/core.js"></script>
     <script type="text/javascript" src="/resource/js/common.js"></script>
     ${header}</#local>

@@ -2,10 +2,14 @@
 <#assign script>
 <style>
     .title{font-size:18px !important;font-weight:bold;text-align:center;}
-    .table{width:1040px !important;}
-    .c0{width:10px;text-align:center;}
-    .c1{width:100px;}
-    .c2{width:100px;}
+    .table{width:1200px;border:1px solid #c1d3de; border-top:none;}
+    .table thead tr th{ height:35px; line-height:35px; border-bottom:1px solid #c1d3de; background:url(/resource/images/tablelistbg.png) repeat-x; font-weight:bold;padding-left:2px;}
+    .table tbody tr td{ border-left:1px dotted #c7c7c7; line-height:30px;}
+    .table tbody tr:first-child td{ padding-top:2px;}
+    .table tbody tr td:first-child{ border-left:none;}
+    .c0{width:32px;text-align:center;}
+    .c1{width:120px;}
+    .c2{width:160px;}
     .c3{width:450px;}
     .c4{width:320px;}
     .c5{width:60px;text-align:center;}

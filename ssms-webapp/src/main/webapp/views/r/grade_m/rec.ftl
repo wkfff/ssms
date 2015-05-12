@@ -1,6 +1,9 @@
 <#import "/layout/_rec.ftl" as layout/>
 <#assign script>
 <style>
+    .table td{
+        padding:5px;
+    }
     .datagrid-cell{
         white-space:normal !important;
     }
@@ -30,60 +33,37 @@
         width:90px;
     }
 </style>
-<script type="text/javascript" src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 
 <script type="text/javascript">
-    function doNew(){
-        window.location.href='rec.html';
-    }
-    
     function doSave(){
-        //$.messager.progress();
+        $.messager.progress();
         endEditing();
         $('#formMain').form('submit', {
             url:'save.do?sid=${sid!}',
             onSubmit: function(){
                 var isValid = $(this).form('validate');
                 if (!isValid){
-                    //$.messager.progress('close');
+                    $.messager.progress('close');
                 }
                 return isValid;
             },
             success: function(data){
                 $.messager.alert('保存','保存成功！');
-                window.location.href='draft_rec.html?sid='+$str.replaceAll(data,'"','');
             }
-        });
-    }
-    
-    function doDel(){
-        $.messager.confirm("删除确认", "您确认删除当前的自评吗？", function (deleteAction) {
-                    if (deleteAction) {
-                        $.get("del.do", {sid:'${sid!}'}, function (data) {
-                            if (data == "true" || data== "\"\"") {
-                                $.messager.alert("提示", "删除自评成功");
-                                window.location.href='draft.html';
-                            }
-                            else {
-                                $.messager.alert("提示", data);
-                            }
-                        });
-                    }
         });
     }
     
     function doComplete(){
         $.get("check.json", {sid:'${sid!}'}, function (data) {
             if (data && data>0) {
-                $.messager.alert("提示", "自评还有未填写的项，请填写后再完成自评！");
+                $.messager.alert("提示", "评审还有未填写的项，请填写后再完成评审！");
             }
             else {
-                $.messager.confirm("完成确认", "您确认完成当前的自评吗？", function (action) {
+                $.messager.confirm("完成确认", "您确认完成当前的评审吗？", function (action) {
                     if (action) {
                         $.get("complete.do", {sid:'${sid!}'}, function (data) {
                             if (data == "true" || data== "\"\"") {
-                                $.messager.alert("提示", "自评完成");
-                                window.location.href='/e/grade_rep/rec.html?sid=${sid!}';
+                                $.messager.alert("提示", "评审完成");
                             }
                             else {
                                 $.messager.alert("提示", data);
@@ -96,7 +76,7 @@
     }
     
     function doBack(){
-        window.location.href='draft.html';//${referer!}
+        window.location.href='${referer!}';//${referer!}
     }
     
     function doShow(v){
@@ -105,16 +85,10 @@
             chk = !chk;
             $('.db_tb input')[0].checked = chk;
         }
-        if (chk) {
-            $('#dg').datagrid({url:'/e/grade_d/list.json?R_SID=${sid!-1}&type=3'});
-            //$('#dg').edatagrid('reload');
-        }else{
-            $('#dg').datagrid({url:'/e/grade_d/list.json?R_SID=${sid!-1}'});
-        }
+        var url = '/r/grade_d/list_detail.json?R_SID=${sid!-1}'+(chk?'&score=0':'');
+        $('#dg').datagrid({url:url});
     }
-    function doReport(){
-        window.location.href='report_rec.html?sid=${sid!}';
-    }
+
     var editIndex = undefined;
     function endEditing(){
         if (editIndex == undefined){return true}
@@ -131,13 +105,15 @@
             $('#dg').datagrid('endEdit', editIndex);
             editIndex = undefined;
             
-            //var rows = $('#dg').datagrid('getChanges');
-            //alert(rows.length);
-            
             var opts = $('#dg').datagrid('options');
             var url = opts.updateUrl;
-            if (url){
-                    $.post(url, row, function(data){});
+            if (url){/*
+                var data = [];
+                data['R_SID'] = row.R_SID;
+                data['R_DID'] = row.R_DID;
+                data['C_DESC'] = row.C_DESC;
+                data['N_SCORE_REAL'] = row.N_SCORE_REAL;*/
+                $.post(url, {R_SID:row.R_SID,R_DID:row.R_DID,C_DESC:row.C_DESC,N_SCORE_REAL:row.N_SCORE_REAL}, function(data){});
             }
             return true;
         } else {
@@ -160,11 +136,12 @@
         }
     }
     $(function () {
-        $('#formMain').form('load','rec.json?sid=${sid!}');
+        $('#formMain').form('load','rec.json?sid=${R_EID!}');
+        
         $('#dg').datagrid({
-            title:'自评内容',
-            url: '/e/grade_d/list.json?R_SID=${sid!-1}',
-            updateUrl:'/e/grade_d/save.do',
+            title:'评审内容',
+            url: '/r/grade_d/list_detail.json?R_SID=${sid!-1}',
+            updateUrl:'/r/grade_d/save.do',
             idField: 'SID',
             rownumbers: false,
             pagination: false,
@@ -176,22 +153,17 @@
             border:false,
             striped: false,
             columns: [[
-                {field: 'S_CATEGORY', title: '类目', width: 100},
-                {field: 'S_PROJECT', title: '项目', width: 100},
-                {field: 'C_CONTENT', title: '内容', width: 256},
+                {field: 'S_CATEGORY', title: '一级要素', width: 100},
+                {field: 'S_PROJECT', title: '二级要素', width: 100},
+                {field: 'C_CONTENT', title: '基本规范要求', width: 256},
                 {field: 'N_SCORE', title: '标准分值',align:'center',width: 65},
-                {field: 'C_METHOD', title: '考评办法', width: 350},
-                {field: 'C_DESC', title: '自评描述', width: 250,editor:{type:'textarea',options:{},height:'100%'}},
-                {field: 'B_BLANK', title: '是否缺项', width: 65,align:'center',editor:{type:'checkbox',options:{on:'1',off:'0'}},
-                        formatter:function(value,row){
-                            var s = row['S_PROJECT'];
-                            if (s=='小计' || s == '总计') return '';
-                            return value=='1'?'是':'否';
-                        }},
-                {field: 'N_SCORE_REAL', title: '实际得分', align:'center',width: 65,editor:'numberbox'}
+                {field: 'C_METHOD', title: '评分方式', width: 350},
+                {field: 'N_SCORE_SELF', title: '企业自评分', align:'center',width: 80},
+                {field: 'C_DESC', title: '评审描述', width: 250,editor:{type:'textarea',options:{},height:'100%'}},
+                {field: 'N_SCORE_REAL', title: '评审得分', align:'center',width: 65,editor:'numberbox'}
             ]],
             onLoadSuccess: function(data){
-                //$(this).datagrid("autoMergeCells",["S_CATEGORY","S_PROJECT"]);
+                
             },
             onClickRow:onClickRow,
             rowStyler: function(index,row){
@@ -208,31 +180,29 @@
     <div title="评审" data-options="region:'north',collapsible:true" style="height:230px;overflow:hidden;">
           <div class="toolbar ue-clear">
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-ok" onclick="doComplete()">完成自评</a>
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-details" onclick="doReport()">自评报告</a>
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-cancel" onclick="doDel()">删除</a> 
+                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-ok" onclick="doComplete()">完成评审</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
          </div>
          <div class="easyui-panel" style="border:0;margin:10px;">
              <form id="formMain" method="post">
-                    <table cellspacing="6">
+                    <table class="table">
                         <tr>
-                            <td class="span2">自评单位:</td>
+                            <td class="span2">评审单位:</td>
                             <td class="span10" colspan="3">
                                 <input class="easyui-textbox" type="text" name="S_TANENT" data-options="required:true" 
                                 disabled=true value="${S_TANENT!}"/>
                              </td>
                         </tr>
                         <tr>
-                            <td class="span2">自评日期:</td>
+                            <td class="span2">评审日期:</td>
                             <td class="span4"><input class="easyui-datebox" type="text" name="T_START" data-options="required:true,width:100"></input>
                                                         至<input class="easyui-datebox" type="text" name="T_END" data-options="required:true,width:100" ></input>
                             </td>
-                            <td class="span2">自评组组长:</td>
+                            <td class="span2">评审组组长:</td>
                             <td class="span4"><input class="easyui-textbox" type="text" name="C_LEADER" data-options="required:true"></input></td>
                         </tr>
                         <tr>
-                            <td class="span2">自评组主要成员:
+                            <td class="span2">评审组主要成员:
                             <td class="span10" colspan="3"><input class="easyui-textbox" type="text" name="C_MEMBERS" data-options="required:true"></input></td>
                         </tr>
                     </table>
@@ -241,11 +211,11 @@
     </div>
     
     <div data-options="region:'center'" >
-        <table id="dg" class="easyui-datagrid" title="自评内容" data-options="tools:'#db_tb'"/>
+        <table id="dg" class="easyui-datagrid" title="评审内容" data-options="tools:'#db_tb'"/>
         <div id="db_tb">
             <div class="db_tb">
                 <input type="checkbox" onclick="doShow(this.checked)"></input>
-                <a href="javascript:void(0)" onclick="javascript:doShow()">只显示未完成项</a>
+                <a href="javascript:void(0)" onclick="javascript:doShow()">只显示未评审项</a>
             </div>
         </div>
     </div>
