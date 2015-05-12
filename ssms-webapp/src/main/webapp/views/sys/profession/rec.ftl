@@ -3,6 +3,7 @@
 <script type="text/javascript">
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
+        R_TEMPLATE: ko.observable('${R_TEMPLATE!}'),
         SID: '${SID!}',
     };
     var events = {
@@ -18,7 +19,14 @@
             }, "json");
         }
     };
-    ko.applyBindings($.extend({}, model, events));
+var settings = {
+            tmpfilesSource: ko.observableArray(${json(tmpfiles)}),
+            paramViewSettings: {
+                valueField: 'key',
+                textField: 'value'
+            }
+        };
+    ko.applyBindings($.extend({}, model, events,settings));
 </script>
 </#assign>
 <@layout.doLayout script>
@@ -32,6 +40,12 @@
             <label>专业名称</label>
             <span class="control">
                 <input data-bind="textboxValue: C_NAME"/>
+            </span>
+        </p>
+        <p class="long-input ue-clear">
+            <label>所属行业</label>
+            <span class="control">
+                <input data-bind="comboboxSource:tmpfilesSource,comboboxValue:R_TEMPLATE,easyuiOptions:paramViewSettings" required="true"/>
             </span>
         </p>
      </div>
