@@ -15,4 +15,14 @@ import java.sql.SQLException;
 
 public interface IExecuteDialiect {
     int executeUpdate( JdbcOperations operations, SqlStatement sqlStatement ) throws SQLException;
+
+    /**
+     * 执行存储过程
+     *
+     * @param spName 存储过程名字
+     * @param params SQL指令对应的参数
+     *
+     * @throws SQLException
+     */
+    Object[] callProcedure( JdbcOperations operations, String spName, Object[] params ) throws SQLException;
 }

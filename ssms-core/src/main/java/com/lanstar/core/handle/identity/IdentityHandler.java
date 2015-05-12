@@ -14,9 +14,10 @@ import com.lanstar.core.handle.HandleChain;
 import com.lanstar.core.handle.Handler;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.handle.identity.impl.AuditIdentity;
-import com.lanstar.core.handle.identity.impl.CompanyIdentity;
+import com.lanstar.core.handle.identity.impl.EnterpriseIdentity;
 import com.lanstar.core.handle.identity.impl.GovernmentIdentity;
 import com.lanstar.core.handle.identity.impl.SystemIdentity;
+import com.lanstar.db.JdbcRecord;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class IdentityHandler implements Handler {
         // 创建或者获取身份标识,临时测试使用
         Identity identity;
         if ( username.startsWith( "E" ) )
-            identity = new CompanyIdentity();
+            identity = new EnterpriseIdentity(new JdbcRecord());
         else if ( username.startsWith( "R" ) )
             identity = new AuditIdentity();
         else if ( username.startsWith( "G" ) )

@@ -9,19 +9,26 @@
 package com.lanstar.core.handle.identity.impl;
 
 import com.lanstar.core.handle.identity.TenantType;
+import com.lanstar.db.JdbcRecord;
 
 /**
  * 企业人员
  */
-public class CompanyIdentity extends AbstractIdentity {
+public class EnterpriseIdentity extends AbstractIdentity {
+    private final JdbcRecord record;
+
+    public EnterpriseIdentity( JdbcRecord record ) {
+        this.record = record;
+    }
+
     @Override
     public int getId() {
-        return -1;
+        return (int) record.get( "SID" );
     }
 
     @Override
     public String getName() {
-        return null;
+        return record.getString( "C_NAME" );
     }
 
     /**

@@ -38,4 +38,9 @@ public abstract class AbstDialect implements IDialect {
     public JdbcPageRecordSet queryPaging( JdbcOperations operations, SqlStatement sqlStatement, DBPaging paging ) throws SQLException {
         return operations.query( sqlStatement, paging );
     }
+
+    @Override
+    public Object[] callProcedure( JdbcOperations operations, String spName, Object[] params ) throws SQLException{
+        return operations.callProcedure(spName, params);
+    }
 }

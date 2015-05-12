@@ -1,7 +1,7 @@
 <#import "/layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         $('#formMain').form('load', 'rec.json?sid=${sid!}');
     });
 
@@ -41,16 +41,15 @@
 
     function doBack() {
         window.location.href = '${Referer!}';
-    }
+    }*/
 </script>
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-panel" title="企业信息">
-
-    <div class="easyui-panel" border="false" style="border:0;background-color:#FAFAFA;padding:10px;">
+    <div class="z-toolbar">
         <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
         <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-cancel" onclick="doDel()">删除</a>
-        <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
+        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer}'">返回</a>
     </div>
     <form id="formMain" method="post">
         <div class="easyui-panel" border="false" style="padding:10px" title="基本信息">
