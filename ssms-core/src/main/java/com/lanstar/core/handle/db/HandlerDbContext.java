@@ -68,10 +68,14 @@ public abstract class HandlerDbContext extends DBSessionHolder {
         return getDBSession().query( sqlBuilder.toSqlStatement() );
     }
 
+    public final Object[] call( String spname, Object[] params ) {
+        return getDBSession().callProcedure( spname, params );
+    }
+
     public interface TransactionContext {
         void execute( HandlerDbContext dbContext );
     }
-    
+
     /**
      * 获取新增记录的SID值
      */

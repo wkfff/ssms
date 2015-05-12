@@ -16,6 +16,8 @@ import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.db.statement.SqlStatement;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DBSession implements JdbcOperations, AutoCloseable {
@@ -190,7 +192,7 @@ public class DBSession implements JdbcOperations, AutoCloseable {
 
     @Override
     public JdbcPageRecordSet query( SqlStatement sqlStatement, DBPaging paging ) {
-        if (paging==null) {
+        if ( paging == null ) {
             paging = new DBPaging();
             paging.setPageIndex( 1 );
             paging.setPageSize( Integer.MAX_VALUE );
@@ -287,19 +289,60 @@ public class DBSession implements JdbcOperations, AutoCloseable {
     public boolean isValid() {
         return JdbcHelper.isConnectionValid( conn );
     }
-    
+
     /**
      * 获取最新添加纪录的SID值
-     * @return
      */
     @Override
-    public int getSID(){
-        return first( new SqlStatement( dialect.getSIDSql(), new Object[]{} ), new RowMapper<Integer>() {
+    public int getSID() {
+        return first( new SqlStatement( dialect.getSIDSql(), new Object[] {} ), new RowMapper<Integer>() {
             @Override
             public Integer mapRow( ResultSet rs, int rowNum ) throws SQLException {
                 return rs.getInt( 1 );
             }
         } );
+    }
+
+    @Override
+    public Object[] callProcedure( String spName, Object[] params ) {
+        log.debug( "执行存储过程[%s]=%s", spName, Arrays.toString( params ) );
+
+        StringBuilder sb = new StringBuilder();
+        sb.append( "{call " ).append( spName ).append( "(" );
+
+        if ( params == null ) params = SqlStatement.NONE_PARAM;
+        int paramSize = params.length;
+        for ( int i = 0; i < paramSize; i++ ) sb.append( i == 0 ? "?" : ",?" );
+
+        sb.append( ")}" );
+
+        try {
+            List<ProcedureParameter> pds = ProcedureParameter.build( conn, spName );
+            CallableStatement cs = conn.prepareCall( sb.toString() );
+            List<Integer> outparam = new ArrayList<>();
+            for ( int i = 0; i < pds.size(); i++ ) {
+                ProcedureParameter pm = pds.get( i );
+                int mode = pm.getMode();
+                if ( mode == ProcedureParameter.MODE_IN || mode == ProcedureParameter.MODE_INOUT ) {
+                    cs.setObject( i + 1, params[i] );
+                }
+                if ( mode == ProcedureParameter.MODE_INOUT || mode == ProcedureParameter.MODE_OUT ) {
+                    cs.registerOutParameter( i + 1, pm.getType() );
+                    outparam.add( i );
+                }
+            }
+
+            cs.execute();
+
+            for ( int index : outparam ) {
+                params[index] = cs.getObject( index + 1 );
+            }
+
+            return params;
+        } catch ( SQLException e ) {
+            throw new DbException( "执行SQL查询的时候发生了异常", e )
+                    .setSqlStatement( new SqlStatement( sb.toString(), params ) );
+        }
     }
 
     @Override

@@ -100,7 +100,7 @@ public interface JdbcOperations {
      */
     JdbcRecordSet query( String sql, Object[] params );
 
-    JdbcPageRecordSet query(SqlStatement sqlStatement, DBPaging paging);
+    JdbcPageRecordSet query( SqlStatement sqlStatement, DBPaging paging );
 
     /**
      * 以查询方式执行SQL语句，返回结果列表
@@ -165,7 +165,16 @@ public interface JdbcOperations {
 
     /**
      * 获取新增记录的SID值
-     * @return
      */
     int getSID();
+
+    /**
+     * 执行存储过程
+     *
+     * @param spName 存储过程名称
+     * @param params 存储过程参数
+     *
+     * @return 存储过程返回值
+     */
+    Object[] callProcedure( String spName, Object[] params );
 }

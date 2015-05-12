@@ -8,8 +8,6 @@
 
 package com.lanstar.service;
 
-import com.lanstar.core.handle.db.HandlerDbContext;
-import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.plugin.staticcache.CacheManager;
 import com.lanstar.plugin.staticcache.impl.StandardTemplateCache;
@@ -18,16 +16,20 @@ import com.lanstar.service.parameter.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StandardTemplateService extends TenantService {
+/**
+ * 模板文件服务
+ */
+public class StandardTemplateFileService extends TenantService {
     /**
      * 根据身份标识获取租户服务
-     *
-     * @param identity 身份标识
      */
-    public StandardTemplateService( Identity identity, HandlerDbContext dbContext ) {
-        super( identity, dbContext );
+    public StandardTemplateFileService( OperateContext context ) {
+        super( context );
     }
 
+    /**
+     * 列举出当前系统支持的所有的标准模板文件
+     */
     public static List<Parameter> listStandardTemplate() {
         List<Parameter> list = new ArrayList<>();
         StandardTemplateCache templateCache = CacheManager.me().getCache( StandardTemplateCache.class );
@@ -37,31 +39,47 @@ public class StandardTemplateService extends TenantService {
         return list;
     }
 
+    /**
+     * 根据给定的文件类型编码，获取对应的数据库表名。
+     *
+     * @param code 文件类型编码
+     */
     public String getTableName( String code ) {
         return "SYS_STDTMP_FILE_" + code;
     }
 
+    /**
+     * 根据指定的类型编码创建一个新文件模板
+     *
+     * @param code 文件类型编码
+     */
     public int newFile( String code ) {
         ARTable table = getTable( getTableName( code ) )
-                .value( "R_CREATE", identity.getId() )
-                .value( "S_CREATE", identity.getName() )
+                .value( "R_CREATE", getOperateContext().getId() )
+                .value( "S_CREATE", getOperateContext().getName() )
                 .value( "T_CREATE", "@now()" )
-                .value( "R_CREATE", identity.getId() )
-                .value( "S_CREATE", identity.getName() )
-                .value( "S_CREATE", identity.getName() )
-                .value( "R_TENANT", identity.getTenantId() )
-                .value( "S_TENANT", identity.getTenantName() )
-                .value( "P_TENANT", identity.getTenantType().getName() );
+                .value( "R_CREATE", getOperateContext().getId() )
+                .value( "S_CREATE", getOperateContext().getName() )
+                .value( "S_CREATE", getOperateContext().getName() )
+                .value( "R_TENANT", getOperateContext().getTenantId() )
+                .value( "S_TENANT", getOperateContext().getTenantName() )
+                .value( "P_TENANT", getOperateContext().getTenantType().getName() );
 
         table.insert();
-        return dbContext.getSID();
+        return getOperateContext().getDbContext().getSID();
+    }
+
+    /**
+     * 删除指定类型的文件
+     *
+     * @param code 文件类型编码
+     * @param sid  要删除的文件的SID
+     */
+    public int delFile( String code, String sid ) {
+        return getTable( getTableName( code ) ).where( "SID=?", sid ).delete();
     }
 
     private ARTable getTable( String tableName ) {
-        return dbContext.withTable( tableName );
-    }
-
-    public int delFile( String code, String sid ) {
-        return getTable( getTableName( code ) ).where( "SID=?", sid ).delete();
+        return getOperateContext().withTable( tableName );
     }
 }

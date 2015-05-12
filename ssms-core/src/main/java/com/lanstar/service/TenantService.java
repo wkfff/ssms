@@ -8,23 +8,25 @@
 
 package com.lanstar.service;
 
-import com.lanstar.core.handle.db.HandlerDbContext;
-import com.lanstar.core.handle.identity.Identity;
-
 /**
  * 租户服务
  */
-public abstract class TenantService {
-    protected final Identity identity;
-    protected final HandlerDbContext dbContext;
+public abstract class TenantService implements AutoCloseable {
+    private final OperateContext operateContext;
 
     /**
      * 根据身份标识获取租户服务
-     *
-     * @param identity 身份标识
      */
-    public TenantService( Identity identity, HandlerDbContext dbContext ) {
-        this.identity = identity;
-        this.dbContext = dbContext;
+    public TenantService( OperateContext operateContext ) {
+        this.operateContext = operateContext;
+    }
+
+    @Override
+    public void close() throws Exception {
+        operateContext.close();
+    }
+
+    public OperateContext getOperateContext() {
+        return operateContext;
     }
 }

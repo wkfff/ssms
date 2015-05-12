@@ -15,7 +15,7 @@ import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.ar.ARTable;
-import com.lanstar.service.StandardTemplateService;
+import com.lanstar.service.StandardTemplateFileService;
 
 public class stdtmp_fileController extends DefaultController {
     public stdtmp_fileController() {
@@ -41,7 +41,7 @@ public class stdtmp_fileController extends DefaultController {
 
         return super.rec( context )
                     .put( "folder", record )
-                    .put( "tmpfiles", StandardTemplateService.listStandardTemplate() );
+                    .put( "tmpfiles", StandardTemplateFileService.listStandardTemplate() );
     }
 
     @Override

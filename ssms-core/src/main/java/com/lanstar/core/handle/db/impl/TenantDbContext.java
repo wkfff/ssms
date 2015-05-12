@@ -10,25 +10,33 @@ package com.lanstar.core.handle.db.impl;
 
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.handle.db.HandlerDbContext;
+import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBSession;
 import com.lanstar.db.DbException;
 
 import java.sql.SQLException;
 
 public class TenantDbContext extends HandlerDbContext {
+    private Identity identity;
     private RequestContext context;
 
     public TenantDbContext( RequestContext context ) {
         this.context = context;
     }
 
+    public TenantDbContext( Identity identity ) {
+        this.identity = identity;
+    }
+
     @Override
     protected DBSession buildDbSession() {
-        if ( !context.hasIdentityContext() ) {
+        if ( identity == null && !context.hasIdentityContext() ) {
             throw new DbException( "身份认证无法通过，无法创建租户数据库会话！" );
         }
+
         try {
-            return context.getIdentityContxt().getDbContext().createDbSession();
+            if ( identity == null ) identity = context.getIdentityContxt().getIdentity();
+            return identity.getDbContext().createDbSession();
         } catch ( SQLException e ) {
             throw new DbException( "无法创建数据库会话", e );
         }

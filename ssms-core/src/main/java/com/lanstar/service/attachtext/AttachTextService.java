@@ -8,10 +8,9 @@
 
 package com.lanstar.service.attachtext;
 
-import com.lanstar.core.handle.db.HandlerDbContext;
-import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.ar.ARTable;
+import com.lanstar.service.OperateContext;
 import com.lanstar.service.TenantService;
 
 import java.sql.SQLException;
@@ -24,11 +23,9 @@ public class AttachTextService extends TenantService {
 
     /**
      * 根据身份标识获取租户服务
-     *
-     * @param identity 身份标识
      */
-    public AttachTextService( Identity identity, HandlerDbContext dbContext ) {
-        super( identity, dbContext );
+    public AttachTextService( OperateContext context ) {
+        super( context );
     }
 
     public String getContent( String tableName, String field, int sid ) throws SQLException {
@@ -36,8 +33,8 @@ public class AttachTextService extends TenantService {
                 .columns( "C_CONTENT" )
                 .where( "R_TABLE=? and R_FIELD=? and R_SID=? and R_TENANT=? and P_TENANT=?",
                         tableName, field, sid,
-                        identity.getTenantId(),
-                        identity.getTenantType().getName() );
+                        getOperateContext().getTenantId(),
+                        getOperateContext().getTenantType().getName() );
 
         JdbcRecord record = table.query();
         if ( record == null ) return null;
@@ -51,18 +48,18 @@ public class AttachTextService extends TenantService {
                 .value( "R_FIELD", field )
                 .value( "R_SID", recordSId )
                 .value( "C_CONTENT", content )
-                .value( "R_TENANT", identity.getTenantId() )
-                .value( "S_TENANT", identity.getTenantName() )
-                .value( "P_TENANT", identity.getTenantType().getName() )
-                .value( "R_UPDATE", identity.getTenantId() )
-                .value( "S_UPDATE", identity.getName() )
+                .value( "R_TENANT", getOperateContext().getTenantId() )
+                .value( "S_TENANT", getOperateContext().getTenantName() )
+                .value( "P_TENANT", getOperateContext().getTenantType().getName() )
+                .value( "R_UPDATE", getOperateContext().getTenantId() )
+                .value( "S_UPDATE", getOperateContext().getName() )
                 .where( "R_TABLE=? and R_FIELD=? and R_SID=? and R_TENANT=? and P_TENANT=?",
                         tableName, field, recordSId,
-                        identity.getTenantId(),
-                        identity.getTenantType().getName() );
+                        getOperateContext().getTenantId(),
+                        getOperateContext().getTenantType().getName() );
         if ( table.query() == null ) {
-            table.value( "R_CREATE", identity.getId() )
-                 .value( "S_CREATE", identity.getName() )
+            table.value( "R_CREATE", getOperateContext().getId() )
+                 .value( "S_CREATE", getOperateContext().getName() )
                  .value( "T_CREATE", "@now()" );
             table.insert();
         } else {
@@ -71,6 +68,6 @@ public class AttachTextService extends TenantService {
     }
 
     private ARTable getTable() throws SQLException {
-        return dbContext.withTable( TABLENAME );
+        return getOperateContext().withTable( TABLENAME );
     }
 }
