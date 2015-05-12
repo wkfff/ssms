@@ -29,6 +29,7 @@ function doDel(sid) {
                         }
                         else {
                             $.messager.alert("提示", data);
+                            window.location.href=window.location.href;
                         }
                     });
                 }
