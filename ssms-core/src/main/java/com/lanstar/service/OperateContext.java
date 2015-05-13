@@ -40,7 +40,7 @@ public abstract class OperateContext implements AutoCloseable {
      *
      * @param trans 事务上下文
      */
-    public void transaction( HandlerDbContext.TransactionContext trans ) {dbContext.transaction( trans );}
+    public boolean transaction( HandlerDbContext.IAtom trans ) { return dbContext.transaction( trans );}
 
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
