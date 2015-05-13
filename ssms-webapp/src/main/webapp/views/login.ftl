@@ -54,7 +54,7 @@
     $("#bd").css("padding-top", height / 2 - $("#bd").height() / 2);
     $('#password').val(Cookies.get('pwd'));
     $('#username').val(Cookies.get('usr'));
-    $('#remember').prop("checked", Cookies.get("remember"));
+    $('#remember').prop("checked", Cookies.get("remember") == 'true');
 
     var nochange = true;
     $('#password').change(function () {
@@ -92,6 +92,7 @@
         if ($('#remember').prop("checked")) {
             Cookies.set('pwd', pwd);
         }
+        else Cookies.remove('pwd');
         Cookies.set('usr', usr);
         Cookies.set('remember', $('#remember').prop("checked"));
         var parms = {
