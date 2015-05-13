@@ -37,12 +37,15 @@ public abstract class HandlerDbContext extends DBSessionHolder {
      *
      * @param trans 事务上下文
      */
-    public final void transaction( TransactionContext trans ) {
+    public final boolean transaction( IAtom trans ) {
         DBSession session;
         session = getDBSession();
         try {
             session.beginTransaction();
-            trans.execute( this );
+            boolean result = trans.execute( this );
+            if ( result ) session.commitTransaction();
+            else session.rollbackTransaction();
+            return result;
         } finally {
             session.endTransaction();
         }
@@ -73,8 +76,8 @@ public abstract class HandlerDbContext extends DBSessionHolder {
         return getDBSession().callProcedure( spname, params );
     }
 
-    public interface TransactionContext {
-        void execute( HandlerDbContext dbContext );
+    public interface IAtom {
+        boolean execute( HandlerDbContext dbContext );
     }
 
     /**
