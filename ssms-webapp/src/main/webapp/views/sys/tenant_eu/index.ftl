@@ -61,7 +61,11 @@
                     {
                         field: 'SID', title: '操作', width: 130, align: 'center',
                         formatter: function (value, row) {
-                            return "<a href='#' onclick='doEdit(" + value + ")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel(" + value + ")'>删除</a>";
+                        	if(row.C_USER=='admin'){
+                        		 return  "<a href='#' onclick='doEdit(" + value + ")'>编辑</a>"
+                        	}else{
+                        		 return  "<a href='#' onclick='doEdit(" + value + ")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel(" + value + ")'>删除</a>"
+                        	}
                         }
                     }
                 ]
