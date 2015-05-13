@@ -91,6 +91,10 @@ public class HandlerContext implements AutoCloseable {
         return this;
     }
 
+    public RequestContext removeValue( String name, VAR_SCOPE scope ) {
+        return context.removeValue( name, scope );
+    }
+
     /**
      * 响应返回结果
      *

@@ -27,7 +27,7 @@
                 <p class="yzm ue-clear">
                     <label>验证码</label>
                     <input id="yzm" type="text"/>
-                    <cite>X394D</cite>
+                    <cite><a id="vcode" href="#"><img id="vcodeImg" src="/vcode"/></a></cite>
                 </p>
             </div>
             <div class="login-btn ue-clear">
@@ -66,6 +66,13 @@
         $("#bd").css("padding-top", $(window).height() / 2 - $("#bd").height() / 2);
         $("#container").height(height);
 
+    });
+
+    $('#vcode').click(function () {
+        $('#vcodeImg').attr("src", '');
+        $('#vcodeImg').attr("src", '/vcode?_t='+new Date().valueOf());
+
+        return false;
     });
 
     $('#remember').focus(function () {
