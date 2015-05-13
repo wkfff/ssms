@@ -64,12 +64,21 @@ public class tenant_eController extends DefaultController {
         // 根据sid的存在设置where语句
         if ( StringHelper.isBlank( sid ) || !StringHelper.vaildValue( sid ) ) {
             // 生成租户特征码
-            // TODO: 这里要获取的是县级编码
-            tenantCode = service.buildSignature( (String) context.getValue( "S_COUNTY" ) );
+            tenantCode = service.buildSignature( (String) context.getValue( "P_COUNTY" ) );
             table.value( "C_CODE", tenantCode );
             // 保存数据
             table.insert();
             sid = Integer.toString( context.DB.getSID() );
+
+            // 创建企业租户的时候同时创建一个admin用户,  默认密码为123456。
+            // TODO: 创建用户的时候使用随机密码
+            context.DB.withTable( "SYS_TENANT_E_USER" )
+                      .value( "C_NAME", "管理员" )
+                      .value( "C_USER", "admin" )
+                      .value( "R_SID", sid )
+                      .value( "S_NAME", context.getValue( "C_NAME" ) )
+                      .value( "C_PASSWD", StringHelper.toMD5( "123456" ) )
+                      .insert();
         } else {
             table.where( "SID=?", sid ).update();
         }

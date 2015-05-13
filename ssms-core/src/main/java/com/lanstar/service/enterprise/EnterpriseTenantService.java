@@ -12,7 +12,12 @@ import com.lanstar.core.handle.identity.TenantType;
 import com.lanstar.service.IdentityContext;
 import com.lanstar.service.TenantService;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public final class EnterpriseTenantService extends TenantService {
+    private final Map<String, EnterpriseProfessionService> serviceMap = new LinkedHashMap<>();
+
     /**
      * 根据身份标识获取租户服务
      */
@@ -44,6 +49,19 @@ public final class EnterpriseTenantService extends TenantService {
      * @return 租户专业服务
      */
     public EnterpriseProfessionService getProfessionService( String tenantCode ) {
-        return EnterpriseProfessionService.forTenant( tenantCode, getIdentityContext() );
+        EnterpriseProfessionService service = serviceMap.get( tenantCode );
+        if ( service == null ) {
+            service = EnterpriseProfessionService.forTenant( tenantCode, getIdentityContext() );
+            serviceMap.put( tenantCode, service );
+        }
+        return service;
+    }
+
+    @Override
+    public void close() throws Exception {
+        super.close();
+        for ( EnterpriseProfessionService enterpriseProfessionService : serviceMap.values() ) {
+            enterpriseProfessionService.close();
+        }
     }
 }

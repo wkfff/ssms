@@ -21,7 +21,7 @@
 
                 <p class="password ue-clear">
                     <label>密&nbsp;&nbsp;&nbsp;码</label>
-                    <input id="password" type="text"/>
+                    <input id="password" type="password"/>
                 </p>
 
                 <p class="yzm ue-clear">
@@ -49,6 +49,7 @@
 <div id="ft">CopyRight&nbsp;2015&nbsp;&nbsp;版权所有&nbsp;&nbsp;福建永创意信息科技有限公司,福州蓝石电子有限公司 技术支持</div>
 </body>
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+<script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
 <script type="text/javascript" src="/resource/js/common.js"></script>
 <script type="text/javascript">
     var height = $(window).height();
@@ -84,13 +85,13 @@
     $('#login').click(function () {
         var parms = {
             username: $('#username').val(),
-            password: $('#password').val(),
-            tenant: null,
+            password: $.md5($('#password').val()),
             yzm: $('#yzm').val()
         };
-        $.post('login', parms, function(){
-            window.location.href = "/index";
-        } )
+        $.post('login', parms, function(result){
+            if (result.state == "success") window.location.href = "/index";
+            else alert(result.msg);
+        }, "json" )
     });
 
     if (top != window) {

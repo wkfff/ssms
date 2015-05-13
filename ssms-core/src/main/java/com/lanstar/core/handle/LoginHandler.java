@@ -31,15 +31,26 @@ public class LoginHandler implements Handler {
         if ( target.equals( "/login" ) ) {
             String username = context.getValue( "username" );
             String password = context.getValue( "password" );
-            String tenant = context.getValue( "tenant" );
-            if ( !StringHelper.isBlank( username, password, tenant ) ) {
-                IdentityHandler.login( requestContext, tenant, username, password );
+            if ( !StringHelper.isBlank( username, password ) ) {
                 RenderResolver resolver = RenderResolverFactory.me().getResolver( "do" );
-                Render render = resolver.getRender( new ViewAndModel().put( "state", "success" ), requestContext );
+                ViewAndModel model = new ViewAndModel();
+
+                // 解析用户名格式
+                String[] strings = StringHelper.split( username, "@" );
+                if ( strings.length != 2 ) {
+                    model.put( "state", "error" ).put( "msg", "用户名格式不正确。" );
+                } else {
+                    username = strings[0];
+                    String tenant = strings[1];
+                    // 登录
+                    if ( IdentityHandler.login( context, tenant, username, password ) )
+                        model.put( "state", "success" );
+                    else model.put( "state", "error" ).put( "msg", "用户名或密码不正确" );
+                }
+
+                Render render = resolver.getRender( model, requestContext );
                 render.render();
-            }
-            else {
-                IdentityHandler.login( requestContext, tenant, username, password );
+            } else {
                 RenderResolver resolver = RenderResolverFactory.me().getResolver( "html" );
                 Render render = resolver.getRender( new ViewAndModel().view( "login.ftl" ), requestContext );
                 render.render();
