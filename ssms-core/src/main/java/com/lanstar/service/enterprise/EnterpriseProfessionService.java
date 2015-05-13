@@ -8,6 +8,7 @@
 
 package com.lanstar.service.enterprise;
 
+import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.identity.Tenant;
 import com.lanstar.core.handle.identity.TenantType;
 import com.lanstar.db.DS;
@@ -113,24 +114,39 @@ public final class EnterpriseProfessionService extends TenantService {
      *
      * @param professionId 要添加的专业ID
      */
-    public void addProfession( int professionId ) {
+    public void addProfession( final int professionId ) {
         // 已经有专业了，则不做处理
         if ( hasProfession( professionId ) ) return;
-        JdbcRecord profession = pickProfession( professionId );
+        final JdbcRecord profession = pickProfession( professionId );
 
-        // 1. 设置企业与专业的关联关系
-        ARTable table = getIdentityContext().withTable( "SYS_TENANT_E_PROFESSION" );
-        IdentityContext.injection( table, getIdentityContext().getIdentity(), false );
+        getIdentityContext().transaction( new HandlerDbContext.IAtom() {
+            @Override
+            public boolean execute( HandlerDbContext dbContext ) {
+                // 1. 设置企业与专业的关联关系
+                ARTable table = getIdentityContext().withTable( "SYS_TENANT_E_PROFESSION" );
+                IdentityContext.injection( table, getIdentityContext().getIdentity(), false );
+                table.value( "P_PROFESSION", professionId )
+                     .value( "S_PROFESSION", profession.getString( "C_NAME" ) )
+                     .value( "R_TENANT", target.getTenantId() )
+                     .value( "S_TENANT", target.getTenantName() )
+                     .value( "P_TENANT", target.getTenantType().getName() )
+                     .save();
 
-        table.value( "P_PROFESSION", professionId )
-             .value( "S_PROFESSION", profession.getString( "C_NAME" ) )
-             .value( "R_TENANT", target.getTenantId() )
-             .value( "S_TENANT", target.getTenantName() )
-             .value( "P_TENANT", target.getTenantType().getName() )
-             .save();
-
-        // 克隆模板
-        ProfessionTemplateService.forProfession( professionId, getIdentityContext() ).cloneTo( target );
+                return target.transaction( new HandlerDbContext.IAtom() {
+                    @Override
+                    public boolean execute( HandlerDbContext dbContext ) {
+                        try {
+                            // 克隆模板
+                            ProfessionTemplateService.forProfession( professionId, getIdentityContext() )
+                                                     .cloneTo( target );
+                            return true;
+                        } catch ( Exception e ) {
+                            return false;
+                        }
+                    }
+                } );
+            }
+        } );
     }
 
     /**
