@@ -8,6 +8,8 @@
 
 package com.lanstar.core.handle.action;
 
+import com.lanstar.common.helper.StringHelper;
+
 public class NoSuchActionException extends ActionException {
     private static final long serialVersionUID = 8034981648106503768L;
 
@@ -16,6 +18,10 @@ public class NoSuchActionException extends ActionException {
 
     public NoSuchActionException( String message ) {
         super( message );
+    }
+
+    public NoSuchActionException( String message, Object... args ) {
+        super( StringHelper.format( message, args ) );
     }
 
     public NoSuchActionException( String message, Throwable cause ) {

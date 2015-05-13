@@ -14,11 +14,13 @@ import com.lanstar.plugin.staticcache.Cache;
 import java.util.Map;
 
 class ControllerCache extends Cache<Controller> {
-    public Controller getValue( ActionMeta meta ) {
+    public Controller getValue( ActionMeta meta ) throws NoSuchActionException {
         String controllerName = meta.getClassName();
         Controller controller = getValue( controllerName );
         if ( controller == null ) {
             Class<Object> clazz = BeanHelper.getClass( controllerName );
+            if ( clazz == null )
+                throw new NoSuchActionException( "The controller [%s] is not defined", controllerName );
             Object instance = BeanHelper.newInstance( clazz );
             controller = new Controller( instance, clazz );
             put( controllerName, controller );
