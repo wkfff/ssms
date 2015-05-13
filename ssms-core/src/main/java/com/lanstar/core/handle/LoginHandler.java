@@ -54,7 +54,7 @@ public class LoginHandler implements Handler {
 
                 // 解析用户名格式
                 String[] strings = StringHelper.split( username, "@" );
-                if ( !context.getValue( "vCode", VAR_SCOPE.SESSION ).equals( vCode ) )
+                if ( !vCode.equalsIgnoreCase( (String) context.getValue( "vCode", VAR_SCOPE.SESSION ) ) )
                     model.put( "state", "error" ).put( "msg", "验证码不正确。" );
                 else if ( strings.length != 2 ) {
                     model.put( "state", "error" ).put( "msg", "用户名格式不正确。" );
