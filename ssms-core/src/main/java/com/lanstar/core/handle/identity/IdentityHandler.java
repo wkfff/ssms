@@ -59,7 +59,7 @@ public class IdentityHandler implements Handler {
         Identity identity = new Identity() {
             @Override
             public int getId() {
-                return (int) record.get( "UID" );
+                return (int) record.get( "U_ID" );
             }
 
             @Override
@@ -69,7 +69,9 @@ public class IdentityHandler implements Handler {
 
             @Override
             public int getTenantId() {
-                return (int) record.get( "T_ID" );
+                Object id = record.get( "T_ID" );
+                if (id instanceof Long) id = ((Long) id).intValue();
+                return (int) id;
             }
 
             @Override
