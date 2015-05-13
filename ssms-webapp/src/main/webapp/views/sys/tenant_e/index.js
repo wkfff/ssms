@@ -16,7 +16,8 @@ function ViewModel() {
         C_NAME: ko.observable(),
         S_PROVINCE: ko.observable(),
         S_CITY: ko.observable(),
-        S_COUNTY: ko.observable()
+        S_COUNTY: ko.observable(),
+        C_CODE: ko.observable()
     };
 
     var settings = {
@@ -33,6 +34,7 @@ function ViewModel() {
             columns: [
                 [
                     {field: 'C_NAME', title: '企业名称', width: 200},
+                    {field: 'C_CODE', title: '租户编码', width: 100},
                     {field: 'S_PROFESSION', title: '专业', width: 70},
                     {field: 'T_PAY', title: '缴费日期', width: 100},
                     {field: 'T_PAY_NEXT', title: '下次缴费日期', width: 100},
