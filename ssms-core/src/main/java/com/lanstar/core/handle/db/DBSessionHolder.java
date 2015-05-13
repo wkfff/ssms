@@ -16,8 +16,6 @@ public abstract class DBSessionHolder implements AutoCloseable {
     public final DBSession getDBSession() {
         if ( session == null || !session.isValid() ) {
             session = buildDbSession();
-            // 打开事务
-            session.beginTransaction();
         }
         return session;
     }
@@ -26,7 +24,7 @@ public abstract class DBSessionHolder implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        if (session!=null) {
+        if ( session != null ) {
             session.close();
         }
     }
