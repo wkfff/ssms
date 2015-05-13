@@ -157,7 +157,7 @@ public class HandlerContext implements AutoCloseable {
                 else if ( key.startsWith( "T_" ) ) continue;
             } else
                 value = StringHelper.join( values, ",", false );
-            value = StringHelper.removeBlank( value );
+            value = StringHelper.trim( value );
             // 全局忽略null、undefined             by 张铮彬#2015-5-7
             if ( !StringHelper.vaildValue( value ) ) continue;
             map.put( key, value );
