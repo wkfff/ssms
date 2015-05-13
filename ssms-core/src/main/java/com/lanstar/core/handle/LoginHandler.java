@@ -40,7 +40,7 @@ public class LoginHandler implements Handler {
             response.setHeader( "Cache-Control", "no-cache" );
             response.setDateHeader( "Expires", 0 );
 
-            ValidateCode vCode = new ValidateCode( 120, 40, 5, 100 );
+            ValidateCode vCode = new ValidateCode( 120, 40, 4, 50 );
             context.setValue( "vCode", vCode.getCode(), VAR_SCOPE.SESSION );
             vCode.write( response.getOutputStream() );
             return;
