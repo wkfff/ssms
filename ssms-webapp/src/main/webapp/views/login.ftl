@@ -93,6 +93,13 @@
         }
     }
 
+    $(document).keypress(function(e) {
+        // 回车键事件
+        if(e.which == 13) {
+            jQuery("#login").click();
+        }
+    });
+
     $('#login').click(function () {
         var pwd = nochange ? $('#password').val() : $.md5($('#password').val());
         var usr = $('#username').val();
