@@ -8,9 +8,10 @@
 
 package com.lanstar.service.enterprise;
 
-import com.lanstar.core.handle.identity.JdbcTenant;
 import com.lanstar.core.handle.identity.Tenant;
 import com.lanstar.core.handle.identity.TenantType;
+import com.lanstar.db.DS;
+import com.lanstar.db.DbContext;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
@@ -18,6 +19,7 @@ import com.lanstar.service.IdentityContext;
 import com.lanstar.service.TenantContext;
 import com.lanstar.service.TenantService;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +41,27 @@ public final class EnterpriseProfessionService extends TenantService {
         final JdbcRecord record = operator.withTable( "SYS_TENANT_E" ).where( "C_CODE=?", tenantCode )
                                           .query();
 
-        Tenant tenant = new JdbcTenant( record ) {
+        Tenant tenant = new Tenant() {
+            @Override
+            public int getTenantId() {
+                return (int) record.get( "SID" );
+            }
+
+            @Override
+            public String getTenantName() {
+                return record.getString( "C_NAME" );
+            }
+
+            protected String getTenantDbCode() {
+                // TODO: 要调整为根据当前用户的租户信息来获取
+                return "tenant01";
+            }
+
+            @Override
+            public DbContext getDbContext() throws SQLException {
+                return DS.getDbContext( getTenantDbCode() );
+            }
+
             @Override
             public TenantType getTenantType() {
                 return TenantType.ENTERPRISE;

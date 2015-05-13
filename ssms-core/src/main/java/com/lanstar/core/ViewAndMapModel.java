@@ -20,6 +20,7 @@ public final class ViewAndMapModel extends ViewAndModel {
         } else {
             mapModel = (MapModelBean) parent.model;
         }
+        parent.model = mapModel;
     }
 
     @Override

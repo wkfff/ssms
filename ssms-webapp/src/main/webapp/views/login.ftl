@@ -21,13 +21,13 @@
 
                 <p class="password ue-clear">
                     <label>密&nbsp;&nbsp;&nbsp;码</label>
-                    <input id="password" type="text"/>
+                    <input id="password" type="password"/>
                 </p>
 
                 <p class="yzm ue-clear">
                     <label>验证码</label>
                     <input id="yzm" type="text"/>
-                    <cite>X394D</cite>
+                    <cite><a id="vcode" href="#"><img id="vcodeImg" src="/vcode"/></a></cite>
                 </p>
             </div>
             <div class="login-btn ue-clear">
@@ -42,24 +42,37 @@
         </div>
     </div>
 </div>
-<div style="bottom: 90px; color: #10486b; left: 0; position: absolute; right: 0; text-align: center; z-index: 2;">
-    <p>用户暂时无密码，先使用用户名为如下特殊字符进行登录。</p>
-    <p>企业用户：E；评审：R；政府：G；系统：S</p>
-</div>
 <div id="ft">CopyRight&nbsp;2015&nbsp;&nbsp;版权所有&nbsp;&nbsp;福建永创意信息科技有限公司,福州蓝石电子有限公司 技术支持</div>
 </body>
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+<script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
+<script type="text/javascript" src="/resource/js/js.cookie-1.5.1.min.js"></script>
 <script type="text/javascript" src="/resource/js/common.js"></script>
 <script type="text/javascript">
     var height = $(window).height();
     $("#container").height(height);
     $("#bd").css("padding-top", height / 2 - $("#bd").height() / 2);
+    $('#password').val(Cookies.get('pwd'));
+    $('#username').val(Cookies.get('usr'));
+    $('#remember').prop("checked", Cookies.get("remember") == 'true');
+
+    var nochange = true;
+    $('#password').change(function () {
+        nochange = false;
+    });
 
     $(window).resize(function () {
         var height = $(window).height();
         $("#bd").css("padding-top", $(window).height() / 2 - $("#bd").height() / 2);
         $("#container").height(height);
 
+    });
+
+    $('#vcode').click(function () {
+        $('#vcodeImg').attr("src", '');
+        $('#vcodeImg').attr("src", '/vcode?_t='+new Date().valueOf());
+
+        return false;
     });
 
     $('#remember').focus(function () {
@@ -69,7 +82,6 @@
     $('#remember').click(function (e) {
         checkRemember($(this));
     });
-
     function checkRemember($this) {
         // TODO: 添加记住密码的逻辑
         if (!-[1,]) {
@@ -82,15 +94,23 @@
     }
 
     $('#login').click(function () {
+        var pwd = nochange ? $('#password').val() : $.md5($('#password').val());
+        var usr = $('#username').val();
+        if ($('#remember').prop("checked")) {
+            Cookies.set('pwd', pwd);
+        }
+        else Cookies.remove('pwd');
+        Cookies.set('usr', usr);
+        Cookies.set('remember', $('#remember').prop("checked"));
         var parms = {
-            username: $('#username').val(),
-            password: $('#password').val(),
-            tenant: null,
+            username: usr,
+            password: pwd,
             yzm: $('#yzm').val()
         };
-        $.post('login', parms, function(){
-            window.location.href = "/index";
-        } )
+        $.post('login', parms, function (result) {
+            if (result.state == "success") window.location.href = "/index";
+            else alert(result.msg);
+        }, "json")
     });
 
     if (top != window) {
