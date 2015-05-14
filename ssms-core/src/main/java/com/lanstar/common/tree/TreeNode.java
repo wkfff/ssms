@@ -36,7 +36,7 @@ public class TreeNode {
         for ( JdbcRecord record : records ) {
             String pid = record.getString( idField );
             if ( StringHelper.isBlank( rootId ) ) rootId = pid;
-            int result = pid.compareToIgnoreCase( rootId );
+            int result = compareTo( pid, rootId );
             if ( result > 0 ) continue;
             if ( result < 0 ) { // reset root pid and clear wrap
                 rootId = pid;
@@ -54,6 +54,20 @@ public class TreeNode {
             build( root, records, idField, pidField, textField );
         }
         return rootWrap.children;
+    }
+
+    private static int compareTo( String pid, String rootId ) {
+        // pid == rootId
+        if ( pid == null && rootId == null ) return 0;
+        // pid < rootId
+        if ( pid == null ) return -1;
+        // pid > rootId
+        if ( rootId == null ) return 1;
+        // pid > rootId
+        if ( pid.length() > rootId.length() ) return 1;
+        // pid < rootId
+        if ( pid.length() < rootId.length() ) return -1;
+        return pid.compareTo( rootId );
     }
 
     public static void build( TreeNode root, JdbcRecordSet records, String idField, String pidField, String textField ) {
