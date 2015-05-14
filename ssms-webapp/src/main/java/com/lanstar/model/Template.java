@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.controller;
+package com.lanstar.model;
 
 import com.lanstar.db.JdbcRecord;
 

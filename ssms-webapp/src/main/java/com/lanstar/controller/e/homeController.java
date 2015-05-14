@@ -8,7 +8,7 @@
 package com.lanstar.controller.e;
 
 import com.lanstar.controller.HomeController;
-import com.lanstar.controller.Profession;
+import com.lanstar.model.Profession;
 import com.lanstar.core.ViewAndMapModel;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandleException;
