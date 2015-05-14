@@ -46,6 +46,9 @@ public abstract class HandlerDbContext extends DBSessionHolder {
             if ( result ) session.commitTransaction();
             else session.rollbackTransaction();
             return result;
+        } catch ( Exception e ) {
+            session.rollbackTransaction();
+            throw e;
         } finally {
             session.endTransaction();
         }
@@ -65,11 +68,19 @@ public abstract class HandlerDbContext extends DBSessionHolder {
         return getDBSession().first( sqlBuilder.toSqlStatement() );
     }
 
+    public final JdbcRecord first( String sql, Object... params ) {
+        return getDBSession().first( sql, params );
+    }
+
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
      */
     public final JdbcRecordSet query( SqlBuilder sqlBuilder ) {
         return getDBSession().query( sqlBuilder.toSqlStatement() );
+    }
+
+    public final JdbcRecordSet query( String sql, Object... params ) {
+        return getDBSession().query( sql, params );
     }
 
     public final Object[] call( String spname, Object[] params ) {

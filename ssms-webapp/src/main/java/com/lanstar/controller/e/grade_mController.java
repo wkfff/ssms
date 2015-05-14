@@ -15,7 +15,6 @@ import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.ar.ARTable;
-import com.lanstar.db.statement.SqlBuilder;
 
 public class grade_mController extends DefaultController {
 
@@ -38,7 +37,16 @@ public class grade_mController extends DefaultController {
     public ViewAndModel rec( HandlerContext context ) {
         context.setValue( "S_TENANT", context.getIdentity().getTenantName() );
         // TODO:根据企业的专业来设置
-        context.setValue( "P_PROFESSION", "1" );
+        //String sql = "SELECT P_PROFESSION,S_PROFESSION FROM SYS_TENANT_E_PROFESSION WHERE R_TENANT= ? LIMIT 1";
+        context.setValue( "P_PROFESSION", "4" );
+        return super.rec( context );
+    }
+    
+    public ViewAndModel rec_new( HandlerContext context ) {
+//        context.setValue( "S_TENANT", context.getIdentity().getTenantName() );
+//        // TODO:根据企业的专业来设置
+//        //String sql = "SELECT P_PROFESSION,S_PROFESSION FROM SYS_TENANT_E_PROFESSION WHERE R_TENANT= ? LIMIT 1";
+//        context.setValue( "P_PROFESSION", "4" );
         return super.rec( context );
     }
 
@@ -50,22 +58,21 @@ public class grade_mController extends DefaultController {
         this.validatePara( context );
         String sid = context.getValue( "sid" );
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
-
+        boolean isNew = MergerType.withSid( sid ).compareTo( MergerType.forInsert ) == 0;
         ARTable table = context.DB.withTable( this.TABLENAME );
-        if ( MergerType.withSid( sid ).compareTo( MergerType.forInsert ) == 0 ) {
+        if ( isNew ) {
             table.value( "C_TITLE", context.getValue( "T_START" ) + "企业自评" );
             table.value( "N_STATE", 0 );
         }
         this.mergerValues( table, context, MergerType.withSid( sid ) );
-        table.where( StringHelper.vaildValue( sid ) && !sid.equals( "null" ),
-                "SID=?", sid ).save();
+        table.where( !isNew,"SID=?", sid ).save();
 
-        if ( StringHelper.isBlank( sid ) || sid.equals( "null" ) ) {
+        if ( isNew ) {
             sid = Integer.toString( context.DB.getSID() );
-            this.init( context, sid, "1" );
+            this.init( context, sid, "4" );
         }
 
-        return context.returnWith().set( sid );
+        return context.returnWith().put( "SID", sid );
     }
 
     /**
@@ -76,19 +83,8 @@ public class grade_mController extends DefaultController {
      */
     public ViewAndModel init( HandlerContext context, String sid,
             String profession ) {
-        // TODO:根据企业的专业从评分标准表中复制
-        SqlBuilder sqlBuilder = new SqlBuilder();
-        sqlBuilder
-        .INSERT_INTO(
-                "SSM_GRADE_E_D(R_SID,R_STD,R_CATEGORY,S_CATEGORY,R_PROJECT,S_PROJECT,C_CONTENT,N_SCORE,C_METHOD,R_TENANT,S_TENANT,P_TENANT,N_STATE) "
-                        + "select ?,SID,R_CATEGORY,S_CATEGORY,R_PROJECT,S_PROJECT,C_CONTENT,N_SCORE,C_METHOD,?,?,?,0 from SSM_GRADE_STD where P_PROFESSION=?",
-                        new Object[] {
-                                sid,
-                                context.getIdentity().getTenantId(),
-                                context.getIdentity().getTenantName(),
-                                context.getIdentity().getTenantType().getName(),
-                                profession } );
-        context.DB.execute( sqlBuilder );
+        context.DB.getDBSession().execute( "call P_GRADE_INIT(?,?,?,?)",
+                new Object[] { sid,profession,context.getIdentity().getTenantId(),context.getIdentity().getTenantType().getName() } );
         return context.returnWith();
     }
 
@@ -173,8 +169,8 @@ public class grade_mController extends DefaultController {
         String sid = context.getValue( "sid" );
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
         if ( !Strings.isNullOrEmpty( sid ) ) {
-            context.DB.withTable( "SSM_GRADE_E_D" ).where( "R_SID = ?", sid )
-                    .delete();
+            context.DB.withTable( "SSM_GRADE_E_D" ).where( "R_SID = ?", sid ).delete();
+            context.DB.withTable( "SYS_ATTACH_TEXT" ).where( "R_SID = ? AND R_TABLE='SSM_GRADE_REPORT' AND R_FIELD='content'", sid ).delete();
         }
         return super.del( context );
     }

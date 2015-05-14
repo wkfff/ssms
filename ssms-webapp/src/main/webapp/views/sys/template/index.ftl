@@ -4,7 +4,7 @@
 <script type="text/javascript">
     function formatter(value, row) {
         if (row.SID === undefined || row.SID.toString().startsWith("_")) return;
-        return "<a href='#' onclick='editSTDTMP({0})'>编辑达标体系模板</a>".format(row.SID);
+        return "<a href='#' onclick='editSTDTMP({0})'><img src='/resource/images/edtico.png' />编辑达标体系模板</a>&nbsp;&nbsp;<a href='#' onclick='editGRADETMP({0})'><img src='/resource/images/edtico.png' />编辑评分标准模板</a>&nbsp;&nbsp;<a href='#' onclick='editREPTMP({0})'><img src='/resource/images/edtico.png' />编辑自评报告模板</a>".format(row.SID);
     }
 
     ko.applyBindings(new viewModel());

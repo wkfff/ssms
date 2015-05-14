@@ -8,7 +8,7 @@
 package com.lanstar.controller;
 
 import com.lanstar.helper.easyui.EasyUIControllerHelper;
-import com.lanstar.helper.easyui.TreeNode;
+import com.lanstar.common.tree.TreeNode;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.core.handle.identity.TenantType;

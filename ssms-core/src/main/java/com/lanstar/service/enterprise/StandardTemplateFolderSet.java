@@ -8,9 +8,11 @@
 
 package com.lanstar.service.enterprise;
 
-import com.lanstar.db.JdbcRecord;
+import com.lanstar.common.tree.TreeNode;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.service.TenantContext;
+
+import java.util.List;
 
 /**
  * 达标体系目录集合，作为克隆对象存在。
@@ -25,13 +27,16 @@ class StandardTemplateFolderSet implements IClonable<TenantContext> {
 
     @Override
     public void cloneTo( TenantContext target ) {
-        // 模板目录树
+        // get standard template records
         JdbcRecordSet records = service.getIdentityContext().getDbContext().getDBSession()
                                        .query( "SELECT B.* FROM SYS_PROFESSION A\n"
                                                + "INNER JOIN `SYS_STDTMP_FOLDER` B ON A.`R_TEMPLATE` = B.`R_TEMPLATE`\n"
                                                + "WHERE A.SID = ?", new Object[] { service.getProfessionId() } );
+        // convert to tree struct
+        List<TreeNode> roots = TreeNode.build( records, "SID", "R_SID", "C_NAME" );
 
-        for ( JdbcRecord record : records ) list.add( new StandardTemplateFolder( service, record ) );
+        // clone root, and clone children in this folder object.
+        for ( TreeNode root : roots ) list.add( new StandardTemplateFolder( service, root ) );
 
         list.cloneTo( target );
     }

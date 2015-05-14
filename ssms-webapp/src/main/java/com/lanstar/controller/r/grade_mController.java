@@ -70,6 +70,27 @@ public class grade_mController extends DefaultController {
         }
     }
     /**
+     * 评审列表，要根据省市县过滤，所以从视图查询
+     */
+    public ViewAndModel list_r( HandlerContext context) {
+        ARTable arTable = context.DB.withTable( "V_GRADE_R_M" );
+        Map<String, String> filter = this.getFilter( context );
+        if ( !filter.isEmpty() ) {
+            arTable.where(
+                    StringHelper.join( filter.keySet(), " and ", false ),
+                    filter.values().toArray() );
+        }
+        DBPaging paging = context.getPaging();
+        if ( paging == null ) {
+            JdbcRecordSet list = arTable.queryList();
+            return context.returnWith().set( list );
+        } else {
+            JdbcPageRecordSet list = arTable.queryPaging( paging );
+            return context.returnWith().set(
+                    EasyUIControllerHelper.toDatagridResult( list ) );
+        }
+    }
+    /**
      * 评审新建
      */
     public ViewAndModel rec_new( HandlerContext context ) {
@@ -101,8 +122,9 @@ public class grade_mController extends DefaultController {
     public ViewAndModel check( HandlerContext context ) {
         String sid = context.getValue( "sid" );
         if ( Strings.isNullOrEmpty( sid ) ) sid = context.getValue( "SID" );
+        String eid = context.getValue( "eid" );
         JdbcRecord r = context.DB.getDBSession().first(
-                "SELECT F_GRADE_CHECK_R(?) N", new Object[] { sid } );
+                "SELECT F_GRADE_CHECK_R(?,?) N", new Object[] { sid,eid } );
         return context.returnWith().set( r.get( "N" ) );
     }
 }

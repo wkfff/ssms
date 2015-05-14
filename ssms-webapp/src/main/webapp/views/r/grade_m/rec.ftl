@@ -54,7 +54,7 @@
     }
     
     function doComplete(){
-        $.get("check.json", {sid:'${sid!}'}, function (data) {
+        $.get("check.json", {sid:'${sid!}',eid:'${R_EID!}'}, function (data) {
             if (data && data>0) {
                 $.messager.alert("提示", "评审还有未填写的项，请填写后再完成评审！");
             }
@@ -76,7 +76,7 @@
     }
     
     function doBack(){
-        window.location.href='${referer!}';//${referer!}
+        window.location.href='index.html';//${referer!}
     }
     
     function doShow(v){
@@ -107,12 +107,7 @@
             
             var opts = $('#dg').datagrid('options');
             var url = opts.updateUrl;
-            if (url){/*
-                var data = [];
-                data['R_SID'] = row.R_SID;
-                data['R_DID'] = row.R_DID;
-                data['C_DESC'] = row.C_DESC;
-                data['N_SCORE_REAL'] = row.N_SCORE_REAL;*/
+            if (url){
                 $.post(url, {R_SID:row.R_SID,R_DID:row.R_DID,C_DESC:row.C_DESC,N_SCORE_REAL:row.N_SCORE_REAL}, function(data){});
             }
             return true;
@@ -136,7 +131,7 @@
         }
     }
     $(function () {
-        $('#formMain').form('load','rec.json?sid=${R_EID!}');
+        $('#formMain').form('load','rec.json?sid=${sid!}');
         
         $('#dg').datagrid({
             title:'评审内容',
@@ -153,8 +148,8 @@
             border:false,
             striped: false,
             columns: [[
-                {field: 'S_CATEGORY', title: '一级要素', width: 100},
-                {field: 'S_PROJECT', title: '二级要素', width: 100},
+                {field: 'C_CATEGORY', title: '一级要素', width: 100},
+                {field: 'C_PROJECT', title: '二级要素', width: 100},
                 {field: 'C_CONTENT', title: '基本规范要求', width: 256},
                 {field: 'N_SCORE', title: '标准分值',align:'center',width: 65},
                 {field: 'C_METHOD', title: '评分方式', width: 350},

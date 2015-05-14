@@ -7,6 +7,8 @@
  */
 package com.lanstar.controller.e;
 
+import java.util.Map;
+
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
@@ -16,8 +18,6 @@ import com.lanstar.db.DBPaging;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.helper.easyui.EasyUIControllerHelper;
-
-import java.util.Map;
 
 /**
  * 在线自评
@@ -29,51 +29,56 @@ public class grade_dController extends DefaultController {
     }
 
     @Override
+    public void setFilterFields() {
+        this.filterFields
+                .put( "score",
+                        " IFNULL(N_SCORE_REAL,0)=? AND C_PROJECT<>\"小计\" AND C_PROJECT<>\"总计\" " );
+    }
+
+    @Override
     protected Class<? extends ActionValidator> getValidator() {
         return grade_dValidator.class;
     }
+
     /**
      * 保存时统计项
      */
     @Override
     public ViewAndModel save( HandlerContext context ) {
-        String r_sid = context.getValue( "R_SID" ); 
+        // 先验证下参数
+        this.validatePara( context );
+        String sid = context.getValue( "sid" );
+        ARTable table = context.DB.withTable( this.TABLENAME );
+        this.mergerValues( table, context, MergerType.withSid( sid ) );
+        // 根据sid的存在设置where语句
+        table.where(
+                !StringHelper.isBlank( sid ) && StringHelper.vaildValue( sid ),
+                "SID=?", sid ).save();
+        String r_sid = context.getValue( "R_SID" );
         String sql = "call P_GRADE_SUM(?)";
-        context.DB.getDBSession().execute( sql,new Object[]{r_sid} );
-        return super.save( context );
+        context.DB.getDBSession().execute( sql, new Object[] { r_sid } );
+        return context.returnWith();
     }
-    
-    public ViewAndModel sum(HandlerContext context ) {
+
+    public ViewAndModel sum( HandlerContext context ) {
         return context.returnWith();
     }
 
     @Override
     public ViewAndModel list( HandlerContext context ) {
-        String r_sid = context.getValue( "R_SID" );
-        String type = context.getValue( "type" );
         ARTable arTable = context.DB.withTable( this.TABLENAME );
-        
-        if ( "0".equals( type ) ){//扣分
-            arTable.where( " IFNULL(N_SCORE_REAL,0)<IFNULL(N_SCORE,0) and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?" ,r_sid);
-        }else if ( "1".equals( type ) ){//得分
-            arTable.where( " IFNULL(N_SCORE_REAL,0)=IFNULL(N_SCORE,0) and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?" ,r_sid );
-        }else if ( "2".equals( type ) ){//缺项
-            arTable.where( " IFNULL(B_BLANK,'0')='1' and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?"  ,r_sid);
-        }else if ( "3".equals( type ) ){//未填写项
-            arTable.where( " N_SCORE_REAL IS NULL and IFNULL(B_BLANK,'0') <>\"1\" and R_PROJECT<>\"SUBTOTAL\" and R_PROJECT<>\"TOTAL\" and R_SID=?"  ,r_sid);
-        }else{
-            Map<String, String> filter = this.getFilter( context );
-            if ( !filter.isEmpty() ) {
-                arTable.where(
-                        StringHelper.join( filter.keySet(), " and ", false ),
-                        filter.values().toArray() );
-            }
+        arTable.columns( "SID,R_SID,C_CATEGORY,C_PROJECT,C_CONTENT,N_SCORE,C_METHOD,C_DESC,B_BLANK,N_SCORE_REAL" );
+        Map<String, String> filter = this.getFilter( context );
+        if ( !filter.isEmpty() ) {
+            arTable.where(
+                    StringHelper.join( filter.keySet(), " and ", false ),
+                    filter.values().toArray() );
         }
+        arTable.orderby( "N_INDEX,SID" );
         DBPaging paging = context.getPaging();
         JdbcPageRecordSet list = arTable.queryPaging( paging );
         return context.returnWith().set(
                 EasyUIControllerHelper.toDatagridResult( list ) );
     }
-    
-    
+
 }

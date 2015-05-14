@@ -132,19 +132,20 @@ public final class EnterpriseProfessionService extends TenantService {
                      .value( "P_TENANT", target.getTenantType().getName() )
                      .save();
 
-                return target.transaction( new HandlerDbContext.IAtom() {
-                    @Override
-                    public boolean execute( HandlerDbContext dbContext ) {
-                        try {
-                            // 克隆模板
-                            ProfessionTemplateService.forProfession( professionId, getIdentityContext() )
-                                                     .cloneTo( target );
-                            return true;
-                        } catch ( Exception e ) {
-                            return false;
-                        }
-                    }
-                } );
+                return cloneTemplate( professionId );
+            }
+        } );
+    }
+
+    private boolean cloneTemplate( final int professionId ) {
+        return target.transaction( new HandlerDbContext.IAtom() {
+            @Override
+            public boolean execute( HandlerDbContext dbContext ) {
+                // 克隆模板
+                ProfessionTemplateService service = ProfessionTemplateService
+                        .forProfession( professionId, getIdentityContext() );
+                service.cloneTo( target );
+                return true;
             }
         } );
     }

@@ -85,7 +85,7 @@
                         $.get("complete.do", {sid:'${sid!}'}, function (data) {
                             if (data == "true" || data== "\"\"") {
                                 $.messager.alert("提示", "自评完成");
-                                window.location.href='/e/grade_rep/rec.html?sid=${sid!}';
+                                window.location.href='index.html';
                             }
                             else {
                                 $.messager.alert("提示", data);
@@ -98,7 +98,7 @@
     }
     
     function doBack(){
-        window.location.href='draft.html';//${referer!}
+        window.location.href='${referer!}';
     }
     
     function doShow(v){
@@ -107,12 +107,7 @@
             chk = !chk;
             $('.db_tb input')[0].checked = chk;
         }
-        if (chk) {
-            $('#dg').datagrid({url:'/e/grade_d/list.json?R_SID=${sid!-1}&type=3'});
-            //$('#dg').edatagrid('reload');
-        }else{
-            $('#dg').datagrid({url:'/e/grade_d/list.json?R_SID=${sid!-1}'});
-        }
+        $('#dg').datagrid({url:'/e/grade_d/list.json?R_SID=${sid!-1}'+(chk?'&score=0':'')});
     }
     function doReport(){
         window.location.href='report_rec.html?sid=${sid!}';
@@ -132,14 +127,11 @@
             
             $('#dg').datagrid('endEdit', editIndex);
             editIndex = undefined;
-            
-            //var rows = $('#dg').datagrid('getChanges');
-            //alert(rows.length);
-            
+
             var opts = $('#dg').datagrid('options');
             var url = opts.updateUrl;
             if (url){
-                    $.post(url, row, function(data){});
+                    $.post(url, {"SID":row.SID,"R_SID":row.R_SID,"C_DESC":row.C_DESC,"B_BLANK":row.B_BLANK,"N_SCORE_REAL":row.N_SCORE_REAL}, function(data){});
             }
             return true;
         } else {
@@ -147,7 +139,7 @@
         }
     }
     function onClickRow(index){
-        var v = $('#dg').datagrid('getRows')[index]['S_PROJECT'];
+        var v = $('#dg').datagrid('getRows')[index]['C_PROJECT'];
         if (v=='小计' || v=='总计'){
             return;
         }
@@ -178,26 +170,26 @@
             border:false,
             striped: false,
             columns: [[
-                {field: 'S_CATEGORY', title: '类目', width: 100},
-                {field: 'S_PROJECT', title: '项目', width: 100},
+                {field: 'C_CATEGORY', title: '类目', width: 100},
+                {field: 'C_PROJECT', title: '项目', width: 100},
                 {field: 'C_CONTENT', title: '内容', width: 256},
                 {field: 'N_SCORE', title: '标准分值',align:'center',width: 65},
                 {field: 'C_METHOD', title: '考评办法', width: 350},
                 {field: 'C_DESC', title: '自评描述', width: 250,editor:{type:'textarea',options:{},height:'100%'}},
                 {field: 'B_BLANK', title: '是否缺项', width: 65,align:'center',editor:{type:'checkbox',options:{on:'1',off:'0'}},
                         formatter:function(value,row){
-                            var s = row['S_PROJECT'];
+                            var s = row['C_PROJECT'];
                             if (s=='小计' || s == '总计') return '';
                             return value=='1'?'是':'否';
                         }},
                 {field: 'N_SCORE_REAL', title: '实际得分', align:'center',width: 65,editor:'numberbox'}
             ]],
             onLoadSuccess: function(data){
-                //$(this).datagrid("autoMergeCells",["S_CATEGORY","S_PROJECT"]);
+                //$(this).datagrid("autoMergeCells",["C_CATEGORY","C_PROJECT"]);
             },
             onClickRow:onClickRow,
             rowStyler: function(index,row){
-                if (row.S_PROJECT == '小计' || row.S_PROJECT == '总计'){
+                if (row.C_PROJECT == '小计' || row.C_PROJECT == '总计'){
                     return 'background-color:#FAFAFA;color:#000;font-weight:bold;';
                 }
             }
