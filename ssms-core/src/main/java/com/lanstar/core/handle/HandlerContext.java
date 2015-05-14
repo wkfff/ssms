@@ -11,6 +11,7 @@ package com.lanstar.core.handle;
 import com.google.common.base.Strings;
 import com.lanstar.common.helper.Asserts;
 import com.lanstar.common.helper.StringHelper;
+import com.lanstar.common.log.LogHelper;
 import com.lanstar.core.ModelBean;
 import com.lanstar.core.RequestContext;
 import com.lanstar.core.VAR_SCOPE;
@@ -20,16 +21,22 @@ import com.lanstar.core.handle.db.impl.SystemDbContext;
 import com.lanstar.core.handle.db.impl.TenantDbContext;
 import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBPaging;
-import com.lanstar.service.StandardTemplateService;
+import com.lanstar.service.IdentityContext;
+import com.lanstar.service.StandardTemplateFileService;
+import com.lanstar.service.TenantService;
 import com.lanstar.service.attachtext.AttachTextService;
+import com.lanstar.service.enterprise.EnterpriseTenantService;
 import com.lanstar.service.file.FileService;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class HandlerContext implements AutoCloseable {
     private final RequestContext context;
+    private final Map<Class<? extends TenantService>, TenantService> serviceMap = new LinkedHashMap<>();
     /**
      * 租户库上下文
      */
@@ -82,6 +89,10 @@ public class HandlerContext implements AutoCloseable {
     public HandlerContext setValue( String name, Object value ) {
         getRequestContext().setValue( name, value );
         return this;
+    }
+
+    public RequestContext removeValue( String name, VAR_SCOPE scope ) {
+        return context.removeValue( name, scope );
     }
 
     /**
@@ -146,7 +157,7 @@ public class HandlerContext implements AutoCloseable {
                 else if ( key.startsWith( "T_" ) ) continue;
             } else
                 value = StringHelper.join( values, ",", false );
-            value = StringHelper.removeBlank( value );
+            value = StringHelper.trim( value );
             // 全局忽略null、undefined             by 张铮彬#2015-5-7
             if ( !StringHelper.vaildValue( value ) ) continue;
             map.put( key, value );
@@ -183,22 +194,41 @@ public class HandlerContext implements AutoCloseable {
         return filter;
     }
 
+    @SuppressWarnings("unchecked")
+    public <T extends TenantService> T getService( Class<T> type ) {
+        TenantService service = serviceMap.get( type );
+        if ( service != null ) return (T) service;
+        try {
+            Constructor<T> constructor = type.getConstructor( IdentityContext.class );
+            T instance = constructor.newInstance( new IdentityContext( getIdentity(), DB ) );
+            serviceMap.put( type, instance );
+            return instance;
+        } catch ( NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e ) {
+            LogHelper.error( getClass(), e, "获取服务时发生了异常" );
+            return null;
+        }
+    }
+
     /**
      * 获取文件服务
      */
     public FileService getFileService() {
-        return new FileService( getRequestContext().getIdentityContxt().getIdentity(), DB );
+        return getService( FileService.class );
     }
 
     /**
      * 获取附加文本服务
      */
     public AttachTextService getAttachTextService() {
-        return new AttachTextService( getIdentity(), DB );
+        return getService( AttachTextService.class );
     }
 
-    public StandardTemplateService getStandardTemplateService() {
-        return new StandardTemplateService( getIdentity(), DB );
+    public StandardTemplateFileService getStandardTemplateService() {
+        return getService( StandardTemplateFileService.class );
+    }
+
+    public EnterpriseTenantService getEnterpriseTenantService() {
+        return getService( EnterpriseTenantService.class );
     }
 
     public Identity getIdentity() {
@@ -210,5 +240,8 @@ public class HandlerContext implements AutoCloseable {
         DB.close();
         SYSTEM_DB.close();
         TENANT_DB.close();
+        for ( TenantService tenantService : serviceMap.values() ) {
+            tenantService.close();
+        }
     }
 }

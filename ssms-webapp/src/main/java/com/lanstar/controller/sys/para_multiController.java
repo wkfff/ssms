@@ -75,7 +75,7 @@ public class para_multiController extends BaseController {
             TableProcessor processor ) {
         String sql = "select * from sys_para_multi  group by C_NAME";
         String name = (String) context.getParameterMap().get( "C_NAME" );
-        if ( name != null && name != "" ) {
+        if ( (name != null) && (!name.equals(  "" ))) {
             sql = "select * from sys_para_multi  group by C_NAME "
                     + "having C_NAME=" + "'" + name + "'";
         }
@@ -116,8 +116,7 @@ public class para_multiController extends BaseController {
         ARTable table = context.DB.withTable( this.TABLENAME );
         this.mergerValues( table, context, MergerType.withSid( sid ) );
         // 根据sid的存在设置where语句
-        table.where( StringHelper.vaildValue( sid ) && !sid.equals( "null" ),
-                     "SID=?", sid ).save();
+        table.where( !StringHelper.isBlank( sid ) && StringHelper.vaildValue( sid ), "SID=?", sid ).save();
 
         if ( StringHelper.isBlank( sid ) || sid.equals( "null" ) ) {
             sid = Integer.toString( context.DB.getSID() );

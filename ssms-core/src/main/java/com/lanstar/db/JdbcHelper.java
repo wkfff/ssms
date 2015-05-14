@@ -33,8 +33,12 @@ final class JdbcHelper {
                 if ( !isConnectionValid( conn ) ) return;
                 try {
                     commit( conn );
-                } catch ( SQLException e ) {
-                    throw new DbException( "关闭连接时发生了异常", e );
+                } catch ( SQLException ignore ) {
+                    try {
+                        rollback( conn );
+                    } catch ( SQLException e ) {
+                        throw new DbException( "关闭连接时发生了异常", e );
+                    }
                 }
             }
             try {
@@ -73,7 +77,7 @@ final class JdbcHelper {
     /**
      * 关闭事务。（先提交，如果失败就回滚，然后关闭事务）
      */
-    public static void endTransaction(Connection conn) throws SQLException{
+    public static void endTransaction( Connection conn ) throws SQLException {
         if ( isConnectionValid( conn ) ) {
             if ( !conn.getAutoCommit() )
                 commit( conn );

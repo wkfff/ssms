@@ -19,6 +19,7 @@ public final class ViewAndObjectModel extends ViewAndModel {
         } else {
             objectModelBean = (ObjectModelBean) parent.model;
         }
+        parent.model = objectModelBean;
     }
 
     public ViewAndObjectModel value( Object value ) {

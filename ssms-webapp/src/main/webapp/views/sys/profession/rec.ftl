@@ -4,6 +4,7 @@
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
         R_TEMPLATE: ko.observable('${R_TEMPLATE!}'),
+        R_INDUSTRY: ko.observable('${R_INDUSTRY!}'),
         SID: '${SID!}',
     };
     var events = {
@@ -19,8 +20,9 @@
             }, "json");
         }
     };
-var settings = {
-            tmpfilesSource: ko.observableArray(${json(tmpfiles)}),
+    var settings = {
+		industrySource: ko.observableArray(${json(industry)}),
+		templateSource: ko.observableArray(${json(template)}),
             paramViewSettings: {
                 valueField: 'key',
                 textField: 'value'
@@ -42,12 +44,18 @@ var settings = {
                 <input data-bind="textboxValue: C_NAME"/>
             </span>
         </p>
+       <p class="long-input ue-clear">
+            <label>默认模板</label>
+            <span class="control">
+                <input data-bind="comboboxSource:templateSource,comboboxValue:R_TEMPLATE,easyuiOptions:paramViewSettings" required="true"/>
+            </span>
+        </p> 
         <p class="long-input ue-clear">
             <label>所属行业</label>
             <span class="control">
-                <input data-bind="comboboxSource:tmpfilesSource,comboboxValue:R_TEMPLATE,easyuiOptions:paramViewSettings" required="true"/>
+                <input data-bind="comboboxSource:industrySource,comboboxValue:R_INDUSTRY,easyuiOptions:paramViewSettings" required="true"/>
             </span>
-        </p>
+        </p> 
      </div>
 </form>
 </@layout.doLayout>

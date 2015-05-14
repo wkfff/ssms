@@ -24,6 +24,8 @@ public abstract class DBSessionHolder implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        if (session!=null) session.close();
+        if ( session != null ) {
+            session.close();
+        }
     }
 }

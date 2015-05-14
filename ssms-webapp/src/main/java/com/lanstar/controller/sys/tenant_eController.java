@@ -7,40 +7,92 @@
  */
 package com.lanstar.controller.sys;
 
+import com.google.common.base.Splitter;
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.db.JdbcRecordSet;
+import com.lanstar.db.ar.ARTable;
+import com.lanstar.helper.easyui.EasyUIControllerHelper;
+import com.lanstar.service.enterprise.EnterpriseProfessionService;
+import com.lanstar.service.enterprise.EnterpriseTenantService;
+
+import java.util.ArrayList;
 
 /**
  * 企业租户表
- *
  */
 public class tenant_eController extends DefaultController {
     public tenant_eController() {
         super( "SYS_TENANT_E" );
     }
 
-    /* (non-Javadoc)
-     * @see com.lanstar.controller.DefaultController#rec(com.lanstar.core.handle.HandlerContext)
-     */
+    @Override
+    public ViewAndModel index( HandlerContext context ) {
+        JdbcRecordSet records = context.DB.withTable( "SYS_PARA_AREA" ).orderby( "N_LEVEL, C_CODE" ).queryList();
+        return super.index( context )
+                    .put( "_area_", EasyUIControllerHelper.toTree( records, "SID", "R_PARENT", "C_VALUE" ) );
+    }
+
     @Override
     public ViewAndModel rec( HandlerContext context ) {
         resolveMultiParameter( context, "SYS_PROFESSION" );
         return super.rec( context );
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.lanstar.controller.BaseController#getValidator()
-     */
     @Override
     protected Class<? extends ActionValidator> getValidator() {
         return tenant_eValidator.class;
     }
 
-    public void reg(HandlerContext context){
-        resolveMultiParameter( context, "SYS_PROFESSION" );
+    public void reg( HandlerContext context ) {
+    }
+
+    @Override
+    public ViewAndModel save( HandlerContext context ) {
+        // 先验证下参数
+        this.validatePara( context );
+        String sid = context.getValue( "sid" );
+        ARTable table = context.DB.withTable( this.TABLENAME );
+        this.mergerValues( table, context, MergerType.withSid( sid ) );
+        table.getValues().remove( "industryValue" );
+        table.getValues().remove( "professionValues" );
+        EnterpriseTenantService service = context.getEnterpriseTenantService();
+        String tenantCode = context.getValue( "C_CODE" );
+        // 根据sid的存在设置where语句
+        if ( StringHelper.isBlank( sid ) || !StringHelper.vaildValue( sid ) ) {
+            // 生成租户特征码
+            tenantCode = service.buildSignature( (String) context.getValue( "P_COUNTY" ) );
+            table.value( "C_CODE", tenantCode );
+            // 保存数据
+            table.insert();
+            sid = Integer.toString( context.DB.getSID() );
+
+            // 创建企业租户的时候同时创建一个admin用户,  默认密码为123456。
+            // TODO: 创建用户的时候使用随机密码
+            context.DB.withTable( "SYS_TENANT_E_USER" )
+                      .value( "C_NAME", "管理员" )
+                      .value( "C_USER", "admin" )
+                      .value( "R_SID", sid )
+                      .value( "S_NAME", context.getValue( "C_NAME" ) )
+                      .value( "C_PASSWD", StringHelper.toMD5( "123456" ) )
+                      .insert();
+        } else {
+            table.where( "SID=?", sid ).update();
+        }
+
+        // 获取企业专业服务，进行企业专业管理。
+        EnterpriseProfessionService professionService = service.getProfessionService( tenantCode );
+        String professionValues = context.getValue( "professionValues" );
+        ArrayList<Integer> professionList = new ArrayList<>();
+        for ( String professionId : Splitter.on( ',' ).trimResults().omitEmptyStrings()
+                                            .splitToList( professionValues ) ) {
+            professionList.add( Integer.valueOf( professionId ) );
+        }
+        professionService.setProfession( professionList );
+
+        return context.returnWith().put( "SID", sid );
     }
 }

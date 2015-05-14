@@ -8,6 +8,7 @@
 
 package com.lanstar.core.handle.db;
 
+import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBSession;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
@@ -36,12 +37,18 @@ public abstract class HandlerDbContext extends DBSessionHolder {
      *
      * @param trans 事务上下文
      */
-    public final void transaction( TransactionContext trans ) {
+    public final boolean transaction( IAtom trans ) {
         DBSession session;
         session = getDBSession();
         try {
             session.beginTransaction();
-            trans.execute( this );
+            boolean result = trans.execute( this );
+            if ( result ) session.commitTransaction();
+            else session.rollbackTransaction();
+            return result;
+        } catch ( Exception e ) {
+            session.rollbackTransaction();
+            throw e;
         } finally {
             session.endTransaction();
         }
@@ -61,6 +68,10 @@ public abstract class HandlerDbContext extends DBSessionHolder {
         return getDBSession().first( sqlBuilder.toSqlStatement() );
     }
 
+    public final JdbcRecord first( String sql, Object... params ) {
+        return getDBSession().first( sql, params );
+    }
+
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
      */
@@ -68,14 +79,35 @@ public abstract class HandlerDbContext extends DBSessionHolder {
         return getDBSession().query( sqlBuilder.toSqlStatement() );
     }
 
-    public interface TransactionContext {
-        void execute( HandlerDbContext dbContext );
+    public final JdbcRecordSet query( String sql, Object... params ) {
+        return getDBSession().query( sql, params );
     }
-    
+
+    public final Object[] call( String spname, Object[] params ) {
+        return getDBSession().callProcedure( spname, params );
+    }
+
+    public interface IAtom {
+        boolean execute( HandlerDbContext dbContext );
+    }
+
     /**
      * 获取新增记录的SID值
      */
     public int getSID() {
         return getDBSession().getSID();
+    }
+
+    public static void injection( ARTable table, Identity identity, boolean withUpdate ) {
+        table.value( "R_UPDATE", identity.getId() );
+        table.value( "S_UPDATE", identity.getName() );
+        if ( !withUpdate ) {
+            table.value( "R_CREATE", identity.getId() );
+            table.value( "S_CREATE", identity.getName() );
+            table.value( "T_CREATE", "@now()" );
+            table.value( "R_TENANT", identity.getTenantId() );
+            table.value( "S_TENANT", identity.getName() );
+            table.value( "P_TENANT", identity.getTenantType().getName() );
+        }
     }
 }

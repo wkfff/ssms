@@ -22,7 +22,7 @@ public class ARTable extends ActiveRecordAbstr {
     String where;
     List<Object> whereParams = new ArrayList<>(  );
     String orderby;
-    final Map<String, Object> values = new HashMap<>();
+    final Map<String, Object> values = new LinkedHashMap<>();
 
     public ARTable( DBSession session ) {
         super( session );

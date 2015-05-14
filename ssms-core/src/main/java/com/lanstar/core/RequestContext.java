@@ -91,7 +91,7 @@ public class RequestContext {
         Enumeration names = request.getParameterNames();
         while ( names.hasMoreElements() ) {
             String s = (String) names.nextElement();
-            if (name.equalsIgnoreCase( s )) return request.getParameter( s );
+            if ( name.equalsIgnoreCase( s ) ) return request.getParameter( s );
         }
         return null;
     }
@@ -251,6 +251,24 @@ public class RequestContext {
                 break;
             case APPLICATION:
                 App.getServletContext().setAttribute( name, value );
+                break;
+        }
+        return this;
+    }
+
+    public RequestContext removeValue( String name, VAR_SCOPE scope ) {
+        switch ( scope ) {
+            case LOCAL:
+                localVars.remove( name );
+                break;
+            case REQUEST:
+                request.removeAttribute( name );
+                break;
+            case SESSION:
+                request.getSession().removeAttribute( name );
+                break;
+            case APPLICATION:
+                App.getServletContext().removeAttribute( name );
                 break;
         }
         return this;

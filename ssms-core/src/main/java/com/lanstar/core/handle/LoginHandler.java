@@ -8,7 +8,9 @@
 package com.lanstar.core.handle;
 
 import com.lanstar.common.helper.StringHelper;
+import com.lanstar.common.validatecode.ValidateCode;
 import com.lanstar.core.RequestContext;
+import com.lanstar.core.VAR_SCOPE;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.identity.IdentityHandler;
 import com.lanstar.core.render.Render;
@@ -16,6 +18,7 @@ import com.lanstar.core.render.resolver.RenderResolver;
 import com.lanstar.core.render.resolver.RenderResolverFactory;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -28,18 +31,46 @@ public class LoginHandler implements Handler {
         RequestContext requestContext = context.getRequestContext();
         // 获取请求目标
         String target = requestContext.getTarget();
-        if ( target.equals( "/login" ) ) {
+        if ( target.equals( "/vcode" ) ) {
+            HttpServletResponse response = requestContext.getResponse();
+            // 设置响应的类型格式为图片格式
+            response.setContentType( "image/jpeg" );
+            //禁止图像缓存。
+            response.setHeader( "Pragma", "no-cache" );
+            response.setHeader( "Cache-Control", "no-cache" );
+            response.setDateHeader( "Expires", 0 );
+
+            ValidateCode vCode = new ValidateCode( 120, 40, 4, 50 );
+            context.setValue( "vCode", vCode.getCode(), VAR_SCOPE.SESSION );
+            vCode.write( response.getOutputStream() );
+            return;
+        } else if ( target.equals( "/login" ) ) {
+            String vCode = context.getRequestContext().getRequest().getParameter( "yzm" );
             String username = context.getValue( "username" );
             String password = context.getValue( "password" );
-            String tenant = context.getValue( "tenant" );
-            if ( !StringHelper.isBlank( username, password, tenant ) ) {
-                IdentityHandler.login( requestContext, tenant, username, password );
+            if ( !StringHelper.isBlank( username, password ) ) {
                 RenderResolver resolver = RenderResolverFactory.me().getResolver( "do" );
-                Render render = resolver.getRender( new ViewAndModel().put( "state", "success" ), requestContext );
+                ViewAndModel model = new ViewAndModel();
+
+                // 解析用户名格式
+                String[] strings = StringHelper.split( username, "@" );
+                if ( !vCode.equalsIgnoreCase( (String) context.getValue( "vCode", VAR_SCOPE.SESSION ) ) )
+                    model.put( "state", "error" ).put( "msg", "验证码不正确。" );
+                else if ( strings.length != 2 ) {
+                    model.put( "state", "error" ).put( "msg", "用户名格式不正确。" );
+                } else {
+                    context.removeValue( "vCode", VAR_SCOPE.SESSION );
+                    username = strings[0];
+                    String tenant = strings[1];
+                    // 登录
+                    if ( IdentityHandler.login( context, tenant, username, password ) )
+                        model.put( "state", "success" );
+                    else model.put( "state", "error" ).put( "msg", "用户名或密码不正确" );
+                }
+
+                Render render = resolver.getRender( model, requestContext );
                 render.render();
-            }
-            else {
-                IdentityHandler.login( requestContext, tenant, username, password );
+            } else {
                 RenderResolver resolver = RenderResolverFactory.me().getResolver( "html" );
                 Render render = resolver.getRender( new ViewAndModel().view( "login.ftl" ), requestContext );
                 render.render();

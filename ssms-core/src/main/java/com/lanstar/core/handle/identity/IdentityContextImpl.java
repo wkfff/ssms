@@ -21,22 +21,15 @@ class IdentityContextImpl implements IdentityContext {
         this.identity = identity;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends Identity> T getIdentity( Class<T> type ) throws ClassCastException {
-        if ( !is( type ) ) throw new ClassCastException();
-        return (T) identity;
-    }
-
     @Override
     public Identity getIdentity() {
         return identity;
     }
 
     @Override
-    public <T extends Identity> boolean is( Class<T> type ) {
+    public boolean is( TenantType type ) {
         Asserts.notNull( type, "TYPE NOT NULL" );
-        return type.isAssignableFrom( identity.getClass() );
+        return identity.getTenantType().equals( type );
     }
 
     @Override
