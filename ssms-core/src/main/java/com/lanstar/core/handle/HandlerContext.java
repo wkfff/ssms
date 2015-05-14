@@ -20,6 +20,7 @@ import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.db.impl.SystemDbContext;
 import com.lanstar.core.handle.db.impl.TenantDbContext;
 import com.lanstar.core.handle.identity.Identity;
+import com.lanstar.core.handle.identity.Tenant;
 import com.lanstar.db.DBPaging;
 import com.lanstar.service.IdentityContext;
 import com.lanstar.service.StandardTemplateFileService;
@@ -234,6 +235,12 @@ public class HandlerContext implements AutoCloseable {
     public Identity getIdentity() {
         return getRequestContext().getIdentityContxt().getIdentity();
     }
+
+    public Tenant getTenant() {
+        return getIdentity();
+    }
+
+    public com.lanstar.core.handle.identity.IdentityContext getIdentityContxt() {return context.getIdentityContxt();}
 
     @Override
     public void close() throws Exception {
