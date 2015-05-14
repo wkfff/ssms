@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>${_TITLE_!"安全生产标准化管理系统"}</title>
-    ${header}
+${header}
 </head>
 <body>
     <#nested/>
@@ -15,7 +15,8 @@ ${footer}</html>
 </#macro>
 
 <#macro doLayout header="" footer="">
-    <#local _header><link rel="stylesheet" href="/resource/css/base.css"/>
+    <#local _header>
+    <link rel="stylesheet" href="/resource/css/base.css"/>
     <link rel="stylesheet" href="/resource/css/common.css"/>
     <link rel="stylesheet" href="/resource/css/fix.css"/>
     <#--knockout-->
@@ -36,12 +37,13 @@ ${footer}</html>
     <#local _footer>${footer}</#local>
     <@base header=_header footer=_footer>
         <#nested/>
-        ${vars.COMPONENT_INIT_SCRIPTS}<#--输出组件初始化脚本-->
+    ${vars.COMPONENT_INIT_SCRIPTS}<#--输出组件初始化脚本-->
     </@base>
 </#macro>
 
 <#macro indexLayout>
-    <#local _header><link rel="stylesheet" href="/resource/css/base.css"/>
+    <#local _header>
+    <link rel="stylesheet" href="/resource/css/base.css"/>
     <link rel="stylesheet" href="/resource/css/common.css"/>
     <link rel="stylesheet" href="/resource/css/index.css"/>
     </#local>
@@ -76,7 +78,7 @@ ${footer}</html>
         $(".nav>.current").prev().css({"borderColor": "#7ac47f"});
         $(".nav").on("click", "li", function (e) {
             var aurl = $(this).find("a").attr("date-src");
-            if(aurl=="") return;
+            if (aurl == "") return;
             $("#iframe").attr("src", aurl);
             $(".nav>li").css({"borderColor": "#dbe9f1"});
             $(".nav>.current").prev().css({"borderColor": "#7ac47f"});
@@ -90,6 +92,20 @@ ${footer}</html>
                 }
             });
         });
+        <#if LANSTAR_IDENTITY.tenantType='E'>
+        function choose() {
+            var value = $('#cc').combobox('getValue');
+            $.post("/e/home/setTemplate.do", {profession: value}, function () {
+                window.location.href = "/index";
+            });
+        }
+        function opChoose(){
+            $('#dd').dialog('open');
+        }
+        <#if needChooseProfessions!>$(function () {
+            $('#dd').dialog('open');
+        })</#if>
+        </#if>
     </script>
     </#local>
     <@base header=_header footer=_footer>
@@ -102,6 +118,11 @@ ${footer}</html>
                 <div class="login-info ue-clear">
                     <div class="welcome ue-clear">
                         <span>欢迎您,</span><a href="javascript:;" class="user-name">${LANSTAR_IDENTITY.identityName!}</a>
+                        <span style="float: left">|</span>
+                    <#if LANSTAR_IDENTITY.tenantType='E' && profession??>
+                        <span style="float: left">当前专业:${profession.professionName}</span>
+                        <a href="javascript:;" class="user-name" onclick="opChoose()">(切换专业)</a>
+                    </#if>
                     </div>
                 <#--<div class="login-msg ue-clear">
                     <a href="javascript:;" class="msg-txt">消息</a>
@@ -126,7 +147,8 @@ ${footer}</html>
                         </li>
                         <#list nav as map>
                             <li class="${map.attributes.C_ICON!"office"}">
-                                <div class="nav-header"><a href="javascript:;"  date-src="${map.attributes.C_URL!""}" class="ue-clear"><span>${map.text}</span><i class="icon"></i></a>
+                                <div class="nav-header">
+                                    <a href="javascript:;" date-src="${map.attributes.C_URL!""}" class="ue-clear"><span>${map.text}</span><i class="icon"></i></a>
                                 </div>
                                 <#if (map.children?size>0)>
                                     <ul class="subnav">
@@ -157,5 +179,18 @@ ${footer}</html>
             </div>
         </div>
     </div>
+        <#if LANSTAR_IDENTITY.tenantType='E'>
+        <div id="dd" class="easyui-dialog" title="选择专业" style="width:400px;height:200px;"
+             data-options="iconCls:'icon-save',resizable:true,modal:true, buttons:'#bb', closable:false, closed:true">
+            <div style="position: absolute; top: 80px; left: 80px;">
+                选择专业
+                <input id="cc" class="easyui-combobox" name="dept"
+                       data-options="valueField:'SID',textField:'C_NAME',url:'/e/home/getProfessions.json'">
+            </div>
+        </div>
+        <div id="bb">
+            <a href="#" class="easyui-linkbutton" onclick="choose()">确定</a>
+        </div>
+        </#if>
     </@base>
 </#macro>
