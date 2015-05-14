@@ -7,6 +7,7 @@
  */
 package com.lanstar.controller.sys;
 
+import com.lanstar.common.helper.StringHelper;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
 import com.lanstar.core.ViewAndModel;
@@ -20,6 +21,26 @@ import com.lanstar.db.JdbcRecord;
 public class tenant_euController extends DefaultController {
     public tenant_euController() {
         super( "SYS_TENANT_E_USER" );
+    }
+
+    public void psw( HandlerContext context ) {
+    }
+
+    public ViewAndModel updtePSW( HandlerContext context ) {
+        String sid = context.getValue( "sid" );
+        String passwd1=context.getValue( "C_PASSWD1" );
+        String passwd=context.getValue( "C_PASSWD" );
+        JdbcRecord record = null;
+        if ( StringHelper.vaildValue( sid ) ) {
+            record = context.DB.withTable( this.TABLENAME )
+                               .where( "SID=?", sid ).query();
+            String password=record.getString( "C_PASSWD" );
+            if(password.equals(passwd1)){
+                context.DB.withTable( this.TABLENAME ).value( "C_PASSWD", passwd )
+                        .where( "SID=?", sid ).update();
+            }
+        }
+                return context.returnWith().set( record );
     }
 
     /*
