@@ -14,32 +14,83 @@ import com.lanstar.service.TenantContext;
 
 class StandardTemplateFile implements IClonable<TenantContext> {
     private final ProfessionTemplateService service;
-    private final JdbcRecord file;
-    private final int sid;
+    private final JdbcRecord sourceFile;
+    private final int folderId;
+    private final int sourceSid;
+    private final String sourceFileTable;
+    private final String targetFileTable;
+    private final String sourceFileSid;
+    private int sid;
 
-    public StandardTemplateFile( ProfessionTemplateService service, JdbcRecord file, int sid ) {
+    public StandardTemplateFile( ProfessionTemplateService service, JdbcRecord sourceFile, int folderId ) {
         this.service = service;
-        this.file = file;
-        this.sid = sid;
+        this.sourceFile = sourceFile;
+        this.sourceSid = (int) sourceFile.get( "SID" );
+        String tempFileCode = sourceFile.getString( "P_TMPFILE" );
+        this.sourceFileSid = sourceFile.getString( "R_TMPFILE" );
+        this.sourceFileTable = "SYS_STDTMP_FILE_" + tempFileCode;
+        this.targetFileTable = "SSM_STDTMP_FILE_" + tempFileCode;
+        this.folderId = folderId;
     }
 
     @Override
     public void cloneTo( TenantContext target ) {
+        // skip clone if exists
+        if ( exists( target ) ) return;
+
+        // clone file info
+        this.sid = cloneFile( target );
+
+        // clone template file info
+        int templdateSid = cloneTemplate( target );
+
+        // clone html editor content
+        cloneTemplateEditorContent( templdateSid );
+    }
+
+    private int cloneFile( TenantContext target ) {
         ARTable fileTable = target.withTable( "SSM_STDTMP_FILE" )
-                                  .values( file )
-                                  .value( "R_SID", sid )
+                                  .values( sourceFile )
+                                  .value( "R_SID", folderId )
                                   .value( "R_TENANT", target.getTenantId() )
                                   .value( "S_TENANT", target.getTenantName() )
                                   .value( "P_TENANT", target.getTenantType().getName() );
         fileTable.getValues().remove( "SID" );
         fileTable.insert();
+        fileTable.value( "R_SOURCE", sourceSid );
+        return target.getDbContext().getSID();
+    }
 
-        String code = file.getString( "P_TMPFILE" );
-        String sid = file.getString( "R_TMPFILE" );
-        JdbcRecord tmpFile = service.getIdentityContext().withTable( "SYS_STDTMP_FILE_" + code ).where( "SID=?", sid )
-                                    .query();
-        ARTable table = target.withTable( "SSM_STDTMP_FILE_" + code ).values( tmpFile );
+    private int cloneTemplate( TenantContext target ) {
+        JdbcRecord tmpFile = service.source.withTable( sourceFileTable ).where( "SID=?", sourceFileSid ).query();
+        ARTable table = target.withTable( targetFileTable ).values( tmpFile )
+                              .value( "R_SID", this.sid )
+                              .value( "R_TENANT", target.getTenantId() )
+                              .value( "S_TENANT", target.getTenantName() )
+                              .value( "P_TENANT", target.getTenantType().getName() );
         table.getValues().remove( "SID" );
         table.insert();
+        return target.getDbContext().getSID();
+    }
+
+    private void cloneTemplateEditorContent( int templdateSid ) {
+        // TODO: 这个表是个大表，可能会爆！！！
+        String sql = String.format(
+                "INSERT INTO SYS_ATTACH_TEXT(R_TABLE, R_SID, R_FIELD, C_CONTENT, R_CREATE, S_CREATE, T_CREATE, R_UPDATE, S_UPDATE, T_UPDATE, R_TENANT, S_TENANT, P_TENANT)\n"
+                        + "SELECT '%s', %s, R_FIELD, C_CONTENT, R_CREATE, S_CREATE, T_CREATE, R_UPDATE, S_UPDATE, T_UPDATE, R_TENANT, S_TENANT, P_TENANT\n"
+                        + "FROM SYS_ATTACH_TEXT\n"
+                        + "WHERE R_TABLE = ? AND R_SID = ?", targetFileTable, templdateSid );
+        service.source.execute( sql, new Object[] { sourceFileTable, sourceSid } );
+    }
+
+    private boolean exists( TenantContext target ) {
+        int tenantId = target.getTenantId();
+        String tenantType = target.getTenantType()
+                                  .getName();
+        JdbcRecord folder = target.withTable( "SSM_STDTMP_FILE" )
+                                  .where( "R_SOURCE=? and R_TENANT=? and P_TENANT=?", sourceSid, tenantId, tenantType )
+                                  .query();
+        if ( folder != null ) this.sid = (int) folder.get( "SID" );
+        return folder != null;
     }
 }

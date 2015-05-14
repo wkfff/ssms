@@ -16,10 +16,10 @@ import com.lanstar.service.TenantContext;
 
 class StandardTemplateFolder implements IClonable<TenantContext> {
     private final ProfessionTemplateService service;
-    private final TreeNode node;
-    private StandardTemplateFolder parent;
+    private final TreeNode node; // current folder node
+    private StandardTemplateFolder parent; // parent folder
     private ClonableList<TenantContext> children = new ClonableList<>();
-    private int sid;
+    private int sid; // current folder sid
 
     public StandardTemplateFolder( ProfessionTemplateService service, TreeNode node ) {
         this.service = service;
@@ -43,7 +43,19 @@ class StandardTemplateFolder implements IClonable<TenantContext> {
         // second, clone children folder
         // -----------------------------------------
 
-        // clone folder
+        // skip copy folder if folder exists
+        if ( !exists( target ) ) {
+            // clone folder, and set current sid
+            this.sid = cloneFolder( target );
+        }
+        // clone children
+        children.cloneTo( target );
+
+        // clone files
+        cloneFiles( target );
+    }
+
+    private int cloneFolder( TenantContext target ) {
         ARTable table = target.withTable( "SSM_STDTMP_FOLDER" )
                               .values( node.getAttributes() )
                               .value( "R_TENANT", target.getTenantId() )
@@ -53,22 +65,32 @@ class StandardTemplateFolder implements IClonable<TenantContext> {
         if ( this.parent != null ) {
             table.value( "R_SID", parent.sid );
         }
+        table.value( "R_SOURCE", node.getId() );
         table.getValues().remove( "SID" );
         table.insert();
 
-        // set current sid
-        this.sid = target.getDbContext().getSID();
-        // clone children
-        children.cloneTo( target );
+        return target.getDbContext().getSID();
+    }
 
-        // clone files
-        JdbcRecordSet files = service.getIdentityContext().withTable( "SYS_STDTMP_FILE" )
-                                     .where( "R_SID=?", node.getAttributes().get( "SID" ) )
-                                     .queryList();
+    private void cloneFiles( TenantContext target ) {
+        JdbcRecordSet files = service.source.withTable( "SYS_STDTMP_FILE" )
+                                            .where( "R_SID=?", node.getAttributes().get( "SID" ) )
+                                            .queryList();
         ClonableList<TenantContext> fileList = new ClonableList<>();
         for ( JdbcRecord file : files ) {
             fileList.add( new StandardTemplateFile( service, file, sid ) );
         }
         fileList.cloneTo( target );
+    }
+
+    private boolean exists( TenantContext target ) {
+        int tenantId = target.getTenantId();
+        String tenantType = target.getTenantType()
+                                  .getName();
+        JdbcRecord folder = target.withTable( "SSM_STDTMP_FOLDER" )
+                                  .where( "R_SOURCE=? and R_TENANT=? and P_TENANT=?", node.getId(), tenantId, tenantType )
+                                  .query();
+        if ( folder != null ) this.sid = (int) folder.get( "SID" );
+        return folder != null;
     }
 }

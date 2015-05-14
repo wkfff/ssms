@@ -141,11 +141,12 @@ public final class EnterpriseProfessionService extends TenantService {
     private boolean cloneTemplate( final int professionId ) {
         return target.transaction( new HandlerDbContext.IAtom() {
             @Override
-            public boolean execute( HandlerDbContext dbContext ) {
+            public boolean execute( HandlerDbContext dbContext ) throws Exception {
                 // 克隆模板
-                ProfessionTemplateService service = ProfessionTemplateService
-                        .forProfession( professionId, getIdentityContext() );
-                service.cloneTo( target );
+                try ( ProfessionTemplateService service = ProfessionTemplateService
+                        .forProfession( professionId ) ) {
+                    service.cloneTo( target );
+                }
                 return true;
             }
         } );

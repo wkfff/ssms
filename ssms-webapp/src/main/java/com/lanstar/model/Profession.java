@@ -11,17 +11,16 @@ package com.lanstar.model;
 import com.lanstar.core.handle.db.impl.SystemDbContext;
 import com.lanstar.core.handle.identity.IdentityContext;
 import com.lanstar.db.JdbcRecord;
+import com.lanstar.service.enterprise.ProfessionTemplateService;
 
 public class Profession {
     private final IdentityContext identityContxt;
-    private final JdbcRecord record;
     private final int sid;
     private Template template;
     private final String name;
 
     public Profession( IdentityContext identityContxt, JdbcRecord record ) throws Exception {
         this.identityContxt = identityContxt;
-        this.record = record;
         this.sid = (int) record.get( "SID" );
         this.name = record.getString( "C_NAME" );
 
@@ -45,5 +44,9 @@ public class Profession {
 
     public Template getTemplate() {
         return this.template;
+    }
+
+    public ProfessionTemplateService getTemplateService() {
+        return ProfessionTemplateService.forProfession( getProfessionId() );
     }
 }

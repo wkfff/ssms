@@ -16,6 +16,9 @@ import com.lanstar.core.handle.identity.TenantType;
 public class TenantContext extends OperateContext {
     private final Tenant tenant;
 
+    /**
+     * 使用该构造方式，请注意手动调用close()方法以释放资源。
+     */
     public TenantContext( Tenant tenant ) {this( tenant, new TenantDbContext( tenant ) );}
 
     public TenantContext( Tenant tenant, HandlerDbContext dbContext ) {

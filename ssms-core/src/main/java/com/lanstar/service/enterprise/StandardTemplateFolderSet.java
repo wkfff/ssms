@@ -28,10 +28,10 @@ class StandardTemplateFolderSet implements IClonable<TenantContext> {
     @Override
     public void cloneTo( TenantContext target ) {
         // get standard template records
-        JdbcRecordSet records = service.getIdentityContext().getDbContext().getDBSession()
-                                       .query( "SELECT B.* FROM SYS_PROFESSION A\n"
-                                               + "INNER JOIN `SYS_STDTMP_FOLDER` B ON A.`R_TEMPLATE` = B.`R_TEMPLATE`\n"
-                                               + "WHERE A.SID = ?", new Object[] { service.getProfessionId() } );
+        JdbcRecordSet records = service.source.getDBSession()
+                                              .query( "SELECT B.* FROM SYS_PROFESSION A\n"
+                                                      + "INNER JOIN `SYS_STDTMP_FOLDER` B ON A.`R_TEMPLATE` = B.`R_TEMPLATE`\n"
+                                                      + "WHERE A.SID = ?", new Object[] { service.getProfessionId() } );
         // convert to tree struct
         List<TreeNode> roots = TreeNode.build( records, "SID", "R_SID", "C_NAME" );
 

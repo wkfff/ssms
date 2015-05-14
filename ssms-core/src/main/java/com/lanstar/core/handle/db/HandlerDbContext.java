@@ -10,6 +10,7 @@ package com.lanstar.core.handle.db;
 
 import com.lanstar.core.handle.identity.Identity;
 import com.lanstar.db.DBSession;
+import com.lanstar.db.DbException;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
@@ -48,7 +49,7 @@ public abstract class HandlerDbContext extends DBSessionHolder {
             return result;
         } catch ( Exception e ) {
             session.rollbackTransaction();
-            throw e;
+            throw new DbException( e );
         } finally {
             session.endTransaction();
         }
@@ -60,6 +61,18 @@ public abstract class HandlerDbContext extends DBSessionHolder {
     public final int execute( SqlBuilder sqlBuilder ) {
         return getDBSession().execute( sqlBuilder.toSqlStatement() );
     }
+
+    /**
+     * 执行UPDATE/DELETE/INSERT命令，并返回被影响的行数
+     *
+     * @param sql    要执行的SQL指令
+     * @param params SQL指令参数，如果没有参数则直接使用null
+     *
+     * @return 被影响的记录行数目
+     *
+     * @throws DbException
+     */
+    public int execute( String sql, Object[] params ) {return getDBSession().execute( sql, params );}
 
     /**
      * SqlBuilder具体使用参看https://github.com/maxtoroq/DbExtensions/blob/master/docs/SqlBuilder.md
@@ -88,7 +101,7 @@ public abstract class HandlerDbContext extends DBSessionHolder {
     }
 
     public interface IAtom {
-        boolean execute( HandlerDbContext dbContext );
+        boolean execute( HandlerDbContext dbContext ) throws Exception;
     }
 
     /**

@@ -8,18 +8,18 @@
 
 package com.lanstar.service.enterprise;
 
-import com.lanstar.service.IdentityContext;
+import com.lanstar.core.handle.db.impl.SystemDbContext;
 import com.lanstar.service.TenantContext;
-import com.lanstar.service.TenantService;
 
-class ProfessionTemplateService extends TenantService {
+public class ProfessionTemplateService implements AutoCloseable {
     protected final int professionId;
+    protected final SystemDbContext source;
     // 模板项目列表，该列表中的所有内容都是应该被克隆的，因此请把要克隆的东西放到这个列表中。
     private final ClonableList<TenantContext> list = new ClonableList<>();
 
-    ProfessionTemplateService( int professionId, IdentityContext operator ) {
-        super( operator );
+    ProfessionTemplateService( int professionId, SystemDbContext systemDbContext ) {
         this.professionId = professionId;
+        this.source = systemDbContext;
 
         // TODO: 添加需要被克隆的内容
         // 达标体系模板
@@ -30,10 +30,9 @@ class ProfessionTemplateService extends TenantService {
      * 获取专业的模板服务。
      *
      * @param professionId 专业id
-     * @param operator     操作者
      */
-    public static ProfessionTemplateService forProfession( int professionId, IdentityContext operator ) {
-        return new ProfessionTemplateService( professionId, operator );
+    public static ProfessionTemplateService forProfession( int professionId ) {
+        return new ProfessionTemplateService( professionId, new SystemDbContext() );
     }
 
     /**
@@ -42,9 +41,17 @@ class ProfessionTemplateService extends TenantService {
     public void cloneTo( TenantContext target ) {
         list.cloneTo( target );
     }
+    public void synchronousTo( TenantContext target ) {
+        list.cloneTo( target );
+    }
 
     public int getProfessionId() {
         return professionId;
+    }
+
+    @Override
+    public void close() throws Exception {
+        source.close();
     }
 }
 
