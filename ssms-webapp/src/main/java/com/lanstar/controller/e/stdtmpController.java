@@ -11,12 +11,15 @@ package com.lanstar.controller.e;
 import com.lanstar.common.tree.TreeNode;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
-import com.lanstar.model.Profession;
-import com.lanstar.model.Template;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.helper.easyui.EasyUIControllerHelper;
+import com.lanstar.model.Profession;
+import com.lanstar.model.Template;
+import com.lanstar.service.TenantContext;
+import com.lanstar.service.enterprise.ProfessionTemplateService;
 
 import java.util.List;
 
@@ -31,24 +34,36 @@ public class stdtmpController extends DefaultController {
     }
 
     @Override
-    public ViewAndModel index( HandlerContext context ) {
-        Profession profession = context.getIdentityContxt().get( Profession.class );
+    public ViewAndModel index( final HandlerContext context ) {
+        final Profession profession = context.getIdentityContxt().get( Profession.class );
+        // sync tenant template from system template
+        context.DB.transaction( new HandlerDbContext.IAtom() {
+            @Override
+            public boolean execute( HandlerDbContext dbContext ) throws Exception {
+                try ( ProfessionTemplateService service = profession.getTemplateService() ) {
+                    service.synchronousTo( new TenantContext( context.getIdentity(), context.DB ) );
+                }
+                return true;
+            }
+        } );
+
         Template template = profession.getTemplate();
         return super.index( context ).put( "R_SID", template.getTemplateId() );
     }
 
     public ViewAndModel tree( HandlerContext context ) {
         String template = context.getValue( "template" );
-        JdbcRecordSet folder = context.SYSTEM_DB.query( "SELECT SID, C_NAME, R_SID\n"
-                + "FROM SSM_STDTMP_FOLDER\n"
-                + "WHERE R_TEMPLATE = ? \n"
-                + "UNION ALL \n"
-                + "SELECT SID, C_NAME, R_SID FROM SSM_STDTMP_FILE\n"
-                + "WHERE R_SID IN (\n"
-                + "  SELECT SID FROM SSM_STDTMP_FOLDER\n"
-                + "  WHERE R_TEMPLATE = ?\n"
-                + ")", template, template );
-        List<TreeNode> value = EasyUIControllerHelper.toTree( folder, "SID", "R_SID", "C_NAME" );
+        JdbcRecordSet folder = context.SYSTEM_DB.query(
+                "SELECT CONCAT('D-',SID) SID, C_NAME, CONCAT('D-',R_SID) R_SID\n"
+                        + "FROM SSM_STDTMP_FOLDER\n"
+                        + "WHERE R_TEMPLATE = ? \n"
+                        + "UNION ALL \n"
+                        + "SELECT CONCAT('F-',SID) SID, C_NAME, CONCAT('D-',R_SID) R_SID FROM SSM_STDTMP_FILE\n"
+                        + "WHERE R_SID IN (\n"
+                        + "  SELECT SID FROM SSM_STDTMP_FOLDER\n"
+                        + "  WHERE R_TEMPLATE = ?\n"
+                        + ")", template, template );
+        List<TreeNode> value = EasyUIControllerHelper.toTree( "D-0", folder, "SID", "R_SID", "C_NAME" );
         if ( value.size() == 1 ) {
             value = value.get( 0 ).getChildren();
         }

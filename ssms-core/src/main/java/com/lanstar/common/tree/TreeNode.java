@@ -8,13 +8,13 @@
 
 package com.lanstar.common.tree;
 
-import com.lanstar.common.helper.StringHelper;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class TreeNode {
     private String id;
@@ -30,44 +30,36 @@ public class TreeNode {
 
     private TreeNode() {}
 
-    public static List<TreeNode> build( JdbcRecordSet records, String idField, String pidField, String textField ) {
+    public static List<TreeNode> build( String rootId, JdbcRecordSet records, String idField, String pidField, String textField ) {
         TreeNode rootWrap = new TreeNode();
-        String rootId = null;
         for ( JdbcRecord record : records ) {
-            String pid = record.getString( idField );
-            if ( StringHelper.isBlank( rootId ) ) rootId = pid;
-            int result = compareTo( pid, rootId );
-            if ( result > 0 ) continue;
-            if ( result < 0 ) { // reset root pid and clear wrap
-                rootId = pid;
+            String id = record.getString( idField );
+            // the children of wrap is the record, if record set contains root id.
+            if ( Objects.equals( id, rootId ) ) {
                 rootWrap.children.clear();
+                // the pid is root pid, build node and add to wrap.
+                TreeNode rootNode = new TreeNode();
+                rootNode.id = id;
+                rootNode.text = record.getString( textField );
+                rootNode.attributes = record;
+                rootWrap.children.add( rootNode );
+                break;
             }
-            // the pid is root pid, buid node and add to wrap.
-            TreeNode rootNode = new TreeNode();
-            rootNode.id = pid;
-            rootNode.text = record.getString( textField );
-            rootNode.attributes = record;
-            rootWrap.children.add( rootNode );
+
+            String pid = record.getString( pidField );
+            if ( Objects.equals( pid, rootId ) ) {
+                TreeNode rootNode = new TreeNode();
+                rootNode.id = id;
+                rootNode.text = record.getString( textField );
+                rootNode.attributes = record;
+                rootWrap.children.add( rootNode );
+            }
         }
         // each root in wrap to add children
         for ( TreeNode root : rootWrap.children ) {
             build( root, records, idField, pidField, textField );
         }
         return rootWrap.children;
-    }
-
-    private static int compareTo( String pid, String rootId ) {
-        // pid == rootId
-        if ( pid == null && rootId == null ) return 0;
-        // pid < rootId
-        if ( pid == null ) return -1;
-        // pid > rootId
-        if ( rootId == null ) return 1;
-        // pid > rootId
-        if ( pid.length() > rootId.length() ) return 1;
-        // pid < rootId
-        if ( pid.length() < rootId.length() ) return -1;
-        return pid.compareTo( rootId );
     }
 
     public static void build( TreeNode root, JdbcRecordSet records, String idField, String pidField, String textField ) {

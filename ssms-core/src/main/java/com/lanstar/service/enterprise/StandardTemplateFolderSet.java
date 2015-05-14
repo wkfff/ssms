@@ -33,7 +33,7 @@ class StandardTemplateFolderSet implements IClonable<TenantContext> {
                                                       + "INNER JOIN `SYS_STDTMP_FOLDER` B ON A.`R_TEMPLATE` = B.`R_TEMPLATE`\n"
                                                       + "WHERE A.SID = ?", new Object[] { service.getProfessionId() } );
         // convert to tree struct
-        List<TreeNode> roots = TreeNode.build( records, "SID", "R_SID", "C_NAME" );
+        List<TreeNode> roots = TreeNode.build( "0", records, "SID", "R_SID", "C_NAME" );
 
         // clone root, and clone children in this folder object.
         for ( TreeNode root : roots ) list.add( new StandardTemplateFolder( service, root ) );

@@ -20,7 +20,6 @@ class StandardTemplateFile implements IClonable<TenantContext> {
     private final String sourceFileTable;
     private final String targetFileTable;
     private final String sourceFileSid;
-    private int sid;
 
     public StandardTemplateFile( ProfessionTemplateService service, JdbcRecord sourceFile, int folderId ) {
         this.service = service;
@@ -38,33 +37,33 @@ class StandardTemplateFile implements IClonable<TenantContext> {
         // skip clone if exists
         if ( exists( target ) ) return;
 
-        // clone file info
-        this.sid = cloneFile( target );
-
         // clone template file info
         int templdateSid = cloneTemplate( target );
+
+        // clone file info
+        cloneFile( target, templdateSid );
 
         // clone html editor content
         cloneTemplateEditorContent( templdateSid );
     }
 
-    private int cloneFile( TenantContext target ) {
+    private int cloneFile( TenantContext target, int templdateSid ) {
         ARTable fileTable = target.withTable( "SSM_STDTMP_FILE" )
                                   .values( sourceFile )
                                   .value( "R_SID", folderId )
+                                  .value( "R_TMPFILE", templdateSid )
                                   .value( "R_TENANT", target.getTenantId() )
                                   .value( "S_TENANT", target.getTenantName() )
                                   .value( "P_TENANT", target.getTenantType().getName() );
         fileTable.getValues().remove( "SID" );
-        fileTable.insert();
         fileTable.value( "R_SOURCE", sourceSid );
+        fileTable.insert();
         return target.getDbContext().getSID();
     }
 
     private int cloneTemplate( TenantContext target ) {
         JdbcRecord tmpFile = service.source.withTable( sourceFileTable ).where( "SID=?", sourceFileSid ).query();
         ARTable table = target.withTable( targetFileTable ).values( tmpFile )
-                              .value( "R_SID", this.sid )
                               .value( "R_TENANT", target.getTenantId() )
                               .value( "S_TENANT", target.getTenantName() )
                               .value( "P_TENANT", target.getTenantType().getName() );
@@ -84,13 +83,9 @@ class StandardTemplateFile implements IClonable<TenantContext> {
     }
 
     private boolean exists( TenantContext target ) {
-        int tenantId = target.getTenantId();
-        String tenantType = target.getTenantType()
-                                  .getName();
         JdbcRecord folder = target.withTable( "SSM_STDTMP_FILE" )
-                                  .where( "R_SOURCE=? and R_TENANT=? and P_TENANT=?", sourceSid, tenantId, tenantType )
+                                  .where( "R_SOURCE=? and R_SID=?", sourceSid, folderId )
                                   .query();
-        if ( folder != null ) this.sid = (int) folder.get( "SID" );
         return folder != null;
     }
 }

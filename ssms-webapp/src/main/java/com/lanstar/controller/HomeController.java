@@ -35,7 +35,7 @@ public abstract class HomeController {
         JdbcRecordSet records = context.SYSTEM_DB.withTable( "SYS_NAV" )
                                                  .orderby( "R_SID, N_INDEX" )
                                                  .queryList();
-        Collection<TreeNode> nodes = EasyUIControllerHelper.toTree( records, "SID", "R_SID", "C_NAME" );
+        Collection<TreeNode> nodes = EasyUIControllerHelper.toTree("0", records, "SID", "R_SID", "C_NAME" );
         TreeNode node = findNode( nodes, IDENTITY_TYPE_NAV_MAP.get( context.getIdentity().getTenantType() ) );
         ViewAndModel returnWith = context.returnWith();
         if ( node != null ) returnWith = returnWith.put( "nav", node.getChildren() );
