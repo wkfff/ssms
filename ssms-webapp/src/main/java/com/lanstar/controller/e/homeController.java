@@ -31,6 +31,7 @@ public class homeController extends HomeController {
             if ( professions.size() == 1 ) {
                 context.setValue( "profession", professions.get( 0 ).get( "SID" ) );
                 setTemplate( context );
+                needChooseProfessions = false;
             }
         }
 
