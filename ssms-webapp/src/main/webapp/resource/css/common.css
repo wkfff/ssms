@@ -106,6 +106,12 @@
     color: #959595;
 }
 
+.form p .outline{
+    height: 33px;
+    line-height: 33px;
+    width: 224px;
+}
+
 .form p input[type="text"] {
     width: 240px;
 }
