@@ -29,7 +29,7 @@ public class Profession {
             JdbcRecord templateRecord = dbContext.first( "SELECT D.* from SYS_TENANT_E A\n"
                     + "inner join SYS_TENANT_E_PROFESSION B on A.SID = B.R_TENANT\n"
                     + "inner join SYS_PROFESSION C on B.P_PROFESSION = C.SID\n"
-                    + "INNER join SYS_TEMPLATE D on C.R_TENANT = D.SID\n"
+                    + "INNER join SYS_TEMPLATE D on C.R_TEMPLATE = D.SID\n"
                     + "where A.SID = ? AND C.SID = ?", identityContxt.getTenantId(), this.sid );
             if ( templateRecord != null ) this.template = new Template( templateRecord );
         }

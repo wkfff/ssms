@@ -23,15 +23,17 @@ import com.lanstar.db.JdbcRecordSet;
 public class homeController extends HomeController {
     @Override
     public ViewAndModel index( HandlerContext context ) {
-        int tenantId = context.getTenant().getTenantId();
-        JdbcRecordSet professions = getProfessions( context.SYSTEM_DB, tenantId );
-        if ( professions.size() == 1 ) {
-            context.setValue( "profession", professions.get( 0 ).get( "SID" ) );
-            setTemplate( context );
-        }
-
         boolean needChooseProfessions = !context.getIdentityContxt()
                                                 .has( Profession.class );
+        if ( needChooseProfessions ) {
+            int tenantId = context.getTenant().getTenantId();
+            JdbcRecordSet professions = getProfessions( context.SYSTEM_DB, tenantId );
+            if ( professions.size() == 1 ) {
+                context.setValue( "profession", professions.get( 0 ).get( "SID" ) );
+                setTemplate( context );
+            }
+        }
+
         ViewAndMapModel result = super.index( context ).put( "needChooseProfessions", needChooseProfessions );
         if ( !needChooseProfessions ) result.put( "profession", context.getIdentityContxt().get( Profession.class ) );
         return result;
