@@ -76,3 +76,9 @@ function viewModel() {
 var editSTDTMP = function (sid) {
     window.location.href = '/sys/stdtmp/index.html?R_SID='+sid;
 };
+var editGRADETMP = function (sid) {
+    window.location.href = '/sys/stdtmp_grade/index.html?R_SID='+sid;
+}
+var editREPTMP = function (sid) {
+    window.location.href = '/sys/stdtmp_rep/rec.html?R_SID='+sid;
+}

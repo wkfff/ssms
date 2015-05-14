@@ -28,7 +28,7 @@
     <tbody>
     <#list list as r>
     <tr>
-        <td>${r.S_PROJECT}</td>
+        <td>${r.C_PROJECT}</td>
         <td>${r.N_SUBTOTAL}</td>
         <td>${r.N_BLANK}</td>
         <td>${r.N_GET}</td>

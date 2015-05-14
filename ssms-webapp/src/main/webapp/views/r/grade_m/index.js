@@ -37,7 +37,7 @@ function ViewModel(templateId) {
         if (!newValue) return;
         if (settings.gridSettings.datagrid)
             settings.gridSettings.datagrid({
-                url: "/sys/tenant_e/list.json",
+                url: "list_r.json",
                 queryParams: {P_COUNTY: newValue}
             })
     });
@@ -49,18 +49,16 @@ function ViewModel(templateId) {
             textField:'C_VALUE'
         },
         comboCitySettings:{
-            url:'/sys/para_area/list.json',
             valueField:'SID',
             textField:'C_VALUE'
         },
         comboCountySettings:{
-            url:'/sys/para_area/list.json',
             valueField:'SID',
             textField:'C_VALUE'
         },
         gridSettings: {
             idField: 'SID',
-            url: "/r/grade/list_e.json",//测试用
+            //url: "list_r.json",//测试用
             rownumbers: true,
             pagination: true,
             fit: true,
@@ -106,7 +104,7 @@ function ViewModel(templateId) {
                 settings.gridSettings.datagrid('reload');
             }, editClick: function () {
                 var sid = self.sid();
-                var url = '/r/grade/rec_new.html?R_EID={0}'.format(sid);
+                var url = '/r/grade_m/rec.html?sid={0}'.format(sid);
                window.location.href = url;
             }
         }

@@ -30,7 +30,7 @@ public class grade_dController extends DefaultController {
     
     @Override
     public void setFilterFields() {
-        this.filterFields.put( "score", " IFNULL(N_SCORE_REAL,0)=? AND S_PROJECT<>\"小计\" AND S_PROJECT<>\"总计\" " );
+        this.filterFields.put( "score", " IFNULL(N_SCORE_REAL,0)=? AND C_PROJECT<>\"小计\" AND C_PROJECT<>\"总计\" " );
     }
     
     /**

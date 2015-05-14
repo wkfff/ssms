@@ -41,7 +41,7 @@
                     '|', 'table','|','fullscreen'
                     ],
                     afterCreate : function() {
-                        K.ajax('/sys/attachtext/get.json?table=SSM_GRADE_REPORT&field=CONTENT&sid=${sid!}', function(data) {
+                        K.ajax('/sys/attachtext/get.json?table=SSM_GRADE_REPORT_TMP&field=CONTENT&sid=${R_SID!}', function(data) {
                              editor.html(data);
                         });
                     }
@@ -52,18 +52,18 @@
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div class="easyui-panel" data-options="region:'center'" style="overflow:hidden;border:1;border-left:0;" title="自评报告">
+    <div class="easyui-panel" data-options="region:'center'" style="overflow:hidden;border:1;border-left:0;" title="自评报告模板">
          <div class="toolbar ue-clear" style="border:0px;border-left:1px solid #c1d3de;">
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave();">保存</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-download" onclick="doDownload();">下载</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-print" onclick="doPrint()">打印</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
          </div>
-         <form id="formMain" method="POST">
+         <form id="formMain" method="post">
                 <textarea id="CONTENT" name="CONTENT" style="display:none;"></textarea>
-                <input type="hidden" name="table" value="SSM_GRADE_REPORT" />
+                <input type="hidden" name="table" value="SSM_GRADE_REPORT_TMP" />
                 <input type="hidden" name="field" value="CONTENT" />
-                <input type="hidden" name="sid" value="${sid!}" />
+                <input type="hidden" name="sid" value="${R_SID!}" />
          </form>
     </div>
 </div>

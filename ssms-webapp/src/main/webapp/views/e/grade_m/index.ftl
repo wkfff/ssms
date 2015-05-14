@@ -2,7 +2,7 @@
 <#assign script>
 <script type="text/javascript">
     function doNew(){
-        window.location.href='rec.html';
+        window.location.href='rec_new.html';
     }
     function doBack(){
        window.location.href='${referer!}';

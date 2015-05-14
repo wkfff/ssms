@@ -12,13 +12,9 @@ import com.lanstar.core.handle.HandlerContext;
 
 public class grade_repValidator extends ActionValidator {
 
-    /* (non-Javadoc)
-     * @see com.lanstar.core.validate.Validator#validate(com.lanstar.core.handle.HandlerContext)
-     */
     @Override
     protected void validate( HandlerContext c ) {
-        // TODO Auto-generated method stub
-        
+
     }
 
 }

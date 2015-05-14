@@ -30,4 +30,6 @@
     <bean class="com.lanstar.plugin.file.ResourcePlugin"/>
     <!-- 控制台插件 -->
     <!--<bean class="com.lanstar.plugin.console.ConsolePlugin"/>-->
+    <!-- 定时任务插件 -->
+    <bean class="com.lanstar.plugin.scheduler.QuartzPlugin"/>
 </beans>

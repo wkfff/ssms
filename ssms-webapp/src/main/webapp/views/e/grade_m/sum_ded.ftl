@@ -35,8 +35,8 @@
     <#list list as r>
     <tr>
         <td class="c0">${r_index+1}</td>
-        <td class="c1">${r.S_CATEGORY}</td>
-        <td class="c2">${r.S_PROJECT}</td>
+        <td class="c1">${r.C_CATEGORY}</td>
+        <td class="c2">${r.C_PROJECT}</td>
         <td class="c3">${r.C_CONTENT}</td>
         <td class="c4">${r.C_DESC}</td>
         <td class="c5">${r.N_DED}</td>

@@ -32,7 +32,7 @@ function ViewModel(templateId) {
         if (!newValue) return;
         if (settings.gridSettings.datagrid)
             settings.gridSettings.datagrid({
-                url: "/sys/tenant_e/list.json",
+                url: "/r/grade_m/list_e.json",
                 queryParams: {P_COUNTY: newValue}
             })
     });
@@ -44,18 +44,16 @@ function ViewModel(templateId) {
             textField:'C_VALUE'
         },
         comboCitySettings:{
-            //url:'/sys/para_area/list.json',
             valueField:'SID',
             textField:'C_VALUE'
         },
         comboCountySettings:{
-            //url:'/sys/para_area/list.json',
             valueField:'SID',
             textField:'C_VALUE'
         },
         gridSettings: {
             idField: 'SID',
-            url: "/r/grade_m/list_e.json",//测试用
+            //url: "/r/grade_m/list_e.json",//测试用
             rownumbers: true,
             pagination: true,
             fit: true,
