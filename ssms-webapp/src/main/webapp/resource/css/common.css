@@ -78,6 +78,12 @@
     margin-bottom: 5px
 }
 
+input.readonly{
+    border: 0;
+    line-height: 30px;
+}
+
+input.readonly,
 .outline {
     border-bottom: 1px solid #808080;
 }
@@ -93,7 +99,7 @@
     padding-left: 31px;
 }
 
-.form p>label:first-child,
+.form p > label:first-child,
 .form p .label {
     float: left;
     width: 100px;
@@ -106,7 +112,7 @@
     color: #959595;
 }
 
-.form p .outline{
+.form p .outline {
     height: 33px;
     line-height: 33px;
     width: 224px;
@@ -116,7 +122,7 @@
     width: 240px;
 }
 
-.form p.long-input input[type="text"]{
+.form p.long-input input[type="text"] {
     width: 472px;
 }
 

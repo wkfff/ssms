@@ -3,6 +3,7 @@
 <script type="text/javascript">
     var model = {
         C_NAME: ko.observable(),
+        R_INDUSTRY: ko.observable(),
         C_EMAIL: ko.observable(),
         P_PROVINCE: ko.observable(),
         S_PROVINCE: ko.observable(),
@@ -26,10 +27,9 @@
         T_EXAMINE_NEXT: ko.observable()
     };
     var extModel = {
-        industryValue: ko.observable(),
         professionValues: ko.observableArray()
     };
-    extModel.industryValue.subscribe(function (newValue) {
+    model.R_INDUSTRY.subscribe(function (newValue) {
         settings.professionSetting.combobox({
             url: '/sys/profession/list.json',
             queryParams: {R_INDUSTRY: newValue}
@@ -112,7 +112,7 @@
             <p class="ue-clear">
                 <label>行业</label>
                 <span class="control">
-                    <input data-bind="comboboxValue:industryValue,easyuiOptions:industrySetting" required/>
+                    <input data-bind="comboboxValue:R_INDUSTRY,easyuiOptions:industrySetting" required/>
                 </span>
             </p>
 
