@@ -19,8 +19,8 @@ public class EasyUIControllerHelper {
         return new DatagridResult( list.getTotal(), list.getData() );
     }
 
-    public static List<TreeNode> toTree( JdbcRecordSet records, String idField, String pidField, String textField ) {
-        return TreeNode.build( records, idField, pidField, textField );
+    public static List<TreeNode> toTree( String rootId, JdbcRecordSet records, String idField, String pidField, String textField ) {
+        return TreeNode.build( rootId, records, idField, pidField, textField );
     }
 }
 

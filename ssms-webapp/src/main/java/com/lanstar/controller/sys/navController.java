@@ -31,7 +31,7 @@ public class navController extends DefaultController {
         JdbcRecordSet records = context.SYSTEM_DB.withTable( TABLENAME )
                                                  .orderby( "R_SID, N_INDEX" )
                                                  .queryList();
-        return context.returnWith().set( EasyUIControllerHelper.toTree( records, "SID", "R_SID", "C_NAME" ) );
+        return context.returnWith().set( EasyUIControllerHelper.toTree("0", records, "SID", "R_SID", "C_NAME" ) );
     }
 
     @Override

@@ -16,7 +16,6 @@ import com.lanstar.helper.easyui.EasyUIControllerHelper;
 
 /**
  * @author Administrator
- *
  */
 public class para_areaController extends DefaultController {
 
@@ -71,8 +70,8 @@ public class para_areaController extends DefaultController {
             if ( item.getChildren().size() > 0 ) rootMap.remove( id );
         }*/
         return context.returnWith()
-                      .set( EasyUIControllerHelper.toTree( records, "SID", "R_PARENT", "C_VALUE" ) );
-        
+                      .set( EasyUIControllerHelper.toTree( null, records, "SID", "R_PARENT", "C_VALUE" ) );
+
     }
 
 }

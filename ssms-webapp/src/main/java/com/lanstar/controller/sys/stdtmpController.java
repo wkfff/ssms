@@ -25,7 +25,7 @@ public class stdtmpController extends DefaultController {
         JdbcRecordSet folder = context.SYSTEM_DB.withTable( "SYS_STDTMP_FOLDER" )
                                                 .where( "R_TEMPLATE=?", template )
                                                 .queryList();
-        return context.returnWith().set( EasyUIControllerHelper.toTree( folder, "SID", "R_SID", "C_NAME" ) );
+        return context.returnWith().set( EasyUIControllerHelper.toTree( "0", folder, "SID", "R_SID", "C_NAME" ) );
     }
 
     @Override

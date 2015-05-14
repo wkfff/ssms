@@ -40,8 +40,7 @@ public class tenant_eController extends DefaultController {
     @Override
     public ViewAndModel index( HandlerContext context ) {
         JdbcRecordSet records = context.DB.withTable( "SYS_PARA_AREA" ).orderby( "N_LEVEL, C_CODE" ).queryList();
-        return super.index( context )
-                    .put( "_area_", EasyUIControllerHelper.toTree( records, "SID", "R_PARENT", "C_VALUE" ) );
+        return super.index( context );
     }
 
     @Override
