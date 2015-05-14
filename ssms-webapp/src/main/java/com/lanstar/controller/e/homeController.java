@@ -8,9 +8,56 @@
 package com.lanstar.controller.e;
 
 import com.lanstar.controller.HomeController;
+import com.lanstar.model.Profession;
+import com.lanstar.core.ViewAndMapModel;
+import com.lanstar.core.ViewAndModel;
+import com.lanstar.core.handle.HandleException;
+import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.core.handle.db.HandlerDbContext;
+import com.lanstar.db.JdbcRecord;
+import com.lanstar.db.JdbcRecordSet;
 
 /**
  * 首页
  */
 public class homeController extends HomeController {
+    @Override
+    public ViewAndModel index( HandlerContext context ) {
+        boolean needChooseProfessions = !context.getIdentityContxt()
+                                                .has( Profession.class );
+        if ( needChooseProfessions ) {
+            int tenantId = context.getTenant().getTenantId();
+            JdbcRecordSet professions = getProfessions( context.SYSTEM_DB, tenantId );
+            if ( professions.size() == 1 ) {
+                context.setValue( "profession", professions.get( 0 ).get( "SID" ) );
+                setTemplate( context );
+                needChooseProfessions = false;
+            }
+        }
+
+        ViewAndMapModel result = super.index( context ).put( "needChooseProfessions", needChooseProfessions );
+        if ( !needChooseProfessions ) result.put( "profession", context.getIdentityContxt().get( Profession.class ) );
+        return result;
+    }
+
+    public ViewAndModel getProfessions( HandlerContext context ) {
+        int tenantId = context.getTenant().getTenantId();
+
+        return context.returnWith().set( getProfessions( context.SYSTEM_DB, tenantId ) );
+    }
+
+    private JdbcRecordSet getProfessions( HandlerDbContext context, int tenantId ) {
+        return context.query( "SELECT B.SID, B.C_NAME FROM SYS_TENANT_E_PROFESSION A INNER JOIN SYS_PROFESSION B ON A.P_PROFESSION = B.SID WHERE A.R_TENANT = ?", tenantId );
+    }
+
+    public void setTemplate( HandlerContext context ) {
+        JdbcRecord profession = context.SYSTEM_DB.withTable( "SYS_PROFESSION" )
+                                                 .where( "SID=?", context.getValue( "profession" ) )
+                                                 .query();
+        try {
+            context.getIdentityContxt().set( new Profession( context.getIdentityContxt(), profession ) );
+        } catch ( Exception e ) {
+            throw new HandleException( e );
+        }
+    }
 }

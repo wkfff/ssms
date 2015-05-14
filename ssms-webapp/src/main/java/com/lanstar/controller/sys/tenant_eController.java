@@ -9,6 +9,7 @@ package com.lanstar.controller.sys;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.primitives.Ints;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
@@ -25,6 +26,7 @@ import com.lanstar.service.enterprise.EnterpriseProfessionService;
 import com.lanstar.service.enterprise.EnterpriseTenantService;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,9 +46,14 @@ public class tenant_eController extends DefaultController {
 
     @Override
     public ViewAndModel rec( HandlerContext context ) {
-        String sid = context.getValue( "sid" );
-        resolveMultiParameter( context, "SYS_PROFESSION" );
-        return super.rec( context );
+        JdbcRecordSet records = context.SYSTEM_DB.withTable( "SYS_TENANT_E_PROFESSION" )
+                                                 .where( "R_TENANT=?", context.getValue( "sid" ) )
+                                                 .queryList();
+        List<Object> professionValues = new ArrayList<>();
+        for ( JdbcRecord record : records ) {
+            professionValues.add( record.get( "P_PROFESSION" ) );
+        }
+        return super.rec( context ).put( "professionValues", professionValues );
     }
 
     @Override
@@ -56,22 +63,20 @@ public class tenant_eController extends DefaultController {
 
     public void reg( HandlerContext context ) {
     }
+
     /**
      * 表单.假删除
-     *
-     * @param context
-     *
-     * @return
      */
     @Override
     public ViewAndModel del( HandlerContext context ) {
         String sid = context.getValue( "sid" );
         if ( !Strings.isNullOrEmpty( sid ) ) {
             //更新数据字段B_DELETE的值
-            context.DB.withTable( this.TABLENAME ).value("B_DELETE", 1).where( "SID = ?", sid ).update();
+            context.DB.withTable( this.TABLENAME ).value( "B_DELETE", 1 ).where( "SID = ?", sid ).update();
         }
         return context.returnWith().set( "" );
     }
+
     /**
      * 列表数据
      */
@@ -81,7 +86,7 @@ public class tenant_eController extends DefaultController {
 
     protected ViewAndModel list( HandlerContext context,
             TableProcessor processor ) {
-        ARTable arTable = context.DB.withTable( this.TABLENAME ).where( "IFNULL(B_DELETE,'0')<>?", 1);
+        ARTable arTable = context.DB.withTable( this.TABLENAME ).where( "IFNULL(B_DELETE,'0')<>?", 1 );
         Map<String, String> filter = this.getFilter( context );
         if ( !filter.isEmpty() ) {
             arTable.where(
@@ -107,7 +112,6 @@ public class tenant_eController extends DefaultController {
         String sid = context.getValue( "sid" );
         ARTable table = context.DB.withTable( this.TABLENAME );
         this.mergerValues( table, context, MergerType.withSid( sid ) );
-        table.getValues().remove( "industryValue" );
         table.getValues().remove( "professionValues" );
         EnterpriseTenantService service = context.getEnterpriseTenantService();
         String tenantCode = context.getValue( "C_CODE" );
@@ -138,10 +142,10 @@ public class tenant_eController extends DefaultController {
         String professionValues = context.getValue( "professionValues" );
         ArrayList<Integer> professionList = new ArrayList<>();
         for ( String professionId : Splitter.on( ',' ).trimResults().omitEmptyStrings()
-                                            .splitToList( professionValues ) ) {
+                                            .split( professionValues ) ) {
             professionList.add( Integer.valueOf( professionId ) );
         }
-        professionService.setProfession( professionList );
+        professionService.setProfession( Ints.toArray( professionList ) );
 
         return context.returnWith().put( "SID", sid );
     }

@@ -8,6 +8,7 @@
 
 package com.lanstar.service.enterprise;
 
+import com.google.common.primitives.Ints;
 import com.lanstar.core.handle.db.HandlerDbContext;
 import com.lanstar.core.handle.identity.Tenant;
 import com.lanstar.core.handle.identity.TenantType;
@@ -76,18 +77,18 @@ public final class EnterpriseProfessionService extends TenantService {
      *
      * @param professions 专业ID列表
      */
-    public void setProfession( List<Integer> professions ) {
-        List<Integer> professionSet = listTenantProfession();
+    public void setProfession( int... professions ) {
+        int[] professionSet = listTenantProfession();
 
         // 处理要添加的
-        for ( Integer profession : professions ) {
-            if ( professionSet.contains( profession ) ) continue;
-            addProfession( profession );
+        for ( int professionToAdd : professions ) {
+            if ( Ints.contains( professions, professionToAdd ) ) continue;
+            addProfession( professionToAdd );
         }
         // 处理要删除的
-        for ( Integer profession : professionSet ) {
-            if ( professions.contains( profession ) ) continue;
-            removeProfession( profession );
+        for ( int professionToRemove : professionSet ) {
+            if ( Ints.contains( professions, professionToRemove ) ) continue;
+            removeProfession( professionToRemove );
         }
     }
 
@@ -96,7 +97,7 @@ public final class EnterpriseProfessionService extends TenantService {
      *
      * @return 专业ID列表
      */
-    public List<Integer> listTenantProfession() {
+    public int[] listTenantProfession() {
         JdbcRecordSet records = getIdentityContext().withTable( "SYS_TENANT_E_PROFESSION" )
                                                     .where( "R_TENANT=? AND S_TENANT=? AND P_TENANT=?",
                                                             target.getTenantId(),
@@ -106,7 +107,7 @@ public final class EnterpriseProfessionService extends TenantService {
         for ( JdbcRecord record : records ) {
             professions.add( (Integer) record.get( "SID" ) );
         }
-        return professions;
+        return Ints.toArray( professions );
     }
 
     /**

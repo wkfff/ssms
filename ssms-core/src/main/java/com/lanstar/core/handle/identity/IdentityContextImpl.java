@@ -12,6 +12,8 @@ import com.lanstar.common.helper.Asserts;
 import com.lanstar.db.DbContext;
 
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 class IdentityContextImpl implements IdentityContext {
     private Identity identity;
@@ -33,11 +35,6 @@ class IdentityContextImpl implements IdentityContext {
     }
 
     @Override
-    public DbContext getDbContext() throws SQLException {
-        return identity.getDbContext();
-    }
-
-    @Override
     public int getIdentityId() {
         return identity.getId();
     }
@@ -48,11 +45,40 @@ class IdentityContextImpl implements IdentityContext {
     }
 
     @Override
-    public int getTanendId() {return identity.getTenantId();}
+    public int getTenantId() {return identity.getTenantId();}
 
     @Override
     public String getTenantName() {return identity.getTenantName();}
 
     @Override
     public TenantType getTenantType() {return identity.getTenantType();}
+
+    @Override
+    public DbContext getDbContext() throws SQLException {
+        return identity.getDbContext();
+    }
+
+    private Map<Class<?>, Object> valueMap = new ConcurrentHashMap<>();
+
+    /** 将指定值与上下文绑定 */
+    @Override
+    public void set( Object value ) {
+        if ( value == null ) return;
+        valueMap.put( value.getClass(), value );
+    }
+
+    /** 根据值的类型从上下文中取出值 */
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T get( Class<T> clazz ) {
+        return (T) valueMap.get( clazz );
+    }
+
+    /**
+     * 判断当前上下文中是否有指定类型的值
+     */
+    @Override
+    public <T> boolean has( Class<T> clazz ) {
+        return valueMap.containsKey( clazz );
+    }
 }

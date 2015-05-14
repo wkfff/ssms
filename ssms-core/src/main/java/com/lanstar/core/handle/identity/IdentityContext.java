@@ -13,42 +13,36 @@ import com.lanstar.db.DbContext;
 import java.sql.SQLException;
 
 public interface IdentityContext {
-    /**
-     * 从上下文中获取用户标识。使用{@code Identity}表示。
-     */
+    /** 从上下文中获取用户标识。使用{@code Identity}表示。 */
     Identity getIdentity();
 
-    /**
-     * 检测当前上下文中的${@code Identity}是否为给定的类型。
-     *
-     * @param type 用于检测的类型
-     *
-     * @return 如果类型一致则返回true，否则返回false。
-     */
+    /** 检测当前上下文中的${@code Identity}是否为给定的类型。 */
     boolean is( TenantType type );
 
-    /**
-     * 获取用户上下文所对应的数据库。
-     *
-     * @return {@code DbContext}实例
-     *
-     * @throws SQLException
-     */
-    DbContext getDbContext() throws SQLException;
-
-    /**
-     * 获取用户ID。
-     */
+    /** 获取用户ID。 */
     int getIdentityId();
 
-    /**
-     * 获取用户名
-     */
+    /** 获取用户名 */
     String getIdentityName();
 
-    int getTanendId();
+    /** 获取租户ID */
+    int getTenantId();
 
+    /** 获取租户名称 */
     String getTenantName();
 
+    /** 获取租户类型 */
     TenantType getTenantType();
+
+    /** 获取用户上下文所对应的数据库。 */
+    DbContext getDbContext() throws SQLException;
+
+    /** 将指定值与上下文绑定 */
+    void set( Object value );
+
+    /** 根据值的类型从上下文中取出值 */
+    <T> T get( Class<T> clazz );
+
+    /** 判断当前上下文中是否有指定类型的值 */
+    <T> boolean has( Class<T> clazz );
 }

@@ -19,4 +19,8 @@ public class DS {
     public static DbContext getDbContext( String dbName ) {
         return App.getPlugin( IDbPlugin.class ).getDbContext( dbName );
     }
+
+    public static Iterable<DbContext> getDbContexts() {
+        return App.getPlugin( IDbPlugin.class ).getDbContexts();
+    }
 }
