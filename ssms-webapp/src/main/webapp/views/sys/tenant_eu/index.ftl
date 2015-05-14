@@ -37,7 +37,9 @@
         }
         window.location.href = 'rec.html?refer=new&pid=' +${pid};
     }
-
+    function doUpPsw(sid){
+    	window.location.href='psw.html?sid='+sid;
+    }
     $(function () {
         $('#dg_index').datagrid({
             title: '企业用户管理',
@@ -62,9 +64,9 @@
                         field: 'SID', title: '操作', width: 130, align: 'center',
                         formatter: function (value, row) {
                         	if(row.C_USER=='admin'){
-                        		 return  "<a href='#' onclick='doEdit(" + value + ")'>编辑</a>"
+                        		 return  "<a href='#' onclick='doEdit(" + value + ")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doUpPsw(" + value + ")'>修改密码</a>"
                         	}else{
-                        		 return  "<a href='#' onclick='doEdit(" + value + ")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel(" + value + ")'>删除</a>"
+                        		 return  "<a href='#' onclick='doEdit(" + value + ")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel(" + value + ")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doUpPsw(" + value + ")'>修改密码</a>"
                         	}
                         }
                     }
