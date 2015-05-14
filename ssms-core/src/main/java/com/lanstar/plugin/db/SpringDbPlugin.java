@@ -68,4 +68,10 @@ public class SpringDbPlugin implements IDbPlugin {
     public DbContext getDbContext( String dbName ) {
         return dbContextMap.get( dbName );
     }
+
+    /** 获取所有的数据库上下文，不包括主数据库上下文。 */
+    @Override
+    public Iterable<DbContext> getDbContexts(){
+        return dbContextMap.values();
+    }
 }

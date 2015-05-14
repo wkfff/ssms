@@ -29,4 +29,6 @@ public interface IDbPlugin extends IAppPlugin {
      * @see DbContext
      */
     DbContext getDbContext( String dbName );
+
+    Iterable<DbContext> getDbContexts();
 }
