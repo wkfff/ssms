@@ -8,18 +8,24 @@
 package com.lanstar.controller.sys;
 
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
+import com.lanstar.controller.TableProcessor;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
+import com.lanstar.db.DBPaging;
+import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
+import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.helper.easyui.EasyUIControllerHelper;
 import com.lanstar.service.enterprise.EnterpriseProfessionService;
 import com.lanstar.service.enterprise.EnterpriseTenantService;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * 企业租户表
@@ -38,6 +44,7 @@ public class tenant_eController extends DefaultController {
 
     @Override
     public ViewAndModel rec( HandlerContext context ) {
+        String sid = context.getValue( "sid" );
         resolveMultiParameter( context, "SYS_PROFESSION" );
         return super.rec( context );
     }
@@ -48,6 +55,49 @@ public class tenant_eController extends DefaultController {
     }
 
     public void reg( HandlerContext context ) {
+    }
+    /**
+     * 表单.假删除
+     *
+     * @param context
+     *
+     * @return
+     */
+    @Override
+    public ViewAndModel del( HandlerContext context ) {
+        String sid = context.getValue( "sid" );
+        if ( !Strings.isNullOrEmpty( sid ) ) {
+            //更新数据字段B_DELETE的值
+            context.DB.withTable( this.TABLENAME ).value("B_DELETE", 1).where( "SID = ?", sid ).update();
+        }
+        return context.returnWith().set( "" );
+    }
+    /**
+     * 列表数据
+     */
+    public ViewAndModel list( HandlerContext context ) {
+        return this.list( context, null );
+    }
+
+    protected ViewAndModel list( HandlerContext context,
+            TableProcessor processor ) {
+        ARTable arTable = context.DB.withTable( this.TABLENAME ).where( "IFNULL(B_DELETE,'0')<>?", 1);
+        Map<String, String> filter = this.getFilter( context );
+        if ( !filter.isEmpty() ) {
+            arTable.where(
+                    StringHelper.join( filter.keySet(), " and ", false ),
+                    filter.values().toArray() );
+        }
+        if ( processor != null ) processor.process( arTable );
+        DBPaging paging = context.getPaging();
+        if ( paging == null ) {
+            JdbcRecordSet list = arTable.queryList();
+            return context.returnWith().set( list );
+        } else {
+            JdbcPageRecordSet list = arTable.queryPaging( paging );
+            return context.returnWith().set(
+                    EasyUIControllerHelper.toDatagridResult( list ) );
+        }
     }
 
     @Override
