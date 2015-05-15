@@ -7,27 +7,21 @@
  */
 package com.lanstar.controller.sys;
 
-import java.util.ArrayList;
-import java.util.Map;
-
-import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.primitives.Ints;
 import com.lanstar.common.helper.StringHelper;
 import com.lanstar.controller.ActionValidator;
 import com.lanstar.controller.DefaultController;
 import com.lanstar.controller.TableProcessor;
-import com.lanstar.controller.BaseController.MergerType;
 import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.DBPaging;
-import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.JdbcRecordSet;
 import com.lanstar.db.ar.ARTable;
 import com.lanstar.db.dialect.JdbcPageRecordSet;
 import com.lanstar.helper.easyui.EasyUIControllerHelper;
-import com.lanstar.service.enterprise.EnterpriseProfessionService;
-import com.lanstar.service.enterprise.EnterpriseTenantService;
+import com.lanstar.service.review.ReviewTenantService;
+
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -114,12 +108,11 @@ public class tenant_rController extends DefaultController {
         String sid = context.getValue( "sid" );
         ARTable table = context.DB.withTable( this.TABLENAME );
         this.mergerValues( table, context, MergerType.withSid( sid ) );
-        EnterpriseTenantService service = context.getEnterpriseTenantService();
-        String tenantCode = context.getValue( "C_CODE" );
+        ReviewTenantService service = context.getReviewTenantService();
         // 根据sid的存在设置where语句
         if ( StringHelper.isBlank( sid ) || !StringHelper.vaildValue( sid ) ) {
             // 生成租户特征码
-            tenantCode = service.buildSignature( (String) context.getValue( "P_COUNTY" ) );
+            String tenantCode = service.buildSignature( (String) context.getValue( "P_COUNTY" ) );
             table.value( "C_CODE", tenantCode );
             // 保存数据
             table.insert();

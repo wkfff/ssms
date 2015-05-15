@@ -28,6 +28,8 @@ import com.lanstar.service.TenantService;
 import com.lanstar.service.attachtext.AttachTextService;
 import com.lanstar.service.enterprise.EnterpriseTenantService;
 import com.lanstar.service.file.FileService;
+import com.lanstar.service.government.GovernmentTenantService;
+import com.lanstar.service.review.ReviewTenantService;
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
 import java.lang.reflect.Constructor;
@@ -230,6 +232,14 @@ public class HandlerContext implements AutoCloseable {
 
     public EnterpriseTenantService getEnterpriseTenantService() {
         return getService( EnterpriseTenantService.class );
+    }
+
+    public ReviewTenantService getReviewTenantService() {
+        return getService( ReviewTenantService.class );
+    }
+
+    public GovernmentTenantService getGovernmentTenantService() {
+        return getService( GovernmentTenantService.class );
     }
 
     public Identity getIdentity() {
