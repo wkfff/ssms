@@ -10,7 +10,7 @@ package com.lanstar.db;
 
 import org.springframework.util.LinkedCaseInsensitiveMap;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 public class JdbcRecord extends LinkedCaseInsensitiveMap<Object> {
     private static final long serialVersionUID = 3629559736555206157L;
@@ -20,10 +20,7 @@ public class JdbcRecord extends LinkedCaseInsensitiveMap<Object> {
         if ( value == null ) return "";
         // value is byte[]
         if ( "[B".equals( value.getClass().getName() ) ) {
-            try {
-                return new String( (byte[]) value, "UTF-8" );
-            } catch ( UnsupportedEncodingException ignored ) {
-            }
+            return new String( (byte[]) value, StandardCharsets.UTF_8 );
         }
         return String.valueOf( value );
     }
