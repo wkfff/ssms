@@ -3625,7 +3625,7 @@ ALTER TABLE `ssms`.`sys_para_area`
 UPDATE `sys_para_area` a
 SET R_CODE = (
     SELECT c_code FROM (SELECT * FROM sys_para_area) B WHERE b.sid = a.r_parent
-)
+);
 
 
 /*!40101 SET SQL_MODE = @OLD_SQL_MODE */;

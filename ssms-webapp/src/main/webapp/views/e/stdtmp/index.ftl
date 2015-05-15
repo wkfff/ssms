@@ -7,7 +7,7 @@
 </#assign>
 <@layout.doLayout script=script>
 <div class="easyui-layout" data-options="fit:true">
-    <div data-options="region:'west', title:'功能导航', split:true" style="width: 200px">
+    <div data-options="region:'west', title:'达标体系', split:true" style="width: 200px">
         <ul data-bind="treeValue:selectedNode,easyuiOptions:treeSettings"></ul>
     </div>
     <div data-options="region:'center', border:false">
