@@ -9,7 +9,7 @@ $(document).ready(function() {
 });
     function svaeRInfo(){
        if(($("#C_PASSWD").val())!=(($("#C_PASSWD1").val()))){
-            alert("两次输入密码一致");
+            alert("两次输入密码不一致");
              return;
         }
        var  v=$("#C_PASSWD").val($.md5($("#C_PASSWD").val()));

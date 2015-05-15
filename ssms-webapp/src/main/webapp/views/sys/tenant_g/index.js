@@ -5,12 +5,12 @@ function ViewModel() {
         selectItem: ko.observable()
     };
     var search = {
-        C_NAME: ko.observable(),
+        C_NAME: ko.observable()
     };
 
     var settings = {
         gridSettings: {
-            title: '评审机构列表',
+            title: '政府机构列表',
             url: 'list.json',
             idField: 'SID',
             rownumbers: true,
@@ -23,8 +23,10 @@ function ViewModel() {
                 [
                     {field: 'C_NAME', title: '单位名称', width: 200},
                     {field: 'C_CODE', title: '租户编码', width: 100},
-                    {field: 'C_NUMBER', title: '营业执照注册号', width: 100},
-                    {field: 'C_ADDR', title: '地址', width: 150},
+                    {field: 'S_PROVINCE', title: '省', width:90},
+                    {field: 'S_CITY', title: '市', width: 90},
+                    {field: 'S_COUNTY', title: '区(县)', width: 90},
+                    {field: 'C_ADDR', title: '地址', width: 110},
                     {
                         field: 'SID', title: '操作', width: 130, align: 'center',
                         formatter: function (value, row) {
@@ -75,5 +77,5 @@ function doEdit(sid) {
     window.location.href = 'rec.html?refer=edit&sid='+sid;
 }
 function doListUser(sid) {
-    window.location.href = '/sys/tenant_ru/index.html?pid='+sid;
+    window.location.href = '/sys/tenant_gu/index.html?pid='+sid;
 }
