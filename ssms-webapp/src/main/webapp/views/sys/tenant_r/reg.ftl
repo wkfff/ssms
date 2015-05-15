@@ -18,6 +18,8 @@
         C_ORG: ko.observable(),
         N_FULLTIME: ko.observable(),
         S_LEVEL: ko.observable(),
+        P_LEVEL: ko.observable(),
+        SID:'${SID!}'
     };
     var extModel = {
     };
@@ -36,6 +38,11 @@
     });
 
     var settings = {
+        cycleSource: ko.observableArray(${json(_SYS_LEVEL_)}),
+        paramViewSettings: {
+            valueField: 'key',
+            textField: 'value'
+        },
         provinceSetting: {
             url: '/sys/para_area/list.json',
             queryParams: {N_LEVEL: 1},
@@ -101,13 +108,13 @@
             <p class="ue-clear">
                 <label>专职人员</label>
                 <span class="control">
-                    <input data-bind="textboxValue: N_FULLTIME" required/>
+                    <input data-bind="textboxValue: N_FULLTIME" />
                 </span>
             </p>
             <p class="ue-clear">
                 <label>评审专业级别</label>
                 <span class="control">
-                    <input data-bind="textboxValue: S_LEVEL" required/>
+                    <input data-bind="comboboxSource:cycleSource,comboboxValue:P_LEVEL,comboboxText:S_LEVEL,easyuiOptions:paramViewSettings"/>
                 </span>
             </p>
             

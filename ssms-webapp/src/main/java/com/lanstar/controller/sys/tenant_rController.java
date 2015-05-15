@@ -99,12 +99,14 @@ public class tenant_rController extends DefaultController {
      */
     @Override
     public ViewAndModel rec( HandlerContext context ) {
-        // TODO 这边后面可以设默认值context.setValue( name, value );
-        // 1. 从参数中读取pid值
+        resolveMultiParameter( context, "SYS_LEVEL" );
         return super.rec( context );
     }
 
     public void reg( HandlerContext context ) {
+      //list参数值
+        resolveMultiParameter( context, "SYS_LEVEL" );
+       
     }
 
     @Override
