@@ -1,7 +1,9 @@
 <#import "/layout/_list.ftl" as layout/>
 <#assign script>
+    <script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">
-function doSearch(id) {
+    ko.applyBindings(new ViewModel());
+/* function doSearch(id) {
     $("#" + id).datagrid('load', {
         C_NAME : $("input[name='C_NAME']", "#" + id + "_tb").val(),
         S_PROVINCE : $("input[name='S_PROVINCE']", "#" + id + "_tb").val(),
@@ -62,18 +64,14 @@ $(function () {
                     }}
         ]]
     });
-});
+}); */
 </script>
 </#assign> 
 <@layout.doLayout script>
-<table id="dg_index"></table>
-<div id="dg_index_tb" style="padding:5px;height:auto">
-            单位名称: <input class="easyui-textbox" style="width:90px" name="C_NAME">
-             省:<input class="easyui-textbox" style="width:90px" name="S_PROVINCE">
-             市:<input class="easyui-textbox" style="width:90px" name="S_CITY">
-             县:<input class="easyui-textbox" style="width:90px" name="S_COUNTY">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_index')">查询</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_index')" title="清空查询条件">重置</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-new" plain="true" onclick="doNew()">新增</a>
+<div id="toolbar" class="z-toolbar">
+            单位名称: <input style="width: 120px" data-bind="textboxValue: C_NAME"/>
+    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: searchClick">查询</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">注册评审单位</a>
 </div>
+<table id="dg_index" data-bind="datagridValue:selectItem,easyuiOptions:gridSettings"></table>
 </@>

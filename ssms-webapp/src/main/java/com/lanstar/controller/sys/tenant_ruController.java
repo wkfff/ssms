@@ -37,6 +37,32 @@ public class tenant_ruController extends DefaultController {
         return super.rec( context ).put( "tenant", record );
     }
 
+    public void psw( HandlerContext context ) {
+    }
+    /*
+     * 修改密码
+     * @param context
+     * @return
+     */
+    public ViewAndModel updtePSW( HandlerContext context ) {
+        String sid = context.getValue( "SID" );
+        String oldPwd = context.getValue( "oldPwd" );
+        String newPwd = context.getValue( "newPwd" );
+
+        JdbcRecord record = context.DB.withTable( this.TABLENAME )
+                                      .where( "SID=? and UPPER(C_PASSWD)=?",
+                                              sid, oldPwd.toUpperCase() )
+                                      .query();
+        boolean success = false;
+        if ( record != null ) {
+            success = context.DB.withTable( this.TABLENAME )
+                                .value( "C_PASSWD", newPwd )
+                                .where( "SID=?", sid )
+                                .update() > 0;
+        }
+        return context.returnWith().set( success );
+    }
+
     /*
      * (non-Javadoc)
      * 

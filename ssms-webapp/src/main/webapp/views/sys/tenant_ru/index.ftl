@@ -24,6 +24,9 @@ function doDel(sid) {
     });
     
 }
+function doUpPsw(sid){
+    window.location.href='psw.html?sid='+sid;
+}
 function doEdit(sid) {
     window.location.href = 'rec.html?refer=edit&sid='+sid+'&pid=${pid}';
 }
@@ -58,8 +61,13 @@ $(function () {
             {field: 'T_BIRTH', title: '出生日期', width: 70},
             {field: 'SID', title: '操作', width: 160,align:'center',
                 formatter:function(value,row){
-                        return "<a href='#' onclick='doEdit("+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>";
-                    }}
+                    if(row.C_USER=='admin'){
+                        return  "<a href='#' onclick='doEdit(" + value + ")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doUpPsw(" + value + ")'>修改密码</a>"
+                   }else{
+                        return  "<a href='#' onclick='doEdit(" + value + ")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel(" + value + ")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doUpPsw(" + value + ")'>修改密码</a>"
+                   }
+                    }
+            }
         ]]
     });
 });

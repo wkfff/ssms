@@ -2,23 +2,22 @@
 <#assign script>
 <script type="text/javascript">
     var model = {
-        C_NAME: ko.observable('${C_NAME!}'),
-        C_EMAIL: ko.observable('${C_EMAIL!}'),
-        P_PROVINCE: ko.observable('${P_PROVINCE!}'),
-        S_PROVINCE: ko.observable('${S_PROVINCE!}'),
-        P_CITY: ko.observable('${P_CITY!}'),
-        S_CITY: ko.observable('${S_CITY!}'),
-        P_COUNTY: ko.observable('${P_COUNTY!}'),
-        S_COUNTY: ko.observable('${S_COUNTY!}'),
-        C_ADDR: ko.observable('${C_ADDR!}'),
-        C_TEL: ko.observable('${C_TEL!}'),
-        C_FAX: ko.observable('${C_FAX!}'),
-        C_ZIP: ko.observable('${C_ZIP!}'),
-        C_NUMBER: ko.observable('${C_NUMBER!}'),
-        C_ORG: ko.observable('${C_ORG!}'),
-        N_FULLTIME: ko.observable('${N_FULLTIME!}'),
-        S_LEVEL: ko.observable('${S_LEVEL!}'),
-        SID: '${SID!}'
+        C_NAME: ko.observable(),
+        C_EMAIL: ko.observable(),
+        P_PROVINCE: ko.observable(),
+        S_PROVINCE: ko.observable(),
+        P_CITY: ko.observable(),
+        S_CITY: ko.observable(),
+        P_COUNTY: ko.observable(),
+        S_COUNTY: ko.observable(),
+        C_ADDR: ko.observable(),
+        C_TEL: ko.observable(),
+        C_FAX: ko.observable(),
+        C_ZIP: ko.observable(),
+        C_NUMBER: ko.observable(),
+        C_ORG: ko.observable(),
+        N_FULLTIME: ko.observable(),
+        S_LEVEL: ko.observable(),
     };
     var extModel = {
     };
@@ -66,21 +65,6 @@
                     }
                 }, 'json');
             }
-        },
-        deleteClick: function () {
-            $.messager.confirm("删除确认", "您确认删除当前的信息吗？", function (deleteAction) {
-                if (deleteAction) {
-                    $.get("del.do", {sid: '${sid!}'}, function (data) {
-                        if (data == "true" || data == "\"\"") {
-                            $.messager.alert("提示", "删除成功");
-                            window.location.href = 'index.html';
-                        }
-                        else {
-                            $.messager.alert("提示", data);
-                        }
-                    });
-                }
-            });
         }
     };
 
@@ -91,18 +75,11 @@
 <div class="easyui-panel" title="评审机构信息">
     <div class="z-toolbar">
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-cancel" data-bind="click: deleteClick">删除</a>
         <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="window.location.href='${Referer!}';">返回</a>
     </div>
 
     <form class="form" style="padding: 20px">
         <div class="easyui-panel form" style="padding:10px" title="基本信息">
-            <p class="ue-clear">
-                <label>租户编码</label>
-                <span class="control">
-                    <input class="readonly" type="text" value="${C_CODE}" readonly/>
-                </span>
-            </p>
             <p class="long-input ue-clear">
                 <label>单位名称</label>
                 <span class="control">
