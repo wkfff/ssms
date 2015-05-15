@@ -28,11 +28,11 @@ public class SqlTemplate {
      * @return 解析后的SQL
      * @throws Exception 
      */
-    public static String parse(String src,ITemplateContext context){
+    public static String parse(String src,TemplateContext context){
         try{
             FreemarkerModel model = new FreemarkerModel( context );
             StringTemplateBean bean = new StringTemplateBean(src, model);
-            TemplateHelper.render( bean );
+            TemplateHelper.evaluate( bean );
             return bean.getStringWriter().toString();
         }catch(Exception e){
             return "";
@@ -45,8 +45,8 @@ public class SqlTemplate {
         private final BeansWrapper wrapper = new BeansWrapper( FreemarkerPlugin.VERSION );
         private final TemplateContext context;
 
-        public FreemarkerModel( ITemplateContext context ) {
-            this.context = BeanHelper.newInstance( context.getClass() );
+        public FreemarkerModel( TemplateContext context ) {
+            this.context = context;
             if ( !wrapper.isSimpleMapWrapper() ) wrapper.setSimpleMapWrapper( true );
         }
 

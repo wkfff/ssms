@@ -8,20 +8,33 @@
 
 package com.lanstar.plugin.scheduler;
 
+import com.lanstar.app.App;
 import com.lanstar.app.container.ContainerHelper;
+import com.lanstar.common.helper.BeanHelper;
+import com.lanstar.common.helper.XmlHelper;
 import com.lanstar.common.log.LogHelper;
 import com.lanstar.plugin.IAppPlugin;
+
 import org.quartz.*;
+import org.quartz.impl.JobDetailImpl;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.impl.triggers.CronTriggerImpl;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Set;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * 任务调度器
  */
 public class QuartzPlugin implements IAppPlugin {
     private Scheduler scheduler;
+    private String confpath = "/WEB-INF/scheduler.xml";
 
     @Override
     public void startup() {
@@ -42,7 +55,7 @@ public class QuartzPlugin implements IAppPlugin {
         }
     }
 
-    private void doStartup() throws SchedulerException {
+    private void doStartup() throws SchedulerException, ParserConfigurationException, IOException, SAXException {
         if ( scheduler == null ) {
             scheduler = StdSchedulerFactory.getDefaultScheduler();
         } else {
@@ -50,80 +63,53 @@ public class QuartzPlugin implements IAppPlugin {
             scheduler = StdSchedulerFactory.getDefaultScheduler();
         }
 
-//        // 读出配置文件的定义
-//        Element root = XmlHelper.getDocumentElement( App.getServletContext().getResourceAsStream( this.confpath ) );
-//        XmlHelper.selectNodes( root, "job", new XmlHelper.INodeParser(){
-//            private int index = 0;
-//
-//            @Override
-//            public void parse( Element item ){
-//                String taskid = XmlUtil.getAttribute( item, "id", "__T_" + ( ++index ) );
-//                String caption = XmlUtil.getAttribute( item, "caption", "未命名服务" );
-//                String cron = XmlUtil.getAttribute( item, "cron", "" );
-//
-//                Class<? extends ScheduleTaskAbstr<?>> task = SchTaskFactory.getClass( XmlUtil.getAttribute( item, "type", "java" ), XmlUtil.getAttribute( item, "value", "" ) );
-//
-//                if( task == null ) return;
-//
-//                // 获得配置的参数
-//                ScheduleTaskAbstr<?> t = ClassUtil.newInstance( task );
-//                Object params = null;
-//                try{
-//                    params = t.getParameter( item );
-//                } catch(Exception e1){
-//                    throw new WebException( "读取自动任务配置项目[" + caption + "]的参数错误" );
-//                }
-//
-//                try{
-//                    // 置换成对应的JOB类
-//                    JobDetail jobdetail = new JobDetail( taskid, Scheduler.DEFAULT_GROUP, task );
-//                    jobdetail.getJobDataMap().put( "parameter", params );
-//                    jobdetail.setName( caption );
-//                    CronTrigger trigger = new CronTrigger( taskid + "__Trigger", null, cron );
-//                    scheduler.scheduleJob( jobdetail, trigger );
-//                    LogHelper.debug( this.getClass(), "--->载入自动调度任务：" + caption );
-//                } catch(ParseException e){
-//                    LogHelper.warn( this.getClass(), "--->无法载入自动调度任务：" + caption + "==>" + e.getMessage() );
-//                    e.printStackTrace();
-//                } catch(SchedulerException e){
-//                    LogHelper.warn( this.getClass(), "--->无法载入自动调度任务：" + caption + "==>" + e.getMessage() );
-//                    e.printStackTrace();
-//                }
-//            }
-//        } );
-//
-//        //工作提醒定时任务
-//        String GET_ALL_WR_SQL = "SELECT SID,C_CAPTION,C_CRON FROM SYS_WR_MODEL WHERE B_VALID='1' AND B_TIMEER='1'";
-//        DB.query( GET_ALL_WR_SQL, new IRowAction(){
-//            @Override
-//            public void process( ResultSet rs, int index ) throws Exception{
-//                String sid = StringUtil.trim( rs.getString( 1 ) );
-//                String name = StringUtil.trim( rs.getString( 2 ) );
-//                String cron = StringUtil.trim( rs.getString( 3 ) );
-//
-//                if( !StringUtil.isBlank( cron ) ){
-//                    String taskid = StringUtil.getUUID();
-//                    try{
-//                        scheduler.pauseTrigger( name, Scheduler.DEFAULT_GROUP );//停止触发器
-//                        scheduler.unscheduleJob( name, Scheduler.DEFAULT_GROUP );//移除触发器
-//                        scheduler.deleteJob( name, Scheduler.DEFAULT_GROUP );//删除任务
-//                        // 置换成对应的JOB类
-//                        JobDetail jobdetail = new JobDetail( taskid, Scheduler.DEFAULT_GROUP, WorkRemindTask.class );
-//                        jobdetail.getJobDataMap().put( "parameter", sid );
-//                        jobdetail.setName( name );
-//                        CronTrigger trigger = new CronTrigger( taskid + "__Trigger", null, cron );
-//                        scheduler.scheduleJob( jobdetail, trigger );
-//                        LogHelper.debug( this.getClass(), "--->载入自动调度任务：" + name );
-//                    } catch(ParseException e){
-//                        LogHelper.warn( this.getClass(), "--->无法载入自动调度任务：" + name + "==>" + e.getMessage() );
-//                        e.printStackTrace();
-//                    } catch(SchedulerException e){
-//                        LogHelper.warn( this.getClass(), "--->无法载入自动调度任务：" + name + "==>" + e.getMessage() );
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        } );
+        // 读出配置文件的定义
+        Element root = XmlHelper.getDocumentElement( App.getServletContext().getResourceAsStream( this.confpath ) );
+        XmlHelper.selectNodes( root, "job", new XmlHelper.INodeParser(){
+            private int index = 0;
+
+            @Override
+            public void parse( Element item ){
+                String taskid = XmlHelper.getAttribute( item, "id", "__T_" + ( ++index ) );
+                String caption = XmlHelper.getAttribute( item, "caption", "未命名服务" );
+                String cron = XmlHelper.getAttribute( item, "cron", "" );
+
+                Class<? extends ScheduleTaskAbstr<?>> task = null;
+                try {
+                    task = SchTaskFactory.getClass( XmlHelper.getAttribute( item, "type", "java" ), XmlHelper.getAttribute( item, "value", "" ) );
+                } catch ( Exception e2 ) {
+                   
+                    e2.printStackTrace();
+                }
+
+                if( task == null ) return;
+
+                // 获得配置的参数
+                ScheduleTaskAbstr<?> t = BeanHelper.newInstance( task );
+                Object params = null;
+                try{
+                    params = t.getParameter( item );
+                } catch(Exception e1){
+                    e1.printStackTrace();
+//                    throw new Exception( "读取自动任务配置项目[" + caption + "]的参数错误" );
+                }
+
+                try{
+                    // 置换成对应的JOB类
+                    JobDetail jobdetail = new JobDetailImpl( taskid, Scheduler.DEFAULT_GROUP, task );
+                    jobdetail.getJobDataMap().put( "parameter", params );
+                    CronTrigger trigger = new CronTriggerImpl( taskid + "__Trigger", null, cron );
+                    scheduler.scheduleJob( jobdetail, trigger );
+                    LogHelper.debug( this.getClass(), "--->载入自动调度任务：" + caption );
+                } catch(SchedulerException e){
+                    LogHelper.warn( this.getClass(), "--->无法载入自动调度任务：" + caption + "==>" + e.getMessage() );
+                    e.printStackTrace();
+                } catch ( ParseException e ) {
+                    e.printStackTrace();
+                }
+            }
+        } );
+
         scheduler.start();
     }
 

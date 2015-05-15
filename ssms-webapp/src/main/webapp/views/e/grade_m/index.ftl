@@ -111,7 +111,7 @@
         <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-new" onclick="doNew();">开始新的自评</a>
     </div>
     
-    <div style="padding:5px;">
+    <div style="padding-top:5px;">
     <table id="dg_draft"></table>
         <div id="dg_draft_tb" style="padding:5px;height:auto">
                 自评日期从: <input class="easyui-datebox" style="width:90px" name="T_START">
@@ -119,7 +119,7 @@
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_draft')">查询</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_draft')" title="清空查询条件">重置</a>
         </div>
-    <br>
+    </div><div style="padding-top:5px;">
     <table id="dg_history"></table>
         <div id="dg_history_tb" class="toolbar ue-clear">
                 自评日期从: <input class="easyui-datebox" style="width:90px" name="T_START">

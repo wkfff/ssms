@@ -32,4 +32,11 @@ public class TemplateContext implements ITemplateContext{
         return this.variables.get(name);
     }
 
+    public Map<String, String> getVariables() {
+        return variables;
+    }
+
+    public void setVariables( Map<String, String> variables ) {
+        this.variables = variables;
+    }
 }

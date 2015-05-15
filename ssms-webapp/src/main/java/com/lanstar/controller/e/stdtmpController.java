@@ -54,11 +54,11 @@ public class stdtmpController extends DefaultController {
     public ViewAndModel tree( HandlerContext context ) {
         String template = context.getValue( "template" );
         JdbcRecordSet folder = context.SYSTEM_DB.query(
-                "SELECT CONCAT('D-',SID) SID, C_NAME, CONCAT('D-',R_SID) R_SID\n"
+                "SELECT CONCAT('D-',CONVERT(SID,CHAR)) SID, C_NAME, CONCAT('D-',CONVERT(R_SID,CHAR)) R_SID\n"
                         + "FROM SSM_STDTMP_FOLDER\n"
                         + "WHERE R_TEMPLATE = ? \n"
                         + "UNION ALL \n"
-                        + "SELECT CONCAT('F-',SID) SID, C_NAME, CONCAT('D-',R_SID) R_SID FROM SSM_STDTMP_FILE\n"
+                        + "SELECT CONCAT('F-',CONVERT(SID,CHAR)) SID, C_NAME, CONCAT('D-',CONVERT(R_SID,CHAR)) R_SID FROM SSM_STDTMP_FILE\n"
                         + "WHERE R_SID IN (\n"
                         + "  SELECT SID FROM SSM_STDTMP_FOLDER\n"
                         + "  WHERE R_TEMPLATE = ?\n"
