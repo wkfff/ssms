@@ -10,7 +10,7 @@
         T_DATE_01: ko.observable('${T_DATE_01!}'),
         T_DATE_02: ko.observable('${T_DATE_02!}'),
         T_DATE_03: ko.observable('${T_DATE_03!}'),
-        SID: '${SID!}',
+        SID: '${SID!}'
     };
     var extModel = {
         htmlContent: ko.observable()
@@ -19,22 +19,22 @@
         htmleditSettings: {
             table: "STDTMP_FILE_01",
             field: 'C_CONTENT',
-            sid: '${SID!}',
+            sid: '${SID!}'
         }
     };
     var events = {
         saveClick: function () {
             $.post('save.do', model, function (result) {
-                if (result.SID)
-                    $.messager.alert("提示", "保存成功", "info", function () {
-                        window.location.href = 'rec.html?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                if (result.SID) {
+                    settings.htmleditSettings.save(function (editorResult) {
+                        $.messager.alert("提示", "保存成功", "info", function () {
+                            window.location.href = 'rec.html?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                        });
                     });
-                else {
+                } else {
                     $.messager.alert("提示", "保存失败", "warning");
                 }
             }, "json");
-
-            settings.htmleditSettings.save();
         }
     };
 
@@ -44,7 +44,7 @@
 <@layout.doLayout script>
 <div class="z-toolbar">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-    <a class="easyui-linkbutton" onclick="window.location.href='${referer}&backURL=${backURL}'" plain="true" iconCls="icon-undo">返回</a>
+    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer}'">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
     <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
