@@ -6,7 +6,7 @@
         oldPwd: ko.observable(),
         newPwd: ko.observable(),
         confirmPwd: ko.observable(),
-        SID: '${sid!}'
+        SID: ko.observable('${sid!}')
     };
     var events = {
         updateClick: function () {
@@ -46,21 +46,21 @@
             <p class="long-input ue-clear">
                 <label>旧密码</label>
                 <span class="control">
-                    <input data-bind="textboxValue: oldPwd" required/>
+                    <input data-bind="textboxValue: oldPwd" type="password" required/>
                 </span>
             </p>
 
             <p class="long-input ue-clear">
                 <label>新密码</label>
                 <span class="control">
-                    <input data-bind="textboxValue: newPwd" required/>
+                    <input data-bind="textboxValue: newPwd" type="password" required/>
                 </span>
             </p>
 
             <p class="long-input ue-clear">
                 <label>确认密码</label>
                 <span class="control">
-                    <input data-bind="textboxValue: confirmPwd" required/>
+                    <input data-bind="textboxValue: confirmPwd" type="password"  required/>
                 </span>
             </p>
         </div>
