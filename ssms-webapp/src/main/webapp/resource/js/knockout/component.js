@@ -1334,14 +1334,16 @@ ko.bindingHandlers.formValue = {
                     options = options();
                 }
                 options.$element = $(element);
-                options.save = function () {
+                options.save = function (callback) {
                     var postData = {
                         table: options.table,
                         field: options.field,
                         sid: options.sid,
                         content: editor.html()
                     };
-                    $.post('/sys/attachtext/save.json', postData);
+                    $.post('/sys/attachtext/save.json', postData, function(result){
+                        if (callback!=null && utils.isFunction(callback)) callback(result);
+                    });
                 };
                 options.load = function () {
                     $.post("/sys/attachtext/get.json", {

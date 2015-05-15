@@ -78,9 +78,6 @@ public class tenant_rController extends DefaultController {
 
     @Override
     public ViewAndModel index( HandlerContext context ) {
-        JdbcRecordSet records = context.DB.withTable( "SYS_PARA_AREA" )
-                                          .orderby( "N_LEVEL, C_CODE" )
-                                          .queryList();
         return super.index( context );
     }
 
