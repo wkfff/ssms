@@ -1,1 +1,1 @@
-mvn package tomcat7:redeploy
+mvn clean package tomcat7:redeploy
