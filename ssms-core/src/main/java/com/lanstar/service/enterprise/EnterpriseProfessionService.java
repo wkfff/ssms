@@ -75,19 +75,19 @@ public final class EnterpriseProfessionService extends TenantService {
     /**
      * 设置当前企业的专业信息
      *
-     * @param professions 专业ID列表
+     * @param newProfessions 专业ID列表
      */
-    public void setProfession( int... professions ) {
-        int[] professionSet = listTenantProfession();
+    public void setProfession( int... newProfessions ) {
+        int[] tenantProfession = listTenantProfession();
 
         // 处理要添加的
-        for ( int professionToAdd : professions ) {
-            if ( Ints.contains( professions, professionToAdd ) ) continue;
+        for ( int professionToAdd : newProfessions ) {
+            if ( Ints.contains( tenantProfession, professionToAdd ) ) continue;
             addProfession( professionToAdd );
         }
         // 处理要删除的
-        for ( int professionToRemove : professionSet ) {
-            if ( Ints.contains( professions, professionToRemove ) ) continue;
+        for ( int professionToRemove : tenantProfession ) {
+            if ( Ints.contains( newProfessions, professionToRemove ) ) continue;
             removeProfession( professionToRemove );
         }
     }
@@ -133,20 +133,6 @@ public final class EnterpriseProfessionService extends TenantService {
                      .value( "P_TENANT", target.getTenantType().getName() )
                      .save();
 
-                return cloneTemplate( professionId );
-            }
-        } );
-    }
-
-    private boolean cloneTemplate( final int professionId ) {
-        return target.transaction( new HandlerDbContext.IAtom() {
-            @Override
-            public boolean execute( HandlerDbContext dbContext ) throws Exception {
-                // 克隆模板
-                try ( ProfessionTemplateService service = ProfessionTemplateService
-                        .forProfession( professionId ) ) {
-                    service.cloneTo( target );
-                }
                 return true;
             }
         } );
