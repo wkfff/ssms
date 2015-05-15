@@ -5,7 +5,7 @@ function ViewModel() {
         selectItem: ko.observable()
     };
     var search = {
-        C_NAME: ko.observable(),
+        C_NAME: ko.observable()
     };
 
     var settings = {
