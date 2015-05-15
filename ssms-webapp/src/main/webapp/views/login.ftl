@@ -104,11 +104,11 @@
         var pwd = nochange ? $('#password').val() : $.md5($('#password').val());
         var usr = $('#username').val();
         if ($('#remember').prop("checked")) {
-            Cookies.set('pwd', pwd);
+            Cookies.set('pwd', pwd, { expires: 7 });
         }
         else Cookies.remove('pwd');
-        Cookies.set('usr', usr);
-        Cookies.set('remember', $('#remember').prop("checked"));
+        Cookies.set('usr', usr, { expires: 7 });
+        Cookies.set('remember', $('#remember').prop("checked"), { expires: 7 });
         var parms = {
             username: usr,
             password: pwd,
