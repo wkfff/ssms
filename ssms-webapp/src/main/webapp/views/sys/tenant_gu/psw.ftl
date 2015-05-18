@@ -26,7 +26,7 @@
                             window.location.href = '${Referer!}';
                         })
                     } else {
-                        $.messager.alert("提示", "密码修改失败");
+                        $.messager.alert("提示", "密码修改失败")
                     }
                 }, 'json');
             }

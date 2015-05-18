@@ -57,7 +57,20 @@ public class XmlHelper {
         if ( v == null || v.length() == 0 ) return v;
         else return v.trim();
     }
-
+    
+    /**
+     * 获得XML节点的去除头尾空白字符值，如果为空则取默认值
+     * @param item
+     * @param tag
+     * @param defaultValue
+     * @return
+     */
+    public static String getAttribute( Element item, String tag,String defaultValue ) {
+        String v = item.getAttribute( tag );
+        if ( v == null || v.length() == 0 ) return defaultValue;
+        else return v.trim();
+    }
+    
     /**
      * 解析文件的指定节点
      */

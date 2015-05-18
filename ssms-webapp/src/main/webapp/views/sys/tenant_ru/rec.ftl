@@ -10,11 +10,11 @@ $(document).ready(function() {
 });
     function svaeRInfo(){
        if(($("#C_PASSWD").val())!=(($("#C_PASSWD1").val()))){
-            alert("两次输入密码一致");
+            alert("两次输入密码不一致");
              return;
         }
         var  v=$("#C_PASSWD").val($.md5($("#C_PASSWD").val()));
-        $("input[name='C_PASSWD']").val(v.val())
+        $("input[name='C_PASSWD']").val(v.val());
         doSave();
     }
     
@@ -31,7 +31,7 @@ $(document).ready(function() {
             },
             success: function(data){
                 $.messager.alert('保存','保存成功！');
-                window.location.href='index.html?pid='+${pid!}
+                window.location.href='index.html?pid='+${pid!};
             }
         });
     }
@@ -42,7 +42,7 @@ $(document).ready(function() {
                         $.get("del.do", {sid:'${sid!}'}, function (data) {
                             if (data == "true" || data== "\"\"") {
                                 $.messager.alert("提示", "删除成功");
-                                window.location.href='index.html?pid='+${pid!}
+                                window.location.href='index.html?pid='+${pid!};
                             }
                             else {
                                 $.messager.alert("提示", data);
