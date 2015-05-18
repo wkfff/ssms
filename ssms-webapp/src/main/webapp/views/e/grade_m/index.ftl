@@ -55,15 +55,15 @@
             height:300,
             toolbar: '#dg_draft_tb',
             columns: [[
-                {field: 'C_TITLE', title: '标题', width: 500},
+                {field: 'C_TITLE', title: '标题', width: 450},
                 {field: 'T_START', title: '自评开始日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
                 {field: 'T_END', title: '自评结束日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
                 {field: 'N_GET', title: '得分项', width: 60},
                 {field: 'N_DEDUCT', title: '扣分项', width: 60},
                 {field: 'N_LACK', title: '缺项', width: 60},
-                {field: 'SID', title: '操作',width:80,align:'center',
+                {field: 'SID', title: '操作',width:180,align:'center',
                     formatter:function(value,row){
-                            return "<a href='#' onclick='doOpen(\"draft_rec\","+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>";
+                            return "<a href='#' onclick='doOpen(\"draft_rec\","+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"report_rec\","+value+")'>自评报告</a>";
                     }}
             ]],
             onLoadSuccess: function(data){
@@ -108,7 +108,7 @@
 <@layout.doLayout script>
 <div>
     <div class="toolbar">
-        <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-new" onclick="doNew();">开始新的自评</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-new" onclick="doNew();">开始新的自评</a>
     </div>
     
     <div style="padding-top:5px;">
