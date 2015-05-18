@@ -34,8 +34,8 @@ public class grade_mController extends DefaultController {
 
     @Override
     public void setFilterFields() {
-        this.filterFields.put( "T_START", "T_START >= ?" );
-        this.filterFields.put( "T_END", "T_END <= ?" );
+//        this.filterFields.put( "T_START", "T_START >= ?" );
+//        this.filterFields.put( "T_END", "T_END <= ?" );
     }
 
     @Override
