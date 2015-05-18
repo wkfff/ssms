@@ -24,21 +24,27 @@
     };
     var events = {
         saveClick: function () {
+            $.messager.progress();
             $.post('save.do', model, function (result) {
                 if (result.SID) {
                     settings.htmleditSettings.save(function (editorResult) {
                         $.messager.alert("提示", "保存成功", "info", function () {
+                            $.messager.progress('close');
                             window.location.href = 'rec.html?sid=' + result.SID + "&backURL=${backURL!referer!}";
                         });
                     });
                 } else {
-                    $.messager.alert("提示", "保存失败", "warning");
+                    $.messager.alert("提示", "保存失败", "warning", function () {
+                        $.messager.progress('close');
+                    });
                 }
             }, "json");
         }
     };
 
-    ko.applyBindings($.extend({}, model, events, settings, extModel));
+    $(function () {
+        ko.applyBindings($.extend({}, model, events, settings, extModel));
+    });
 </script>
 </#assign>
 <@layout.doLayout script>

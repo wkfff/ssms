@@ -118,8 +118,8 @@ ${footer}</html>
                 <div class="login-info ue-clear">
                     <div class="welcome ue-clear">
                         <span>欢迎您,</span><a href="javascript:;" class="user-name">${LANSTAR_IDENTITY.identityName!}</a>
-                        <span style="float: left">|</span>
                     <#if LANSTAR_IDENTITY.tenantType='E' && profession??>
+                        <span style="float: left">|</span>
                         <span style="float: left">当前专业:${profession.professionName}</span>
                         <a href="javascript:;" class="user-name" onclick="opChoose()">(切换专业)</a>
                     </#if>

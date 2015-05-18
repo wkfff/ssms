@@ -15,6 +15,7 @@ import com.lanstar.core.ViewAndModel;
 import com.lanstar.core.handle.HandlerContext;
 import com.lanstar.db.JdbcRecord;
 import com.lanstar.db.ar.ARTable;
+import com.lanstar.model.Profession;
 
 public class grade_mController extends DefaultController {
 
@@ -34,19 +35,22 @@ public class grade_mController extends DefaultController {
     }
 
     @Override
+    public ViewAndModel index( HandlerContext context ) {
+        
+        return super.index( context );
+    }
+
+    @Override
     public ViewAndModel rec( HandlerContext context ) {
-        context.setValue( "S_TENANT", context.getIdentity().getTenantName() );
-        // TODO:根据企业的专业来设置
-        //String sql = "SELECT P_PROFESSION,S_PROFESSION FROM SYS_TENANT_E_PROFESSION WHERE R_TENANT= ? LIMIT 1";
-        context.setValue( "P_PROFESSION", "4" );
+        Profession pro = context.getIdentityContxt().get( Profession.class );
+        context.setValue( "P_PROFESSION",pro.getProfessionId());
         return super.rec( context );
     }
     
     public ViewAndModel rec_new( HandlerContext context ) {
-//        context.setValue( "S_TENANT", context.getIdentity().getTenantName() );
-//        // TODO:根据企业的专业来设置
-//        //String sql = "SELECT P_PROFESSION,S_PROFESSION FROM SYS_TENANT_E_PROFESSION WHERE R_TENANT= ? LIMIT 1";
-//        context.setValue( "P_PROFESSION", "4" );
+        context.setValue( "S_TENANT", context.getIdentity().getTenantName() );
+        Profession pro = context.getIdentityContxt().get( Profession.class );
+        context.setValue( "P_PROFESSION",pro.getProfessionId());
         return super.rec( context );
     }
 
@@ -69,7 +73,8 @@ public class grade_mController extends DefaultController {
 
         if ( isNew ) {
             sid = Integer.toString( context.DB.getSID() );
-            this.init( context, sid, "4" );
+            Profession pro = context.getIdentityContxt().get( Profession.class );
+            this.init( context, sid, pro.getProfessionId() );
         }
 
         return context.returnWith().put( "SID", sid );
@@ -82,7 +87,7 @@ public class grade_mController extends DefaultController {
      * @return
      */
     public ViewAndModel init( HandlerContext context, String sid,
-            String profession ) {
+            int profession ) {
         context.DB.getDBSession().execute( "call P_GRADE_INIT(?,?,?,?)",
                 new Object[] { sid,profession,context.getIdentity().getTenantId(),context.getIdentity().getTenantType().getName() } );
         return context.returnWith();

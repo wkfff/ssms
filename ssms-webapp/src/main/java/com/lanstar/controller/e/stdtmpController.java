@@ -46,13 +46,10 @@ public class stdtmpController extends DefaultController {
                 return true;
             }
         } );
-
+        // get template instance
         Template template = profession.getTemplate();
-        return super.index( context ).put( "R_SID", template.getTemplateId() );
-    }
 
-    public ViewAndModel tree( HandlerContext context ) {
-        String template = context.getValue( "template" );
+        // load template tree data
         JdbcRecordSet folder = context.SYSTEM_DB.query(
                 "SELECT CONCAT('D-',CONVERT(SID,CHAR)) SID, C_NAME, CONCAT('D-',CONVERT(R_SID,CHAR)) R_SID\n"
                         + "FROM SSM_STDTMP_FOLDER\n"
@@ -62,11 +59,18 @@ public class stdtmpController extends DefaultController {
                         + "WHERE R_SID IN (\n"
                         + "  SELECT SID FROM SSM_STDTMP_FOLDER\n"
                         + "  WHERE R_TEMPLATE = ?\n"
-                        + ")", template, template );
+                        + ")", template.getTemplateId(), template.getTemplateId() );
         List<TreeNode> value = EasyUIControllerHelper.toTree( "D-0", folder, "SID", "R_SID", "C_NAME" );
         if ( value.size() == 1 ) {
             value = value.get( 0 ).getChildren();
         }
-        return context.returnWith().set( value );
+        List<TreeNode> tmp = value;
+        TreeNode firstRec = null;
+        while ( tmp.size() > 0 ) {
+            firstRec = tmp.get( 0 );
+            tmp = firstRec.getChildren();
+        }
+
+        return super.index( context ).put( "R_SID", template.getTemplateId() ).put( "tree", value ).put( "firstRec", firstRec );
     }
 }

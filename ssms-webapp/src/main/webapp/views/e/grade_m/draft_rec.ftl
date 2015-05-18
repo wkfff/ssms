@@ -98,7 +98,7 @@
     }
     
     function doBack(){
-        window.location.href='${referer!}';
+        window.location.href='index.html';
     }
     
     function doShow(v){
@@ -213,8 +213,8 @@
                         <tr>
                             <td class="span2">自评单位:</td>
                             <td class="span10" colspan="3">
-                                <input class="easyui-textbox" type="text" name="S_TANENT" data-options="required:true" 
-                                disabled=true value="${S_TANENT!}"/>
+                                <input class="easyui-textbox" type="text" name="S_TENANT" data-options="required:true" 
+                                disabled=true value="${S_TENANT!}"/>
                              </td>
                         </tr>
                         <tr>

@@ -1,16 +1,34 @@
 <#import "/layout/_list.ftl" as layout/>
 <#assign script>
-<script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">
-    ko.applyBindings(new ViewModel(${R_SID}));
+    function doSelect(node) {
+        if (node.id.startsWith('F')) {
+            $('#iframe').attr('src', '/e/stdtmp_file/index.html?R_SID={0}'.format(node.id));
+        }
+    }
 </script>
 </#assign>
 <@layout.doLayout script=script>
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'west', title:'达标体系', split:true" style="width: 200px">
-        <ul data-bind="treeValue:selectedNode,easyuiOptions:treeSettings"></ul>
+        <div class="easyui-accordion" fit="true">
+            <#list tree as map>
+                <div title="${map.text}" style="overflow:auto;padding:10px;">
+                    <@buildTree map.children true/>
+                </div>
+            </#list>
+        </div>
     </div>
     <div data-options="region:'center', border:false">
-        <iframe id="iframe" frameborder="0" width="100%" height="99%" data-bind="attr: {src: fileUrl}"></iframe>
+        <iframe id="iframe" frameborder="0" width="100%" height="99%" src="/e/stdtmp_file/index.html?R_SID=${firstRec.id}"></iframe>
     </div>
 </@>
+<#macro buildTree list root=false>
+    <#if (list?size>0)>
+        <ul <#if root>class="easyui-tree" data-options='onSelect: doSelect'</#if>>
+            <#list list as map>
+                <li data-options="id: '${map.id}'"><span>${map.text}</span><@buildTree map.children/></li>
+            </#list>
+        </ul>
+    </#if>
+</#macro>
