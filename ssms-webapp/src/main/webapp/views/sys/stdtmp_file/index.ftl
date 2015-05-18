@@ -10,7 +10,8 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" data-bind="click: saveClick">保存</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" data-bind="click: deleteClick">删除</a>
 </div>
-<table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table>
+<table data-bind="datagridValue:selectItem,datagridEditValue:editItem,easyuiOptions: viewSettings"></table>
 </@>

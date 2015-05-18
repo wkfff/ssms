@@ -8,6 +8,12 @@
 
 function ViewModel(catalogId){
     var model = {
+        editItem: ko.observable(),
+        selectItem: ko.observable(),
+        selectIndex: ko.pureComputed(function () {
+            var row = model.selectItem();
+            if (row) return settings.gridSettings.datagrid('getRowIndex', row);
+        }),
         selectItem: ko.observable()
     };
     var settings = {
@@ -23,7 +29,7 @@ function ViewModel(catalogId){
             toolbar: '#toolbar',
             columns: [
                 [
-                    {field: 'C_NAME', title: '文件名', width: 100},
+                    {field: 'C_NAME', title: '文件名'},
                     {field: 'C_DESC', title: '描述', width: 200},
                     {
                         field: 'N_CYCLE', title: '更新周期', align: 'center', width: 80,
@@ -36,12 +42,21 @@ function ViewModel(catalogId){
                         formatter: function (value, row) {
                             if (value) return value === 1 ? "是" : "否"
                         }
-                    }
+                    },
+                    {field: 'N_INDEX', title: '排序',  align: 'center' ,width : 50,
+                    	editor: {type: 'text', options: {validType: ['length[0, 300]']}}},
+                    {
+                            field: 'SID', title: '操作', width: 130, align: 'center',
+                            formatter: function (value, row) {
+                                return "<a href='#' onclick='doEdit(" + value + ")'>编辑文件</a>&nbsp&nbsp<a href='#' onclick='configTemplate(" + row.R_TMPFILE + ','+row.P_TMPFILE +")'>配置模版</a>";
+                            }
+                        }	
+                    
                 ]
             ],
-            onDblClickRow: function () {
+            /*onDblClickRow: function () {
                 events.editClick();
-            }
+            }*/
         }
     };
     var events = {
@@ -57,7 +72,7 @@ function ViewModel(catalogId){
                 $.messager.alert("警告", "请先选择一行数据！", "warning");
                 return;
             }
-            window.location.href = 'rec.html?sid={0}'.format(value.SID);
+            model.editItem(model.selectItem());
         },
         deleteClick: function () {
             var value = model.selectItem();
@@ -70,8 +85,33 @@ function ViewModel(catalogId){
                     events.refreshClick();
                 });
             });
+        },
+        saveClick: function () {
+            model.editItem(null);
+            if (model.editItem()) {
+                $.messager.alert('警告', '当前编辑行数据不正确', 'warning');
+                return;
+            }
+            var changes = settings.viewSettings.datagrid('getChanges');
+            if (changes.length > 0) {
+                $.post("batchSave.do", {data: $.toJSON(changes)}, function () {
+                    $.messager.alert('消息', '成功保存记录！', "info", function () {
+                        settings.viewSettings.datagrid('reload');
+                    });
+                });
+            }
         }
     };
 
     $.extend(this, model, settings, events);
 }
+function doEdit(sid){
+	window.location.href='rec.html?SID='+sid;
+};
+function configTemplate(R_TMPFILE,P_TMPFILE){
+	if(P_TMPFILE!=null){
+		window.location.href="/sys/stdtmp_file_0"+P_TMPFILE+"/rec.html?sid="+R_TMPFILE;
+	}else{
+		$.messager.alert('警告','没有配置模版','warning');
+	}
+};
