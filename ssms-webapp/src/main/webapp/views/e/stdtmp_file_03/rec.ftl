@@ -30,7 +30,9 @@
             }, "json");
         }
     };
-    ko.applyBindings($.extend({}, model, settings, extModel, events));
+    $(function () {
+        ko.applyBindings($.extend({}, model, settings, extModel, events));
+    });
 </script>
 </#assign>
 <@layout.doLayout script>

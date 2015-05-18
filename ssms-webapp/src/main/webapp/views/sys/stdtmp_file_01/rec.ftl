@@ -38,7 +38,9 @@
         }
     };
 
-    ko.applyBindings($.extend({}, model, events, settings, extModel));
+    $(function () {
+        ko.applyBindings($.extend({}, model, events, settings, extModel));
+    });
 </script>
 </#assign>
 <@layout.doLayout script>
