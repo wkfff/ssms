@@ -40,7 +40,7 @@ function ViewModel(catalogId){
                     {
                         field: 'B_REMIND', title: '是否提醒', align: 'center', width: 80,
                         formatter: function (value, row) {
-                            if (value) return value === 1 ? "是" : "否"
+                            if (value) return value == 1 ? "是" : "否"
                         }
                     },
                     {field: 'N_INDEX', title: '排序',  align: 'center' ,width : 50,
