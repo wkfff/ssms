@@ -8,9 +8,8 @@
 
 package com.lanstar.core.handle;
 
-import javax.servlet.ServletException;
-import java.io.IOException;
+import com.lanstar.core.DispatchContext;
 
 public interface HandleChain {
-    void doHandle(HandlerContext context ) throws ServletException, IOException;
+    void doHandle(DispatchContext context );
 }

@@ -2,80 +2,91 @@
  * 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
  * 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
  * 文件名称：Logger.java
- * 创建时间：2015-03-31
+ * 创建时间：2015-05-18
  * 创建用户：张铮彬
  */
 
 package com.lanstar.common.log;
 
-import org.slf4j.LoggerFactory;
-
 /**
- * 日志组件
+ * The five logging levels used by Log are (in order):
+ * 1. DEBUG (the least serious)
+ * 2. INFO
+ * 3. WARN
+ * 4. ERROR
+ * 5. FATAL (the most serious)
  */
-public class Logger {
-    /**
-     * 抽取自SLF4J的日志
-     */
-    private final org.slf4j.Logger logger;
+public abstract class Logger {
+
+    private static ILoggerFactory factory;
+
+    static {
+        init();
+    }
+
+    public static void setLoggerFactory( ILoggerFactory loggerFactory ) {
+        if ( loggerFactory != null )
+            Logger.factory = loggerFactory;
+    }
 
     public static Logger getLogger( Class<?> clazz ) {
-        return new Logger( clazz );
+        return factory.getLogger( clazz );
     }
 
-    public Logger( Class<?> clazz ) {
-        this.logger = LoggerFactory.getLogger( clazz );
+    public static Logger getLogger( String name ) {
+        return factory.getLogger( name );
     }
 
-    public String getName() {
-        return logger.getName();
+    public static void init() {
+        if ( factory != null )
+            return;
+        try {
+            Class.forName( "org.slf4j.Logger" );
+            Class<?> factoryClass = Class.forName( "com.lanstar.common.log.LogbackLoggerFactory" );
+            factory = (ILoggerFactory) factoryClass.newInstance();    // return new Log4jLoggerFactory();
+        } catch ( Exception e ) {
+            factory = new JdkLoggerFactory();
+        }
     }
 
-    public boolean isDebugEnabled() {
-        return logger.isDebugEnabled();
-    }
+    public abstract void info( String format, Object... arguments );
 
-    public void debug( String s, Object... params ) {
-        logger.debug( (params == null || params.length == 0) ? s : String.format( s, params ) );
-    }
+    public abstract void debug( String message );
 
-    public void debug( Throwable throwable, String s, Object... params ) {
-        logger.debug( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
-    }
+    public abstract void debug( String message, Throwable t );
 
-    public boolean isInfoEnabled() {
-        return logger.isInfoEnabled();
-    }
+    public abstract void info( String message );
 
-    public void info( String s, Object... params ) {
-        logger.info( (params == null || params.length == 0) ? s : String.format( s, params ) );
-    }
+    public abstract void info( String message, Throwable t );
 
-    public void info( Throwable throwable, String s, Object... params ) {
-        logger.info( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
-    }
+    public abstract void debug( String format, Object... arguments );
 
-    public boolean isWarnEnabled() {
-        return logger.isWarnEnabled();
-    }
+    public abstract void warn( String message );
 
-    public void warn( String s, Object... aobj ) {
-        logger.warn( String.format( s, aobj ) );
-    }
+    public abstract void warn( String message, Throwable t );
 
-    public void warn( Throwable throwable, String s, Object... params ) {
-        logger.warn( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
-    }
+    public abstract void warn( String format, Object... arguments );
 
-    public boolean isErrorEnabled() {
-        return logger.isErrorEnabled();
-    }
+    public abstract void error( String message );
 
-    public void error( String s, Object... params ) {
-        logger.error( (params == null || params.length == 0) ? s : String.format( s, params ) );
-    }
+    public abstract void error( String message, Throwable t );
 
-    public void error( Throwable throwable, String s, Object... params ) {
-        logger.error( (params == null || params.length == 0) ? s : String.format( s, params ), throwable );
-    }
+    public abstract void error( String format, Object... arguments );
+
+    public abstract void fatal( String message );
+
+    public abstract void fatal( String message, Throwable t );
+
+    public abstract void fatal( String format, Object... arguments );
+
+    public abstract boolean isDebugEnabled();
+
+    public abstract boolean isInfoEnabled();
+
+    public abstract boolean isWarnEnabled();
+
+    public abstract boolean isErrorEnabled();
+
+    public abstract boolean isFatalEnabled();
 }
+

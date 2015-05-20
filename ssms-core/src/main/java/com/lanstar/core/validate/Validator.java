@@ -2,36 +2,32 @@
  * 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
  * 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
  * 文件名称：Validator.java
- * 创建时间：2015-04-12
+ * 创建时间：2015-05-19
  * 创建用户：张铮彬
  */
 
 package com.lanstar.core.validate;
 
-import com.lanstar.core.handle.HandleException;
-import com.lanstar.core.handle.HandlerContext;
-import com.lanstar.core.handle.action.ActionInvocation;
-import com.lanstar.core.interceptor.Interceptor;
+import com.lanstar.core.ActionInvocation;
+import com.lanstar.core.Controller;
+import com.lanstar.core.aop.Interceptor;
 
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Validator.
- */
 public abstract class Validator implements Interceptor {
+
+    private Controller controller;
     private ActionInvocation invocation;
-    private HandlerContext context;
     private boolean shortCircuit = false;
     private boolean invalid = false;
-    protected final Map<String, String> errorMsg = new LinkedHashMap<>();
+
     private static final String emailAddressPattern = "\\b(^['_A-Za-z0-9-]+(\\.['_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
 
     protected void setShortCircuit( boolean shortCircuit ) {
@@ -39,51 +35,88 @@ public abstract class Validator implements Interceptor {
     }
 
     final public void intercept( ActionInvocation invocation ) {
-        Validator validator;
-        try {validator = getClass().newInstance();} catch ( Exception e ) {throw new HandleException( e );}
+        Validator validator = null;
+        try {validator = getClass().newInstance();} catch ( Exception e ) {throw new RuntimeException( e );}
 
-        validator.context = invocation.getContext();
+        validator.controller = invocation.getController();
         validator.invocation = invocation;
 
         try {
-            validator.validate( validator.context );
+            validator.validate( validator.controller );
         } catch ( ValidateException e ) {/* should not be throw */}            // short circuit validate need this
 
         if ( validator.invalid )
-            validator.handleError( validator.context );
+            validator.handleError( validator.controller );
+        else
+            invocation.invoke();
     }
 
-    protected abstract void validate( HandlerContext c );
+    /**
+     * Use validateXxx method to validate the parameters of this action.
+     */
+    protected abstract void validate( Controller c );
 
-    protected abstract void handleError( HandlerContext c );
+    /**
+     * Handle the validate error.
+     * Example:<br>
+     * controller.keepPara();<br>
+     * controller.render("register.html");
+     */
+    protected abstract void handleError( Controller c );
 
+    /**
+     * Add message when validate failure.
+     */
     protected void addError( String errorKey, String errorMessage ) {
         invalid = true;
-        errorMsg.put( errorKey, errorMessage );
+        controller.setAttr( errorKey, errorMessage );
         if ( shortCircuit ) {
             throw new ValidateException();
         }
     }
 
     /**
+     * Return the action key of this action.
+     */
+    protected String getActionKey() {
+        return invocation.getActionKey();
+    }
+
+    /**
+     * Return the controller key of this action.
+     */
+    protected String getControllerKey() {
+        return invocation.getControllerKey();
+    }
+
+    /**
+     * Return the method of this action.
+     */
+    protected Method getActionMethod() {
+        return invocation.getMethod();
+    }
+
+    /**
+     * Return view path of this controller.
+     */
+    protected String getViewPath() {
+        return invocation.getViewPath();
+    }
+
+    /**
      * Validate Required.
      */
     protected void validateRequired( String field, String errorKey, String errorMessage ) {
-        String value = getPara( field );
+        String value = controller.getPara( field );
         if ( value == null || "".equals( value ) )    // 经测试,无输入时值为"",跳格键值为"\t",输入空格则为空格" "
             addError( errorKey, errorMessage );
-    }
-
-    protected String getPara( String field ) {
-        Object value = context.getValue( field );
-        return (String) value;
     }
 
     /**
      * Validate required string.
      */
     protected void validateRequiredString( String field, String errorKey, String errorMessage ) {
-        String value = getPara( field );
+        String value = controller.getPara( field );
         if ( value == null || "".equals( value.trim() ) )
             addError( errorKey, errorMessage );
     }
@@ -93,7 +126,7 @@ public abstract class Validator implements Interceptor {
      */
     protected void validateInteger( String field, int min, int max, String errorKey, String errorMessage ) {
         try {
-            String value = getPara( field );
+            String value = controller.getPara( field );
             int temp = Integer.parseInt( value );
             if ( temp < min || temp > max )
                 addError( errorKey, errorMessage );
@@ -107,7 +140,7 @@ public abstract class Validator implements Interceptor {
      */
     protected void validateLong( String field, long min, long max, String errorKey, String errorMessage ) {
         try {
-            String value = getPara( field );
+            String value = controller.getPara( field );
             long temp = Long.parseLong( value );
             if ( temp < min || temp > max )
                 addError( errorKey, errorMessage );
@@ -121,7 +154,7 @@ public abstract class Validator implements Interceptor {
      */
     protected void validateLong( String field, String errorKey, String errorMessage ) {
         try {
-            String value = getPara( field );
+            String value = controller.getPara( field );
             Long.parseLong( value );
         } catch ( Exception e ) {
             addError( errorKey, errorMessage );
@@ -133,7 +166,7 @@ public abstract class Validator implements Interceptor {
      */
     protected void validateDouble( String field, double min, double max, String errorKey, String errorMessage ) {
         try {
-            String value = getPara( field );
+            String value = controller.getPara( field );
             double temp = Double.parseDouble( value );
             if ( temp < min || temp > max )
                 addError( errorKey, errorMessage );
@@ -147,7 +180,7 @@ public abstract class Validator implements Interceptor {
      */
     protected void validateDouble( String field, String errorKey, String errorMessage ) {
         try {
-            String value = getPara( field );
+            String value = controller.getPara( field );
             Double.parseDouble( value );
         } catch ( Exception e ) {
             addError( errorKey, errorMessage );
@@ -159,9 +192,8 @@ public abstract class Validator implements Interceptor {
      */
     protected void validateDate( String field, Date min, Date max, String errorKey, String errorMessage ) {
         try {
-            String value = getPara( field );
-            Date temp = new SimpleDateFormat( datePattern )
-                    .parse( value );    // Date temp = Date.valueOf(value); 为了兼容 64位 JDK
+            String value = controller.getPara( field );
+            Date temp = new SimpleDateFormat( datePattern ).parse( value );    // Date temp = Date.valueOf(value); 为了兼容 64位 JDK
             if ( temp.before( min ) || temp.after( max ) )
                 addError( errorKey, errorMessage );
         } catch ( Exception e ) {
@@ -189,8 +221,8 @@ public abstract class Validator implements Interceptor {
      * Validate equal field. Usually validate password and password again
      */
     protected void validateEqualField( String field_1, String field_2, String errorKey, String errorMessage ) {
-        String value_1 = getPara( field_1 );
-        String value_2 = getPara( field_2 );
+        String value_1 = controller.getPara( field_1 );
+        String value_2 = controller.getPara( field_2 );
         if ( value_1 == null || value_2 == null || (!value_1.equals( value_2 )) )
             addError( errorKey, errorMessage );
     }
@@ -223,7 +255,7 @@ public abstract class Validator implements Interceptor {
      */
     protected void validateUrl( String field, String errorKey, String errorMessage ) {
         try {
-            String value = getPara( field );
+            String value = controller.getPara( field );
             if ( value.startsWith( "https://" ) )
                 value = "http://" + value.substring( 8 ); // URL doesn't understand the https protocol, hack it
             new URL( value );
@@ -236,7 +268,7 @@ public abstract class Validator implements Interceptor {
      * Validate regular expression.
      */
     protected void validateRegex( String field, String regExpression, boolean isCaseSensitive, String errorKey, String errorMessage ) {
-        String value = getPara( field );
+        String value = controller.getPara( field );
         if ( value == null ) {
             addError( errorKey, errorMessage );
             return;
@@ -257,7 +289,7 @@ public abstract class Validator implements Interceptor {
     }
 
     protected void validateString( String field, boolean notBlank, int minLen, int maxLen, String errorKey, String errorMessage ) {
-        String value = getPara( field );
+        String value = controller.getPara( field );
         if ( value == null || value.length() < minLen || value.length() > maxLen )
             addError( errorKey, errorMessage );
         else if ( notBlank && "".equals( value.trim() ) )
@@ -270,8 +302,20 @@ public abstract class Validator implements Interceptor {
     protected void validateString( String field, int minLen, int maxLen, String errorKey, String errorMessage ) {
         validateString( field, true, minLen, maxLen, errorKey, errorMessage );
     }
+
+    /**
+     * Validate token created by Controller.createToken(String).
+     */
+    protected void validateToken( String tokenName, String errorKey, String errorMessage ) {
+        if ( controller.validateToken( tokenName ) == false )
+            addError( errorKey, errorMessage );
+    }
+
+    /**
+     * Validate token created by Controller.createToken().
+     */
+    protected void validateToken( String errorKey, String errorMessage ) {
+        if ( controller.validateToken() == false )
+            addError( errorKey, errorMessage );
+    }
 }
-
-
-
-

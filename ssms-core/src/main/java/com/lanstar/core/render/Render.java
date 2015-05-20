@@ -8,6 +8,57 @@
 
 package com.lanstar.core.render;
 
-public interface Render {
-    void render() throws RenderException;
+import com.lanstar.core.Const;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public abstract class Render {
+
+    protected String view;
+    protected HttpServletRequest request;
+    protected HttpServletResponse response;
+
+    private static String encoding = Const.DEFAULT_ENCODING;
+    private static boolean devMode = Const.DEFAULT_DEV_MODE;
+
+    static void init( String encoding, boolean devMode ) {
+        Render.encoding = encoding;
+        Render.devMode = devMode;
+    }
+
+    public static String getEncoding() {
+        return encoding;
+    }
+
+    public static boolean getDevMode() {
+        return devMode;
+    }
+
+    public final Render setContext( HttpServletRequest request, HttpServletResponse response ) {
+        this.request = request;
+        this.response = response;
+        return this;
+    }
+
+    public final Render setContext( HttpServletRequest request, HttpServletResponse response, String viewPath ) {
+        this.request = request;
+        this.response = response;
+        if ( view != null && !view.startsWith( "/" ) )
+            view = viewPath + view;
+        return this;
+    }
+
+    public String getView() {
+        return view;
+    }
+
+    public void setView( String view ) {
+        this.view = view;
+    }
+
+    /**
+     * Render to client
+     */
+    public abstract void render();
 }

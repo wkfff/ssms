@@ -27,7 +27,7 @@
                 <p class="yzm ue-clear">
                     <label>验证码</label>
                     <input id="yzm" type="text"/>
-                    <cite><a id="vcode" href="#"><img id="vcodeImg" src="/login/vcode"/></a></cite>
+                    <cite><a id="vcode" href="#"><img id="vcodeImg" src="/vcode"/></a></cite>
                 </p>
             </div>
             <div class="login-btn ue-clear">
@@ -70,7 +70,7 @@
 
     $('#vcode').click(function () {
         $('#vcodeImg').attr("src", '');
-        $('#vcodeImg').attr("src", '/login/vcode?_t='+new Date().valueOf());
+        $('#vcodeImg').attr("src", '/vcode?_t='+new Date().valueOf());
 
         return false;
     });
@@ -115,7 +115,7 @@
             yzm: $('#yzm').val()
         };
         $.post('login', parms, function (result) {
-            if (result.state == "success") window.location.href = "/index";
+            if (result.state == "success") window.location.href = "/";
             else alert(result.msg);
         }, "json")
     });
