@@ -83,9 +83,7 @@
     <logger name="com.alibaba" level="ERROR"/>
     <!-- c3p0-->
     <logger name="com.mchange" level="ERROR"/>
-    <!-- freemarkder -->
     <logger name="httl" level="ERROR"/>
-    <logger name="freemarker" level="ERROR"/>
 
     <!-- 默认输出DEBUG级别 -->
     <root level="DEBUG">
