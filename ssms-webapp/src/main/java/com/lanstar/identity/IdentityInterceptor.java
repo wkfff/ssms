@@ -16,7 +16,7 @@ public class IdentityInterceptor implements Interceptor {
     @Override
     public final void intercept( ActionInvocation invocation ) {
         Controller controller = invocation.getController();
-        if ( IdentityContext.hasIdentity( controller ) == false ) {
+        if ( IdentityContext.hasIdentityContext( controller ) == false ) {
             controller.redirect( "/login" );
             return;
         }

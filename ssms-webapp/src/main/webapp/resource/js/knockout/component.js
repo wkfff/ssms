@@ -1341,12 +1341,12 @@ ko.bindingHandlers.formValue = {
                         sid: options.sid,
                         content: editor.html()
                     };
-                    $.post('/sys/attachtext/save.json', postData, function(result){
+                    $.post('/sys/attachtext/save', postData, function(result){
                         if (callback!=null && utils.isFunction(callback)) callback(result);
                     });
                 };
                 options.load = function () {
-                    $.post("/sys/attachtext/get.json", {
+                    $.post("/sys/attachtext/get", {
                         table: options.table,
                         field: options.field,
                         sid: options.sid

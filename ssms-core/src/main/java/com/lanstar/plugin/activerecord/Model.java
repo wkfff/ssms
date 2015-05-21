@@ -53,6 +53,10 @@ public abstract class Model<M extends Model> {
         return modifyFlag;
     }
 
+    public boolean isModified(){
+        return getModifyFlag().isEmpty() == false;
+    }
+
     private Config getConfig() {
         return DbKit.getConfig( getClass() );
     }

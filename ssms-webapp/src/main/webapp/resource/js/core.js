@@ -20,5 +20,19 @@ var utils;
         return "_" + new Date().valueOf();
     }
     utils.uuid = uuid;
+    var messager;
+    (function (messager) {
+        function showProgress() {
+            $.messager.progress({
+                title: '请稍等',
+                msg: '执行操作中...'
+            });
+        }
+        messager.showProgress = showProgress;
+        function closeProgress() {
+            $.messager.progress('close');
+        }
+        messager.closeProgress = closeProgress;
+    })(messager = utils.messager || (utils.messager = {}));
 })(utils || (utils = {}));
 //# sourceMappingURL=/typescript/maps/core.js.map

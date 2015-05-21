@@ -27,5 +27,4 @@ public class RecordKit {
         }
         return model;
     }
-
 }

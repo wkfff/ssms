@@ -16,15 +16,15 @@ import java.io.File;
 import java.util.Properties;
 
 public abstract class RapidwareConfig {
-    public abstract void configConstant( Constants constants );
+    public abstract void configConstant( Constants me );
 
-    public abstract void configRoute( Routes routes );
+    public abstract void configRoute( Routes me );
 
-    public abstract void configPlugin( Plugins plugins );
+    public abstract void configPlugin( Plugins me );
 
-    public abstract void configInterceptor( Interceptors interceptors );
+    public abstract void configInterceptor( Interceptors me );
 
-    public abstract void configHandler( Handlers handlers );
+    public abstract void configHandler( Handlers me );
 
     protected Prop prop = null;
 

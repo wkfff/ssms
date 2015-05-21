@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 /**
  * Convert String to other type object.
  */
-final class TypeConverter {
+public final class TypeConverter {
 
     private static final int timeStampLen = "2011-01-18 16:18:18".length();
     private static final String timeStampPattern = "yyyy-MM-dd HH:mm:ss";
@@ -80,7 +80,14 @@ final class TypeConverter {
         }
         // mysql type: timestamp, datetime
         else if ( clazz == java.sql.Timestamp.class ) {
-            result = java.sql.Timestamp.valueOf( s );
+            if ( s.length() >= timeStampLen ) {    // if (x < timeStampLen) 改用 datePattern 转换，更智能
+                // Timestamp format must be yyyy-mm-dd hh:mm:ss[.fffffffff]
+                // result = new java.util.Date(java.sql.Timestamp.valueOf(s).getTime());	// error under jdk 64bit(maybe)
+                result = new java.sql.Timestamp( new SimpleDateFormat( timeStampPattern ).parse( s ).getTime() );
+            } else {
+                // result = new java.util.Date(java.sql.Date.valueOf(s).getTime());	// error under jdk 64bit
+                result = new java.sql.Timestamp( new SimpleDateFormat( datePattern ).parse( s ).getTime() );
+            }
         }
         // mysql type: real, double
         else if ( clazz == Double.class ) {

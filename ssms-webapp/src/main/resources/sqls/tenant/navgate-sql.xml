@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<sqlGroup name="navgate">
+    <sql id="list">SELECT * FROM SYS_NAV ORDER BY R_SID, N_INDEX</sql>
+</sqlGroup>

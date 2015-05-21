@@ -8,49 +8,21 @@
 
 package com.lanstar.controller;
 
-import com.lanstar.common.TreeNode;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
 import com.lanstar.core.aop.ClearInterceptor;
 import com.lanstar.core.aop.ClearLayer;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.identity.TenantType;
-import com.lanstar.model.Navgate;
-import com.lanstar.model.TenantUser;
-import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.model.system.TenantUser;
 import com.lanstar.render.CaptchaRender;
 
-import java.util.*;
-
 public class HomeController extends Controller {
-    private static final Map<TenantType, String> IDENTITY_TYPE_NAV_MAP = new HashMap<>();
-
-    static {
-        IDENTITY_TYPE_NAV_MAP.put( TenantType.ENTERPRISE, "企业端导航" );
-        IDENTITY_TYPE_NAV_MAP.put( TenantType.REVIEW, "评审端导航" );
-        IDENTITY_TYPE_NAV_MAP.put( TenantType.GOVERNMENT, "政府端导航" );
-        IDENTITY_TYPE_NAV_MAP.put( TenantType.SYSTEM, "系统运维端导航" );
-    }
 
     public void index() {
-        List<Navgate> list = Navgate.list();
-        List<Map<String, Object>> navList = new ArrayList<>();
-        for ( Navgate navgate : list ) {
-            navList.add( ModelKit.toMap( navgate ) );
-        }
-        Collection<TreeNode> nodes = TreeNode.build( "0", navList, "SID", "R_SID", "C_NAME" );
-        TreeNode node = findNode( nodes, IdentityContext.getIdentityContext( this ).getTenantType() );
-        if ( node != null ) setAttr( "nav", node.getChildren() );
-    }
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        setAttr( "nav", identityContext.getSystemNavgate() );
 
-    private TreeNode findNode( Collection<TreeNode> nodes, TenantType tenantType ) {
-        String navName = IDENTITY_TYPE_NAV_MAP.get( tenantType );
-        for ( TreeNode node : nodes ) {
-            if ( navName.equalsIgnoreCase( node.getText() ) ) return node;
-            TreeNode tmp = findNode( node.getChildren(), tenantType );
-            if ( tmp != null ) return tmp;
-        }
-        return null;
+        forwardAction( "/" + identityContext.getTenantType().getName().toLowerCase() );
     }
 
     @ClearInterceptor(ClearLayer.ALL)
@@ -78,7 +50,7 @@ public class HomeController extends Controller {
     }
 
     public void logout() {
-        if ( IdentityContext.hasIdentity( this ) ) {
+        if ( IdentityContext.hasIdentityContext( this ) ) {
             // 直接将当前会话无效化掉
             getSession().invalidate();
         }

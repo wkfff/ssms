@@ -878,4 +878,47 @@ public class DbPro {
             config.close( conn );
         }
     }
+
+    public Object[] callProcedure( String spName, Object... params ) {
+        StringBuilder sb = new StringBuilder();
+        sb.append( "{call " ).append( spName ).append( "(" );
+
+        if ( params == null ) params = DbKit.NULL_PARA_ARRAY;
+        int paramSize = params.length;
+        for ( int i = 0; i < paramSize; i++ ) sb.append( i == 0 ? "?" : ",?" );
+
+        sb.append( ")}" );
+
+        Connection conn = null;
+        try {
+            conn = config.getConnection();
+
+            List<ProcedureParameter> pds = ProcedureParameter.build( conn, spName );
+            CallableStatement cs = conn.prepareCall( sb.toString() );
+            List<Integer> outparam = new ArrayList<>();
+            for ( int i = 0; i < pds.size(); i++ ) {
+                ProcedureParameter pm = pds.get( i );
+                int mode = pm.getMode();
+                if ( mode == ProcedureParameter.MODE_IN || mode == ProcedureParameter.MODE_INOUT ) {
+                    cs.setObject( i + 1, params[i] );
+                }
+                if ( mode == ProcedureParameter.MODE_INOUT || mode == ProcedureParameter.MODE_OUT ) {
+                    cs.registerOutParameter( i + 1, pm.getType() );
+                    outparam.add( i );
+                }
+            }
+
+            cs.execute();
+
+            for ( int index : outparam ) {
+                params[index] = cs.getObject( index + 1 );
+            }
+
+            return params;
+        } catch ( Exception e ) {
+            throw new ActiveRecordException( e );
+        } finally {
+            config.close( conn );
+        }
+    }
 }

@@ -8,7 +8,7 @@
 
 package com.lanstar.core.render;
 
-import com.lanstar.plugin.activerecord.PathKit;
+import com.lanstar.common.kit.PathKit;
 import com.lanstar.common.kit.StrKit;
 
 import javax.servlet.ServletContext;

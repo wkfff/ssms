@@ -8,7 +8,7 @@
 
 package com.lanstar.core;
 
-import com.lanstar.plugin.activerecord.PathKit;
+import com.lanstar.common.kit.PathKit;
 import com.lanstar.config.Constants;
 import com.lanstar.config.RapidwareConfig;
 import com.lanstar.core.render.RenderFactory;
