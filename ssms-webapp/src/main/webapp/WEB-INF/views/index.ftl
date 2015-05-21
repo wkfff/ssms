@@ -77,7 +77,7 @@
                     <span>欢迎您,</span><a href="javascript:;" class="user-name">${LANSTAR_IDENTITY.identityName!}</a>
                     <#if LANSTAR_IDENTITY.tenantType='E' && profession??>
                         <span style="float: left">|</span>
-                        <span style="float: left">当前专业:${profession.professionName}</span>
+                        <span style="float: left">当前专业:${profession.name}</span>
                         <a href="javascript:;" class="user-name" onclick="opChoose()">(切换专业)</a>
                     </#if>
                 </div>

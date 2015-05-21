@@ -37,7 +37,7 @@ public class TenantUser extends Model<TenantUser> implements Identity {
 
     @Override
     public int getTenantId() {
-        return getInt( "TENANT_ID" );
+        return getLong( "TENANT_ID" ).intValue();
     }
 
     @Override

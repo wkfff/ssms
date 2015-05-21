@@ -17,12 +17,10 @@ import com.lanstar.controller.HomeController;
 import com.lanstar.core.Rapidware;
 import com.lanstar.core.render.FreeMarkerRender;
 import com.lanstar.identity.IdentityInterceptor;
-import com.lanstar.model.Enterprise;
-import com.lanstar.model.EnterpriseUser;
-import com.lanstar.model.Navgate;
-import com.lanstar.model.TenantUser;
+import com.lanstar.model.*;
 import com.lanstar.plugin.activerecord.ActiveRecordPlugin;
 import com.lanstar.plugin.druid.DruidPlugin;
+import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateModelException;
 import org.slf4j.LoggerFactory;
@@ -31,7 +29,7 @@ import java.io.InputStream;
 
 public class WebAppConfig extends RapidwareConfig {
     @Override
-    public void configConstant( Constants constants ) {
+    public void configConstant( Constants me ) {
         // 初始化日志
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         try {
@@ -49,43 +47,61 @@ public class WebAppConfig extends RapidwareConfig {
         loadPropertyFile( "system.properties" );
         Boolean devMode = getPropertyToBoolean( "devMode", false );
 
-        constants.setBaseViewPath( "/WEB-INF/views" );
-        constants.setDevMode( devMode );
+        me.setBaseViewPath( "/WEB-INF/views" );
+        me.setDevMode( devMode );
         configTemplate( FreeMarkerRender.getConfiguration() );
     }
 
-    private void configTemplate( Configuration configuration ) {
+    private void configTemplate( Configuration me ) {
         try {
-            configuration.setSharedVariable( "_TITLE_", "安全生产标准化管理系统" );
-            configuration.setSharedVariable( "BASE_PATH", Rapidware.me().getContextPath() );
+            me.setSharedVariable( "_TITLE_", "安全生产标准化管理系统" );
+            me.setSharedVariable( "BASE_PATH", Rapidware.me().getContextPath() );
         } catch ( TemplateModelException ignored ) {
         }
     }
 
     @Override
-    public void configRoute( Routes routes ) {
-        routes.add( "/", HomeController.class );
+    public void configRoute( Routes me ) {
+        me.add( "/", HomeController.class );
+        me.add( "/e", com.lanstar.controller.enterprise.HomeController.class );
+        me.add( "/e/stdtmp", com.lanstar.controller.enterprise.TemplateController.class );
+        me.add( "/r", com.lanstar.controller.review.HomeController.class );
+        me.add( "/g", com.lanstar.controller.government.HomeController.class );
+        me.add( "/s", com.lanstar.controller.system.HomeController.class );
     }
 
     @Override
-    public void configPlugin( Plugins plugins ) {
+    public void configPlugin( Plugins me ) {
+        // main ds
         DruidPlugin c3p0Plugin = new DruidPlugin( getProperty( "jdbc_url" ), getProperty( "jdbc_user" ), getProperty( "jdbc_password" ) );
-        plugins.add( c3p0Plugin );
+        me.add( c3p0Plugin );
+
+        // tenant ds
+        ThreadLocalDataSourcePlugin threadLocalDataSourcePlugin = new ThreadLocalDataSourcePlugin();
+        threadLocalDataSourcePlugin.set( "tenant0", c3p0Plugin );
+        me.add( threadLocalDataSourcePlugin );
 
         ActiveRecordPlugin arp = new ActiveRecordPlugin( c3p0Plugin );
-        plugins.add( arp );
+        me.add( arp );
         arp.addMapping( "SYS_TENANT_E_USER", "SID", EnterpriseUser.class );
         arp.addMapping( "SYS_TENANT_E", "SID", Enterprise.class );
         arp.addMapping( "TENANT_USER", TenantUser.class );
         arp.addMapping( "SYS_NAV", "SID", Navgate.class );
+        arp.addMapping( "SYS_PROFESSION", "SID", Profession.class );
+        arp.addMapping( "SYS_TEMPLATE", "SID", Template.class );
+
+        // tenant ds
+        ActiveRecordPlugin arp2 = new ActiveRecordPlugin( Const.TENANT_DB_NAME, c3p0Plugin );
+        me.add( arp2 );
     }
 
     @Override
-    public void configInterceptor( Interceptors interceptors ) {
-        interceptors.add( new IdentityInterceptor() );
+    public void configInterceptor( Interceptors me ) {
+        me.add( new IdentityInterceptor() );
+        me.add( new TenantDsSwitcher() );
     }
 
     @Override
-    public void configHandler( Handlers handlers ) {
+    public void configHandler( Handlers me ) {
     }
 }
