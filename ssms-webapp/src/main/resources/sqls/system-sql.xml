@@ -23,4 +23,8 @@
     <sqlGroup name="attachText">
         <sql id="get">SELECT * FROM SYS_ATTACH_TEXT WHERE R_TABLE=? and R_FIELD=? and R_SID=? and R_TENANT=? and P_TENANT=?</sql>
     </sqlGroup>
+    <sqlGroup name="multiPara">
+        <sql id="listParaByName">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=(SELECT C_NAME FROM SYS_PARA_MULTI WHERE SID=?)</sql>
+    </sqlGroup>
+    
 </sqlGroup>
