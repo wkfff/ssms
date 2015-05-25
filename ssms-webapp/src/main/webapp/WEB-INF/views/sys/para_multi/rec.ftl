@@ -1,25 +1,17 @@
-<#import "/layout/_rec.ftl" as layout/> <#assign script>
+<#import "../../layout/_rec.ftl" as layout/> <#assign script>
 <script charset="utf-8" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript"
     src="/resource/js/easyui/plugins/jquery.edatagrid.js"></script>
 <!--  <script type="text/javascript" src="/resource/js/cascade.js"></script>-->
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#formMain').form('load', 'rec.json?refer=${refer!}&sid=${sid!}');
+		$('#formMain').form('load', 'recJson?sid=${sid!}');
 	});
-	String.prototype.replaceAll = function(s1, s2) {
-		return this.replace(new RegExp(s1, "gm"), s2);
-	}
 	function doSave() {
-		//$.messager.progress();
-		var ur='save.do?sid=${sid!}';
-	    if("${refer!}"=="add"){
-			ur='save.do';
-		}		 
 		$('#formMain').form(
 				'submit',
 				{
-					url : ur,
+					url : 'save?sid=${sid!}',
 					onSubmit : function() {
 						var isValid = $(this).form('validate');
 						if (!isValid) {
@@ -28,14 +20,19 @@
 						return isValid;
 					},
 					success : function(data) {
+						var sid = $.evalJSON(data).SID;
 						$.messager.alert("提示", "保存成功");
-						window.location.href = 'index.html?id='
-								+ data.replaceAll('"', '');
+						window.location.href = 'rec?sid='
+								+sid;
 					}
 				});
 	}
 	function doBack() {
-		window.location.href = "index.html";
+		 if('${sid!}'==""){
+			    window.location.href = 'valueList?sid=${pid!}';
+	        }else{
+	            window.location.href = 'valueList?sid=${sid!}';
+	        } 
 	}
 </script>
 </#assign> <@layout.doLayout script>
@@ -54,16 +51,16 @@
                 <td class="span2">参数名:</td>
                 <td colspan="3"><input class="easyui-textbox"
                     type="text" name="C_NAME"
-                    data-options="required:true"<#if sid??>
-                    editable="false"</#if> <#if refer??>editable="false"
-                    value="${C_NAME!}" </#if> style="width: 100%" /></td>
+                    data-options="required:true"
+                    editable="false" value="${C_NAME!}" 
+                    style="width: 100%" /></td>
             </tr>
             <tr>
                 <td class="span2">参数编号:</td>
                 <td colspan="3"><input class="easyui-textbox"
-                    data-options="required:true"<#if refer??>
-                    editable="true"<#elseif sid??>editable="false"
-                    </#if> type="text" name="C_CODE" style="width: 100%"
+                    data-options="required:true"
+                    <#if sid??> editable="false" </#if> type="text" 
+                    name="C_CODE" style="width: 100%"
                     /></td>
             </tr>
             <tr>

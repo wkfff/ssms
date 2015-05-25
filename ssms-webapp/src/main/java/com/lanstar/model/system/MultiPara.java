@@ -12,4 +12,11 @@ import com.lanstar.plugin.activerecord.Model;
 
 public class MultiPara extends Model<MultiPara> {
     public static final MultiPara dao = new MultiPara();
+    
+    /**
+     * @return
+     */
+    public String getName() {
+        return  getStr( "C_NAME" );
+    }
 }

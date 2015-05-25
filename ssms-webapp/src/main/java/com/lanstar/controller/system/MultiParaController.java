@@ -8,31 +8,66 @@
 
 package com.lanstar.controller.system;
 
+import java.util.List;
+
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.MultiPara;
+import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
-
-import java.util.List;
+import com.lanstar.plugin.sqlinxml.SqlKit;
 
 public class MultiParaController extends SimplateController<MultiPara> {
     @Override
     protected MultiPara getDao() {
         return MultiPara.dao;
     }
+    public void valueList() {
 
+    }
     @Override
     public void list() {
-        SqlBuilder builder = SQL.SELECT( "*" ).FROM( "sys_para_multi" ).GROUP_BY( "C_NAME" );
+        SqlBuilder builder = SQL.SELECT( "*" ).FROM( "sys_para_multi" )
+                                .GROUP_BY( "C_NAME" );
         String name = this.getPara( "C_NAME" );
         if ( StrKit.isEmpty( name ) == false ) {
             builder.HAVING( "C_NAME = ?", name );
         }
-
         SqlStatement statement = builder.toSqlStatement();
-        List<MultiPara> multiParas = getDao().find( statement.getSql(), statement.getParams() );
+        List<MultiPara> multiParas = getDao().find( statement.getSql(),
+                                                    statement.getParams() );
         renderJson( multiParas );
+    }
+
+    /**
+     * 列表数据
+     */
+    public void listV() {
+        String sid = this.getPara( "sid" );
+        List<MultiPara> multiParas = this.getDao()
+                                         .find( SqlKit.sql( "system.multiPara.listParaByName" ),
+                                                sid );
+        renderJson( multiParas );
+    }
+    public void reg(){
+        super.rec();
+    }
+    @Override
+    public void rec(){
+        
+        if (isParaBlank( "pid" ) == false) {
+           String name=MultiPara.dao.findById(this.getParaToInt("pid")).getName();
+           this.setAttr( "C_NAME", name );
+        }else{
+            super.rec();
+        }
+        
+    }
+    
+    public void recJson(){
+        rec();
+        renderJson();
     }
 }
