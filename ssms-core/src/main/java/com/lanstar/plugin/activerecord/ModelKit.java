@@ -25,6 +25,7 @@ package com.lanstar.plugin.activerecord;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.lanstar.common.Asserts;
 import com.lanstar.common.log.Logger;
 
 import java.util.LinkedHashMap;
@@ -49,6 +50,7 @@ public class ModelKit {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static Map<String, Object> toMap( Model model ) {
+        Asserts.notNull( model, "model can not be null" );
         Map<String, Object> map = new LinkedHashMap<>();
         map.putAll( model.getAttrs() );
         return map;

@@ -13,18 +13,22 @@ import com.lanstar.identity.IdentityContext;
 import com.lanstar.service.AttachTextService;
 
 public class AttachTextController extends Controller {
-    public void get(){
+    public void get() {
         String field = getPara( "field" );
         String table = getPara( "table" );
         Integer sid = getParaToInt( "sid" );
+        if ( sid == null ) {
+            renderText( "" );
+            return;
+        }
 
         IdentityContext context = IdentityContext.getIdentityContext( this );
         AttachTextService service = context.getAttachTextService();
         String content = service.getContent( table, field, sid );
-        renderText( content );
+        renderText( content == null ? "" : content );
     }
 
-    public void save(){
+    public void save() {
         String field = getPara( "field" );
         String table = getPara( "table" );
         Integer sid = getParaToInt( "sid" );
@@ -32,7 +36,7 @@ public class AttachTextController extends Controller {
 
         IdentityContext context = IdentityContext.getIdentityContext( this );
         AttachTextService service = context.getAttachTextService();
-        service.save( table, field, sid, content );
-        renderJson();
+        Integer id = service.save( table, field, sid, content );
+        renderJson(id);
     }
 }

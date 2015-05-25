@@ -26,6 +26,18 @@ public class SystemRoutes extends Routes {
         add( "/sys/template", com.lanstar.controller.system.TemplateController.class );
         add( "/sys/stdtmp", com.lanstar.controller.system.TemplateFolderController.class );
         add( "/sys/stdtmp_file", com.lanstar.controller.system.TemplateFileController.class );
+        add( "/sys/stdtmp_file_01", com.lanstar.controller.system.TemplateFileController01.class );
+        add( "/sys/stdtmp_file_02", com.lanstar.controller.system.TemplateFileController02.class );
+        add( "/sys/stdtmp_file_03", com.lanstar.controller.system.TemplateFileController03.class );
+        add( "/sys/stdtmp_file_04", com.lanstar.controller.system.TemplateFileController04.class );
+        add( "/sys/stdtmp_file_05", com.lanstar.controller.system.TemplateFileController05.class );
+
         add( "/sys/para_multi", com.lanstar.controller.system.MultiParaController.class );
+        add( "/sys/industry", com.lanstar.controller.system.IndustryController.class );
+        add( "/sys/profession", com.lanstar.controller.system.ProfessionController.class );
+        add( "/sys/para_area", com.lanstar.controller.system.AreaParaController.class );
+
+        add( "/sys/tenant_e", com.lanstar.controller.system.EnterpriseController.class );
+        add( "/sys/tenant_eu", com.lanstar.controller.system.EnterpriseUserController.class );
     }
 }

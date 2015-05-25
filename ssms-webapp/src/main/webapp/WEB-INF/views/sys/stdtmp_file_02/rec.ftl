@@ -1,4 +1,4 @@
-<#import "/layout/_rec.ftl" as layout/>
+<#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
     var model = {
@@ -22,18 +22,19 @@
     };
     var events = {
         saveClick: function () {
-            $.messager.progress();
-            $.post('save.do', model, function (result) {
+            utils.messager.showProgress();
+            $.post('save', model, function (result) {
                 if (result.SID) {
+                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
                     settings.htmleditSettings.save(function (editorResult) {
+                        utils.messager.closeProgress();
                         $.messager.alert("提示", "保存成功", "info", function () {
-                            $.messager.progress('close');
-                            window.location.href = 'rec.html?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                            window.location.href = 'rec?sid=' + result.SID + "&backURL=${backURL!referer!}";
                         });
                     });
                 } else {
                     $.messager.alert("提示", "保存失败", "warning", function () {
-                        $.messager.progress('close');
+                        utils.messager.closeProgress();
                     });
                 }
             }, "json");
@@ -48,7 +49,7 @@
 <@layout.doLayout script>
 <div class="z-toolbar">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer}'">返回</a>
+    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer!}'">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
     <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">

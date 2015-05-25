@@ -12,4 +12,16 @@ import com.lanstar.plugin.activerecord.Model;
 
 public class TemplateFile extends Model<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
+
+    public String getTemplateFileCode() {
+        return getStr( "P_TMPFILE" );
+    }
+
+    public Integer getTemplateFileId() {
+        return getInt( "R_TMPFILE" );
+    }
+
+    public void setTemplateId( int id ) {
+        set( "R_TMPFILE", id );
+    }
 }

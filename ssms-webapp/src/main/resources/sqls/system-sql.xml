@@ -23,4 +23,13 @@
     <sqlGroup name="attachText">
         <sql id="get">SELECT * FROM SYS_ATTACH_TEXT WHERE R_TABLE=? and R_FIELD=? and R_SID=? and R_TENANT=? and P_TENANT=?</sql>
     </sqlGroup>
+
+    <sqlGroup name="enterpriseProfession">
+        <sql id="listProfession">SELECT * FROM SYS_TENANT_E_PROFESSION WHERE R_TENANT=?</sql>
+        <sql id="getProfession">SELECT * FROM SYS_TENANT_E_PROFESSION WHERE R_TENANT=? and P_PROFESSION=?</sql>
+    </sqlGroup>
+
+    <sqlGroup name="enterpriseUser">
+        <sql id="getUserBySidAndPwd">SELECT * FROM SYS_TENANT_E_USER WHERE SID=? and UPPER(C_PASSWD)=?</sql>
+    </sqlGroup>
 </sqlGroup>

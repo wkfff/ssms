@@ -10,10 +10,11 @@ package com.lanstar.app.model;
 
 import com.lanstar.model.system.*;
 
-public class SystemModelMapping extends ActiveRecordMapping{
+public class SystemModelMapping extends ActiveRecordMapping {
     public SystemModelMapping() {
         addMapping( "SYS_TENANT_E_USER", "SID", EnterpriseUser.class );
         addMapping( "SYS_TENANT_E", "SID", Enterprise.class );
+        addMapping( "SYS_TENANT_E_PROFESSION", "SID", EnterpriseProfession.class );
         addMapping( "TENANT_USER", TenantUser.class );
         addMapping( "SYS_NAV", "SID", Navgate.class );
         addMapping( "SYS_PROFESSION", "SID", Profession.class );
@@ -27,6 +28,9 @@ public class SystemModelMapping extends ActiveRecordMapping{
         addMapping( "SYS_STDTMP_FILE_03", "SID", TemplateFile03.class );
         addMapping( "SYS_STDTMP_FILE_04", "SID", TemplateFile04.class );
         addMapping( "SYS_STDTMP_FILE_05", "SID", TemplateFile05.class );
+
         addMapping( "SYS_PARA_MULTI", "SID", MultiPara.class );
+        addMapping( "SYS_INDUSTRY", "SID", Industry.class );
+        addMapping( "SYS_PARA_AREA", "SID", AreaPara.class );
     }
 }

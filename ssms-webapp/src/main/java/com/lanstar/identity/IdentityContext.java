@@ -17,6 +17,7 @@ import com.lanstar.plugin.activerecord.*;
 import com.lanstar.plugin.tlds.DsKit;
 import com.lanstar.service.AttachTextService;
 import com.lanstar.service.ProfessionService;
+import com.lanstar.service.StandardTemplateFileService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -147,6 +148,15 @@ public class IdentityContext {
         AttachTextService service = getValue( AttachTextService.class );
         if ( service == null ) {
             service = new AttachTextService( this );
+            setValue( service );
+        }
+        return service;
+    }
+
+    public StandardTemplateFileService getStandardTemplateService() {
+        StandardTemplateFileService service = getValue( StandardTemplateFileService.class );
+        if ( service == null ) {
+            service = new StandardTemplateFileService( this );
             setValue( service );
         }
         return service;

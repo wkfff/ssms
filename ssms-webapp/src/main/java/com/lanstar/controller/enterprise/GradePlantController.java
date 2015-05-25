@@ -49,7 +49,7 @@ public class GradePlantController extends SimplateController<GradePlant> {
     }
 
     @Override
-    protected void beforeSave( GradePlant model ) {
+    protected void beforeSave( GradePlant model, boolean[] handled ) {
         Integer sid = model.getInt( "SID" );
         if ( sid == null ) { // for insert
             model.setTitle( model.getStartDate() + "企业自评" );

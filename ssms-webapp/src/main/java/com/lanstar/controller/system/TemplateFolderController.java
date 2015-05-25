@@ -31,4 +31,10 @@ public class TemplateFolderController extends SimplateController<TemplateFolder>
     protected SqlBuilder buildWhere() {
         return new SqlBuilder().WHERE()._If( isParaBlank( "R_SID" ) == false, "R_SID=?", getPara( "R_SID" ) );
     }
+
+    @Override
+    public void rec() {
+        super.rec();
+        renderJson();
+    }
 }

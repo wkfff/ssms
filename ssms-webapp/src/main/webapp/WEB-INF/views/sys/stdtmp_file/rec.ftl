@@ -20,8 +20,8 @@
         cycleSource: ko.observableArray(${json(_SYS_CYCLE_)}),
         tmpfilesSource: ko.observableArray(${json(tmpfiles)}),
         paramViewSettings: {
-            valueField: 'key',
-            textField: 'value'
+            valueField: 'code',
+            textField: 'name'
         }
     };
     var events = {
@@ -75,7 +75,7 @@
         <label class="label">模板文件</label>
         <span class="control">
             <input data-bind="comboboxSource:tmpfilesSource,comboboxValue:P_TMPFILE,comboboxText:S_TMPFILE,easyuiOptions:paramViewSettings" required="true"/>
-            <#if P_TMPFILE??>
+            <#if P_TMPFILE?? && R_TMPFILE??>
                 <a href="/sys/stdtmp_file_${P_TMPFILE}/rec?sid=${R_TMPFILE}&backURL=${backURL!referer!}">[配置模板]</a></#if>
         </span>
     </p>

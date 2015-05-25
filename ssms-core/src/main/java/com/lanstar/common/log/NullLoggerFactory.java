@@ -44,6 +44,11 @@ public class NullLoggerFactory implements ILoggerFactory {
 
         }
 
+        @Override
+        public void info( Throwable t, String format, Object... arguments ) {
+
+        }
+
         public void debug( String message ) {
         }
 
@@ -61,6 +66,11 @@ public class NullLoggerFactory implements ILoggerFactory {
 
         }
 
+        @Override
+        public void error( Throwable t, String format, Object... arguments ) {
+
+        }
+
         public void info( String message ) {
         }
 
@@ -69,6 +79,11 @@ public class NullLoggerFactory implements ILoggerFactory {
 
         @Override
         public void debug( String format, Object... arguments ) {
+
+        }
+
+        @Override
+        public void debug( Throwable t, String format, Object... arguments ) {
 
         }
 
@@ -103,6 +118,11 @@ public class NullLoggerFactory implements ILoggerFactory {
 
         }
 
+        @Override
+        public void warn( Throwable t, String format, Object... arguments ) {
+
+        }
+
         public void fatal( String message ) {
         }
 
@@ -111,6 +131,11 @@ public class NullLoggerFactory implements ILoggerFactory {
 
         @Override
         public void fatal( String format, Object... arguments ) {
+
+        }
+
+        @Override
+        public void fatal( Throwable t, String format, Object... arguments ) {
 
         }
     };

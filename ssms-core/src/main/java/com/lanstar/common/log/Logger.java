@@ -51,15 +51,19 @@ public abstract class Logger {
 
     public abstract void info( String format, Object... arguments );
 
-    public abstract void debug( String message );
-
-    public abstract void debug( String message, Throwable t );
+    public abstract void info( Throwable t, String format, Object... arguments );
 
     public abstract void info( String message );
 
     public abstract void info( String message, Throwable t );
 
+    public abstract void debug( String message );
+
+    public abstract void debug( String message, Throwable t );
+
     public abstract void debug( String format, Object... arguments );
+
+    public abstract void debug( Throwable t, String format, Object... arguments );
 
     public abstract void warn( String message );
 
@@ -67,17 +71,23 @@ public abstract class Logger {
 
     public abstract void warn( String format, Object... arguments );
 
+    public abstract void warn( Throwable t, String format, Object... arguments );
+
     public abstract void error( String message );
 
     public abstract void error( String message, Throwable t );
 
     public abstract void error( String format, Object... arguments );
 
+    public abstract void error( Throwable t, String format, Object... arguments );
+
     public abstract void fatal( String message );
 
     public abstract void fatal( String message, Throwable t );
 
     public abstract void fatal( String format, Object... arguments );
+
+    public abstract void fatal( Throwable t, String format, Object... arguments );
 
     public abstract boolean isDebugEnabled();
 

@@ -10,7 +10,9 @@ package com.lanstar.controller.system;
 
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.TemplateFile;
+import com.lanstar.model.system.TemplateFolder;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.service.StandardTemplateFileService;
 
 public class TemplateFileController extends SimplateController<TemplateFile> {
     @Override
@@ -21,5 +23,30 @@ public class TemplateFileController extends SimplateController<TemplateFile> {
     @Override
     protected SqlBuilder buildWhere() {
         return new SqlBuilder().WHERE()._If( isParaBlank( "R_SID" ) == false, "R_SID=?", getPara( "R_SID" ) );
+    }
+
+    @Override
+    public void rec() {
+        if ( isParaBlank( "pid" ) == false ) {
+            TemplateFolder folder = TemplateFolder.dao.findById( getParaToInt( "pid" ) );
+            setAttr( "folder", folder );
+        }
+        setAttr( "tmpfiles", StandardTemplateFileService.listStandardTemplate() );
+        super.rec();
+    }
+
+    @Override
+    protected void beforeSave( TemplateFile model, boolean[] handled ) {
+        String tmpfile = model.getTemplateFileCode();
+        if ( model.getTemplateFileId() == null ) {
+            int fileSid = identityContext.getStandardTemplateService().newFile( tmpfile );
+            model.setTemplateId( fileSid );
+        }
+    }
+
+    @Override
+    protected void beforeDel( TemplateFile model, boolean[] handled ) {
+        identityContext.getStandardTemplateService()
+                       .delFile( model.getTemplateFileCode(), model.getTemplateFileId() );
     }
 }
