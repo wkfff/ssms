@@ -8,19 +8,19 @@
 
 package com.lanstar.controller;
 
-import com.lanstar.app.Const;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.common.ModelInjector;
+import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
-import com.lanstar.core.aop.Before;
 import com.lanstar.core.render.JsonRender;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.plugin.activerecord.*;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
-import com.lanstar.plugin.activerecord.tx.Tx;
-import com.lanstar.plugin.activerecord.tx.TxConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +38,7 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
     public void init( HttpServletRequest request, HttpServletResponse response, String urlPara ) {
         super.init( request, response, urlPara );
         identityContext = IdentityContext.getIdentityContext( this );
+        if ( identityContext == null ) return;
         tenantDb = identityContext.getTenantDb();
     }
 
@@ -47,13 +48,13 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
 
     public void rec() {
         String sid = getPara( "sid" );
+        if ( StrKit.isEmpty( sid ) ) sid = getPara( "SID" );
+        if (sid == null) return;
 
         T model = getDao().findById( sid );
         setAttrs( ModelKit.toMap( model ) );
     }
 
-    @Before(Tx.class)
-    @TxConfig(Const.TENANT_DB_NAME)
     public void save() {
         T model = getModel();
 
@@ -65,6 +66,29 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
 
         afterSave( model );
         setAttr( "SID", model.getInt( "SID" ) );
+        renderJson();
+    }
+
+    public void batchSave() {
+        JSONArray data = JSON.parseArray( getPara( "data" ) );
+        for ( int i = 0; i < data.size(); i++ ) {
+            JSONObject item = data.getJSONObject( i );
+
+            String sid = item.getString( "SID" );
+            T model;
+            if ( sid.startsWith( "_" ) ) {
+                item.remove( "SID" );
+                model = newModel();
+            } else {
+                model = getDao().findById( sid );
+            }
+            ModelInjector.injectActiveRecordModel( model, item, false );
+
+            beforeSave( model );
+            if ( sid.startsWith( "_" ) ) model.save();
+            else model.update();
+            afterSave( model );
+        }
         renderJson();
     }
 

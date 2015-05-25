@@ -47,6 +47,33 @@ public class ModelInjector {
         if ( context != null ) injectOpreator( model, context );
     }
 
+    public static void injectActiveRecordModel( Model<?> model, Map<String, Object> parasMap, boolean skipConvertError ) {
+        Table table = TableMapping.me().getTable( model.getClass() );
+
+        for ( Map.Entry<String, Object> e : parasMap.entrySet() ) {
+            String paraKey = e.getKey();
+            Class<?> colType = table.getColumnType( paraKey );
+            if ( colType == null )
+                throw new ActiveRecordException( "The model attribute " + paraKey + " is not exists." );
+            Object paraValue = e.getValue();
+            if ( paraValue == null ) continue;
+            try {
+                // Object value = Converter.convert(colType, paraValue != null ? paraValue[0] : null);
+                Object value;
+                if ( paraValue.getClass() == String.class )
+                    value = TypeConverter.convert( colType, (String) paraValue );
+                else if (paraValue.getClass() == colType) value = paraValue;
+                else continue;
+
+                Object modelValue = model.get( paraKey );
+                if ( Objects.equals( modelValue, value ) == false ) model.set( paraKey, value );
+            } catch ( Exception ex ) {
+                if ( skipConvertError == false )
+                    throw new RuntimeException( "Can not convert parameter: " + paraKey, ex );
+            }
+        }
+    }
+
     public static void injectOpreator( Model<?> model, IdentityContext context ) {
         Asserts.notNull( model, "model can not null" );
         Asserts.notNull( context, "context can not null" );

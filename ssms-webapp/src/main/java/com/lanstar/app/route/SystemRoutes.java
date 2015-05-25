@@ -20,6 +20,12 @@ public class SystemRoutes extends Routes {
     @Override
     public void config() {
         add( "/s", com.lanstar.controller.system.HomeController.class );
+
         add( "/sys/attachtext", com.lanstar.controller.system.AttachTextController.class );
+        add( "/sys/nav", com.lanstar.controller.system.NavgateController.class );
+        add( "/sys/template", com.lanstar.controller.system.TemplateController.class );
+        add( "/sys/stdtmp", com.lanstar.controller.system.TemplateFolderController.class );
+        add( "/sys/stdtmp_file", com.lanstar.controller.system.TemplateFileController.class );
+        add( "/sys/para_multi", com.lanstar.controller.system.MultiParaController.class );
     }
 }
