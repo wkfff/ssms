@@ -2,7 +2,7 @@
 <#assign script>
 <script type="text/javascript">
     function doNew(){
-        window.location.href='grade_m/rec_new';
+        window.location.href='rec_new';
     }
     function doBack(){
        window.location.href='${referer!}';
@@ -23,7 +23,7 @@
     function doDel(sid) {
         $.messager.confirm("删除确认", "您确认删除选定的记录吗？", function (deleteAction) {
                     if (deleteAction) {
-                        $.get("grade_m/del", {sid:sid}, function (data) {
+                        $.get("del", {sid:sid}, function (data) {
                             if (data == "true" || data== "\"\"") {
                                 $.messager.alert("提示", "删除选定的记录成功");
                                 $("#dg_draft").datagrid("reload");
@@ -41,7 +41,7 @@
         $('#dg_draft').datagrid({
             title:'自评草稿',
             //iconCls:'icon-star',
-            url: 'grade_m/list?N_STATE=0',
+            url: 'list?N_STATE=0',
             idField: 'SID',
             rownumbers: true,
             pagination: true,
@@ -63,7 +63,7 @@
                 {field: 'N_LACK', title: '缺项', width: 60},
                 {field: 'SID', title: '操作',width:180,align:'center',
                     formatter:function(value,row){
-                            return "<a href='#' onclick='doOpen(\"grade_m/draft_rec\","+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"grade_m/report_rec\","+value+")'>自评报告</a>";
+                            return "<a href='#' onclick='doOpen(\"draft_rec\","+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"report_rec\","+value+")'>自评报告</a>";
                     }}
             ]],
             onLoadSuccess: function(data){
@@ -74,7 +74,7 @@
         $('#dg_history').datagrid({
             title:'自评历史',
             //iconCls:'icon-star',
-            url: 'grade_m/list?N_STATE=1',
+            url: 'list?N_STATE=1',
             idField: 'SID',
             rownumbers: true,
             pagination: true,
@@ -95,7 +95,7 @@
                 {field: 'SID', title: '查看', width: 80,align:'center',
                     formatter:function(value,row){
                             /*return "<a href='#' onclick='doOpen(\"history_rec\","+value+")'>自评结果</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"history_rep\","+value+")'>自评报告</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"/e/grade_d/sum\","+value+")'>汇总统计</a>";*/
-                            return "<a href='#' onclick='doOpen(\"grade_m/result\","+value+")'>查看</a>";
+                            return "<a href='#' onclick='doOpen(\"result\","+value+")'>查看</a>";
                         }}
             ]],
             onLoadSuccess: function(data){

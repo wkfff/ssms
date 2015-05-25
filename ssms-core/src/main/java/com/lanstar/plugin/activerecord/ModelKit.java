@@ -23,9 +23,12 @@
  */
 package com.lanstar.plugin.activerecord;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.lanstar.common.log.Logger;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -49,6 +52,15 @@ public class ModelKit {
         Map<String, Object> map = new LinkedHashMap<>();
         map.putAll( model.getAttrs() );
         return map;
+    }
+
+    public static List<Map<String, Object>> toMap( List<? extends Model<?>> list ) {
+        return Lists.transform( list, new Function<Model<?>, Map<String, Object>>() {
+            @Override
+            public Map<String, Object> apply( Model<?> input ) {
+                return toMap( input );
+            }
+        } );
     }
 
     public static Model<?> fromBean( Class<? extends Model<?>> clazz, Object bean ) {

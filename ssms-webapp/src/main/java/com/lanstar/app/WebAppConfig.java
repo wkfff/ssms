@@ -17,6 +17,7 @@ import com.lanstar.app.route.EnterpriseRoutes;
 import com.lanstar.app.route.GovernmentRoutes;
 import com.lanstar.app.route.ReviewRoutes;
 import com.lanstar.app.route.SystemRoutes;
+import com.lanstar.common.kit.JsonKit;
 import com.lanstar.common.kit.ServletKit;
 import com.lanstar.config.*;
 import com.lanstar.controller.HomeController;
@@ -28,11 +29,14 @@ import com.lanstar.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.lanstar.plugin.druid.DruidPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
 import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
+import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.Configuration;
+import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.util.List;
 
 public class WebAppConfig extends RapidwareConfig {
     @Override
@@ -63,6 +67,8 @@ public class WebAppConfig extends RapidwareConfig {
         try {
             me.setSharedVariable( "_TITLE_", "安全生产标准化管理系统" );
             me.setSharedVariable( "BASE_PATH", Rapidware.me().getContextPath() );
+            // 添加JSON扩展方法               by 张铮彬#2015-5-7
+            me.setSharedVariable( "json", new JsonMethod() );
         } catch ( TemplateModelException ignored ) {
         }
     }
@@ -108,9 +114,23 @@ public class WebAppConfig extends RapidwareConfig {
     public void configInterceptor( Interceptors me ) {
         me.add( new IdentityInterceptor() );
         me.add( new TenantDsSwitcher() );
+        me.add( new TxByActionMethods( "save", "batchSave" ) );
     }
 
     @Override
     public void configHandler( Handlers me ) {
+        me.add( new ActionJsHandle() );
+    }
+
+    private class JsonMethod implements TemplateMethodModelEx {
+        @Override
+        public Object exec( List arguments ) throws TemplateModelException {
+            if ( arguments.size() != 1 ) return "";
+            Object object = arguments.get( 0 );
+            if ( object instanceof WrapperTemplateModel ) {
+                object = ((WrapperTemplateModel) object).getWrappedObject();
+            }
+            return JsonKit.toJson( object );
+        }
     }
 }

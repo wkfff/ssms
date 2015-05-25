@@ -20,11 +20,13 @@ public class SystemModelMapping extends ActiveRecordMapping{
         addMapping( "SYS_TEMPLATE", "SID", Template.class );
         addMapping( "SYS_ATTACH_TEXT", "SID", AttachText.class );
 
+        addMapping( "SYS_STDTMP_FOLDER", "SID", TemplateFolder.class );
         addMapping( "SYS_STDTMP_FILE", "SID", TemplateFile.class );
         addMapping( "SYS_STDTMP_FILE_01", "SID", TemplateFile01.class );
         addMapping( "SYS_STDTMP_FILE_02", "SID", TemplateFile02.class );
         addMapping( "SYS_STDTMP_FILE_03", "SID", TemplateFile03.class );
         addMapping( "SYS_STDTMP_FILE_04", "SID", TemplateFile04.class );
         addMapping( "SYS_STDTMP_FILE_05", "SID", TemplateFile05.class );
+        addMapping( "SYS_PARA_MULTI", "SID", MultiPara.class );
     }
 }

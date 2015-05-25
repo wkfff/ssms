@@ -15,17 +15,7 @@
         <sql id="list">SELECT A.* FROM SYS_TEMPLATE A INNER JOIN SYS_PROFESSION B ON A.SID=B.R_TEMPLATE WHERE B.SID=?</sql>
     </sqlGroup>
     <sqlGroup name="templateFolder">
-        <sql id="getFolderByTemplateId">
-            SELECT CONCAT('D-',CONVERT(SID,CHAR)) SID, C_NAME, CONCAT('D-',CONVERT(R_SID,CHAR)) R_SID
-            FROM SSM_STDTMP_FOLDER
-            WHERE R_TEMPLATE = ?
-            UNION ALL
-            SELECT CONCAT('F-',CONVERT(SID,CHAR)) SID, C_NAME, CONCAT('D-',CONVERT(R_SID,CHAR)) R_SID FROM SSM_STDTMP_FILE
-            WHERE R_SID IN (
-                SELECT SID FROM SSM_STDTMP_FOLDER
-                WHERE R_TEMPLATE = ?
-            )
-        </sql>
+        <sql id="getFolders">SELECT * FROM SYS_STDTMP_FOLDER WHERE R_TEMPLATE = ?</sql>
     </sqlGroup>
     <sqlGroup name="tenantUser">
         <sql id="login">SELECT * FROM TENANT_USER WHERE TENANT_CODE=? AND USER_CODE=? AND USER_PASSWORD=?</sql>
