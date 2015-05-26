@@ -6,13 +6,17 @@
     function doSave(){
         parent.$.messager.progress({title : '保存',text : '正在保存中，请稍后....'});
         editor.sync();
-        $('#formMain').form('submit', {
-            url:'/sys/attachtext/save',
-            success: function(data){
-                parent.$.messager.progress('close');
-                $.messager.alert('保存','保存成功！');
-            }
-        });
+        if ($form.validate($('#formMain')))
+            $.ajax({
+                type:'post',
+                url:'/sys/attachtext/save',
+                data:$("#formMain").serialize(), 
+                success:function(data){
+                    parent.$.messager.progress('close');
+                    $.messager.alert("提示", "保存成功", "info");
+                }
+            });
+        return false;
     }
 
     function doDownload(){
@@ -30,7 +34,7 @@
     $(function () {
          KindEditor.ready(function(K) {
                 var h = $('.layout-body')[0].scrollHeight-35;
-                editor = K.create('#CONTENT', {
+                editor = K.create('#content', {
                     width:'100%',height:h,border:0,
                     themeType :'simple',resizeType:0,
                     items : [
@@ -41,7 +45,7 @@
                     '|', 'table','|','fullscreen'
                     ],
                     afterCreate : function() {
-                        K.ajax('/sys/attachtext/get?table=SSM_GRADE_REPORT&field=CONTENT&sid=${sid!}', function(data) {
+                        $.get("/sys/attachtext/get?table=SSM_GRADE_REPORT&field=content&sid=${sid!}",function(data){
                              if (data) editor.html(data);
                         });
                     }
@@ -59,10 +63,10 @@
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-print" onclick="doPrint()">打印</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
          </div>
-         <form id="formMain" method="POST">
-                <textarea id="CONTENT" name="CONTENT" style="display:none;"></textarea>
+         <form id="formMain" method="post">
+                <textarea id="content" name="content" style="display:none;"></textarea>
                 <input type="hidden" name="table" value="SSM_GRADE_REPORT" />
-                <input type="hidden" name="field" value="CONTENT" />
+                <input type="hidden" name="field" value="content" />
                 <input type="hidden" name="sid" value="${sid!}" />
          </form>
     </div>

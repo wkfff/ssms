@@ -8,6 +8,8 @@
 
 package com.lanstar.controller.enterprise;
 
+import java.util.List;
+
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.GradeContent;
 import com.lanstar.model.tenant.GradePlan;
@@ -26,26 +28,60 @@ public class GradePlanController extends SimplateController<GradePlan> {
         }
         else super.index();
     }
-
+    /**
+     * 开始新的自评
+     */
     public void rec_new() {
     }
-
+    
+    /**
+     * 自评
+     */
     @Override
     public void rec() {
         super.rec();
         if ( isParaExists( "json" ) == true )
             renderJson();
     }
-
-    public void draft_rec() {
+    
+    /**
+     * 自评报告
+     */
+    public void report_rec(){
         rec();
     }
-
-    public void draft() {
-
+    
+    /**
+     * 自评历史查看
+     */
+    public void result(){
+        rec();
     }
-
-    public void report_rec(){
+    
+    /**
+     * 自评历史查看.评分汇总表
+     */
+    public void sum(){
+        int sid = this.getModel().getId();
+        List<Record> list = tenantDb.find( "select * from V_GRADE_SUM where R_SID=?", new Object[]{sid} );
+        this.setAttr( "list", list );
+        this.setAttr( "S_TENANT", this.identityContext.getTenantName() );
+    }
+    
+    /**
+     *  自评历史查看.扣分项汇总表
+     */
+    public void sum_ded(){
+        int sid = this.getModel().getId();
+        List<Record> list = tenantDb.find( "select * from V_GRADE_SUM_DED where R_SID=?", new Object[]{sid} );
+        this.setAttr( "list", list );
+        this.setAttr( "S_TENANT", this.identityContext.getTenantName() );
+    }
+    
+    /**
+     * 自评历史查看.自评报告
+     */
+    public void history_rep(){
         rec();
     }
     
@@ -66,7 +102,7 @@ public class GradePlanController extends SimplateController<GradePlan> {
     }
 
     @Override
-    protected void beforeSave( GradePlan model ) {
+    protected void beforeSave( GradePlan model, boolean[] handled ) {
         Integer sid = model.getInt( "SID" );
         if ( sid == null ) { // for insert
             model.setTitle( model.getStartDate() + "企业自评" );

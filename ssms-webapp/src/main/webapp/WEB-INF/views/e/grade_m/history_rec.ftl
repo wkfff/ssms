@@ -1,4 +1,4 @@
-<#import "/layout/_rec.ftl" as layout/>
+<#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <style>
     .datagrid-cell{

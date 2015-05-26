@@ -18,7 +18,7 @@
         window.location.href = url+'?sid='+sid;
     }
     function doClear(id) {
-        $(".easyui-datebox").datebox("setValue", "");
+        $(".easyui-datebox",$("#"+id+"_tb")).datebox("setValue", "");
     }
     function doDel(sid) {
         $.messager.confirm("删除确认", "您确认删除选定的记录吗？", function (deleteAction) {
