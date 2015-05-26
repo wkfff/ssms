@@ -38,9 +38,17 @@ public class AttachTextService {
             attachText.setTable( table );
             attachText.setField( field );
             attachText.setRSid( sid );
+            attachText.setContent( content );
             ModelInjector.injectOpreator( attachText, identityContext );
             attachText.save();
         }
         return attachText.getId();
+    }
+
+    public boolean del( String table, String field, int sid ) {
+        AttachText attachText = AttachText.dao.findFirst( SqlKit.sql( "system.attachText.get" ),
+                table, field, sid, identityContext.getTenantId(), identityContext.getTenantType().getName() );
+        if ( attachText != null ) return attachText.delete();
+        return false;
     }
 }

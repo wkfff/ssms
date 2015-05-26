@@ -448,4 +448,6 @@ public class Db {
     public static int[] batch( List<String> sqlList, int batchSize ) {
         return dbPro.batch( sqlList, batchSize );
     }
+
+    public static Object[] callProcedure( String spName, Object... params ) {return dbPro.callProcedure( spName, params );}
 }

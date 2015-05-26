@@ -8,17 +8,62 @@
 
 package com.lanstar.model.system;
 
+import com.lanstar.identity.TenantType;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.sqlinxml.SqlKit;
+
+import java.util.List;
 
 public class Enterprise extends Model<Enterprise> {
     public static final Enterprise dao = new Enterprise();
 
     public EnterpriseUser getUser( String username, String password ) {
-        return EnterpriseUser.dao.findFirst( SqlKit.sql( "system.enterprise.getuser" ), username.toUpperCase(), password.toUpperCase(), getStr( "SID" ) );
+        return EnterpriseUser.dao.findFirst( SqlKit.sql( "system.enterprise.getuser" ), username.toUpperCase(), password
+                .toUpperCase(), getStr( "SID" ) );
     }
 
     public static Enterprise findByCode( String code ) {
-        return dao.findFirst( SqlKit.sql( "system.enterprise.findByCode" ) , code.toUpperCase() );
+        return dao.findFirst( SqlKit.sql( "system.enterprise.findByCode" ), code.toUpperCase() );
+    }
+
+    public List<EnterpriseProfession> listProfession() {
+        return EnterpriseProfession.listProfession( getId() );
+    }
+
+    public String getCountyCode() {
+        return getStr( "P_COUNTY" );
+    }
+
+    public String getTenantCode() {
+        return getStr( "C_CODE" );
+    }
+
+    public void setTenantCode( String tenantCode ) {
+        set( "C_CODE", tenantCode );
+    }
+
+    public Integer getId() {
+        return getInt( "SID" );
+    }
+
+    public String getName() {
+        return getStr( "C_NAME" );
+    }
+
+    public TenantType getTenantType() {
+        return TenantType.ENTERPRISE;
+    }
+
+    @Override
+    public boolean delete() {
+        set( "B_DELETE", 1 );
+        return update();
+    }
+
+    @Override
+    public boolean deleteById( Object id ) {
+        Enterprise model = dao.findById( id );
+        model.set( "B_DELETE", 1 );
+        return update();
     }
 }

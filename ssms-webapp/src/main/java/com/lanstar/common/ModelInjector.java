@@ -47,6 +47,26 @@ public class ModelInjector {
         if ( context != null ) injectOpreator( model, context );
     }
 
+    public static void injectActiveRecordModel( Model<?> model, Map<String, String> parasMap ) {
+        Table table = TableMapping.me().getTable( model.getClass() );
+
+        for ( Map.Entry<String, String> e : parasMap.entrySet() ) {
+            String paraKey = e.getKey();
+            Class<?> colType = table.getColumnType( paraKey );
+            if ( colType == null )
+                continue;
+            String paraValue = e.getValue();
+            try {
+                // Object value = Converter.convert(colType, paraValue != null ? paraValue[0] : null);
+                Object value = paraValue != null ? TypeConverter.convert( colType, paraValue ) : null;
+                Object modelValue = model.get( paraKey );
+                if ( Objects.equals( modelValue, value ) == false ) model.set( paraKey, value );
+            } catch ( Exception ex ) {
+                throw new RuntimeException( "Can not convert parameter: " + paraKey, ex );
+            }
+        }
+    }
+
     public static void injectActiveRecordModel( Model<?> model, Map<String, Object> parasMap, boolean skipConvertError ) {
         Table table = TableMapping.me().getTable( model.getClass() );
 
@@ -62,7 +82,7 @@ public class ModelInjector {
                 Object value;
                 if ( paraValue.getClass() == String.class )
                     value = TypeConverter.convert( colType, (String) paraValue );
-                else if (paraValue.getClass() == colType) value = paraValue;
+                else if ( paraValue.getClass() == colType ) value = paraValue;
                 else continue;
 
                 Object modelValue = model.get( paraKey );

@@ -1,4 +1,4 @@
-<#import "/layout/_list.ftl" as layout/>
+<#import "../../layout/_list.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
 function doSearch(id) {
@@ -9,7 +9,7 @@ function doSearch(id) {
 function doDel(sid) {
     $.messager.confirm("删除确认", "您确认删除选定的记录吗？", function (deleteAction) {
                 if (deleteAction) {
-                    $.get("del.do", {sid:sid}, function (data) {
+                    $.get("del", {sid:sid}, function (data) {
                         if (data == "true" || data== "\"\"") {
                             $.messager.alert("提示", "删除选定的记录成功");
                             $("#dg_index").datagrid("reload");
@@ -23,17 +23,17 @@ function doDel(sid) {
     });
 }
 function doEdit(sid) {
-    window.location.href = 'rec.html?refer=edit&sid='+sid;
+    window.location.href = 'rec?refer=edit&sid='+sid;
 }
 function doClear(id) {
     $(".easyui-textbox").textbox("setValue", "");
 }
 function doNew(){
-    window.location.href = 'rec.html?refer=new';
+    window.location.href = 'rec?refer=new';
 }
 $(document).ready(function () {
         $('#dg_index').datagrid({
-            url: 'list.json',
+            url: 'list',
             idField: 'SID',
             iconCls: 'icon-star',
             rownumbers: true,

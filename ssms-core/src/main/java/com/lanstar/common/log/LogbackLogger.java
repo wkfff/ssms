@@ -36,7 +36,14 @@ public class LogbackLogger extends Logger {
     }
 
     @Override
-    public void info( String format, Object... arguments ) {log.info( format, arguments );}
+    public void info( String format, Object... arguments ) {
+        log.info( arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format );
+    }
+
+    @Override
+    public void info( Throwable t, String format, Object... arguments ) {
+        log.info( arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format, t );
+    }
 
     @Override
     public void debug( String message ) {
@@ -49,7 +56,14 @@ public class LogbackLogger extends Logger {
     }
 
     @Override
-    public void debug( String format, Object... arguments ) {log.debug( format, arguments );}
+    public void debug( String format, Object... arguments ) {
+        log.debug( arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format );
+    }
+
+    @Override
+    public void debug( Throwable t, String format, Object... arguments ) {
+        log.debug( arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format, t );
+    }
 
     @Override
     public void warn( String message ) {
@@ -62,7 +76,14 @@ public class LogbackLogger extends Logger {
     }
 
     @Override
-    public void warn( String format, Object... arguments ) {log.warn( format, arguments );}
+    public void warn( String format, Object... arguments ) {
+        log.warn( arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format );
+    }
+
+    @Override
+    public void warn( Throwable t, String format, Object... arguments ) {
+        log.warn( arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format, t );
+    }
 
     @Override
     public void error( String message ) {
@@ -75,7 +96,14 @@ public class LogbackLogger extends Logger {
     }
 
     @Override
-    public void error( String format, Object... arguments ) {log.error( format, arguments );}
+    public void error( String format, Object... arguments ) {
+        log.error( arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format );
+    }
+
+    @Override
+    public void error( Throwable t, String format, Object... arguments ) {
+        log.error( arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format, t );
+    }
 
     @Override
     public void fatal( String message ) {
@@ -88,7 +116,14 @@ public class LogbackLogger extends Logger {
     }
 
     @Override
-    public void fatal( String format, Object... arguments ) {log.error( format, arguments );}
+    public void fatal( String format, Object... arguments ) {
+        log.error( arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format );
+    }
+
+    @Override
+    public void fatal( Throwable t, String format, Object... arguments ) {
+        log.error( arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format, t );
+    }
 
     @Override
     public boolean isDebugEnabled() {

@@ -1,17 +1,17 @@
-<#import "/layout/_rec.ftl" as layout/>
+<#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
         R_TEMPLATE: ko.observable('${R_TEMPLATE!}'),
-        SID: '${SID!}',
+        SID: '${SID!}'
     };
     var events = {
         saveClick: function () {
-            $.post('save.do', model, function (result) {
+            $.post('save', model, function (result) {
                 if (result.SID)
                     $.messager.alert("提示", "保存成功", "info", function () {
-                        window.location.href ="index.html";
+                        window.location.href ="index";
                     });
                 else {
                     $.messager.alert("提示", "保存失败", "warning");
@@ -22,8 +22,8 @@
     var settings = {
 		templateSource: ko.observableArray(${json(template)}),
             paramViewSettings: {
-                valueField: 'key',
-                textField: 'value'
+                valueField: 'code',
+                textField: 'name'
             }
         };
     ko.applyBindings($.extend({}, model, events,settings));
@@ -32,7 +32,7 @@
 <@layout.doLayout script>
 <div class="z-toolbar">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-    <a class="easyui-linkbutton" onclick="window.location.href='index.html'" plain="true" iconCls="icon-undo">返回</a>
+    <a class="easyui-linkbutton" onclick="window.location.href='index'" plain="true" iconCls="icon-undo">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
     <div class="easyui-panel" title="行业信息" style="padding-bottom: 10px;">

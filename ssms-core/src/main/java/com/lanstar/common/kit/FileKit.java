@@ -52,4 +52,58 @@ public class FileKit {
             }
         }
     }
+
+    /**
+     * 检查文件是否存在
+     * @param path  路径
+     * @return TRUE = 是一个文件，并且存在 FALSE = 不存在或者不是文件
+     */
+    public static boolean fileExists(String path) {
+        File f = new File(path);
+        return f.exists() && f.isFile();
+    }
+
+    /**
+     * 遍历目录，如果是文件的话就处理当前文件
+     */
+    public static void each(final File file, final IFileProcessor filer) {
+        if (!file.exists())
+            return;
+        if (file.isFile()) {
+            filer.process(file);
+        } else if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files == null) return;
+            for (File f : files) {
+                each(f, filer);
+            }
+        }
+    }
+
+    /**
+     * 判断文件是否由指定后缀名构成
+     */
+    public static boolean withExtname(File f, String... extname) {
+        String fname = f.getName().toUpperCase();
+        for (String n : extname) {
+            if (fname.endsWith(n.toUpperCase()))
+                return true;
+        }
+        return false;
+    }
+
+    /** 文件处理器，用于FileHelper.each()使用 */
+    public interface IFileProcessor {
+        void process(File file);
+    }
+
+    public static File join(String... path) {
+        if (path.length == 0)
+            return null;
+        File f = new File(path[0]);
+        for (int i = 1; i < path.length; i++) {
+            f = new File(f, path[i]);
+        }
+        return f;
+    }
 }

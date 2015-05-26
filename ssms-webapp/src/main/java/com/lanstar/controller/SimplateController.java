@@ -24,7 +24,9 @@ import com.lanstar.plugin.activerecord.statement.SqlStatement;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
 import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
@@ -49,10 +51,10 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
     public void rec() {
         String sid = getPara( "sid" );
         if ( StrKit.isEmpty( sid ) ) sid = getPara( "SID" );
-        if (sid == null) return;
+        if ( sid == null ) return;
 
         T model = getDao().findById( sid );
-        setAttrs( ModelKit.toMap( model ) );
+        if ( model != null ) setAttrs( ModelKit.toMap( model ) );
     }
 
     public void save() {
@@ -60,9 +62,12 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
 
         Integer sid = model.getInt( "SID" );
 
-        beforeSave( model );
-        if ( sid == null ) model.save();
-        else model.update();
+        boolean[] handled = new boolean[1];
+        beforeSave( model, handled );
+        if ( handled[0] == false ) {
+            if ( sid == null ) model.save();
+            else model.update();
+        }
 
         afterSave( model );
         setAttr( "SID", model.getInt( "SID" ) );
@@ -84,9 +89,12 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
             }
             ModelInjector.injectActiveRecordModel( model, item, false );
 
-            beforeSave( model );
-            if ( sid.startsWith( "_" ) ) model.save();
-            else model.update();
+            boolean[] handled = new boolean[1];
+            beforeSave( model, handled );
+            if ( handled[0] == false ) {
+                if ( sid.startsWith( "_" ) ) model.save();
+                else model.update();
+            }
             afterSave( model );
         }
         renderJson();
@@ -94,7 +102,11 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
 
     public void del() {
         T model = getModel();
-        render( new JsonRender( model.delete() ).forIE() );
+        boolean[] handled = new boolean[1];
+        beforeDel( model, handled );
+        boolean success = model.delete();
+        afterDel( model );
+        render( new JsonRender( success ).forIE() );
     }
 
     public void list() {
@@ -123,20 +135,40 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
         return null;
     }
 
-    protected void beforeSave( T model ) {
-
+    protected void beforeSave( T model, boolean[] handled ) {
     }
 
     protected void afterSave( T model ) {
 
     }
 
+    protected void beforeDel( T model, boolean[] handled ) {
+
+    }
+
+    protected void afterDel( T model ) {
+
+    }
+
     protected T getModel() {
-        Integer sid = getParaToInt( "SID" );
+        Enumeration<String> paraNames = this.getParaNames();
+        Map<String, String> paraMap = new CaseInsensitiveContainerFactory.CaseInsensitiveMap();
+        while ( paraNames.hasMoreElements() ) {
+            String paraName = paraNames.nextElement();
+            if ( isParaBlank( paraName ) ) continue;
+            String para = getPara( paraName );
+            if ( "undefined".equalsIgnoreCase( para ) ) continue;
+            if ( "null".equalsIgnoreCase( para ) ) continue;
+            paraMap.put( paraName, para );
+        }
+
         T model;
-        if ( sid != null ) model = getDao().findById( sid );
+        String tmp = paraMap.get( "SID" );
+        if ( StrKit.isEmpty( tmp ) == false ) model = getDao().findById( tmp );
         else model = newModel();
-        ModelInjector.injectActiveRecordModel( model, getRequest(), false );
+
+        ModelInjector.injectActiveRecordModel( model, paraMap );
+        ModelInjector.injectOpreator( model, identityContext );
         return model;
     }
 

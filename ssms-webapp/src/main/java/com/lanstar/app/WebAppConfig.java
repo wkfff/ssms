@@ -28,6 +28,8 @@ import com.lanstar.plugin.activerecord.ActiveRecordPlugin;
 import com.lanstar.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.lanstar.plugin.druid.DruidPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
+import com.lanstar.plugin.staticcache.StandardTemplateCache;
+import com.lanstar.plugin.staticcache.StaticCachePlugin;
 import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
 import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.Configuration;
@@ -85,6 +87,7 @@ public class WebAppConfig extends RapidwareConfig {
     @Override
     public void configPlugin( Plugins me ) {
         me.add( new SqlInXmlPlugin().setPath( "/sqls" ) );
+        me.add( new StaticCachePlugin( new StandardTemplateCache() ) );
 
         // main ds
         DruidPlugin c3p0Plugin = new DruidPlugin( getProperty( "jdbc_url" ), getProperty( "jdbc_user" ), getProperty( "jdbc_password" ) );

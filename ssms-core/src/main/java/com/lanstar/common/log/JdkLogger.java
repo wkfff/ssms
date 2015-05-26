@@ -30,7 +30,13 @@ public class JdkLogger extends Logger {
 
     @Override
     public void info( String format, Object... arguments ) {
-        log.logp(Level.INFO, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(), format, arguments);
+        log.logp( Level.INFO, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(), format, arguments );
+    }
+
+    @Override
+    public void info( Throwable t, String format, Object... arguments ) {
+        log.logp( Level.INFO, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format, t );
     }
 
     public void debug( String message ) {
@@ -51,7 +57,13 @@ public class JdkLogger extends Logger {
 
     @Override
     public void debug( String format, Object... arguments ) {
-        log.logp(Level.FINE, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(), format, arguments);
+        log.logp( Level.FINE, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(), format, arguments );
+    }
+
+    @Override
+    public void debug( Throwable t, String format, Object... arguments ) {
+        log.logp( Level.FINE, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format, t );
     }
 
     public void warn( String message ) {
@@ -64,7 +76,14 @@ public class JdkLogger extends Logger {
 
     @Override
     public void warn( String format, Object... arguments ) {
-        log.logp(Level.WARNING, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(), format, arguments);
+        log.logp( Level.WARNING, clazzName, Thread.currentThread()
+                                                  .getStackTrace()[1].getMethodName(), format, arguments );
+    }
+
+    @Override
+    public void warn( Throwable t, String format, Object... arguments ) {
+        log.logp( Level.WARNING, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format, t );
     }
 
     public void error( String message ) {
@@ -77,7 +96,14 @@ public class JdkLogger extends Logger {
 
     @Override
     public void error( String format, Object... arguments ) {
-        log.logp(Level.SEVERE, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(), format, arguments);
+        log.logp( Level.SEVERE, clazzName, Thread.currentThread()
+                                                 .getStackTrace()[1].getMethodName(), format, arguments );
+    }
+
+    @Override
+    public void error( Throwable t, String format, Object... arguments ) {
+        log.logp( Level.SEVERE, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format, t );
     }
 
     /**
@@ -96,7 +122,14 @@ public class JdkLogger extends Logger {
 
     @Override
     public void fatal( String format, Object... arguments ) {
-        log.logp(Level.SEVERE, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(), format, arguments);
+        log.logp( Level.SEVERE, clazzName, Thread.currentThread()
+                                                 .getStackTrace()[1].getMethodName(), format, arguments );
+    }
+
+    @Override
+    public void fatal( Throwable t, String format, Object... arguments ) {
+        log.logp( Level.SEVERE, clazzName, Thread.currentThread().getStackTrace()[1].getMethodName(),
+                arguments != null && arguments.length > 0 ? String.format( format, arguments ) : format, t );
     }
 
     public boolean isDebugEnabled() {

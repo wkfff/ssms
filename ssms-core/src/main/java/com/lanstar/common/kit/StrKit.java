@@ -8,6 +8,10 @@
 
 package com.lanstar.common.kit;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * StrKit.
  */
@@ -98,5 +102,28 @@ public class StrKit {
 
     public static boolean notEmpty( String str ) {
         return isEmpty( str ) == false;
+    }
+
+    public static String toMD5( String src ) {
+        MessageDigest messageDigest;
+        StringBuilder md5StrBuff = new StringBuilder();
+
+        try {
+            messageDigest = MessageDigest.getInstance( "MD5" );
+            messageDigest.reset();
+            messageDigest.update( src.getBytes( "UTF-8" ) );
+
+            byte[] byteArray = messageDigest.digest();
+            for ( byte aByteArray : byteArray ) {
+                if ( Integer.toHexString( 0xFF & aByteArray ).length() == 1 )
+                    md5StrBuff.append( "0" ).append( Integer.toHexString( 0xFF & aByteArray ) );
+                else
+                    md5StrBuff.append( Integer.toHexString( 0xFF & aByteArray ) );
+            }
+        } catch ( NoSuchAlgorithmException | UnsupportedEncodingException e ) {
+            e.printStackTrace();
+        }
+
+        return md5StrBuff.toString();
     }
 }

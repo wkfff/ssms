@@ -6,15 +6,14 @@
  * 创建用户：张铮彬
  */
 
-function ViewModel(catalogId){
+function ViewModel(catalogId) {
     var model = {
         editItem: ko.observable(),
         selectItem: ko.observable(),
         selectIndex: ko.pureComputed(function () {
             var row = model.selectItem();
             if (row) return settings.gridSettings.datagrid('getRowIndex', row);
-        }),
-        selectItem: ko.observable()
+        })
     };
     var settings = {
         viewSettings: {
@@ -43,20 +42,19 @@ function ViewModel(catalogId){
                             if (value) return value == 1 ? "是" : "否"
                         }
                     },
-                    {field: 'N_INDEX', title: '排序',  align: 'center' ,width : 50,
-                    	editor: {type: 'text', options: {validType: ['length[0, 300]']}}},
                     {
-                            field: 'SID', title: '操作', width: 130, align: 'center',
-                            formatter: function (value, row) {
-                                return "<a href='#' onclick='doEdit(" + value + ")'>编辑文件</a>&nbsp&nbsp<a href='#' onclick='configTemplate(" + row.R_TMPFILE + ','+row.P_TMPFILE +")'>配置模版</a>";
-                            }
-                        }	
-                    
+                        field: 'N_INDEX', title: '排序', align: 'center', width: 50,
+                        editor: {type: 'text', options: {validType: ['length[0, 300]']}}
+                    },
+                    {
+                        field: 'SID', title: '操作', width: 130, align: 'center',
+                        formatter: function (value, row) {
+                            return "<a href='#' onclick='doEdit(" + value + ")'>编辑文件</a>&nbsp&nbsp<a href='#' onclick='configTemplate(" + row.R_TMPFILE + ',' + row.P_TMPFILE + ")'>配置模版</a>";
+                        }
+                    }
+
                 ]
-            ],
-            /*onDblClickRow: function () {
-                events.editClick();
-            }*/
+            ]
         }
     };
     var events = {
@@ -64,7 +62,7 @@ function ViewModel(catalogId){
             settings.viewSettings.datagrid('reload');
         },
         addClick: function () {
-            window.location.href = 'rec?pid='+catalogId;
+            window.location.href = 'rec?pid=' + catalogId;
         },
         editClick: function () {
             var value = model.selectItem();
@@ -105,13 +103,13 @@ function ViewModel(catalogId){
 
     $.extend(this, model, settings, events);
 }
-function doEdit(sid){
-	window.location.href='rec?SID='+sid;
-};
-function configTemplate(R_TMPFILE,P_TMPFILE){
-	if(P_TMPFILE!=null){
-		window.location.href="/sys/stdtmp_file_0"+P_TMPFILE+"/rec?sid="+R_TMPFILE;
-	}else{
-		$.messager.alert('警告','没有配置模版','warning');
-	}
-};
+function doEdit(sid) {
+    window.location.href = 'rec?SID=' + sid;
+}
+function configTemplate(R_TMPFILE, P_TMPFILE) {
+    if (P_TMPFILE != null) {
+        window.location.href = "/sys/stdtmp_file_0" + P_TMPFILE + "/rec?sid=" + R_TMPFILE;
+    } else {
+        $.messager.alert('警告', '没有配置模版', 'warning');
+    }
+}
