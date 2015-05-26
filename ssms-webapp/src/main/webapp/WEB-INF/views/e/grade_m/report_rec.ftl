@@ -1,4 +1,4 @@
-<#import "/layout/_rec.ftl" as layout/>
+<#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript">
@@ -7,7 +7,7 @@
         parent.$.messager.progress({title : '保存',text : '正在保存中，请稍后....'});
         editor.sync();
         $('#formMain').form('submit', {
-            url:'/sys/attachtext/save.do',
+            url:'/sys/attachtext/save',
             success: function(data){
                 parent.$.messager.progress('close');
                 $.messager.alert('保存','保存成功！');
@@ -41,8 +41,8 @@
                     '|', 'table','|','fullscreen'
                     ],
                     afterCreate : function() {
-                        K.ajax('/sys/attachtext/get.json?table=SSM_GRADE_REPORT&field=CONTENT&sid=${sid!}', function(data) {
-                             editor.html(data);
+                        K.ajax('/sys/attachtext/get?table=SSM_GRADE_REPORT&field=CONTENT&sid=${sid!}', function(data) {
+                             if (data) editor.html(data);
                         });
                     }
                  });

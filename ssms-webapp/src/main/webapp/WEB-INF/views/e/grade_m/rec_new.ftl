@@ -13,58 +13,72 @@
 </style>
 
 <script type="text/javascript">
-    function doSave(){
-        //$.messager.progress();
-        $('#formMain').form('submit', {
-            url:'save',
-            onSubmit: function(){
-                var isValid = $(this).form('validate');
-                if (!isValid){
-                    //$.messager.progress('close');
+    var model = {
+        S_TENANT: ko.observable('${S_TENANT!LANSTAR_IDENTITY.tenantName}'),
+        T_START: ko.observable('${T_START!}'),
+        T_END: ko.observable('${T_END!}'),
+        C_LEADER: ko.observable('${C_LEADER!}'),
+        C_MEMBERS: ko.observable('${C_MEMBERS!}'),
+        SID: '${SID!}'
+    };
+   
+    var events = {
+        saveClick: function () {
+            utils.messager.showProgress();
+            $.post('save', model, function (result) {
+                if (result.SID) {
+                    $.messager.alert("提示", "保存成功", "info", function () {
+                            utils.messager.closeProgress();
+                            window.location.href = 'rec?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                    });
+                } else {
+                    utils.messager.closeProgress();
+                    $.messager.alert("提示", "保存失败", "warning");
                 }
-                return isValid;
-            },
-            success: function(data){
-                $.messager.alert('保存','保存成功！');
-                var sid = $.evalJSON(data).SID;
-                window.location.href='rec?sid='+sid;
-            }
-        });
-    }
+            }, "json");
+        },backClick: function(){
+            window.location.href='/e/grade_m/index';
+        }
+    };
 
-    function doBack(){
-        window.location.href='${referer!}';
-    }
+    $(function () {
+        ko.applyBindings($.extend({}, model, events));
+    });
 </script>
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
     <div title="在线自评" data-options="region:'center',collapsible:false" style="overflow:hidden;">
-          <div class="toolbar ue-clear">
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
-                <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
-         </div>
+          <div class="z-toolbar">
+                <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+                <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-back" data-bind="click: backClick">返回</a>
+          </div>
+
          <div class="easyui-panel" style="border:0;margin:10px;">
              <form id="formMain" method="post">
                     <table class="table">
                         <tr>
                             <td class="span2">自评单位:</td>
                             <td class="span10" colspan="3">
-                                <input class="easyui-textbox" type="text" name="S_TENANT" data-options="required:true" 
-                                disabled=true value="${LANSTAR_IDENTITY.tenantName}"/>
+                                <input data-bind="textboxValue: S_TENANT" data-options="disabled:true" />
                              </td>
                         </tr>
                         <tr>
                             <td class="span2">自评日期:</td>
-                            <td class="span4"><input class="easyui-datebox" type="text" name="T_START" data-options="required:true,width:100"></input>
-                                                        至<input class="easyui-datebox" type="text" name="T_END" data-options="required:true,width:100" ></input>
+                            <td class="span4">
+                            <input data-bind="dateboxValue: T_START" data-options="required:true,width:90"/>
+                                                        至
+                            <input data-bind="dateboxValue: T_END" data-options="required:true,width:90"/>
                             </td>
                             <td class="span2">自评组组长:</td>
-                            <td class="span4"><input class="easyui-textbox" type="text" name="C_LEADER" data-options="required:true"></input></td>
+                            <td class="span4">
+                            <input data-bind="textboxValue: C_LEADER" data-options="required:true"/>
                         </tr>
                         <tr>
                             <td class="span2">自评组主要成员:
-                            <td class="span10" colspan="3"><input class="easyui-textbox" type="text" name="C_MEMBERS" data-options="required:true"></input></td>
+                            <td class="span10" colspan="3">
+                            <input data-bind="textboxValue: C_MEMBERS" data-options="required:true"/>
+                            </td>
                         </tr>
                     </table>
             </form>

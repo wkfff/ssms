@@ -2,7 +2,7 @@
 <#assign script>
 <script type="text/javascript">
     function doNew(){
-        window.location.href='rec_new';
+        window.location.href='/e/grade_m/rec_new';
     }
     function doBack(){
        window.location.href='${referer!}';
@@ -63,7 +63,7 @@
                 {field: 'N_LACK', title: '缺项', width: 60},
                 {field: 'SID', title: '操作',width:180,align:'center',
                     formatter:function(value,row){
-                            return "<a href='#' onclick='doOpen(\"draft_rec\","+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"report_rec\","+value+")'>自评报告</a>";
+                            return "<a href='#' onclick='doOpen(\"rec\","+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"report_rec\","+value+")'>自评报告</a>";
                     }}
             ]],
             onLoadSuccess: function(data){

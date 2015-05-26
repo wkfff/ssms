@@ -369,6 +369,31 @@ public abstract class Model<M extends Model> {
             config.close( conn );
         }
     }
+    /**
+     * 删除指定字段值为id值的记录，例如根据主表SID删除对应的从表记录，林峰 2015-05-25
+     * @param id 
+     * @param parentKey
+     * @return
+     */
+    public boolean deleteById( Object id,String parentKey ) {
+        if ( id == null )
+            throw new IllegalArgumentException( "id can not be null" );
+        return deleteById( getTable(), id, parentKey );
+    }
+
+    private boolean deleteById( Table table, Object id, String parentKey ) {
+        Config config = getConfig();
+        Connection conn = null;
+        try {
+            conn = config.getConnection();
+            String sql = config.dialect.forDbDeleteById( table.getName(), parentKey );
+            return Db.update( config, conn, sql, id ) >= 1;
+        } catch ( Exception e ) {
+            throw new ActiveRecordException( e );
+        } finally {
+            config.close( conn );
+        }
+    }
 
     /**
      * Update model.
