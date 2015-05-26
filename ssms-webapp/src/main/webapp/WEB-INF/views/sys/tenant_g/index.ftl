@@ -1,4 +1,4 @@
-<#import "/layout/_list.ftl" as layout/>
+<#import "../../layout/_list.ftl" as layout/>
 <#assign script>
 <script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">

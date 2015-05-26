@@ -1,4 +1,4 @@
-<#import "/layout/_rec.ftl" as layout/>
+<#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
 <script type="text/javascript">
@@ -16,7 +16,7 @@
             } else {
                 model.oldPwd($.md5(model.oldPwd()));
                 model.newPwd($.md5(model.newPwd()));
-                $.post('updtePSW.do', {
+                $.post('updtePSW', {
                     oldPwd: model.oldPwd(),
                     newPwd: model.newPwd(),
                     SID: model.SID()
@@ -60,7 +60,7 @@
             <p class="long-input ue-clear">
                 <label>确认密码</label>
                 <span class="control">
-                    <input data-bind="textboxValue: confirmPwd" type="password"  required/>
+                    <input data-bind="textboxValue: confirmPwd" type="password" required/>
                 </span>
             </p>
         </div>

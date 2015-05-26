@@ -15,6 +15,13 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_TENANT_E_USER", "SID", EnterpriseUser.class );
         addMapping( "SYS_TENANT_E", "SID", Enterprise.class );
         addMapping( "SYS_TENANT_E_PROFESSION", "SID", EnterpriseProfession.class );
+
+        addMapping( "SYS_TENANT_G_USER", "SID", GovernmentUser.class );
+        addMapping( "SYS_TENANT_G", "SID", Government.class );
+
+        addMapping( "SYS_TENANT_R_USER", "SID", ReviewUser.class );
+        addMapping( "SYS_TENANT_R", "SID", Review.class );
+
         addMapping( "TENANT_USER", TenantUser.class );
         addMapping( "SYS_NAV", "SID", Navgate.class );
         addMapping( "SYS_PROFESSION", "SID", Profession.class );
@@ -23,6 +30,8 @@ public class SystemModelMapping extends ActiveRecordMapping {
 
         addMapping( "SYS_STDTMP_FOLDER", "SID", TemplateFolder.class );
         addMapping( "SYS_STDTMP_FILE", "SID", TemplateFile.class );
+        addMapping( "SSM_GRADE_STD", "SID", TemplateGrade.class );
+        addMapping( "SSM_GRADE_REPORT_TMP", "SID", TemplateRep.class );
         addMapping( "SYS_STDTMP_FILE_01", "SID", TemplateFile01.class );
         addMapping( "SYS_STDTMP_FILE_02", "SID", TemplateFile02.class );
         addMapping( "SYS_STDTMP_FILE_03", "SID", TemplateFile03.class );

@@ -26,6 +26,8 @@ public class SystemRoutes extends Routes {
         add( "/sys/template", com.lanstar.controller.system.TemplateController.class );
         add( "/sys/stdtmp", com.lanstar.controller.system.TemplateFolderController.class );
         add( "/sys/stdtmp_file", com.lanstar.controller.system.TemplateFileController.class );
+        add( "/sys/stdtmp_grade", com.lanstar.controller.system.TemplateGradeController.class );
+        add( "/sys/stdtmp_rep", com.lanstar.controller.system.TemplateRepController.class );
         add( "/sys/stdtmp_file_01", com.lanstar.controller.system.TemplateFileController01.class );
         add( "/sys/stdtmp_file_02", com.lanstar.controller.system.TemplateFileController02.class );
         add( "/sys/stdtmp_file_03", com.lanstar.controller.system.TemplateFileController03.class );
@@ -39,5 +41,11 @@ public class SystemRoutes extends Routes {
 
         add( "/sys/tenant_e", com.lanstar.controller.system.EnterpriseController.class );
         add( "/sys/tenant_eu", com.lanstar.controller.system.EnterpriseUserController.class );
+
+        add( "/sys/tenant_g", com.lanstar.controller.system.GovernmentController.class );
+        add( "/sys/tenant_gu", com.lanstar.controller.system.GovernmentUserController.class );
+
+        add( "/sys/tenant_r", com.lanstar.controller.system.ReviewController.class );
+        add( "/sys/tenant_ru", com.lanstar.controller.system.ReviewUserController.class );
     }
 }

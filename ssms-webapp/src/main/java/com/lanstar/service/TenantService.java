@@ -9,12 +9,15 @@
 package com.lanstar.service;
 
 import com.lanstar.identity.TenantType;
-import com.lanstar.model.system.Enterprise;
-import com.lanstar.model.system.EnterpriseUser;
+import com.lanstar.model.system.*;
 import com.lanstar.plugin.activerecord.Db;
 
 public class TenantService {
     private static TenantService me = new TenantService();
+
+    public static TenantService me() {
+        return me;
+    }
 
     public String buildSignature( TenantType tenantType, String countyCode ) {
         // 得到租户特征码：租户类型+县级编码
@@ -29,13 +32,26 @@ public class TenantService {
         EnterpriseUser user = new EnterpriseUser();
         user.setName( "管理员" );
         user.setUsername( "admin" );
-        user.setEnterpriseId( model.getId() );
-        user.setEnterpriseName( model.getName() );
+        user.setEnterprise( model );
         user.initPassword();
         user.save();
     }
 
-    public static TenantService me() {
-        return me;
+    public void addAdminUser( Government model ) {
+        GovernmentUser user = new GovernmentUser();
+        user.setName( "管理员" );
+        user.setUsername( "admin" );
+        user.setGovernment( model );
+        user.initPassword();
+        user.save();
+    }
+
+    public void addAdminUser( Review model ) {
+        ReviewUser user = new ReviewUser();
+        user.setName( "管理员" );
+        user.setUsername( "admin" );
+        user.setReview( model );
+        user.initPassword();
+        user.save();
     }
 }

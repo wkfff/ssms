@@ -1,8 +1,8 @@
 /*
  * 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
  * 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
- * 文件名称：EnterpriseUser.java
- * 创建时间：2015-05-19
+ * 文件名称：ReviewUser.java
+ * 创建时间：2015-05-26
  * 创建用户：张铮彬
  */
 
@@ -12,17 +12,11 @@ import com.lanstar.common.kit.StrKit;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
-public class EnterpriseUser extends Model<EnterpriseUser> {
-    public static final EnterpriseUser dao = new EnterpriseUser();
+public class ReviewUser extends Model<ReviewUser> {
+    public static final ReviewUser dao = new ReviewUser();
 
-    public static EnterpriseUser getUser( String sid, String pwd ) {
-        return dao.findFirst( SqlKit.sql( "system.enterpriseUser.getUserBySidAndPwd" ), sid, pwd.toUpperCase() );
-    }
-
-    public void initPassword() {
-        // 创建企业租户的时候同时创建一个admin用户,  默认密码为123456。
-        // TODO: 创建用户的时候使用随机密码
-        set( "C_PASSWD", StrKit.toMD5( "123456" ) );
+    public static ReviewUser getUser( String sid, String pwd ) {
+        return dao.findFirst( SqlKit.sql( "system.reviewUser.getUserBySidAndPwd" ), sid, pwd.toUpperCase() );
     }
 
     public String getName() {
@@ -41,7 +35,7 @@ public class EnterpriseUser extends Model<EnterpriseUser> {
         set( "C_USER", username );
     }
 
-    public void setEnterprise( Enterprise model ) {
+    public void setReview( Review model ) {
         set( "R_SID", model.getId() );
         set( "S_NAME", model.getName() );
     }
@@ -57,5 +51,10 @@ public class EnterpriseUser extends Model<EnterpriseUser> {
     public void setPassword( String newPwd ) {
         set( "C_PASSWD", newPwd.toUpperCase() );
     }
-}
 
+    public void initPassword() {
+        // 创建企业租户的时候同时创建一个admin用户,  默认密码为123456。
+        // TODO: 创建用户的时候使用随机密码
+        set( "C_PASSWD", StrKit.toMD5( "123456" ) );
+    }
+}

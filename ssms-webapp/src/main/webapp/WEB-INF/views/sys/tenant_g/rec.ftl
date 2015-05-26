@@ -1,4 +1,4 @@
-<#import "/layout/_rec.ftl" as layout/>
+<#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
     var model = {
@@ -20,13 +20,13 @@
     };
     model.P_PROVINCE.subscribe(function (newValue) {
         settings.citySetting.combobox({
-            url: '/sys/para_area/list.json',
+            url: '/sys/para_area/list',
             queryParams: {R_CODE: newValue}
         });
     });
     model.P_CITY.subscribe(function (newValue) {
         settings.countySetting.combobox({
-            url: '/sys/para_area/list.json',
+            url: '/sys/para_area/list',
             queryParams: {R_CODE: newValue}
         });
     });
@@ -37,16 +37,24 @@
             textField: 'C_NAME'
         },
         provinceSetting: {
-            url: '/sys/para_area/list.json',
+            url: '/sys/para_area/list',
             queryParams: {N_LEVEL: 1},
             valueField: 'C_CODE',
             textField: 'C_VALUE'
         },
         citySetting: {
+            <#if P_PROVINCE!="">
+            url: '/sys/para_area/list',
+            queryParams: {R_CODE: '${P_PROVINCE}'},
+            </#if>
             valueField: 'C_CODE',
             textField: 'C_VALUE'
         },
         countySetting: {
+            <#if P_CITY!="">
+            url: '/sys/para_area/list',
+            queryParams: {R_CODE: '${P_CITY}'},
+            </#if>
             valueField: 'C_CODE',
             textField: 'C_VALUE'
         }
@@ -55,10 +63,10 @@
     var events = {
         saveClick: function () {
             if ($form.validate($('.form'))) {
-                $.post('save.do', $.extend({}, model, extModel), function (result) {
+                $.post('save', $.extend({}, model, extModel), function (result) {
                     if (result.SID)
                         $.messager.alert("提示", "保存成功", "info", function () {
-                            window.location.href = 'rec.html?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                            window.location.href = 'rec?sid=' + result.SID + "&backURL=${backURL!referer!}";
                         });
                     else {
                         $.messager.alert("提示", "保存失败", "warning");
@@ -69,10 +77,10 @@
         deleteClick: function () {
             $.messager.confirm("删除确认", "您确认删除当前的信息吗？", function (deleteAction) {
                 if (deleteAction) {
-                    $.get("del.do", {sid: '${sid!}'}, function (data) {
+                    $.get("del", {sid: '${sid!}'}, function (data) {
                         if (data == "true" || data == "\"\"") {
                             $.messager.alert("提示", "删除成功");
-                            window.location.href = 'index.html';
+                            window.location.href = 'index';
                         }
                         else {
                             $.messager.alert("提示", data);
