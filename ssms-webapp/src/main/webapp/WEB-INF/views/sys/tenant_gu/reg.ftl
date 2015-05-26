@@ -2,10 +2,6 @@
 <#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('#formMain').form('load', 'json?sid=${sid!}');
-    });
-
     function doSave() {
         $('#formMain').form('submit', {
             url: 'save?sid=${sid!}',
@@ -13,26 +9,8 @@
                 return $(this).form('validate');
             },
             success: function (data) {
-                $.messager.alert('保存', '保存成功！', "info", function () {
-                    window.location.href = 'rec?sid=${sid!}&pid=${pid!}';
-                });
-            }
-        });
-    }
-
-    function doDel() {
-        $.messager.confirm("删除确认", "您确认删除当前信息吗？", function (deleteAction) {
-            if (deleteAction) {
-                $.get("del", {sid: '${sid!}'}, function (data) {
-                    if (data == "true" || data == "\"\"") {
-                        $.messager.alert("提示", "删除成功", "info", function () {
-                            window.location.href = 'index?pid=${pid!}';
-                        });
-                    }
-                    else {
-                        $.messager.alert("提示", data);
-                    }
-                });
+                $.messager.alert('保存', '保存成功！');
+                window.location.href = 'index?pid=' +${pid!};
             }
         });
     }
@@ -46,7 +24,6 @@
 <@layout.doLayout script>
 <div class="easyui-panel" style="border:0;background-color:#FAFAFA;padding:5px;">
     <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-save" onclick="doSave()">保存</a>
-    <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-cancel" onclick="doDel()">删除</a>
     <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="doBack()">返回</a>
 </div>
 <form id="formMain" method="post">
@@ -55,18 +32,12 @@
             <tr>
                 <td class="span2">用户名:</td>
                 <td class="span4">
-                    <input class="easyui-textbox" type="text" name="C_USER" data-options="required:true" editable="false" style="width: 100%"/>
+                    <input class="easyui-textbox" type="text" name="C_USER" data-options="required:true" style="width: 100%"/>
                 </td>
                 <td class="span2">姓名:</td>
                 <td class="span4">
                     <input class="easyui-textbox" type="text" name="C_NAME" data-options="required:true" style="width: 100%"/>
                 </td>
-            </tr>
-            <tr>
-                <td class="span2">聘请证书编号:</td>
-                <td class="span4"><input class="easyui-textbox" type="text" name="C_CERT" style="width: 100%"/></td>
-                <td class="span2">职务:</td>
-                <td class="span4"><input class="easyui-textbox" type="text" name="C_POSITION" style="width: 100%"/></td>
             </tr>
             <tr>
                 <td class="span2">出生日期:</td>
@@ -75,6 +46,14 @@
                 <td class="span4"><input type="radio" name="S_SEX" value="男"/>男
                     <input type="radio" name="S_SEX" value="女"/>女
                 </td>
+            </tr>
+            <tr>
+                <td class="span2">所属机构:</td>
+                <td class="span4">
+                    <input class="easyui-textbox" type="text" name="S_NAME" editable="false" value="${tenant.S_TENANT!}" style="width: 100%"/>
+                </td>
+                <td class="span2">职务:</td>
+                <td class="span4"><input class="easyui-textbox" type="text" name="C_POSITION" style="width: 100%"/></td>
             </tr>
         </table>
     </div>
@@ -87,8 +66,6 @@
                 <td class="span4"><input class="easyui-textbox" type="text" name="C_MOBILE" style="width: 100%"/></td>
             </tr>
             <tr>
-                <td><input type="hidden" name="S_NAME" value="${tenant.S_TENANT!}">
-                <td>
                 <td><input type="hidden" name="R_SID" value="${pid!}">
                 <td>
             </tr>

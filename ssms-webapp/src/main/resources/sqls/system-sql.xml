@@ -32,6 +32,10 @@
     <sqlGroup name="enterpriseUser">
         <sql id="getUserBySidAndPwd">SELECT * FROM SYS_TENANT_E_USER WHERE SID=? and UPPER(C_PASSWD)=?</sql>
     </sqlGroup>
+    <sqlGroup name="governmentUser">
+        <sql id="getUserBySidAndPwd">SELECT * FROM SYS_TENANT_G_USER WHERE SID=? and UPPER(C_PASSWD)=?</sql>
+    </sqlGroup>
+
     <sqlGroup name="multiPara">
         <sql id="listParaByName">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=(SELECT C_NAME FROM SYS_PARA_MULTI WHERE SID=?)</sql>
     </sqlGroup>

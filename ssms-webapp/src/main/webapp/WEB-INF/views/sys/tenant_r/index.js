@@ -11,7 +11,7 @@ function ViewModel() {
     var settings = {
         gridSettings: {
             title: '评审机构列表',
-            url: 'list.json',
+            url: 'list',
             idField: 'SID',
             rownumbers: true,
             pagination: true,
@@ -47,7 +47,7 @@ function ViewModel() {
             })
         },
         addClick: function () {
-            window.location.href = 'reg.html';
+            window.location.href = 'reg';
         }
     };
 
@@ -58,7 +58,7 @@ function ViewModel() {
 function doDel(sid) {
     $.messager.confirm("删除确认", "您确认删除选定的记录吗？", function (deleteAction) {
         if (deleteAction) {
-            $.get("del.do", {sid: sid}, function (data) {
+            $.get("del", {sid: sid}, function (data) {
                 if (data == "true" || data == "\"\"") {
                     $.messager.alert("提示", "删除选定的记录成功");
                     $("#dg_index").datagrid("reload");
@@ -72,8 +72,8 @@ function doDel(sid) {
 
 }
 function doEdit(sid) {
-    window.location.href = 'rec.html?refer=edit&sid='+sid;
+    window.location.href = 'rec?refer=edit&sid='+sid;
 }
 function doListUser(sid) {
-    window.location.href = '/sys/tenant_ru/index.html?pid='+sid;
+    window.location.href = '/sys/tenant_ru/index?pid='+sid;
 }

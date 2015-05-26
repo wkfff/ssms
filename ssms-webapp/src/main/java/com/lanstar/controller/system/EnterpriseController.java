@@ -23,16 +23,6 @@ import java.util.List;
 
 public class EnterpriseController extends SimplateController<Enterprise> {
     @Override
-    protected Enterprise getDao() {
-        return Enterprise.dao;
-    }
-
-    @Override
-    protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE("B_DELETE IS NULL OR B_DELETE <> ?", "1")._If( isParaBlank( "C_NAME" ) == false, "C_NAME=?", getPara( "C_NAME" ) );
-    }
-
-    @Override
     public void rec() {
         Enterprise model = getModel();
         List<EnterpriseProfession> professions = model.listProfession();
@@ -45,8 +35,20 @@ public class EnterpriseController extends SimplateController<Enterprise> {
         super.rec();
     }
 
-    public void reg(){
+    public void reg() {
 
+    }
+
+    @Override
+    protected Enterprise getDao() {
+        return Enterprise.dao;
+    }
+
+    @Override
+    protected SqlBuilder buildWhere() {
+        return new SqlBuilder()
+                .WHERE( "IFNULL(B_DELETE,'0')<>?", "1" )
+                ._If( isParaBlank( "C_NAME" ) == false, "C_NAME=?", getPara( "C_NAME" ) );
     }
 
     @Override

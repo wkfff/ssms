@@ -39,5 +39,11 @@ public class SystemRoutes extends Routes {
 
         add( "/sys/tenant_e", com.lanstar.controller.system.EnterpriseController.class );
         add( "/sys/tenant_eu", com.lanstar.controller.system.EnterpriseUserController.class );
+
+        add( "/sys/tenant_g", com.lanstar.controller.system.GovernmentController.class );
+        add( "/sys/tenant_gu", com.lanstar.controller.system.GovernmentUserController.class );
+
+        add( "/sys/tenant_r", com.lanstar.controller.system.ReviewController.class );
+        add( "/sys/tenant_ru", com.lanstar.controller.system.ReviewUserController.class );
     }
 }

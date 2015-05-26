@@ -1,4 +1,4 @@
-<#import "/layout/_rec.ftl" as layout/>
+<#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
     var model = {
@@ -21,18 +21,17 @@
         P_LEVEL: ko.observable('${P_LEVEL!}'),
         SID: '${SID!}'
     };
-    var extModel = {
-    };
-   
+    var extModel = {};
+
     model.P_PROVINCE.subscribe(function (newValue) {
         settings.citySetting.combobox({
-            url: '/sys/para_area/list.json',
+            url: '/sys/para_area/list',
             queryParams: {R_CODE: newValue}
         });
     });
     model.P_CITY.subscribe(function (newValue) {
         settings.countySetting.combobox({
-            url: '/sys/para_area/list.json',
+            url: '/sys/para_area/list',
             queryParams: {R_CODE: newValue}
         });
     });
@@ -40,20 +39,28 @@
     var settings = {
         cycleSource: ko.observableArray(${json(_SYS_LEVEL_)}),
         paramViewSettings: {
-             valueField: 'key',
-             textField: 'value'
-        },    		
+            valueField: 'key',
+            textField: 'value'
+        },
         provinceSetting: {
-            url: '/sys/para_area/list.json',
+            url: '/sys/para_area/list',
             queryParams: {N_LEVEL: 1},
             valueField: 'C_CODE',
             textField: 'C_VALUE'
         },
         citySetting: {
+            <#if P_PROVINCE!="">
+            url: '/sys/para_area/list',
+            queryParams: {R_CODE: '${P_PROVINCE}'},
+            </#if>
             valueField: 'C_CODE',
             textField: 'C_VALUE'
         },
         countySetting: {
+            <#if P_CITY!="">
+            url: '/sys/para_area/list',
+            queryParams: {R_CODE: '${P_CITY}'},
+            </#if>
             valueField: 'C_CODE',
             textField: 'C_VALUE'
         }
@@ -62,10 +69,10 @@
     var events = {
         saveClick: function () {
             if ($form.validate($('.form'))) {
-                $.post('save.do', $.extend({}, model, extModel), function (result) {
+                $.post('save', $.extend({}, model, extModel), function (result) {
                     if (result.SID)
                         $.messager.alert("提示", "保存成功", "info", function () {
-                            window.location.href = 'rec.html?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                            window.location.href = 'rec?sid=' + result.SID + "&backURL=${backURL!referer!}";
                         });
                     else {
                         $.messager.alert("提示", "保存失败", "warning");
@@ -76,10 +83,10 @@
         deleteClick: function () {
             $.messager.confirm("删除确认", "您确认删除当前的信息吗？", function (deleteAction) {
                 if (deleteAction) {
-                    $.get("del.do", {sid: '${sid!}'}, function (data) {
+                    $.get("del", {sid: '${sid!}'}, function (data) {
                         if (data == "true" || data == "\"\"") {
                             $.messager.alert("提示", "删除成功");
-                            window.location.href = 'index.html';
+                            window.location.href = 'index';
                         }
                         else {
                             $.messager.alert("提示", data);
@@ -109,37 +116,42 @@
                     <input class="readonly" type="text" value="${C_CODE}" readonly/>
                 </span>
             </p>
+
             <p class="long-input ue-clear">
                 <label>单位名称</label>
                 <span class="control">
                     <input data-bind="textboxValue: C_NAME" required/>
                 </span>
             </p>
+
             <p class="long-input ue-clear">
                 <label>评审机构注册号</label>
                 <span class="control">
                     <input data-bind="textboxValue: C_NUMBER" required/>
                 </span>
             </p>
+
             <p class="long-input ue-clear">
                 <label>确定评审业务机关</label>
                 <span class="control">
                     <input data-bind="textboxValue: C_ORG" required/>
                 </span>
             </p>
+
             <p class="ue-clear">
                 <label>专职人员</label>
                 <span class="control">
-                    <input data-bind="textboxValue: N_FULLTIME" />
+                    <input data-bind="textboxValue: N_FULLTIME"/>
                 </span>
             </p>
+
             <p class="ue-clear">
                 <label>评审专业级别</label>
                 <span class="control">
-                     <input data-bind="comboboxSource:cycleSource,comboboxValue:P_LEVEL,comboboxText:S_LEVEL,easyuiOptions:paramViewSettings" />
+                     <input data-bind="comboboxSource:cycleSource,comboboxValue:P_LEVEL,comboboxText:S_LEVEL,easyuiOptions:paramViewSettings"/>
                 </span>
             </p>
-            
+
         </div>
         <div class="easyui-panel form" style="padding:10px" title="联系方式">
             <p class="long-input ue-clear">

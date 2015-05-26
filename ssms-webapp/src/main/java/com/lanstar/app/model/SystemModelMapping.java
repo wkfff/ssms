@@ -15,6 +15,13 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_TENANT_E_USER", "SID", EnterpriseUser.class );
         addMapping( "SYS_TENANT_E", "SID", Enterprise.class );
         addMapping( "SYS_TENANT_E_PROFESSION", "SID", EnterpriseProfession.class );
+
+        addMapping( "SYS_TENANT_G_USER", "SID", GovernmentUser.class );
+        addMapping( "SYS_TENANT_G", "SID", Government.class );
+
+        addMapping( "SYS_TENANT_R_USER", "SID", ReviewUser.class );
+        addMapping( "SYS_TENANT_R", "SID", Review.class );
+
         addMapping( "TENANT_USER", TenantUser.class );
         addMapping( "SYS_NAV", "SID", Navgate.class );
         addMapping( "SYS_PROFESSION", "SID", Profession.class );
