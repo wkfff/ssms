@@ -1,4 +1,4 @@
-<#import "/layout/_list.ftl" as layout/>
+<#import "../../layout/_list.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
     function doSearch(id) {
@@ -9,7 +9,7 @@
     function doDel(sid) {
         $.messager.confirm("删除确认", "您确认删除选定的记录吗？", function (deleteAction) {
                     if (deleteAction) {
-                        $.get("del.do", {sid:sid}, function (data) {
+                        $.get("del", {sid:sid}, function (data) {
                             if (data == "true" || data== "\"\"") {
                                 $.messager.alert("提示", "删除选定的记录成功");
                                 $("#dg").datagrid("reload");
@@ -24,7 +24,7 @@
         
     }
     function doEdit(sid) {
-        window.location.href = 'rec.html?sid='+sid;
+        window.location.href = 'rec?sid='+sid;
     }
 
     function doClear(id) {
@@ -35,7 +35,7 @@
     $(function () {
         $('#dg').datagrid({
             title:'自评报告模板',
-            url: 'list.json',
+            url: 'list',
             idField: 'SID',
             rownumbers: true,
             pagination: true,

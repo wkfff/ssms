@@ -12,4 +12,12 @@ import com.lanstar.plugin.activerecord.Model;
 
 public class Industry extends Model<Industry> {
     public static final Industry dao = new Industry();
+
+    public String getName() {
+        return getStr( "C_NAME" );
+    }
+
+    public Integer getId() {
+        return getInt( "SID" );
+    }
 }
