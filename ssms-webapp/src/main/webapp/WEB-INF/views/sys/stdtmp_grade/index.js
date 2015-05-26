@@ -16,7 +16,7 @@ function ViewModel(catalogId) {
         gridSettings: {
             title:'评分标准',
             idField: 'SID',
-            url: "/sys/stdtmp_grade/list.json",
+            url: "/sys/stdtmp_grade/list",
             queryParams: {
                 R_SID: catalogId
             },
@@ -59,7 +59,7 @@ function ViewModel(catalogId) {
                     var row = model.selectItem();
                     if (row) {
                         if (!row.SID.toString().startsWith("_"))
-                            $.post('del.do', {sid: row.SID}, function () {
+                            $.post('del', {sid: row.SID}, function () {
                                 $.messager.alert('消息', '成功删除记录！', 'info', function () {
                                     settings.gridSettings.datagrid('reload');
                                 });
@@ -76,7 +76,7 @@ function ViewModel(catalogId) {
                     }
                     var changes = settings.gridSettings.datagrid('getChanges');
                     if (changes.length > 0) {
-                        $.post("batchSave.do", {data: $.toJSON(changes)}, function () {
+                        $.post("batchSave", {data: $.toJSON(changes)}, function () {
                             $.messager.alert('消息', '成功保存记录！', "info", function () {
                                 settings.gridSettings.datagrid('reload');
                             });

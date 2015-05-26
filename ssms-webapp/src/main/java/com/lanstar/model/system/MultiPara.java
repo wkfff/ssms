@@ -19,4 +19,14 @@ public class MultiPara extends Model<MultiPara> {
     public String getName() {
         return  getStr( "C_NAME" );
     }
+    public String getCode(){
+        return getStr( "C_CODE" );
+    }
+    /**
+     * @return
+     */
+    public String geValue() {
+        // TODO Auto-generated method stub
+        return getStr( "C_VALUE" );
+    }
 }

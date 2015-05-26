@@ -34,6 +34,7 @@
     </sqlGroup>
     <sqlGroup name="multiPara">
         <sql id="listParaByName">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=(SELECT C_NAME FROM SYS_PARA_MULTI WHERE SID=?)</sql>
+        <sql id="listPara">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=(SELECT C_NAME FROM SYS_PARA_MULTI WHERE SID=?)</sql>
     </sqlGroup>
     
 </sqlGroup>

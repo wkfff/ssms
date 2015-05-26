@@ -17,7 +17,7 @@
         S_NAME: ko.observable('${S_NAME!folder.C_NAME}')
     };
     var settings = {
-        cycleSource: ko.observableArray(${json(_SYS_CYCLE_)}),
+        cycleSource: ko.observableArray(${json(SYS_CYCLE)}),
         tmpfilesSource: ko.observableArray(${json(tmpfiles)}),
         paramViewSettings: {
             valueField: 'code',
