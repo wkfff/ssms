@@ -8,8 +8,55 @@
 
 package com.lanstar.model.tenant;
 
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.*;
+import com.lanstar.common.StandardTemplateFileKit;
 
 public class TemplateFile extends Model<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
+
+    public void setFolder( TemplateFolder tenantFolder ) {
+        set( "R_SID", tenantFolder.getId() );
+        set( "S_NAME", tenantFolder.getName() );
+    }
+
+    public String getTemplateFileCode() {
+        return getStr( "P_TMPFILE" );
+    }
+
+    public Integer getTemplateFileId() {
+        return getInt( "R_TMPFILE" );
+    }
+
+    public void setTemplateId( int id ) {
+        set( "R_TMPFILE", id );
+    }
+
+    public Record getFileContent() {
+        Config config = DbKit.getConfig( TemplateFile.class );
+        DbPro dbPro = DbPro.use( config.getName() );
+        String tableName = getTableName();
+        return dbPro.findById( tableName, "SID", getTemplateFileId() );
+    }
+
+    public boolean setFileContent( Record content ) {
+        Config config = DbKit.getConfig( TemplateFile.class );
+        DbPro dbPro = DbPro.use( config.getName() );
+        String tableName = getTableName();
+        content.remove( "SID", "R_TENANT", "S_TENANT", "P_TENANT" );
+        content.set( "R_TENANT", get( "R_TENANT" ) );
+        content.set( "S_TENANT", get( "S_TENANT" ) );
+        content.set( "P_TENANT", get( "P_TENANT" ) );
+        return dbPro.save( tableName, "SID", content );
+    }
+
+    public Integer getId() {
+        return getInt( "SID" );
+    }
+
+    public void setSourceFile( com.lanstar.model.system.TemplateFile tenantFile ) {
+        set( "R_SOURCE", tenantFile.getId() );
+    }
+
+    private String getTableName() {return StandardTemplateFileKit.getTenantTableName( getTemplateFileCode() );}
 }
+

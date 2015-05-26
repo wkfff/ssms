@@ -11,6 +11,8 @@ package com.lanstar.model.system;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
+import java.util.List;
+
 public class Template extends Model<Template> {
     public static final Template dao = new Template();
 
@@ -18,11 +20,19 @@ public class Template extends Model<Template> {
         return dao.findFirst( SqlKit.sql( "system.template.list" ), professionId );
     }
 
-    public int getId(){
+    public int getId() {
         return getInt( "SID" );
     }
 
-    public String getName(){
+    public String getName() {
         return getStr( "C_NAME" );
+    }
+
+    public List<TemplateFolder> listFolder() {
+        return TemplateFolder.list( getId() );
+    }
+
+    public List<TemplateFolder> listFolder( int parentId ) {
+        return TemplateFolder.list( getId(), parentId );
     }
 }

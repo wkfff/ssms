@@ -11,15 +11,17 @@ package com.lanstar.controller.enterprise;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Profession;
+import com.lanstar.service.EnterpriseService;
 
 import java.util.List;
 
 public class HomeController extends Controller {
     public void index() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
-        boolean needChooseProfessions = identityContext.getProfessionService() == null;
+        EnterpriseService enterpriseService = identityContext.getEnterpriseService();
+        boolean needChooseProfessions = enterpriseService.getProfessionService() == null;
         if ( needChooseProfessions ) {
-            List<Profession> professions = identityContext.getProfessions();
+            List<Profession> professions = enterpriseService.getProfessions();
             if ( professions.size() == 1 ) {
                 setAttr( "profession", professions.get( 0 ).getInt( "SID" ) );
                 setTemplate();
@@ -30,16 +32,16 @@ public class HomeController extends Controller {
 
         setAttr( "needChooseProfessions", needChooseProfessions );
 
-        if ( needChooseProfessions == false ) setAttr( "profession", identityContext.getProfessionService() );
+        if ( needChooseProfessions == false ) setAttr( "profession", enterpriseService.getProfessionService() );
     }
 
     public void setTemplate() {
         Profession profession = Profession.dao.findById( getAttr( "profession" ) );
         IdentityContext context = IdentityContext.getIdentityContext( this );
-        context.setProfessionService( profession );
+        context.getEnterpriseService().setProfessionService( profession );
     }
 
     public void getProfessions() {
-        renderJson( IdentityContext.getIdentityContext( this ).getProfessions() );
+        renderJson( IdentityContext.getIdentityContext( this ).getEnterpriseService().getProfessions() );
     }
 }

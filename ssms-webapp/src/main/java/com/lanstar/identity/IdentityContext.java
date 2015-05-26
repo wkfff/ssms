@@ -12,12 +12,10 @@ import com.lanstar.app.Const;
 import com.lanstar.common.TreeNode;
 import com.lanstar.core.Controller;
 import com.lanstar.model.system.Navgate;
-import com.lanstar.model.system.Profession;
 import com.lanstar.plugin.activerecord.*;
 import com.lanstar.plugin.tlds.DsKit;
 import com.lanstar.service.AttachTextService;
-import com.lanstar.service.ProfessionService;
-import com.lanstar.service.StandardTemplateFileService;
+import com.lanstar.service.EnterpriseService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -34,6 +32,7 @@ public class IdentityContext {
     }
 
     private final Identity identity;
+    private Map<Class<?>, Object> valueMap = new ConcurrentHashMap<>();
 
     private IdentityContext( Identity identity ) {
         this.identity = identity;
@@ -81,7 +80,7 @@ public class IdentityContext {
         return "tenant01";
     }
 
-    public DbPro getTenantDb() {
+    public synchronized DbPro getTenantDb() {
         if ( getTenantType() == TenantType.SYSTEM ) return DbPro.use();
 
         Config config = DbKit.getConfig( Const.TENANT_DB_NAME );
@@ -99,18 +98,6 @@ public class IdentityContext {
         TreeNode node = findNode( nodes, getTenantType() );
         return node != null ? node.getChildren() : null;
     }
-
-    private TreeNode findNode( Collection<TreeNode> nodes, TenantType tenantType ) {
-        String navName = IDENTITY_TYPE_NAV_MAP.get( tenantType );
-        for ( TreeNode node : nodes ) {
-            if ( navName.equalsIgnoreCase( node.getText() ) ) return node;
-            TreeNode tmp = findNode( node.getChildren(), tenantType );
-            if ( tmp != null ) return tmp;
-        }
-        return null;
-    }
-
-    private Map<Class<?>, Object> valueMap = new ConcurrentHashMap<>();
 
     /** 将指定值与上下文绑定 */
     void setValue( Object value ) {
@@ -131,20 +118,18 @@ public class IdentityContext {
         return valueMap.containsKey( clazz );
     }
 
-    public List<Profession> getProfessions() {
-        TenantType tenantType = getTenantType();
-        return Profession.list( tenantType, getTenantId() );
+    public synchronized EnterpriseService getEnterpriseService() {
+        if ( TenantType.ENTERPRISE.equals( getTenantType() ) == false )
+            throw new RuntimeException( "tenant type must equals 'ENTERPRISE'" );
+        EnterpriseService service = getValue( EnterpriseService.class );
+        if ( service == null ) {
+            service = new EnterpriseService( this );
+            this.setValue( service );
+        }
+        return service;
     }
 
-    public ProfessionService getProfessionService() {
-        return getValue( ProfessionService.class );
-    }
-
-    public void setProfessionService( Profession profession ) {
-        setValue( new ProfessionService( profession ) );
-    }
-
-    public AttachTextService getAttachTextService() {
+    public synchronized AttachTextService getAttachTextService() {
         AttachTextService service = getValue( AttachTextService.class );
         if ( service == null ) {
             service = new AttachTextService( this );
@@ -153,12 +138,13 @@ public class IdentityContext {
         return service;
     }
 
-    public StandardTemplateFileService getStandardTemplateService() {
-        StandardTemplateFileService service = getValue( StandardTemplateFileService.class );
-        if ( service == null ) {
-            service = new StandardTemplateFileService( this );
-            setValue( service );
+    private TreeNode findNode( Collection<TreeNode> nodes, TenantType tenantType ) {
+        String navName = IDENTITY_TYPE_NAV_MAP.get( tenantType );
+        for ( TreeNode node : nodes ) {
+            if ( navName.equalsIgnoreCase( node.getText() ) ) return node;
+            TreeNode tmp = findNode( node.getChildren(), tenantType );
+            if ( tmp != null ) return tmp;
         }
-        return service;
+        return null;
     }
 }

@@ -59,7 +59,7 @@ public class GradePlantController extends SimplateController<GradePlant> {
 
     @Override
     protected void afterSave( GradePlant model ) {
-        ProfessionService service = identityContext.getProfessionService();
+        ProfessionService service = identityContext.getEnterpriseService().getProfessionService();
         tenantDb.callProcedure( "P_GRADE_INIT", model.getId(), service.getId(), identityContext.getTenantId(),
                 identityContext.getTenantType().getName() );
     }

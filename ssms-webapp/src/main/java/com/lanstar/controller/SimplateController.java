@@ -87,7 +87,7 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
             } else {
                 model = getDao().findById( sid );
             }
-            ModelInjector.injectActiveRecordModel( model, item, false );
+            ModelInjector.injectActiveRecordModel( model, item );
 
             boolean[] handled = new boolean[1];
             beforeSave( model, handled );
