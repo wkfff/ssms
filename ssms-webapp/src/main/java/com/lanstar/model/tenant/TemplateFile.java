@@ -8,15 +8,14 @@
 
 package com.lanstar.model.tenant;
 
-import com.lanstar.plugin.activerecord.*;
 import com.lanstar.common.StandardTemplateFileKit;
+import com.lanstar.plugin.activerecord.*;
 
 public class TemplateFile extends Model<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
 
-    public void setFolder( TemplateFolder tenantFolder ) {
-        set( "R_SID", tenantFolder.getId() );
-        set( "S_NAME", tenantFolder.getName() );
+    public Integer getId() {
+        return getInt( "SID" );
     }
 
     public String getTemplateFileCode() {
@@ -35,7 +34,14 @@ public class TemplateFile extends Model<TemplateFile> {
         Config config = DbKit.getConfig( TemplateFile.class );
         DbPro dbPro = DbPro.use( config.getName() );
         String tableName = getTableName();
-        return dbPro.findById( tableName, "SID", getTemplateFileId() );
+        Record record = dbPro.findById( tableName, "SID", getTemplateFileId() );
+        // 如果得不到当前的文件内容，则获取系统的模板
+        if ( record == null ) {
+            com.lanstar.model.system.TemplateFile file = com.lanstar.model.system.TemplateFile.dao.findById( getSourceFileId() );
+            tableName = StandardTemplateFileKit.getSystemTableName( getTemplateFileCode() );
+            record = Db.findById( tableName, "SID", file.getTemplateFileId() );
+        }
+        return record;
     }
 
     public boolean setFileContent( Record content ) {
@@ -49,12 +55,17 @@ public class TemplateFile extends Model<TemplateFile> {
         return dbPro.save( tableName, "SID", content );
     }
 
-    public Integer getId() {
-        return getInt( "SID" );
+    public void setFolder( TemplateFolder tenantFolder ) {
+        set( "R_SID", tenantFolder.getId() );
+        set( "S_NAME", tenantFolder.getName() );
     }
 
-    public void setSourceFile( com.lanstar.model.system.TemplateFile tenantFile ) {
-        set( "R_SOURCE", tenantFile.getId() );
+    public void setSourceFile( com.lanstar.model.system.TemplateFile file ) {
+        set( "R_SOURCE", file.getId() );
+    }
+
+    public Integer getSourceFileId() {
+        return getInt( "R_SOURCE" );
     }
 
     private String getTableName() {return StandardTemplateFileKit.getTenantTableName( getTemplateFileCode() );}
