@@ -8,14 +8,14 @@
 
 package com.lanstar.controller.enterprise;
 
-import java.util.List;
-
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.GradeContent;
 import com.lanstar.model.tenant.GradePlan;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.service.ProfessionService;
+
+import java.util.List;
 
 public class GradePlanController extends SimplateController<GradePlan> {
     @Override
@@ -112,7 +112,7 @@ public class GradePlanController extends SimplateController<GradePlan> {
 
     @Override
     protected void afterSave( GradePlan model ) {
-        ProfessionService service = identityContext.getProfessionService();
+        ProfessionService service = identityContext.getEnterpriseService().getProfessionService();
         tenantDb.callProcedure( "P_GRADE_INIT", model.getId(), service.getId(), identityContext.getTenantId(),
                 identityContext.getTenantType().getName() );
         int sid = model.get( "SID" );
@@ -142,7 +142,7 @@ public class GradePlanController extends SimplateController<GradePlan> {
      * 自评完成
      */
     public void complete() {
-        ProfessionService service = identityContext.getProfessionService();
+        ProfessionService service = identityContext.getEnterpriseService().getProfessionService();
         tenantDb.callProcedure( "P_GRADE_INIT", this.getModel().getId(), service.getId(), identityContext.getTenantId(),
                 identityContext.getTenantType().getName() );
         this.setAttr( "result", "OK" );
