@@ -4,7 +4,7 @@
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
         C_EMAIL: ko.observable('${C_EMAIL!}'),
-        P_PROVINCE: ko.observable('${C_EMAIL!}'),
+        P_PROVINCE: ko.observable('${P_PROVINCE!}'),
         S_PROVINCE: ko.observable('${S_PROVINCE!}'),
         P_CITY: ko.observable('${P_CITY!}'),
         S_CITY: ko.observable('${S_CITY!}'),
@@ -95,7 +95,7 @@
 </script>
 </#assign>
 <@layout.doLayout script>
-<div class="easyui-panel" title="企业信息">
+<div class="easyui-panel" title="政府信息">
     <div class="z-toolbar">
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-cancel" data-bind="click: deleteClick">删除</a>

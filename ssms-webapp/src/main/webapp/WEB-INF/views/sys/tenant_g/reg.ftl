@@ -70,7 +70,7 @@
 </script>
 </#assign>
 <@layout.doLayout script>
-<div class="easyui-panel" title="企业信息">
+<div class="easyui-panel" title="政府信息">
     <div class="z-toolbar">
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="window.location.href='${Referer!}';">返回</a>
