@@ -36,7 +36,9 @@ public class HomeController extends Controller {
     }
 
     public void setTemplate() {
-        Profession profession = Profession.dao.findById( getAttr( "profession" ) );
+        Integer id = getAttr( "profession" );
+        if ( id == null ) id = getParaToInt( "profession" );
+        Profession profession = Profession.dao.findById( id );
         IdentityContext context = IdentityContext.getIdentityContext( this );
         context.getEnterpriseService().setProfessionService( profession );
     }

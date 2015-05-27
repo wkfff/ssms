@@ -52,8 +52,8 @@
         <#if LANSTAR_IDENTITY.tenantType='E'>
         function choose() {
             var value = $('#cc').combobox('getValue');
-            $.post("/e/home/setTemplate.do", {profession: value}, function () {
-                window.location.href = "/index";
+            $.post("/e/setTemplate", {profession: value}, function () {
+                window.location.href = "/";
             });
         }
         function opChoose(){
