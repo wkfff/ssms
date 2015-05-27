@@ -43,12 +43,14 @@ public class TemplateFile extends Model<TemplateFile> {
         Config config = DbKit.getConfig( TemplateFile.class );
         DbPro dbPro = DbPro.use( config.getName() );
         String tableName = getTableName();
-        content.remove( "SID", "R_TENANT", "S_TENANT", "P_TENANT" );
-        content.set( "R_TENANT", get( "R_TENANT" ) );
-        content.set( "S_TENANT", get( "S_TENANT" ) );
-        content.set( "P_TENANT", get( "P_TENANT" ) );
-        dbPro.save( tableName, "SID", content );
-        setTemplateFileId( content.getLong( "SID" ).intValue() );
+        Record record = new Record();
+        record.setColumns( content );
+        record.remove( "SID", "R_TENANT", "S_TENANT", "P_TENANT" );
+        record.set( "R_TENANT", get( "R_TENANT" ) );
+        record.set( "S_TENANT", get( "S_TENANT" ) );
+        record.set( "P_TENANT", get( "P_TENANT" ) );
+        dbPro.save( tableName, "SID", record );
+        setTemplateFileId( record.getLong( "SID" ).intValue() );
     }
 
     public void setFolder( TemplateFolder tenantFolder ) {

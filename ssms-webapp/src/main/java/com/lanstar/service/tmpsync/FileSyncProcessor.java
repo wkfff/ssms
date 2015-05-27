@@ -41,7 +41,7 @@ class FileSyncProcessor implements SyncProcessor {
 
         if ( tenantFile == null ) tenantFile = new com.lanstar.model.tenant.TemplateFile();
         ModelKit.copyColumnsSkipEquals( systemFile, tenantFile,
-                "C_NAME", "C_DESC", "B_REMIND", "N_CYCLE", "P_CYCLE", "S_CYCLE", "C_EXPLAIN", "P_TMPFILE", "S_TMPFILE", "R_TMPFILE", "N_STATE", "B_DELETE", "N_INDEX", "N_VERSION" );
+                "C_NAME", "C_DESC", "B_REMIND", "N_CYCLE", "P_CYCLE", "S_CYCLE", "C_EXPLAIN", "P_TMPFILE", "S_TMPFILE", "N_STATE", "B_DELETE", "N_INDEX", "N_VERSION" );
         if ( tenantFile.isModified() ) {
             // tenantFile.setTenant(target.getIdentity() );
             ModelInjector.injectOpreator( tenantFile, target );
