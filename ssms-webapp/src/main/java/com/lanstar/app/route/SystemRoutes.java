@@ -22,6 +22,8 @@ public class SystemRoutes extends Routes {
         add( "/s", com.lanstar.controller.system.HomeController.class );
 
         add( "/sys/attachtext", com.lanstar.controller.system.AttachTextController.class );
+        add( "/sys/attachfile", com.lanstar.controller.system.AttachFileController.class );
+
         add( "/sys/nav", com.lanstar.controller.system.NavgateController.class );
         add( "/sys/template", com.lanstar.controller.system.TemplateController.class );
         add( "/sys/stdtmp", com.lanstar.controller.system.TemplateFolderController.class );

@@ -37,7 +37,9 @@ public class TemplateController extends Controller {
         // load template tree data
         DbPro tenantDb = identityContext.getTenantDb();
         List<Record> folder = tenantDb.find(
-                SqlKit.sql( "tenant.templateFolder.getFolderByTemplateId" ), template.getId(), template.getId() );
+                SqlKit.sql( "tenant.templateFolder.getFolderByTemplateId" ),
+                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName(),
+                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName() );
         List<Map<String, Object>> list = Lists.transform( folder, new Function<Record, Map<String, Object>>() {
             @Override
             public Map<String, Object> apply( Record input ) {

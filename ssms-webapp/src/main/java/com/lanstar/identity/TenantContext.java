@@ -13,6 +13,7 @@ import com.lanstar.common.TreeNode;
 import com.lanstar.model.system.Navgate;
 import com.lanstar.plugin.activerecord.*;
 import com.lanstar.plugin.tlds.DsKit;
+import com.lanstar.service.AttachFileService;
 import com.lanstar.service.AttachTextService;
 import com.lanstar.service.EnterpriseService;
 
@@ -108,6 +109,15 @@ public class TenantContext {
         AttachTextService service = getValue( AttachTextService.class );
         if ( service == null ) {
             service = new AttachTextService( this );
+            setValue( service );
+        }
+        return service;
+    }
+
+    public AttachFileService getAttachFileService() {
+        AttachFileService service = getValue( AttachFileService.class );
+        if ( service == null ) {
+            service = new AttachFileService( this );
             setValue( service );
         }
         return service;

@@ -26,6 +26,8 @@ import com.lanstar.core.render.FreeMarkerRender;
 import com.lanstar.identity.IdentityInterceptor;
 import com.lanstar.plugin.activerecord.ActiveRecordPlugin;
 import com.lanstar.plugin.activerecord.CaseInsensitiveContainerFactory;
+import com.lanstar.plugin.attachfile.ResourcePlugin;
+import com.lanstar.plugin.attachfile.SimpleResourceService;
 import com.lanstar.plugin.druid.DruidPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
 import com.lanstar.plugin.staticcache.StandardTemplateCache;
@@ -88,6 +90,7 @@ public class WebAppConfig extends RapidwareConfig {
     public void configPlugin( Plugins me ) {
         me.add( new SqlInXmlPlugin().setPath( "/sqls" ) );
         me.add( new StaticCachePlugin( new StandardTemplateCache() ) );
+        me.add( new ResourcePlugin( new SimpleResourceService( ServletKit.getRealPath( getProperty( "uploadPath", "SSMS_DATA" ) ) ) ) );
 
         // main ds
         DruidPlugin c3p0Plugin = new DruidPlugin( getProperty( "jdbc_url" ), getProperty( "jdbc_user" ), getProperty( "jdbc_password" ) );
