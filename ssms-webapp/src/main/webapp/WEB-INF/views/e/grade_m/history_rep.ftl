@@ -1,4 +1,4 @@
-<#import "/layout/_rec.ftl" as layout/>
+<#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript" src="/resource/js/kindeditor/kindeditor-min.js"></script>
 
@@ -18,15 +18,15 @@
     $(function () {
          KindEditor.ready(function(K) {
                 var h = $('.layout-body')[0].scrollHeight-35;
-                window.editor = K.create('#CONTENT', {
+                window.editor = K.create('#content', {
                     width:'100%',height:h,border:0,
                     themeType : 'simple',resizeType:0,
                     items : [],
                     afterCreate : function(id) {
                         editor.readonly();
                         editor.toolbar.hide();
-                        K.ajax('/sys/attachtext/get.json?table=SSM_GRADE_REPORT&field=CONTENT&sid=${sid!}', function(data) {
-                             window.editor.html(data);
+                        $.get("/sys/attachtext/get?table=SSM_GRADE_REPORT&field=content&sid=${sid!}",function(data){
+                             if (data) editor.html(data);
                         });
                     }
                  });
@@ -42,7 +42,7 @@
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-print" onclick="doPrint()">打印</a>
          </div>
          <form id="formMain" method="post">
-         <textarea id="CONTENT" name="CONTENT" style="display:none;"></textarea>
+         <textarea id="content" name="content" style="display:none;"></textarea>
          </form>
     </div>
 </div>

@@ -13,8 +13,8 @@ import com.lanstar.plugin.activerecord.Model;
 
 import java.util.Date;
 
-public class GradePlant extends Model<GradePlant> {
-    public static GradePlant dao = new GradePlant();
+public class GradePlan extends Model<GradePlan> {
+    public static GradePlan dao = new GradePlan();
 
     public String getTitle() {
         return getStr( "C_TITLE" );

@@ -9,7 +9,8 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
-import com.lanstar.controller.enterprise.GradePlantController;
+import com.lanstar.controller.enterprise.GradeContentController;
+import com.lanstar.controller.enterprise.GradePlanController;
 
 public class EnterpriseRoutes extends Routes {
     private static final Routes me = new EnterpriseRoutes();
@@ -29,6 +30,7 @@ public class EnterpriseRoutes extends Routes {
         add( "/e/stdtmp_file_04", com.lanstar.controller.enterprise.TemplateFile04Controller.class );
         add( "/e/stdtmp_file_05", com.lanstar.controller.enterprise.TemplateFile05Controller.class );
 
-        add("/e/grade_m", GradePlantController.class);
+        add("/e/grade_m", GradePlanController.class);
+        add("/e/grade_d", GradeContentController.class);
     }
 }

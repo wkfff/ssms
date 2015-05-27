@@ -1,4 +1,4 @@
-<#import "/layout/_list.ftl" as layout/>
+<#import "../../layout/_list.ftl" as layout/>
 <#assign script>
 <style>
     .title{font-size:18px !important;font-weight:bold;text-align:center;}

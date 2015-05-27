@@ -20,6 +20,7 @@ public class TenantModelMapping extends ActiveRecordMapping {
         addMapping( "SSM_STDTMP_FILE_04", "SID", TemplateFile04.class );
         addMapping( "SSM_STDTMP_FILE_05", "SID", TemplateFile05.class );
 
-        addMapping( "SSM_GRADE_E_M", "SID", GradePlant.class );
+        addMapping( "SSM_GRADE_E_M", "SID", GradePlan.class );
+        addMapping( "SSM_GRADE_E_D", "SID", GradeContent.class );
     }
 }
