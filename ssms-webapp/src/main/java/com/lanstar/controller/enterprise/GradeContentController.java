@@ -33,4 +33,9 @@ public class GradeContentController extends SimplateController<GradeContent> {
         return builder;
     }
 
+    @Override
+    protected void afterSave( GradeContent model ) {
+        tenantDb.callProcedure( "P_GRADE_SUM", model.getInt( "R_SID" ));
+    }
+
 }

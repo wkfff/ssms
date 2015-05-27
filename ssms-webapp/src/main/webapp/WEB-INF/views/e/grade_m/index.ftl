@@ -55,7 +55,7 @@
             height:300,
             toolbar: '#dg_draft_tb',
             columns: [[
-                {field: 'C_TITLE', title: '标题', width: 450},
+                {field: 'C_TITLE', title: '标题', width: 400},
                 {field: 'T_START', title: '自评开始日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
                 {field: 'T_END', title: '自评结束日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
                 {field: 'N_GET', title: '得分项', width: 60},
@@ -86,7 +86,7 @@
             height:300,
             toolbar: '#dg_history_tb',
             columns: [[
-                {field: 'C_TITLE', title: '标题', width: 450},
+                {field: 'C_TITLE', title: '标题', width: 400},
                 {field: 'T_START', title: '自评开始日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
                 {field: 'T_END', title: '自评结束日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
                 {field: 'N_GET', title: '得分项', width: 60},
@@ -111,22 +111,24 @@
         <a href="#" class="easyui-linkbutton" iconCls="icon-new" onclick="doNew();">开始新的自评</a>
     </div>
     
-    <div style="padding-top:5px;">
-    <table id="dg_draft"></table>
+    <div class="easyui-panel" style="padding-top:5px;padding-right:20px;border:0;">
+        <table id="dg_draft"></table>
         <div id="dg_draft_tb" style="padding:5px;height:auto">
                 自评日期从: <input class="easyui-datebox" style="width:90px" name="T_START">
                 至: <input class="easyui-datebox" style="width:90px" name="T_END">
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_draft')">查询</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_draft')" title="清空查询条件">重置</a>
         </div>
-    </div><div style="padding-top:5px;">
-    <table id="dg_history"></table>
+    </div>
+    
+    <div class="easyui-panel" style="padding-top:5px;padding-right:20px;border:0;">
+        <table id="dg_history"></table>
         <div id="dg_history_tb" class="toolbar ue-clear">
                 自评日期从: <input class="easyui-datebox" style="width:90px" name="T_START">
                 至: <input class="easyui-datebox" style="width:90px" name="T_END">
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_history')">查询</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_history')" title="清空查询条件">重置</a>
         </div>
-      </div>
+    </div>
 </div>
 </@layout.doLayout>
