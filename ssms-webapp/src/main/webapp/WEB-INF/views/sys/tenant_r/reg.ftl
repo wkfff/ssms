@@ -17,8 +17,8 @@
         C_NUMBER: ko.observable(),
         C_ORG: ko.observable(),
         N_FULLTIME: ko.observable(),
-        S_LEVEL: ko.observable(),
-        P_LEVEL: ko.observable(),
+        S_LEVEL: ko.observable('${S_LEVEL!}'),
+        P_LEVEL: ko.observable('${P_LEVEL!}'),
         SID:'${SID!}'
     };
     var extModel = {
@@ -40,8 +40,8 @@
     var settings = {
         cycleSource: ko.observableArray(${json(_SYS_LEVEL_)}),
         paramViewSettings: {
-            valueField: 'key',
-            textField: 'value'
+            valueField: 'code',
+            textField: 'name'
         },
         provinceSetting: {
             url: '/sys/para_area/list',
