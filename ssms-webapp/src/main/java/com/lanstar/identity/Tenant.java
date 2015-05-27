@@ -12,6 +12,28 @@ package com.lanstar.identity;
  * 租户信息
  */
 public interface Tenant {
+    Tenant SYSTEM_TENANT = new Tenant() {
+        @Override
+        public int getTenantId() {
+            return 0;
+        }
+
+        @Override
+        public String getTenantName() {
+            return "系统用户";
+        }
+
+        @Override
+        public String getTenantCode() {
+            return "SYSTEM";
+        }
+
+        @Override
+        public TenantType getTenantType() {
+            return TenantType.SYSTEM;
+        }
+    };
+
     /**
      * 获取租户ID
      */

@@ -9,6 +9,7 @@
 package com.lanstar.model.tenant;
 
 import com.lanstar.common.StandardTemplateFileKit;
+import com.lanstar.identity.IdentityContext;
 import com.lanstar.plugin.activerecord.*;
 
 public class TemplateFile extends Model<TemplateFile> {
@@ -26,7 +27,7 @@ public class TemplateFile extends Model<TemplateFile> {
         return getInt( "R_TMPFILE" );
     }
 
-    public void setTemplateId( int id ) {
+    public void setTemplateFileId( Integer id ) {
         set( "R_TMPFILE", id );
     }
 
@@ -34,17 +35,11 @@ public class TemplateFile extends Model<TemplateFile> {
         Config config = DbKit.getConfig( TemplateFile.class );
         DbPro dbPro = DbPro.use( config.getName() );
         String tableName = getTableName();
-        Record record = dbPro.findById( tableName, "SID", getTemplateFileId() );
-        // 如果得不到当前的文件内容，则获取系统的模板
-        if ( record == null ) {
-            com.lanstar.model.system.TemplateFile file = com.lanstar.model.system.TemplateFile.dao.findById( getSourceFileId() );
-            tableName = StandardTemplateFileKit.getSystemTableName( getTemplateFileCode() );
-            record = Db.findById( tableName, "SID", file.getTemplateFileId() );
-        }
-        return record;
+        return dbPro.findById( tableName, "SID", getTemplateFileId() );
     }
 
-    public boolean setFileContent( Record content ) {
+    public void setFileContent( Record content ) {
+        if (content == null) return;
         Config config = DbKit.getConfig( TemplateFile.class );
         DbPro dbPro = DbPro.use( config.getName() );
         String tableName = getTableName();
@@ -52,7 +47,8 @@ public class TemplateFile extends Model<TemplateFile> {
         content.set( "R_TENANT", get( "R_TENANT" ) );
         content.set( "S_TENANT", get( "S_TENANT" ) );
         content.set( "P_TENANT", get( "P_TENANT" ) );
-        return dbPro.save( tableName, "SID", content );
+        dbPro.save( tableName, "SID", content );
+        setTemplateFileId( content.getLong( "SID" ).intValue() );
     }
 
     public void setFolder( TemplateFolder tenantFolder ) {
@@ -66,6 +62,11 @@ public class TemplateFile extends Model<TemplateFile> {
 
     public Integer getSourceFileId() {
         return getInt( "R_SOURCE" );
+    }
+
+    public void setAttachText( String attachText, IdentityContext target ) {
+        target.getAttachTextService()
+              .save( "STDTMP_FILE_" + getTemplateFileCode(), "C_CONTENT", getTemplateFileId(), attachText, target );
     }
 
     private String getTableName() {return StandardTemplateFileKit.getTenantTableName( getTemplateFileCode() );}

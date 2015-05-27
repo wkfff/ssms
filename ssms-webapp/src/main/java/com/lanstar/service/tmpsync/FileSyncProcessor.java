@@ -9,6 +9,7 @@
 package com.lanstar.service.tmpsync;
 
 import com.lanstar.common.ModelInjector;
+import com.lanstar.common.log.Logger;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
@@ -16,30 +17,46 @@ import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
 class FileSyncProcessor implements SyncProcessor {
-    private final TemplateFolder tenantFolder;
-    private final TemplateFile file;
+    private final Logger log = Logger.getLogger( FileSyncProcessor.class );
 
-    public FileSyncProcessor( TemplateFolder tenantFolder, TemplateFile file ) {
+    private final TemplateFolder tenantFolder;
+    private final TemplateFile systemFile;
+
+    public FileSyncProcessor( TemplateFolder tenantFolder, TemplateFile systemFile ) {
         this.tenantFolder = tenantFolder;
-        this.file = file;
+        this.systemFile = systemFile;
     }
 
     @Override
     public void sync( IdentityContext target ) {
+        log.debug( "========>开始同步文件[%s->%s]...", tenantFolder.getName(), systemFile.getName() );
         // 同步文件信息
-        com.lanstar.model.tenant.TemplateFile tenantFile = com.lanstar.model.tenant.TemplateFile.dao.findFirst(
-                SqlKit.sql( "tenant.templateFile.getFileByFileTmp" ), this.file.getId() );
+        com.lanstar.model.tenant.TemplateFile tenantFile =
+                com.lanstar.model.tenant.TemplateFile.dao.findFirst(
+                        SqlKit.sql( "tenant.templateFile.getFileByFileTmp" ),
+                        this.systemFile.getId(),
+                        this.tenantFolder.getId(),
+                        target.getTenantId(),
+                        target.getTenantType().getName() );
+
         if ( tenantFile == null ) tenantFile = new com.lanstar.model.tenant.TemplateFile();
-        ModelKit.copyColumnsSkipEquals( file, tenantFile,
+        ModelKit.copyColumnsSkipEquals( systemFile, tenantFile,
                 "C_NAME", "C_DESC", "B_REMIND", "N_CYCLE", "P_CYCLE", "S_CYCLE", "C_EXPLAIN", "P_TMPFILE", "S_TMPFILE", "R_TMPFILE", "N_STATE", "B_DELETE", "N_INDEX", "N_VERSION" );
         if ( tenantFile.isModified() ) {
             // tenantFile.setTenant(target.getIdentity() );
             ModelInjector.injectOpreator( tenantFile, target );
         }
         if ( tenantFile.getInt( "SID" ) == null ) {
-            tenantFile.setSourceFile(file);
+            log.debug( "================>文件不存在，创建文件中..." );
+            // 新建模板文件，要同步拷贝文件内容。
+            tenantFile.setSourceFile( systemFile );
             tenantFile.setFolder( tenantFolder );
+            log.debug( "================>拷贝文件内容->表单数据..." );
+            tenantFile.setFileContent( systemFile.getFileContent() );
+            log.debug( "================>拷贝文件内容->富文本数据..." );
+            tenantFile.setAttachText( systemFile.getAttachText(), target );
             tenantFile.save();
+            log.debug( "========>创建文件完成..." );
         } else tenantFile.update();
     }
 }

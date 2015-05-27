@@ -13,7 +13,7 @@
     <div data-options="region:'west', title:'达标体系', split:true" style="width: 200px">
         <div class="easyui-accordion" fit="true">
             <#list tree as map>
-                <div title="${map.text}" style="overflow:auto;padding:10px;">
+                <div title="${map.text}" style="overflow:auto;padding:10px;width: 100%;">
                     <@buildTree map.children true/>
                 </div>
             </#list>

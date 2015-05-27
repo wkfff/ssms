@@ -25,11 +25,11 @@ public class TemplateSyncProcessor implements SyncProcessor {
 
     @Override
     public void sync( IdentityContext target ) {
-        log.debug( "begin sync template...." );
+        log.debug( "----------开始同步模板----------" );
         List<TemplateFolder> folders = template.listFolder( 0 );
         for ( TemplateFolder folder : folders ) {
             new FolderSyncProcessor( folder ).sync( target );
         }
-        log.debug( "sync template finish...." );
+        log.debug( "----------同步模板完成----------" );
     }
 }

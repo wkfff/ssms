@@ -8,7 +8,7 @@
 
 package com.lanstar.service;
 
-import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.TenantContext;
 import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Profession;
 
@@ -17,16 +17,16 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EnterpriseService {
-    private final IdentityContext identityContext;
+    private final TenantContext tenantContext;
     private Map<Class<?>, Object> valueMap = new ConcurrentHashMap<>();
 
-    public EnterpriseService( IdentityContext identityContext ) {
-        this.identityContext = identityContext;
+    public EnterpriseService( TenantContext tenantContext ) {
+        this.tenantContext = tenantContext;
     }
 
     public List<Profession> getProfessions() {
-        TenantType tenantType = identityContext.getTenantType();
-        return Profession.list( tenantType, identityContext.getTenantId() );
+        TenantType tenantType = tenantContext.getTenantType();
+        return Profession.list( tenantType, tenantContext.getTenantId() );
     }
 
     public ProfessionService getProfessionService() {

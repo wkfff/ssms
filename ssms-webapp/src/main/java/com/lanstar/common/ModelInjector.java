@@ -9,6 +9,7 @@
 package com.lanstar.common;
 
 import com.lanstar.core.TypeConverter;
+import com.lanstar.identity.Identity;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.plugin.activerecord.ActiveRecordException;
 import com.lanstar.plugin.activerecord.Model;
@@ -94,24 +95,29 @@ public class ModelInjector {
     }
 
     public static void injectOpreator( Model<?> model, IdentityContext context ) {
-        Asserts.notNull( model, "model can not null" );
         Asserts.notNull( context, "context can not null" );
+        injectOpreator( model, context.getIdentity() );
+    }
+
+    public static void injectOpreator( Model<?> model, Identity identity ) {
+        Asserts.notNull( model, "model can not null" );
+        Asserts.notNull( identity, "identity can not null" );
 
         Table table = TableMapping.me().getTable( model.getClass() );
         String primaryKey = table.getPrimaryKey();
         Object id = model.get( primaryKey );
         if ( id == null ) { // for insert
-            model.set( "R_CREATE", context.getId() );
-            model.set( "S_CREATE", context.getName() );
-            model.set( "R_TENANT", context.getTenantId() );
-            model.set( "S_TENANT", context.getTenantName() );
-            model.set( "P_TENANT", context.getTenantType().getName() );
+            model.set( "R_CREATE", identity.getId() );
+            model.set( "S_CREATE", identity.getName() );
+            model.set( "R_TENANT", identity.getTenantId() );
+            model.set( "S_TENANT", identity.getTenantName() );
+            model.set( "P_TENANT", identity.getTenantType().getName() );
             model.set( "T_CREATE", new Date() );
             model.set( "T_UPDATE", new Date() );
         } else { // for update
             if ( model.isModified() == false ) return;
-            model.set( "R_UPDATE", context.getId() );
-            model.set( "S_UPDATE", context.getName() );
+            model.set( "R_UPDATE", identity.getId() );
+            model.set( "S_UPDATE", identity.getName() );
             model.set( "T_UPDATE", new Date() );
         }
     }

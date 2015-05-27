@@ -9,29 +9,36 @@
 package com.lanstar.service;
 
 import com.lanstar.common.ModelInjector;
+import com.lanstar.identity.Identity;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.TenantContext;
 import com.lanstar.model.system.AttachText;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
 public class AttachTextService {
-    private final IdentityContext identityContext;
+    public static final AttachTextService SYSTEM = new AttachTextService( TenantContext.SYSTEM );
+    private final TenantContext tenantContext;
 
-    public AttachTextService( IdentityContext identityContext ) {
-        this.identityContext = identityContext;
+    public AttachTextService( TenantContext tenantContext ) {
+        this.tenantContext = tenantContext;
     }
 
     public String getContent( String table, String field, int sid ) {
         AttachText attachText = AttachText.dao.findFirst( SqlKit.sql( "system.attachText.get" ),
-                table, field, sid, identityContext.getTenantId(), identityContext.getTenantType().getName() );
+                table, field, sid, tenantContext.getTenantId(), tenantContext.getTenantType().getName() );
         return attachText == null ? "" : attachText.getContent();
     }
 
-    public Integer save( String table, String field, int sid, String content ) {
+    public Integer save( String table, String field, int sid, String content, IdentityContext identity ) {
+        return save( table, field, sid, content, identity.getIdentity() );
+    }
+
+    public Integer save( String table, String field, int sid, String content, Identity identity ) {
         AttachText attachText = AttachText.dao.findFirst( SqlKit.sql( "system.attachText.get" ),
-                table, field, sid, identityContext.getTenantId(), identityContext.getTenantType().getName() );
+                table, field, sid, tenantContext.getTenantId(), tenantContext.getTenantType().getName() );
         if ( attachText != null ) {
             attachText.setContent( content );
-            ModelInjector.injectOpreator( attachText, identityContext );
+            ModelInjector.injectOpreator( attachText, identity );
             attachText.update();
         } else {
             attachText = new AttachText();
@@ -39,7 +46,7 @@ public class AttachTextService {
             attachText.setField( field );
             attachText.setRSid( sid );
             attachText.setContent( content );
-            ModelInjector.injectOpreator( attachText, identityContext );
+            ModelInjector.injectOpreator( attachText, identity );
             attachText.save();
         }
         return attachText.getId();
@@ -47,7 +54,7 @@ public class AttachTextService {
 
     public boolean del( String table, String field, int sid ) {
         AttachText attachText = AttachText.dao.findFirst( SqlKit.sql( "system.attachText.get" ),
-                table, field, sid, identityContext.getTenantId(), identityContext.getTenantType().getName() );
+                table, field, sid, tenantContext.getTenantId(), tenantContext.getTenantType().getName() );
         if ( attachText != null ) return attachText.delete();
         return false;
     }
