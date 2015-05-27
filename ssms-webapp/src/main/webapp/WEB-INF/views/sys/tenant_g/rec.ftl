@@ -4,7 +4,7 @@
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
         C_EMAIL: ko.observable('${C_EMAIL!}'),
-        P_PROVINCE: ko.observable('${C_EMAIL!}'),
+        P_PROVINCE: ko.observable('${P_PROVINCE!}'),
         S_PROVINCE: ko.observable('${S_PROVINCE!}'),
         P_CITY: ko.observable('${P_CITY!}'),
         S_CITY: ko.observable('${S_CITY!}'),
