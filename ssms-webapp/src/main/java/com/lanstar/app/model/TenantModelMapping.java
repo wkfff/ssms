@@ -12,6 +12,7 @@ import com.lanstar.model.tenant.*;
 
 public class TenantModelMapping extends ActiveRecordMapping {
     public TenantModelMapping() {
+        addMapping( "SSM_STDTMP_FOLDER", "SID", TemplateFolder.class );
         addMapping( "SSM_STDTMP_FILE", "SID", TemplateFile.class );
         addMapping( "SSM_STDTMP_FILE_01", "SID", TemplateFile01.class );
         addMapping( "SSM_STDTMP_FILE_02", "SID", TemplateFile02.class );

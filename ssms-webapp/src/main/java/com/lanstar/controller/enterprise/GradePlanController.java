@@ -18,6 +18,7 @@ import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.service.ProfessionService;
 
 public class GradePlanController extends SimplateController<GradePlan> {
+    boolean isNew = false;
     @Override
     public void index() {
         // 本年度未开始自评时直接转到开始自评页面
@@ -105,6 +106,7 @@ public class GradePlanController extends SimplateController<GradePlan> {
     protected void beforeSave( GradePlan model, boolean[] handled ) {
         Integer sid = model.getInt( "SID" );
         if ( sid == null ) { // for insert
+            isNew = true;
             model.setTitle( model.getStartDate() + "企业自评" );
             model.setState( 0 );
         }
@@ -112,8 +114,9 @@ public class GradePlanController extends SimplateController<GradePlan> {
 
     @Override
     protected void afterSave( GradePlan model ) {
-        ProfessionService service = identityContext.getProfessionService();
-        tenantDb.callProcedure( "P_GRADE_INIT", model.getId(), service.getId(), identityContext.getTenantId(),
+        ProfessionService service = identityContext.getEnterpriseService().getProfessionService();
+        if (isNew)
+            tenantDb.callProcedure( "P_GRADE_INIT", model.getId(), service.getId(), identityContext.getTenantId(),
                 identityContext.getTenantType().getName() );
         int sid = model.get( "SID" );
         this.setAttr( "SID", sid );
@@ -142,9 +145,7 @@ public class GradePlanController extends SimplateController<GradePlan> {
      * 自评完成
      */
     public void complete() {
-        ProfessionService service = identityContext.getProfessionService();
-        tenantDb.callProcedure( "P_GRADE_INIT", this.getModel().getId(), service.getId(), identityContext.getTenantId(),
-                identityContext.getTenantType().getName() );
+        tenantDb.callProcedure( "P_GRADE_COMPLETE_E", this.getModel().getId() );
         this.setAttr( "result", "OK" );
         renderJson();
     }

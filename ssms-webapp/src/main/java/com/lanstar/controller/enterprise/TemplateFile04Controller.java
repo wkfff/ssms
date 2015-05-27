@@ -16,9 +16,4 @@ public class TemplateFile04Controller extends SimplateController<TemplateFile04>
     protected TemplateFile04 getDao() {
         return TemplateFile04.dao;
     }
-
-    @Override
-    protected TemplateFile04 newModel() {
-        return new TemplateFile04();
-    }
 }

@@ -28,11 +28,8 @@ import com.google.common.collect.Lists;
 import com.lanstar.common.Asserts;
 import com.lanstar.common.log.Logger;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 public class ModelKit {
 
@@ -84,6 +81,20 @@ public class ModelKit {
             if ( res.length == 1 ) {
                 desc.set( column, src.get( column ) );
             } else {
+                desc.set( res[1], src.get( res[0] ) );
+            }
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static void copyColumnsSkipEquals( Model src, Model desc, String... columns ) {
+        for ( String column : columns ) {
+            String[] res = column.split( "," );
+            if ( res.length == 1 ) {
+                if ( Objects.equals( desc.get( column ), src.get( column ) ) ) continue;
+                desc.set( column, src.get( column ) );
+            } else {
+                if ( Objects.equals( desc.get( res[1] ), src.get( res[1] ) ) ) continue;
                 desc.set( res[1], src.get( res[0] ) );
             }
         }

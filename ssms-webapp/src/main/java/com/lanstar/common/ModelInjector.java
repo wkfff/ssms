@@ -16,9 +16,7 @@ import com.lanstar.plugin.activerecord.Table;
 import com.lanstar.plugin.activerecord.TableMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class ModelInjector {
     public static void injectActiveRecordModel( Model<?> model, HttpServletRequest request, boolean skipConvertError ) {
@@ -67,11 +65,13 @@ public class ModelInjector {
         }
     }
 
-    public static void injectActiveRecordModel( Model<?> model, Map<String, Object> parasMap, boolean skipConvertError ) {
+    public static void injectActiveRecordModel( Model<?> model, Map<String, Object> parasMap, String... skipAttrs ) {
         Table table = TableMapping.me().getTable( model.getClass() );
+        List<String> skipList = Arrays.asList( skipAttrs );
 
         for ( Map.Entry<String, Object> e : parasMap.entrySet() ) {
             String paraKey = e.getKey();
+            if ( skipList.contains( paraKey ) ) continue;
             Class<?> colType = table.getColumnType( paraKey );
             if ( colType == null )
                 throw new ActiveRecordException( "The model attribute " + paraKey + " is not exists." );
@@ -88,8 +88,7 @@ public class ModelInjector {
                 Object modelValue = model.get( paraKey );
                 if ( Objects.equals( modelValue, value ) == false ) model.set( paraKey, value );
             } catch ( Exception ex ) {
-                if ( skipConvertError == false )
-                    throw new RuntimeException( "Can not convert parameter: " + paraKey, ex );
+                throw new RuntimeException( "Can not convert parameter: " + paraKey, ex );
             }
         }
     }
