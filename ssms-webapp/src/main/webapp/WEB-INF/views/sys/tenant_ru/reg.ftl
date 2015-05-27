@@ -1,4 +1,5 @@
-<#--TODO缺少上传照片这个控件--> <#import "../../layout/_rec.ftl" as layout/>
+<#--TODO缺少上传照片这个控件--> 
+<#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
     var model={
