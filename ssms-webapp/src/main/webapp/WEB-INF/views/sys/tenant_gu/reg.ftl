@@ -33,7 +33,7 @@
     ko.applyBindings($.extend({}, model, events));
 </script>
 </#assign> <@layout.doLayout script>
-<div class="easyui-panel" title="评审用户信息">
+<div class="easyui-panel" title="政府用户信息">
     <div class="z-toolbar">
         <a href="#" class="easyui-linkbutton" plain="true"
             iconCls="icon-save" data-bind="click: saveClick">保存</a> <a

@@ -29,15 +29,13 @@ public class EnterpriseUserController extends SimplateController<EnterpriseUser>
     public void rec() {
         Enterprise enterprise = Enterprise.dao.findById( getPara( "pid" ) );
         setAttr( "tenant", enterprise );
+        super.rec();
     }
 
-    public void json() {
-        super.rec();
-        render( new JsonRender().forIE() );
-    }
 
     public void reg() {
-        rec();
+        Enterprise enterprise = Enterprise.dao.findById( getPara( "pid" ) );
+        setAttr( "tenant", enterprise );
     }
 
     public void updtePSW() {
