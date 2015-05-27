@@ -18,7 +18,7 @@ import com.lanstar.plugin.activerecord.DbPro;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.ProfessionService;
-import com.lanstar.service.ProfessionTemplateService;
+import com.lanstar.service.tmpsync.TemplateSyncProcessor;
 
 import java.util.List;
 import java.util.Map;
@@ -27,12 +27,12 @@ public class TemplateController extends Controller {
     public void index() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
 
-        ProfessionService professionService = identityContext.getProfessionService();
-        ProfessionTemplateService templateService = professionService.getTemplateService();
-        templateService.synchronousTo( identityContext );
+        ProfessionService professionService = identityContext.getEnterpriseService().getProfessionService();
 
         // get template instance
         Template template = professionService.getSystemTemplate();
+        // sync template
+        new TemplateSyncProcessor( template ).sync( identityContext );
 
         // load template tree data
         DbPro tenantDb = identityContext.getTenantDb();

@@ -114,7 +114,7 @@ public class GradePlanController extends SimplateController<GradePlan> {
 
     @Override
     protected void afterSave( GradePlan model ) {
-        ProfessionService service = identityContext.getProfessionService();
+        ProfessionService service = identityContext.getEnterpriseService().getProfessionService();
         if (isNew)
             tenantDb.callProcedure( "P_GRADE_INIT", model.getId(), service.getId(), identityContext.getTenantId(),
                 identityContext.getTenantType().getName() );

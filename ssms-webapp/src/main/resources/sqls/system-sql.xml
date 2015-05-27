@@ -16,6 +16,10 @@
     </sqlGroup>
     <sqlGroup name="templateFolder">
         <sql id="getFolders">SELECT * FROM SYS_STDTMP_FOLDER WHERE R_TEMPLATE = ?</sql>
+        <sql id="getFoldersByParentId">SELECT * FROM SYS_STDTMP_FOLDER WHERE R_TEMPLATE = ? AND R_SID = ?</sql>
+    </sqlGroup>
+    <sqlGroup name="templateFile">
+        <sql id="getFiles">SELECT * FROM SYS_STDTMP_FILE WHERE R_SID=?</sql>
     </sqlGroup>
     <sqlGroup name="tenantUser">
         <sql id="login">SELECT * FROM TENANT_USER WHERE TENANT_CODE=? AND USER_CODE=? AND USER_PASSWORD=?</sql>

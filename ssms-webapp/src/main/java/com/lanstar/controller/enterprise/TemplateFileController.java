@@ -10,13 +10,12 @@ package com.lanstar.controller.enterprise;
 
 import com.lanstar.core.Controller;
 import com.lanstar.model.tenant.TemplateFile;
-import com.lanstar.plugin.activerecord.ModelKit;
 
 public class TemplateFileController extends Controller {
     public void index() {
         String pid = getPara( "R_SID" );
         pid = pid.substring( 2 );
         TemplateFile templateFile = TemplateFile.dao.findById( pid );
-        setAttrs( ModelKit.toMap( templateFile ) );
+        redirect( "/e/stdtmp_file_"+templateFile.getTemplateFileCode()+"/rec?sid="+templateFile.getTemplateFileId() );
     }
 }

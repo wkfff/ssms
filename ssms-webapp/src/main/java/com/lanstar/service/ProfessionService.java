@@ -18,10 +18,6 @@ public class ProfessionService {
         this.profession = profession;
     }
 
-    public ProfessionTemplateService getTemplateService() {
-        return ProfessionTemplateService.forProfession( profession );
-    }
-
     public Template getSystemTemplate() {
         return Template.list( profession.getId() );
     }
