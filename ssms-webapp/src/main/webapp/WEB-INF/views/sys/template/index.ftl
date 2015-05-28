@@ -11,7 +11,6 @@
 </script>
 </#assign>
 <@layout.doLayout script>
-    <@layout.group title="模板管理" border=true fit=true>
     <div id="toolbar">
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
@@ -27,5 +26,4 @@
         </tr>
         </thead>
     </table>
-    </@>
 </@layout.doLayout>

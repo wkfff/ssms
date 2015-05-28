@@ -12,4 +12,4 @@
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-new" onclick="doNew()">新增</a>
 </div>
 <table id="dg_index" data-bind="datagridValue:selectItem,easyuiOptions:gridSettings"></table>
-</@layout.doLayout>
+</@>

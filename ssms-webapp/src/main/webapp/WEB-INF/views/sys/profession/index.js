@@ -19,7 +19,7 @@ function ViewModel() {
                 pagination: true,
                 singleSelect: true,
                 striped: true,
-                toolbar: '#dg_index_tb',
+                toolbar: '#toolbar',
                 border: false,
                 fit: true,
                 columns: [
