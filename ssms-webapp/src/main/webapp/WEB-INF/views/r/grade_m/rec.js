@@ -133,7 +133,10 @@ function ViewModel(recId) {
                         var opts = settings.gridSettings.datagrid('options');
                         var url = opts.updateUrl;
                         if (url){
-                                $.post(url, {"SID":row.SID,"R_SID":row.R_SID,"C_DESC":row.C_DESC,"B_BLANK":row.B_BLANK,"N_SCORE_REAL":row.N_SCORE_REAL}, function(data){});
+                                $.post(url, {"SID":row.SID,
+                                    "R_SID":row.R_SID,
+                                    "C_DESC_REVIEW":row.C_DESC_REVIEW,
+                                    "N_SCORE_REVIEW":row.N_SCORE_REVIEW}, function(data){});
                         }
                         return true;
                     } else {
@@ -160,7 +163,7 @@ function ViewModel(recId) {
     var settings = {
         gridSettings: {
             title:'评审内容',
-            url: '/r/grade_d/list_detail?R_SID='+recId,
+            url: '/r/grade_d/list?R_SID='+recId,
             updateUrl:'/r/grade_d/save',
             idField: 'SID',
             rownumbers: false,
@@ -179,9 +182,9 @@ function ViewModel(recId) {
                 {field: 'C_CONTENT', title: '基本规范要求', width: 256},
                 {field: 'N_SCORE', title: '标准分值',align:'center',width: 65},
                 {field: 'C_METHOD', title: '评分方式', width: 350},
-                {field: 'N_SCORE_SELF', title: '企业自评分', align:'center',width: 80},
-                {field: 'C_DESC', title: '评审描述', width: 250,editor:{type:'textarea',options:{},height:'100%'}},
-                {field: 'N_SCORE_REAL', title: '评审得分', align:'center',width: 65,editor:'numberbox'}
+                {field: 'N_SCORE_REAL', title: '企业自评分', align:'center',width: 80},
+                {field: 'C_DESC_REVIEW', title: '评审描述', width: 250,editor:{type:'textarea',options:{},height:'100%'}},
+                {field: 'N_SCORE_REVIEW', title: '评审得分', align:'center',width: 65,editor:'numberbox'}
             ]],
             onLoadSuccess: function(data){
                 

@@ -66,7 +66,7 @@ function ViewModel(templateId) {
                         width: 200
                     },
                     {
-                        field: 'C_CODE',
+                        field: 'SID',
                         title: '评审',
                         width: 60,
                         align:'center',

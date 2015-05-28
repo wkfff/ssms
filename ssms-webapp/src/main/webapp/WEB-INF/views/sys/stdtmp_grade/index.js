@@ -30,13 +30,13 @@ function ViewModel(catalogId) {
                         editor: {type: 'textarea', options: {validType: ['length[0, 300]']}}},
                     {field: 'C_PROJECT', title: '二级要素', width: 120,
                         editor: {type: 'textarea', options: {validType: ['length[0, 300]']}}},
-                    /*{field: 'C_REQUEST', title: '基本规范要求', width: 200,
-                        editor: {type: 'textarea', options: {validType: ['length[0, 2000]']}}},*/
+                    {field: 'C_REQUEST', title: '基本规范要求', width: 200,
+                        editor: {type: 'textarea', options: {validType: ['length[0, 2000]']}}},
                     {field: 'C_CONTENT', title: '企业达标标准', width: 300,
                         editor: {type: 'textarea', options: {validType: ['length[0, 2000]']}}},
                     {field: 'N_SCORE', title: '标准分值',align:'center',width: 60,
                         editor: {type: 'numberbox', options: {required: true}}},
-                    {field: 'C_METHOD', title: '评分方式', 
+                    {field: 'C_METHOD', title: '评分方式', width: 200,
                         editor: {type: 'textarea', options: {validType: ['length[0, 2000]']}}}
                 ]
             ]

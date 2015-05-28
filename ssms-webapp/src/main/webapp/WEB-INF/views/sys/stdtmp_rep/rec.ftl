@@ -41,7 +41,7 @@
                     '|', 'table','|','fullscreen'
                     ],
                     afterCreate : function() {
-                        $.get("/sys/attachtext/get?table=SSM_GRADE_REPORT_TMP&field=content&sid=${R_SID!}",function(data){
+                        $.get("/sys/attachtext/get?table=SSM_GRADE_REPORT_TMP&field=CONTENT&sid=${R_SID!}",function(data){
                              if (data) editor.html(data);
                         });
                     }
@@ -62,7 +62,7 @@
          <form id="formMain" method="post">
                 <textarea id="content" name="content" style="display:none;"></textarea>
                 <input type="hidden" name="table" value="SSM_GRADE_REPORT_TMP" />
-                <input type="hidden" name="field" value="content" />
+                <input type="hidden" name="field" value="CONTENT" />
                 <input type="hidden" name="sid" value="${R_SID!}" />
          </form>
     </div>

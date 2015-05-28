@@ -27,6 +27,8 @@ public static GradeContentR dao = new GradeContentR();
     private String C_DESC;
     private boolean B_BLANK;
     private int N_SCORE_REAL;
+    private int C_DESC_REVIEW;
+    private int N_SCORE_REVIEW;
     /**
      * @return the r_SID
      */
@@ -159,4 +161,29 @@ public static GradeContentR dao = new GradeContentR();
     public void setN_SCORE_REAL( int n_SCORE_REAL ) {
         N_SCORE_REAL = n_SCORE_REAL;
     }
+    /**
+     * @return the c_DESC_REVIEW
+     */
+    public int getC_DESC_REVIEW() {
+        return C_DESC_REVIEW;
+    }
+    /**
+     * @param c_DESC_REVIEW the c_DESC_REVIEW to set
+     */
+    public void setC_DESC_REVIEW( int c_DESC_REVIEW ) {
+        C_DESC_REVIEW = c_DESC_REVIEW;
+    }
+    /**
+     * @return the n_SCORE_REVIEW
+     */
+    public int getN_SCORE_REVIEW() {
+        return N_SCORE_REVIEW;
+    }
+    /**
+     * @param n_SCORE_REVIEW the n_SCORE_REVIEW to set
+     */
+    public void setN_SCORE_REVIEW( int n_SCORE_REVIEW ) {
+        N_SCORE_REVIEW = n_SCORE_REVIEW;
+    }
+    
 }

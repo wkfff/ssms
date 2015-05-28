@@ -59,6 +59,7 @@ function ViewModel(templateId) {
         gridSettings: {
             idField: 'SID',
             title:'评审',
+            url:'/r/grade_m/list_r',
             rownumbers: true,
             pagination: true,
             fit: true,

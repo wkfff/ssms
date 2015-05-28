@@ -13,7 +13,8 @@
         T_END: ko.observable('${T_END!}'),
         C_LEADER: ko.observable('${C_LEADER!}'),
         C_MEMBERS: ko.observable('${C_MEMBERS!}'),
-        SID: '${SID!}'
+        SID: '${SID!}',
+        R_EID:'${R_EID!}'
     };
    
     var events = {
