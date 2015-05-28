@@ -1,11 +1,6 @@
 <#import "../../layout/_list.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
-function doSearch(id) {
-    $("#" + id).datagrid('load', {
-        C_NAME : $("input[name='C_NAME']", "#" + id + "_tb").val()
-    });
-}
 function doClear(id) {
     $(".easyui-textbox").textbox("setValue", "");
 }
@@ -62,9 +57,6 @@ $(function () {
 <@layout.doLayout script>
 <table id="dg_index"></table>
 <div id="dg_index_tb" style="padding:5px;height:auto">
-        <span id="value"> 参数名: <input class="easyui-textbox"  style="width:90px" name="C_NAME">
-        <a href="#" class="easyui-linkbutton" id="search" iconCls="icon-search" plain="true"   onclick="doSearch('dg_index')">查询</a></span>
-        <a href="#" class="easyui-linkbutton" id="clear" iconCls="icon-clear" plain="true" onclick="doClear('dg_index')" title="清空查询条件">重置</a>
         <a href="#" class="easyui-linkbutton" id="add" iconCls="icon-new" plain="true" onclick="doAdd()">新增</a>
         <a href="#" class="easyui-linkbutton" id="back" iconCls="icon-undo" plain="true" onclick="doBack()" title="返回">返回</a>
 </div>

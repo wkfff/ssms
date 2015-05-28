@@ -25,7 +25,6 @@ public class MultiParaController extends SimplateController<MultiPara> {
         return MultiPara.dao;
     }
     public void valueList() {
-
     }
     @Override
     public void list() {
