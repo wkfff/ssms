@@ -102,5 +102,9 @@
     <div class="easyui-panel" title="正文" style="padding: 6px">
         <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
     </div>
+
+    <div class="easyui-panel" title="附件" style="padding-bottom: 10px;">
+        <@layout.com.upload module="STDTMP_FILE_04" sid=SID />
+    </div>
 </form>
 </@>

@@ -51,5 +51,9 @@
             </span>
         </p>
     </div>
+
+    <div class="easyui-panel" title="附件" style="padding-bottom: 10px;">
+        <@layout.com.upload module="STDTMP_FILE_05" sid=SID />
+    </div>
 </form>
 </@>

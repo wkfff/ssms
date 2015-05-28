@@ -14,6 +14,10 @@ import com.lanstar.plugin.attachfile.LocationBuilder;
 public class AttachFile extends Model<AttachFile> {
     public static final AttachFile dao = new AttachFile();
 
+    public Integer getId() {
+        return getInt( "SID" );
+    }
+
     public String getModule() {
         return getStr( "R_TABLE" );
     }
