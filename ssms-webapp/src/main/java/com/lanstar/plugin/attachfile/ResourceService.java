@@ -16,7 +16,7 @@ public interface ResourceService {
      *
      * @param location 相对路径
      */
-    InputStreamSource getResource( String location );
+    Resource getResource( String location );
 
     /**
      * 将资源保存到定位符表示的路径中

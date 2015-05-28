@@ -12,13 +12,12 @@ import com.lanstar.common.ModelInjector;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.TenantContext;
 import com.lanstar.model.system.AttachFile;
-import com.lanstar.plugin.attachfile.FileResource;
-import com.lanstar.plugin.attachfile.LocationBuilder;
-import com.lanstar.plugin.attachfile.ResourceKit;
-import com.lanstar.plugin.attachfile.ResourceService;
+import com.lanstar.plugin.attachfile.*;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -60,15 +59,22 @@ public class AttachFileService {
         attachFile.save();
     }
 
-    public void remove( String module, Integer sid ) {
+    public boolean remove( String module, Integer sid ) {
         AttachFile attachFile = AttachFile.dao.findFirst(
                 SqlKit.sql( "system.attachFile.list" ),
                 module,
                 sid,
                 tenantContext.getTenantId(),
                 tenantContext.getTenantType().getName() );
-        resourceService.removeResouce(attachFile.getPath());
+        resourceService.removeResouce( attachFile.getPath() );
         attachFile.delete();
+        return true;
+    }
+
+    public Resource getFile( Integer id ) {
+        AttachFile attachFile = AttachFile.dao.findById( id );
+        Resource resource = resourceService.getResource( attachFile.getPath() );
+        return new ResourceNameWrap(resource, attachFile.getOuterFilename());
     }
 
     private String getFileLocation( String module, String filename, String extension ) {
@@ -80,5 +86,45 @@ public class AttachFileService {
                               .folder( format.format( new Date() ) )
                               .filename( filename ).extension( extension )
                               .build();
+    }
+
+    private class ResourceNameWrap implements Resource {
+        private final Resource resource;
+        private final String name;
+
+        public ResourceNameWrap( Resource resource, String name ) {
+            this.resource = resource;
+            this.name = name;
+        }
+
+        @Override
+        public boolean exists() {return resource.exists();}
+
+        @Override
+        public long contentLength() throws IOException {return resource.contentLength();}
+
+        @Override
+        public long lastModified() throws IOException {return resource.lastModified();}
+
+        @Override
+        public Resource createRelative( String relativePath ) throws IOException {return resource.createRelative( relativePath );}
+
+        @Override
+        public boolean isReadable() {return resource.isReadable();}
+
+        @Override
+        public boolean isOpen() {return resource.isOpen();}
+
+        @Override
+        public File getFile() throws IOException {return resource.getFile();}
+
+        @Override
+        public String getFilename() {return this.name;}
+
+        @Override
+        public String getDescription() {return resource.getDescription();}
+
+        @Override
+        public InputStream getInputStream() throws IOException {return resource.getInputStream();}
     }
 }

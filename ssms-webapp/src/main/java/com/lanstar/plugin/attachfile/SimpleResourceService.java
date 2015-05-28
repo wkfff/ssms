@@ -25,7 +25,7 @@ public class SimpleResourceService implements ResourceService {
      * @param location 相对路径
      */
     @Override
-    public InputStreamSource getResource( String location ) {
+    public Resource getResource( String location ) {
         return baseFolder.createRelative( location );
     }
 

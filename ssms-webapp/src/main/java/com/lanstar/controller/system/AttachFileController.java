@@ -16,6 +16,8 @@ import com.lanstar.core.upload.UploadFile;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.AttachFile;
 import com.lanstar.plugin.attachfile.FileResource;
+import com.lanstar.plugin.attachfile.Resource;
+import com.lanstar.plugin.attachfile.ResourceRender;
 import com.lanstar.service.AttachFileService;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ public class AttachFileController extends Controller {
             @Override
             public Map<String, Object> apply( AttachFile input ) {
                 Map<String, Object> m = Maps.newLinkedHashMap();
+                m.put( "id", input.getId() );
                 m.put( "module", input.getModule() );
                 m.put( "recordSid", input.getRecordSid() );
                 m.put( "outerFilename", input.getOuterFilename() );
@@ -64,12 +67,20 @@ public class AttachFileController extends Controller {
         renderNull();
     }
 
-    public void del(){
+    public void del() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         AttachFileService service = identityContext.getAttachFileService();
 
         String module = getPara( "module" );
         Integer sid = getParaToInt( "recordSid" );
-        service.remove(module, sid);
+        renderJson( service.remove( module, sid ) );
+    }
+
+    public void down(){
+        Integer id = getParaToInt( "id" );
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        AttachFileService service = identityContext.getAttachFileService();
+        Resource file = service.getFile( id );
+        render(new ResourceRender( file ));
     }
 }
