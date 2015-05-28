@@ -28,6 +28,10 @@ public class TemplateFolder extends Model<TemplateFolder> {
         return getInt( "SID" );
     }
 
+    public String getName(){
+        return getStr( "C_NAME" );
+    }
+
     public Integer getTemplateId() {
         return getInt( "R_TEMPLATE" );
     }

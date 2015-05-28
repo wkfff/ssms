@@ -9,6 +9,7 @@
 function viewModel() {
     var self = this;
     self.grid = {
+    	title: "模板管理",
         url: "list",
         toolbar: '#toolbar'
     };

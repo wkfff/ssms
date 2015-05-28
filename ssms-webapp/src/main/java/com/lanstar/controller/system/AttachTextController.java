@@ -37,7 +37,7 @@ public class AttachTextController extends Controller {
 
         IdentityContext context = IdentityContext.getIdentityContext( this );
         AttachTextService service = context.getAttachTextService();
-        Integer id = service.save( table, field, sid, content );
+        Integer id = service.save( table, field, sid, content, context );
 //        renderJson(id);
         render( new JsonRender( id ).forIE() );
     }

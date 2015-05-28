@@ -8,11 +8,12 @@
 
 package com.lanstar.model.system;
 
+import com.lanstar.common.StandardTemplateFileKit;
 import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.sqlinxml.SqlKit;
-import com.lanstar.common.StandardTemplateFileKit;
+import com.lanstar.service.AttachTextService;
 
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,7 @@ public class TemplateFile extends Model<TemplateFile> {
         return getInt( "R_TMPFILE" );
     }
 
-    public void setTemplateId( int id ) {
+    public void setTemplateFileId( Integer id ) {
         set( "R_TMPFILE", id );
     }
 
@@ -71,6 +72,15 @@ public class TemplateFile extends Model<TemplateFile> {
         return getInt( "SID" );
     }
 
+    public Object getName() {
+        return getStr( "C_NAME" );
+    }
+
+    public String getAttachText() {
+        return AttachTextService.SYSTEM.getContent(
+                "STDTMP_FILE_" + getTemplateFileCode(), "C_CONTENT", getTemplateFileId() );
+    }
+
     private boolean initFileContent() {
         String tableName = getTableName();
 
@@ -85,7 +95,7 @@ public class TemplateFile extends Model<TemplateFile> {
                 .set( "S_TENANT", get( "S_TENANT" ) )
                 .set( "P_TENANT", get( "P_TENANT" ) );
         boolean success = Db.save( tableName, "SID", record );
-        setTemplateId( record.getLong( "SID" ).intValue() );
+        setTemplateFileId( record.getLong( "SID" ).intValue() );
 
         return success;
     }

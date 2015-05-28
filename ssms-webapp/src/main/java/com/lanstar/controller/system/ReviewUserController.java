@@ -19,15 +19,12 @@ public class ReviewUserController extends SimplateController<ReviewUser> {
     public void rec() {
         Review model = Review.dao.findById( getPara( "pid" ) );
         setAttr( "tenant", model );
-    }
-
-    public void json() {
         super.rec();
-        render( new JsonRender().forIE() );
     }
 
     public void reg() {
-        rec();
+        Review model = Review.dao.findById( getPara( "pid" ) );
+        setAttr( "tenant", model );
     }
 
     public void psw() {

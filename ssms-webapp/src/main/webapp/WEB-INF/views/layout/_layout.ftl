@@ -37,6 +37,6 @@ ${footer}</html>
     <#local _footer>${footer}</#local>
     <@base header=_header footer=_footer>
         <#nested/>
-    ${vars.COMPONENT_INIT_SCRIPTS}<#--输出组件初始化脚本-->
+${vars.COMPONENT_INIT_SCRIPTS}<#--输出组件初始化脚本-->
     </@base>
 </#macro>

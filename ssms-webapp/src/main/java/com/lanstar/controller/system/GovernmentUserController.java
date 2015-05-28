@@ -9,24 +9,22 @@
 package com.lanstar.controller.system;
 
 import com.lanstar.controller.SimplateController;
-import com.lanstar.core.render.JsonRender;
+import com.lanstar.model.system.Government;
 import com.lanstar.model.system.GovernmentUser;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class GovernmentUserController extends SimplateController<GovernmentUser> {
     @Override
     public void rec() {
-        GovernmentUser model = GovernmentUser.dao.findById( getPara( "pid" ) );
+        Government model = Government.dao.findById( getPara( "pid" ) );
         setAttr( "tenant", model );
+        super.rec();
     }
 
-    public void json() {
-        super.rec();
-        render( new JsonRender().forIE() );
-    }
 
     public void reg() {
-        rec();
+        Government model = Government.dao.findById( getPara( "pid" ) );
+        setAttr( "tenant", model );
     }
 
     public void psw() {

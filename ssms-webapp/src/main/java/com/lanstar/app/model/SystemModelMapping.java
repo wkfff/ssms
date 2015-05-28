@@ -26,7 +26,9 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_NAV", "SID", Navgate.class );
         addMapping( "SYS_PROFESSION", "SID", Profession.class );
         addMapping( "SYS_TEMPLATE", "SID", Template.class );
+
         addMapping( "SYS_ATTACH_TEXT", "SID", AttachText.class );
+        addMapping( "SYS_ATTACH_FILE", "SID", AttachFile.class );
 
         addMapping( "SYS_STDTMP_FOLDER", "SID", TemplateFolder.class );
         addMapping( "SYS_STDTMP_FILE", "SID", TemplateFile.class );

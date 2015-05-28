@@ -25,9 +25,16 @@ public class ProfessionController extends SimplateController<Profession> {
     protected Profession getDao() {
         return Profession.dao;
     }
-
+    public void reg(){
+        rec();
+    }
     @Override
     protected SqlBuilder buildWhere() {
+        if(isParaBlank( "C_NAME" ) == false){
+            return new SqlBuilder()
+            .WHERE("C_NAME = ?",getPara("C_NAME"))
+            ._If( isParaBlank( "R_INDUSTRY" ) == false, "R_INDUSTRY=?", getPara( "R_INDUSTRY" ) );
+        }
         return new SqlBuilder()
                 .WHERE()
                 ._If( isParaBlank( "R_INDUSTRY" ) == false, "R_INDUSTRY=?", getPara( "R_INDUSTRY" ) );

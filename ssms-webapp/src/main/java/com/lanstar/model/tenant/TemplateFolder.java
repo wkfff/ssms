@@ -24,4 +24,8 @@ public class TemplateFolder extends Model<TemplateFolder> {
     public String getName() {
         return getStr( "C_NAME" );
     }
+
+    public void setSourceFolder( com.lanstar.model.system.TemplateFolder systemFolder ) {
+        set( "R_SOURCE", systemFolder.getId() );
+    }
 }

@@ -9,6 +9,7 @@
 package com.lanstar.service.tmpsync;
 
 import com.lanstar.common.ModelInjector;
+import com.lanstar.common.log.Logger;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFolder;
@@ -18,42 +19,51 @@ import com.lanstar.plugin.sqlinxml.SqlKit;
 import java.util.List;
 
 class FolderSyncProcessor implements SyncProcessor {
-    private final TemplateFolder folder;
+    private final Logger log = Logger.getLogger( FolderSyncProcessor.class );
+
+    private final TemplateFolder systemFolder;
     private com.lanstar.model.tenant.TemplateFolder parentFolder;
 
-    public FolderSyncProcessor( TemplateFolder folder ) {
-        this.folder = folder;
+    public FolderSyncProcessor( TemplateFolder systemFolder ) {
+        this.systemFolder = systemFolder;
     }
 
-    private FolderSyncProcessor( TemplateFolder folder, com.lanstar.model.tenant.TemplateFolder parentFolder ) {
-        this.folder = folder;
+    private FolderSyncProcessor( TemplateFolder systemFolder, com.lanstar.model.tenant.TemplateFolder parentFolder ) {
+        this.systemFolder = systemFolder;
         this.parentFolder = parentFolder;
     }
 
     @Override
     public void sync( IdentityContext target ) {
+        log.debug( "====>开始同步目录[%s]...", systemFolder.getName() );
         // 同步文件夹信息
-        com.lanstar.model.tenant.TemplateFolder tenantFolder = com.lanstar.model.tenant.TemplateFolder.dao.findFirst(
-                SqlKit.sql( "tenant.templateFolder.getFolderByFolderTmp" ), folder.getId() );
+        com.lanstar.model.tenant.TemplateFolder tenantFolder =
+                com.lanstar.model.tenant.TemplateFolder.dao.findFirst(
+                        SqlKit.sql( "tenant.templateFolder.getFolderByFolderTmp" ),
+                        systemFolder.getId(),
+                        target.getTenantId(),
+                        target.getTenantType().getName() );
         if ( tenantFolder == null ) tenantFolder = new com.lanstar.model.tenant.TemplateFolder();
-        ModelKit.copyColumnsSkipEquals( folder, tenantFolder, "C_NAME", "R_TEMPLATE", "C_DESC", "C_LOGO", "N_STATE", "B_DELETE", "N_INDEX", "N_VERSION" );
+        ModelKit.copyColumnsSkipEquals( systemFolder, tenantFolder, "C_NAME", "R_TEMPLATE", "C_DESC", "C_LOGO", "N_STATE", "B_DELETE", "N_INDEX", "N_VERSION" );
         if ( tenantFolder.isModified() ) {
             // tenantFolder.setTenant(target.getIdentity() );
             ModelInjector.injectOpreator( tenantFolder, target );
         }
         if ( tenantFolder.getInt( "SID" ) == null ) {
             if ( parentFolder != null ) tenantFolder.setParent( parentFolder );
+            tenantFolder.setSourceFolder( systemFolder );
             tenantFolder.save();
+            log.debug( "====>租户不存在目录[%s]，因此创建目录[%s]...", systemFolder.getName(), tenantFolder.getName() );
         } else tenantFolder.update();
 
         // 同步子目录
-        List<TemplateFolder> folders = folder.listSubFolder();
+        List<TemplateFolder> folders = systemFolder.listSubFolder();
         for ( TemplateFolder templateFolder : folders ) {
             new FolderSyncProcessor( templateFolder, tenantFolder ).sync( target );
         }
 
         // 获取目录下的文件，并同步文件。
-        List<TemplateFile> files = folder.listFile();
+        List<TemplateFile> files = systemFolder.listFile();
         for ( TemplateFile file : files ) {
             new FileSyncProcessor( tenantFolder, file ).sync( target );
         }

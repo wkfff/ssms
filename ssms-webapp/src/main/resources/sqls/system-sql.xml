@@ -27,6 +27,9 @@
     <sqlGroup name="attachText">
         <sql id="get">SELECT * FROM SYS_ATTACH_TEXT WHERE R_TABLE=? and R_FIELD=? and R_SID=? and R_TENANT=? and P_TENANT=?</sql>
     </sqlGroup>
+    <sqlGroup name="attachFile">
+        <sql id="list">SELECT * FROM SYS_ATTACH_FILE WHERE R_TABLE=? and R_SID=? and R_TENANT=? and P_TENANT=?</sql>
+    </sqlGroup>
 
     <sqlGroup name="enterpriseProfession">
         <sql id="listProfession">SELECT * FROM SYS_TENANT_E_PROFESSION WHERE R_TENANT=?</sql>
@@ -39,9 +42,12 @@
     <sqlGroup name="governmentUser">
         <sql id="getUserBySidAndPwd">SELECT * FROM SYS_TENANT_G_USER WHERE SID=? and UPPER(C_PASSWD)=?</sql>
     </sqlGroup>
+    <sqlGroup name="reviewUser">
+        <sql id="getUserBySidAndPwd">SELECT * FROM SYS_TENANT_R_USER WHERE SID=? and UPPER(C_PASSWD)=?</sql>
+    </sqlGroup>
 
     <sqlGroup name="multiPara">
-        <sql id="listParaByName">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=(SELECT C_NAME FROM SYS_PARA_MULTI WHERE SID=?)</sql>
+        <sql id="listParaByName">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=?</sql>
         <sql id="listPara">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=(SELECT C_NAME FROM SYS_PARA_MULTI WHERE SID=?)</sql>
     </sqlGroup>
     

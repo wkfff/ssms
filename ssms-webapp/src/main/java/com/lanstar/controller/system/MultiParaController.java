@@ -24,9 +24,10 @@ public class MultiParaController extends SimplateController<MultiPara> {
     protected MultiPara getDao() {
         return MultiPara.dao;
     }
-    public void valueList() {
 
+    public void valueList() {
     }
+
     @Override
     public void list() {
         SqlBuilder builder = SQL.SELECT( "*" ).FROM( "sys_para_multi" )
@@ -45,28 +46,23 @@ public class MultiParaController extends SimplateController<MultiPara> {
      * 列表数据
      */
     public void listV() {
-        String sid = this.getPara( "sid" );
+        String name = this.getPara( "name" );
         List<MultiPara> multiParas = this.getDao()
                                          .find( SqlKit.sql( "system.multiPara.listParaByName" ),
-                                                sid );
+                                                name );
         renderJson( multiParas );
     }
-    public void reg(){
+
+    public void reg() {
         super.rec();
     }
+
     @Override
-    public void rec(){
-        
-        if (isParaBlank( "pid" ) == false) {
-           String name=MultiPara.dao.findById(this.getParaToInt("pid")).getName();
-           this.setAttr( "C_NAME", name );
-        }else{
-            super.rec();
-        }
-        
+    public void rec() {
+        super.rec();
     }
-    
-    public void recJson(){
+
+    public void recJson() {
         rec();
         renderJson();
     }
