@@ -31,7 +31,7 @@
                 }
             }, "json");
         },backClick: function(){
-            window.location.href='/e/grade_m/index';
+            window.location.href='/r/grade_m/index';
         }
     };
 
@@ -42,7 +42,7 @@
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div title="在线自评" data-options="region:'center',collapsible:false" style="overflow:hidden;">
+    <div title="评审" data-options="region:'center',collapsible:false" style="overflow:hidden;">
           <div class="z-toolbar">
                 <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
                 <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-back" data-bind="click: backClick">返回</a>
@@ -52,24 +52,24 @@
              <form id="formMain" method="post">
                     <table class="table">
                         <tr>
-                            <td class="span2">自评单位:</td>
+                            <td class="span2">评审单位:</td>
                             <td class="span10" colspan="3">
                                 <input data-bind="textboxValue: S_TENANT" data-options="disabled:true" />
                              </td>
                         </tr>
                         <tr>
-                            <td class="span2">自评日期:</td>
+                            <td class="span2">评审日期:</td>
                             <td class="span4">
                             <input data-bind="dateboxValue: T_START" data-options="required:true,width:90"/>
                                                         至
                             <input data-bind="dateboxValue: T_END" data-options="required:true,width:90"/>
                             </td>
-                            <td class="span2">自评组组长:</td>
+                            <td class="span2">评审组组长:</td>
                             <td class="span4">
                             <input data-bind="textboxValue: C_LEADER" data-options="required:true"/>
                         </tr>
                         <tr>
-                            <td class="span2">自评组主要成员:
+                            <td class="span2">评审组主要成员:
                             <td class="span10" colspan="3">
                             <input data-bind="textboxValue: C_MEMBERS" data-options="required:true"/>
                             </td>

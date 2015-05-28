@@ -18,4 +18,11 @@
     <sqlGroup name="templateFile">
         <sql id="getFileByFileTmp">SELECT * FROM SSM_STDTMP_FILE WHERE R_SOURCE=?</sql>
     </sqlGroup>
+    
+    <sqlGroup name="grade">
+        <sql id="getDataFromEnterprise">
+            SELECT C_CATEGORY,C_PROJECT,C_REQUEST,C_CONTENT,N_SCORE,C_METHOD,C_DESC,N_SCORE_REAL FROM SSM_GRADE_E_D WHERE R_SID=?
+        </sql>
+        <sql id="insertToReview">insert into ssm_grade_r_d (R_SID,C_DESC,N_SCORE_REAL) values(?,?,?,?)</sql>
+    </sqlGroup>
 </sqlGroup>
