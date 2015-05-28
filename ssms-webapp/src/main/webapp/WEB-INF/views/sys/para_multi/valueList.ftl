@@ -8,10 +8,10 @@ function doBack(){
       window.location.href="index"
 }
 function doEdit(sid) {
-    window.location.href = 'rec?sid=${sid!}';
+    window.location.href = 'rec?name=${name!}&sid='+sid;
 }
 function doAdd() {
-    window.location.href = 'rec?pid=${sid!}';
+    window.location.href = 'rec?pid=${sid!}&name=${name!}';
 }
 function doDel(sid) {
     $.messager.confirm("删除确认", "您确认删除选定的记录吗？", function (deleteAction) {
@@ -19,7 +19,8 @@ function doDel(sid) {
                     $.get("del", {sid:sid}, function (data) {
                         if (data == "true" || data== "\"\"") {
                             $.messager.alert("提示", "删除选定的记录成功");
-                            window.location.href='index';
+                            $("#dg_index").datagrid("reload");
+                            $("#dg_index").datagrid("clearSelections");
                         }
                         else {
                             $.messager.alert("提示", data);
@@ -32,7 +33,7 @@ function doDel(sid) {
 $(function () {
     $('#dg_index').datagrid({
         title:'参数值列表',
-        url: 'listV?sid=${sid!}',
+        url: 'listV?name=${name!}',
         idField: 'SID',
         rownumbers: true,
         pagination: true,
