@@ -19,4 +19,13 @@
     <sqlGroup name="templateFile">
         <sql id="getFileByFileTmp">SELECT * FROM SSM_STDTMP_FILE WHERE R_SOURCE=? AND R_SID=? AND R_TENANT=? AND P_TENANT=?</sql>
     </sqlGroup>
+    
+    <sqlGroup name="grade">
+        <sql id="getDataFromEnterprise">
+            SELECT C_CATEGORY,C_PROJECT,C_REQUEST,C_CONTENT,N_SCORE,C_METHOD,C_DESC,N_SCORE_REAL FROM SSM_GRADE_E_D 
+            WHERE R_TENANT=? 
+            AND R_SID=(select SID from SSM_GRADE_E_M where N_STATE=1 order by T_START desc limit 1 )
+        </sql>
+        <sql id="insertToReview">insert into ssm_grade_r_d (R_SID,C_DESC,N_SCORE_REAL) values(?,?,?,?)</sql>
+    </sqlGroup>
 </sqlGroup>

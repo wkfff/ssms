@@ -23,8 +23,8 @@ public class GradePlanController extends SimplateController<GradePlan> {
     public void index() {
         // 本年度未开始自评时直接转到开始自评页面
         String sql = "SELECT COUNT(*) N FROM SSM_GRADE_E_M WHERE R_TENANT=? AND P_TENANT='E' AND YEAR(T_START)=YEAR(NOW())";
-        Record r =  tenantDb.findFirst( sql, new Object[]{identityContext.getTenantId()});
-        if (r==null || r.getLong( "N" )==6 ){
+        Record r =  tenantDb.findFirst( sql, identityContext.getTenantId());
+        if (r==null || r.getLong( "N" )==0 ){
             this.redirect( "/e/grade_m/rec_new" );
         }
         else super.index();
@@ -118,9 +118,9 @@ public class GradePlanController extends SimplateController<GradePlan> {
         if (isNew)
             tenantDb.callProcedure( "P_GRADE_INIT", model.getId(), service.getId(), identityContext.getTenantId(),
                 identityContext.getTenantType().getName() );
-        int sid = model.get( "SID" );
-        this.setAttr( "SID", sid );
-        renderJson();
+//        int sid = model.get( "SID" );
+//        this.setAttr( "SID", sid );
+//        renderJson();
     }
 
     @Override

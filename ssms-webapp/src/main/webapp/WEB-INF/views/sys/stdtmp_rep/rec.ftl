@@ -30,7 +30,7 @@
     $(function () {
          KindEditor.ready(function(K) {
                 var h = $('.layout-body')[0].scrollHeight-35;
-                editor = K.create('#CONTENT', {
+                editor = K.create('#content', {
                     width:'100%',height:h,border:0,
                     themeType :'simple',resizeType:0,
                     items : [
@@ -41,8 +41,8 @@
                     '|', 'table','|','fullscreen'
                     ],
                     afterCreate : function() {
-                        K.ajax('/sys/attachtext/get?table=SSM_GRADE_REPORT_TMP&field=CONTENT&sid=${R_SID!}', function(data) {
-                             editor.html(data);
+                        $.get("/sys/attachtext/get?table=SSM_GRADE_REPORT_TMP&field=CONTENT&sid=${R_SID!}",function(data){
+                             if (data) editor.html(data);
                         });
                     }
                  });
@@ -60,7 +60,7 @@
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack()">返回</a>
          </div>
          <form id="formMain" method="post">
-                <textarea id="CONTENT" name="CONTENT" style="display:none;"></textarea>
+                <textarea id="content" name="content" style="display:none;"></textarea>
                 <input type="hidden" name="table" value="SSM_GRADE_REPORT_TMP" />
                 <input type="hidden" name="field" value="CONTENT" />
                 <input type="hidden" name="sid" value="${R_SID!}" />

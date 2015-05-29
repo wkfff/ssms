@@ -9,6 +9,7 @@ package com.lanstar.controller.system;
 
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.TemplateGrade;
+import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 /**
  * @author Administrator
@@ -22,6 +23,12 @@ public class TemplateGradeController extends SimplateController<TemplateGrade>{
         return TemplateGrade.dao;
     }
     
-    
+    @Override
+    protected SqlBuilder buildWhere() {
+        SqlBuilder builder = new SqlBuilder();
+        builder.WHERE()
+               ._If( isParaExists( "R_SID" ), "R_SID = ?", getPara( "R_SID" ) );
+        return builder;
+    }
 
 }

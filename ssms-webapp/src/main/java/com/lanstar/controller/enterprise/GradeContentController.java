@@ -34,6 +34,13 @@ public class GradeContentController extends SimplateController<GradeContent> {
     }
 
     @Override
+    protected SqlBuilder buildOrder() {
+        SqlBuilder builder = new SqlBuilder();
+        builder.ORDER_BY( " N_INDEX,SID " );
+        return builder;
+    }
+    
+    @Override
     protected void afterSave( GradeContent model ) {
         tenantDb.callProcedure( "P_GRADE_SUM", model.getInt( "R_SID" ));
     }

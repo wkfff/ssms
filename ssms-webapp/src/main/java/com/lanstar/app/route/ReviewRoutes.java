@@ -9,6 +9,9 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
+import com.lanstar.controller.review.GradeContentController;
+import com.lanstar.controller.review.GradePlanController;
+
 
 public class ReviewRoutes extends Routes {
     private static Routes me = new ReviewRoutes();
@@ -20,5 +23,7 @@ public class ReviewRoutes extends Routes {
     @Override
     public void config() {
         add( "/r", com.lanstar.controller.review.HomeController.class );
+        add("/r/grade_m", GradePlanController.class);
+        add("/r/grade_d", GradeContentController.class);
     }
 }

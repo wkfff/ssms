@@ -9,6 +9,7 @@
 package com.lanstar.controller.system;
 
 import com.lanstar.core.Controller;
+import com.lanstar.core.render.JsonRender;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.service.AttachTextService;
 
@@ -37,6 +38,7 @@ public class AttachTextController extends Controller {
         IdentityContext context = IdentityContext.getIdentityContext( this );
         AttachTextService service = context.getAttachTextService();
         Integer id = service.save( table, field, sid, content, context );
-        renderJson( id );
+//        renderJson(id);
+        render( new JsonRender( id ).forIE() );
     }
 }
