@@ -13,7 +13,6 @@ import java.util.List;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.MultiPara;
-import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
@@ -57,13 +56,8 @@ public class MultiParaController extends SimplateController<MultiPara> {
         super.rec();
     }
 
-    @Override
-    public void rec() {
-        super.rec();
-    }
-
     public void recJson() {
-        rec();
+        super.rec();
         renderJson();
     }
 }

@@ -5,6 +5,11 @@
 <!--  <script type="text/javascript" src="/resource/js/cascade.js"></script>-->
 <script type="text/javascript">
     function doSave() {
+    	var name=$("input[name='C_NAME']").val();
+    	if(name.match(/^[A-Za-z_]+$/)==null){
+    		$.messager.alert("警告","输入的参数名只能为字母和下划线");
+    		return;
+    	}
         $('#formMain').form(
                 'submit',
                 {

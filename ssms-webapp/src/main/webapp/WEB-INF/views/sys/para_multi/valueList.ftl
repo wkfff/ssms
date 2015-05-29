@@ -11,7 +11,7 @@ function doEdit(sid) {
     window.location.href = 'rec?name=${name!}&sid='+sid;
 }
 function doAdd() {
-    window.location.href = 'rec?pid=${sid!}&name=${name!}';
+    window.location.href = 'rec?name=${name!}';
 }
 function doDel(sid) {
     $.messager.confirm("删除确认", "您确认删除选定的记录吗？", function (deleteAction) {

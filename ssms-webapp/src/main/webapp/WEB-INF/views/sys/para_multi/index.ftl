@@ -13,8 +13,8 @@ function doClear(id) {
 function doNew(){
     window.location.href = 'reg';
 }
-function doList(name,sid){
-	window.location.href = 'valueList?name='+name+'&sid='+sid;
+function doList(name){
+	window.location.href = 'valueList?name='+name;
 }
 $(function () {
     $('#dg_index').datagrid({
@@ -32,7 +32,7 @@ $(function () {
             {field: 'C_NAME', title: '参数名', width: 200},
             {field: 'SID', title: '参数值', width: 120,align:'center',
                 formatter:function(value,row){
-                        return "<a href='#' onclick='doList(\""+encodeURIComponent(row.C_NAME)+"\","+value+")'>查看</a>";
+                        return "<a href='#' onclick='doList(\""+row.C_NAME+"\")'>查看</a>";
                     }}
         ]]
     });

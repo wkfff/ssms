@@ -28,11 +28,7 @@
 				});
 	}
 	function doBack() {
-		 if('${sid!}'==""){
-			    window.location.href = 'valueList?sid=${pid!}&name=${name!}';
-	        }else{
-	            window.location.href = 'valueList?sid=${sid!}&name=${name!}';
-	        } 
+         window.location.href = 'valueList?name=${name!}';
 	}
 </script>
 </#assign> <@layout.doLayout script>
