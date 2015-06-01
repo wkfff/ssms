@@ -31,4 +31,14 @@ public class TemplateGradeController extends SimplateController<TemplateGrade>{
         return builder;
     }
 
+    /* (non-Javadoc)
+     * @see com.lanstar.controller.SimplateController#buildOrder()
+     */
+    @Override
+    protected SqlBuilder buildOrder() {
+        SqlBuilder builder = new SqlBuilder();
+        builder.ORDER_BY( "N_INDEX" );
+        return builder;
+    }
+
 }

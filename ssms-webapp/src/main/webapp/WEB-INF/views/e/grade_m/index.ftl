@@ -63,7 +63,7 @@
                 {field: 'N_LACK', title: '缺项', width: 60},
                 {field: 'SID', title: '操作',width:180,align:'center',
                     formatter:function(value,row){
-                            return "<a href='#' onclick='doOpen(\"rec\","+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"report_rec\","+value+")'>自评报告</a>";
+                            return "<a href='#' onclick='doOpen(\"rec\","+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doOpen(\"report_rec\","+value+")'>编辑自评报告</a>";
                     }}
             ]],
             onLoadSuccess: function(data){

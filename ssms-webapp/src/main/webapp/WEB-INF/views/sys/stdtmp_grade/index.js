@@ -21,7 +21,7 @@ function ViewModel(catalogId) {
                 R_SID: catalogId
             },
             rownumbers: false,
-            pagination: true,
+            pagination: false,
             fit: true,
             toolbar: '#toolbar',
             columns: [
@@ -48,11 +48,23 @@ function ViewModel(catalogId) {
                 refreshClick: function () {
                     settings.gridSettings.datagrid('reload');
                 }, addClick: function () {
-                    if (settings.gridSettings.datagrid('validateRow', model.selectIndex())) {
-                        var row = {SID: utils.uuid(), R_SID: catalogId};
-                        settings.gridSettings.datagrid('appendRow', row);
-                        model.editItem(row);
+                    var row = {SID: utils.uuid(), R_SID: catalogId};
+                    if(model.selectIndex() && model.selectIndex()!=-1){
+                        var index = model.selectIndex();
+                        if (settings.gridSettings.datagrid('validateRow', index)) {
+                            index++;
+                            settings.gridSettings.datagrid('insertRow', {
+                                index: index,
+                                row: row
+                            });
+                        }
                     }
+                    else{
+                        settings.gridSettings.datagrid('appendRow', row);
+                    }
+                    model.selectItem(row);
+                    model.editItem(row);
+                    
                 }, editClick: function () {
                     model.editItem(model.selectItem());
                 }, deleteClick: function () {
@@ -81,6 +93,39 @@ function ViewModel(catalogId) {
                                 settings.gridSettings.datagrid('reload');
                             });
                         });
+                    }
+                }, upClick: function () {
+                    events.gridEvents.sort(model.selectIndex(), 'up');
+                    
+                }, downClick: function () {
+                    events.gridEvents.sort(model.selectIndex(), 'down');
+                },sort:function(index,type){
+                    if (typeof(index)=="undefined") {$.messager.alert('提示', '请先选择要移动的记录行！', 'info');return;};
+                    if ("up" == type) {
+                        if (index != 0) {
+                            var toup = settings.gridSettings.datagrid('getData').rows[index];
+                            var todown = settings.gridSettings.datagrid('getData').rows[index - 1];
+                            settings.gridSettings.datagrid('getData').rows[index] = todown;
+                            settings.gridSettings.datagrid('getData').rows[index - 1] = toup;
+                            settings.gridSettings.datagrid('refreshRow', index);
+                            settings.gridSettings.datagrid('refreshRow', index - 1);
+                            settings.gridSettings.datagrid('selectRow', index - 1);
+                            var d = [{'SID':toup.SID,'N_INDEX':todown.N_INDEX},{'SID':todown.SID,'N_INDEX':toup.N_INDEX}];
+                            $.post("batchSave", {data:$.toJSON(d)}, function () {});
+                        }
+                    } else if ("down" == type) {
+                        var rows = settings.gridSettings.datagrid('getRows').length;
+                        if (index != rows - 1) {
+                            var todown = settings.gridSettings.datagrid('getData').rows[index];
+                            var toup = settings.gridSettings.datagrid('getData').rows[index + 1];
+                            settings.gridSettings.datagrid('getData').rows[index + 1] = todown;
+                            settings.gridSettings.datagrid('getData').rows[index] = toup;
+                            settings.gridSettings.datagrid('refreshRow', index);
+                            settings.gridSettings.datagrid('refreshRow', index + 1);
+                            settings.gridSettings.datagrid('selectRow', index + 1);                            
+                            var d = [{'SID':todown.SID,'N_INDEX':toup.N_INDEX},{'SID':toup.SID,'N_INDEX':todown.N_INDEX}];
+                            $.post("batchSave", {data:$.toJSON(d)}, function () {});
+                        }
                     }
                 }
             }

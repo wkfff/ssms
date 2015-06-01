@@ -169,3 +169,11 @@
     background: url('icons/table.png') no-repeat center center;
     background-size: 16px 16px;
 }
+.icon-up {
+    background: url('/resource/images/blue/up.png') no-repeat center center;
+    background-size: 16px 16px;
+}
+.icon-down {
+    background: url('/resource/images/blue/down.png') no-repeat center center;
+    background-size: 16px 16px;
+}
