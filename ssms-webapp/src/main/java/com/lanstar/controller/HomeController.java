@@ -31,6 +31,7 @@ public class HomeController extends Controller {
         String username = getPara( "username" );
         String password = getPara( "password" );
         if ( !StrKit.isBlank( username, password ) ) {
+            if ( username.contains( "@" ) == false ) username = "admin@" + username;
             // 解析用户名格式
             String[] strings = StrKit.split( username, "@" );
             // 验证验证码
