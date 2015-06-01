@@ -13,7 +13,6 @@ import java.util.List;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.MultiPara;
-import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
@@ -24,8 +23,10 @@ public class MultiParaController extends SimplateController<MultiPara> {
     protected MultiPara getDao() {
         return MultiPara.dao;
     }
+
     public void valueList() {
     }
+
     @Override
     public void list() {
         SqlBuilder builder = SQL.SELECT( "*" ).FROM( "sys_para_multi" )
@@ -44,29 +45,19 @@ public class MultiParaController extends SimplateController<MultiPara> {
      * 列表数据
      */
     public void listV() {
-        String sid = this.getPara( "sid" );
+        String name = this.getPara( "name" );
         List<MultiPara> multiParas = this.getDao()
                                          .find( SqlKit.sql( "system.multiPara.listParaByName" ),
-                                                sid );
+                                                name );
         renderJson( multiParas );
     }
-    public void reg(){
+
+    public void reg() {
         super.rec();
     }
-    @Override
-    public void rec(){
-        
-        if (isParaBlank( "pid" ) == false) {
-           String name=MultiPara.dao.findById(this.getParaToInt("pid")).getName();
-           this.setAttr( "C_NAME", name );
-        }else{
-            super.rec();
-        }
-        
-    }
-    
-    public void recJson(){
-        rec();
+
+    public void recJson() {
+        super.rec();
         renderJson();
     }
 }

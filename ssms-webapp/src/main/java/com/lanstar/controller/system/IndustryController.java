@@ -24,6 +24,16 @@ public class IndustryController extends SimplateController<Industry> {
     protected Industry getDao() {
         return Industry.dao;
     }
+    public void reg(){
+        rec();
+    }
+    @Override
+    protected SqlBuilder buildWhere() {
+        if(isParaBlank( "C_NAME" ) == false){
+            return new SqlBuilder().WHERE( "C_NAME=?", getPara( "C_NAME" )  );
+        }
+        return null;
+    }
     /**
      * 表单数据
      */

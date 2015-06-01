@@ -114,6 +114,8 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
         SqlBuilder from = new SqlBuilder().FROM( table.getName() );
         SqlBuilder where = buildWhere();
         if ( where != null ) from.append( where );
+        SqlBuilder order = buildOrder();
+        if ( order != null ) from.append( order );
 
         SqlStatement selectStatement = select.toSqlStatement();
         SqlStatement fromStatement = from.toSqlStatement();
@@ -135,6 +137,10 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
         return null;
     }
 
+    protected SqlBuilder buildOrder() {
+        return null;
+    }
+    
     protected void beforeSave( T model, boolean[] handled ) {
     }
 

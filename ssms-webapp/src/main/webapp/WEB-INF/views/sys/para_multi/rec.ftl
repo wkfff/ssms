@@ -22,17 +22,13 @@
 					success : function(data) {
 						var sid = $.evalJSON(data).SID;
 						$.messager.alert("提示", "保存成功");
-						window.location.href = 'rec?sid='
+						window.location.href = 'rec?name=${name!}&sid='
 								+sid;
 					}
 				});
 	}
 	function doBack() {
-		 if('${sid!}'==""){
-			    window.location.href = 'valueList?sid=${pid!}';
-	        }else{
-	            window.location.href = 'valueList?sid=${sid!}';
-	        } 
+         window.location.href = 'valueList?name=${name!}';
 	}
 </script>
 </#assign> <@layout.doLayout script>
@@ -52,7 +48,7 @@
                 <td colspan="3"><input class="easyui-textbox"
                     type="text" name="C_NAME"
                     data-options="required:true"
-                    editable="false" value="${C_NAME!}" 
+                    editable="false" value="${name!}" 
                     style="width: 100%" /></td>
             </tr>
             <tr>
