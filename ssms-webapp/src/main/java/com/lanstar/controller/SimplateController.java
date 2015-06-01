@@ -152,6 +152,7 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
 
     protected T getModel() {
         Enumeration<String> paraNames = this.getParaNames();
+        @SuppressWarnings("unchecked")
         Map<String, String> paraMap = new CaseInsensitiveContainerFactory.CaseInsensitiveMap();
         while ( paraNames.hasMoreElements() ) {
             String paraName = paraNames.nextElement();
