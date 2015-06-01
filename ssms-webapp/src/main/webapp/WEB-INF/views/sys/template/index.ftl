@@ -11,21 +11,19 @@
 </script>
 </#assign>
 <@layout.doLayout script>
-<div class="easyui-panel" title="模板管理" fit="true">
-    <div id="toolbar">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" data-bind="click: deleteClick">删除</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" data-bind="click:saveClick">保存</a>
-    </div>
-    <table id="dg" data-bind="datagrid: grid">
-        <thead>
-        <tr>
-            <th field="C_NAME" width="400" editor="{ type:'validatebox', options:{ required:true, validType:['length[0, 300]'] }}">模板名称</th>
-            <th field="_action" width="400" formatter="formatter">操作</th>
-        </tr>
-        </thead>
-    </table>
+<div id="toolbar">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" data-bind="click: deleteClick">删除</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" data-bind="click:saveClick">保存</a>
 </div>
+<table id="dg" data-bind="datagrid: grid">
+    <thead>
+    <tr>
+        <th field="C_NAME" width="400" editor="{ type:'validatebox', options:{ required:true, validType:['length[0, 300]'] }}">模板名称</th>
+        <th field="_action" width="400" formatter="formatter">操作</th>
+    </tr>
+    </thead>
+</table>
 </@layout.doLayout>
