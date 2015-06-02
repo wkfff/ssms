@@ -21,7 +21,7 @@ public class AreaParaController extends SimplateController<AreaPara> {
     @Override
     protected SqlBuilder buildWhere() {
         return new SqlBuilder()
-                .WHERE()
+                .WHERE("C_CODE LIKE ''35%''") // TODO: 暂时限定只显示福建的数据
                 ._If( isParaBlank( "N_LEVEL" ) == false, "N_LEVEL=?", getPara( "N_LEVEL" ) )
                 ._If( isParaBlank( "R_CODE" ) == false, "R_CODE=?", getPara( "R_CODE" ) );
     }

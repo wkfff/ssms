@@ -135,6 +135,7 @@ class StatementBuilder {
             format = Joiner.on( ' ' ).join( placeholder( 0, fargs.size(), 0 ) );
         }
 
+        format = format.replaceAll( "'", "''" );
         this.buffer.append( MessageFormat.format( format, fargs.toArray() ) );
 
         return this;
