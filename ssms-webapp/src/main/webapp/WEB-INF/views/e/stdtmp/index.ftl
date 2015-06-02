@@ -13,7 +13,7 @@
     <div data-options="region:'west', title:'达标体系', split:true" style="width: 200px">
         <div class="easyui-accordion" fit="true">
             <#list tree as map>
-                <div title="${map.text}" style="overflow:auto;padding:10px;width: 100%;">
+                <div title="${map.text}" style="overflow:auto;">
                     <@buildTree map.children true/>
                 </div>
             </#list>
@@ -25,7 +25,7 @@
 </@>
 <#macro buildTree list root=false>
     <#if (list?size>0)>
-        <ul <#if root>class="easyui-tree" data-options='onSelect: doSelect'</#if>>
+        <ul <#if root>class="easyui-tree" fit="true" data-options='onSelect: doSelect'</#if>>
             <#list list as map>
                 <li data-options="id: '${map.id}'"><span>${map.text}</span><@buildTree map.children/></li>
             </#list>
