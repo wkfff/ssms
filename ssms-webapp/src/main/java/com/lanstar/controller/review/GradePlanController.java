@@ -29,7 +29,6 @@ import com.lanstar.plugin.sqlinxml.SqlKit;
 
 /**
  * 评审
- *
  */
 public class GradePlanController extends SimplateController<GradePlanR> {
     boolean isNew = false;
@@ -50,7 +49,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
      * 待评审的企业数据
      */
     public void list_e() {
-        SqlBuilder select = SQL.SELECT( " SID,C_NAME,C_CODE " );
+        SqlBuilder select = SQL.SELECT( " SID,C_NAME,C_CODE,R_REVIEW,S_REVIEW " );
         SqlBuilder from = new SqlBuilder().FROM( "SYS_TENANT_E" );
         SqlBuilder where = this.buildWhere();
         if ( where != null ) from.append( where );
@@ -76,7 +75,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         if ( sid == null ) {
             this.isNew = true;
             model.setTitle( model.getStartDate() + "评审" );
-            model.setState( 0 );
+            model.setState( ReviewState.DOING.getValue() );
         }
     }
 
@@ -100,20 +99,32 @@ public class GradePlanController extends SimplateController<GradePlanR> {
             List<String> sqls = new ArrayList<String>();
             for ( Record r : rs ) {
                 // 写入到评审租户库的评审明细表
-//                sql = SqlKit.sql( "tenant.grade.insertToReview" );
-               sql = "insert into ssm_grade_r_d (R_SID,C_CATEGORY,C_PROJECT,C_REQUEST,C_CONTENT,N_SCORE,C_METHOD,C_DESC,B_BLANK,N_SCORE_REAL,C_DESC_REVIEW,N_SCORE_REVIEW) values("
-                       + sid+",'"+r.getStr("C_CATEGORY")+"','"+
-                       r.getStr("C_PROJECT")+"','"+
-                       r.getStr("C_REQUEST")+"','"+
-                       r.getStr("C_CONTENT")+"',"+
-                       r.getInt("N_SCORE")+",'"+
-                       r.getStr("C_METHOD")+"','"+
-                       r.getStr("C_DESC")+"','"+
-                       (r.getStr("B_BLANK")==null || r.getStr("B_BLANK").equals( "null" )?"":r.getStr("B_BLANK"))+"',"+
-                       r.getInt("N_SCORE_REAL")+",'"+
-                       (r.getStr("C_DESC_REVIEW")==null || r.getStr("C_DESC_REVIEW").equals( "null" )?"":r.getStr("C_DESC_REVIEW"))+"',"+
-                       r.getStr("N_SCORE_REVIEW")+")";
-               sqls.add( sql );
+                // sql = SqlKit.sql( "tenant.grade.insertToReview" );
+                sql = "insert into ssm_grade_r_d (R_SID,C_CATEGORY,C_PROJECT,C_REQUEST,C_CONTENT,N_SCORE,C_METHOD,C_DESC,B_BLANK,N_SCORE_REAL,C_DESC_REVIEW,N_SCORE_REVIEW) values("
+                        + sid
+                        + ",'"
+                        + r.getStr( "C_CATEGORY" )
+                        + "','"
+                        + r.getStr( "C_PROJECT" )
+                        + "','"
+                        + r.getStr( "C_REQUEST" )
+                        + "','"
+                        + r.getStr( "C_CONTENT" )
+                        + "',"
+                        + r.getInt( "N_SCORE" )
+                        + ",'"
+                        + r.getStr( "C_METHOD" )
+                        + "','"
+                        + r.getStr( "C_DESC" )
+                        + "','"
+                        + (r.getStr( "B_BLANK" ) == null || r.getStr( "B_BLANK" ).equals( "null" ) ? "" : r
+                                .getStr( "B_BLANK" ))
+                                + "',"
+                                + r.getInt( "N_SCORE_REAL" )
+                                + ",'"
+                                + (r.getStr( "C_DESC_REVIEW" ) == null || r.getStr( "C_DESC_REVIEW" ).equals( "null" ) ? "" : r
+                                        .getStr( "C_DESC_REVIEW" )) + "'," + r.getStr( "N_SCORE_REVIEW" ) + ")";
+                sqls.add( sql );
             }
             if ( sqls.size() > 0 ) Db.use( Const.TENANT_DB_NAME ).batch( sqls, 500 );
         }
@@ -150,8 +161,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         ._If( this.isParaExists( "P_CITY" ), "P_CITY = ?", this.getPara( "P_CITY" ) )
         ._If( this.isParaExists( "P_COUNTY" ), "P_COUNTY = ?", this.getPara( "P_COUNTY" ) )
         ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
-        ._If( this.isParaBlank( "T_START" ) == false, "T_START >= ?", this.getPara( "T_START" ) )
-        ._If( this.isParaBlank( "T_END" ) == false, "T_END <= ?", this.getPara( "T_END" ) );
+        ._If( this.isParaBlank( "C_NAME" ) == false, "C_NAME like ?", "%" + this.getPara( "C_NAME" ) + "%" );
         return builder;
     }
 
@@ -163,22 +173,41 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         super.rec();
         this.renderJson();
     }
-    
+
     /**
      * 验证评审内容是否都已经填写,N大于0时说明还有未填写内容
      */
-    public void check(){
-        Record r =  tenantDb.findFirst("SELECT F_GRADE_CHECK_R(?) N", new Object[] { this.getModel().getId() } );
-        this.setAttr( "N", r==null?0:r.getInt( "N" ) );
-        renderJson();
+    public void check() {
+        Record r = this.tenantDb.findFirst( "SELECT F_GRADE_CHECK_R(?) N", new Object[] { this.getModel().getId() } );
+        this.setAttr( "N", r == null ? 0 : r.getInt( "N" ) );
+        this.renderJson();
     }
-    
+
     /**
      * 评审完成
      */
     public void complete() {
-        tenantDb.callProcedure( "P_GRADE_COMPLETE_R", this.getModel().getId() );
+        this.tenantDb.callProcedure( "P_GRADE_COMPLETE_R", this.getModel().getId(),ReviewState.END.getValue() );
         this.setAttr( "result", "OK" );
-        renderJson();
+        this.renderJson();
+    }
+
+    /**
+     * 撤销误评审
+     */
+    public void undo() {
+        Integer sid = this.getParaToInt( "sid" );
+        if ( sid != null ) {
+            Db.update( "UPDATE sys_tenant_e  SET N_STATE=? WHERE sid=(SELECT r_eid FROM SSM_GRADE_R_M WHERE sid=?)",
+                    ReviewState.NOSTART.getValue(), sid );
+            this.setAttr( "result", "OK" );
+        }
+        this.renderJson();
+    }
+    /**
+     * 评审报告
+     */
+    public void report_rec(){
+        rec();
     }
 }

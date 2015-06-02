@@ -5,6 +5,8 @@ function ViewModel(templateId) {
         comboPro: ko.observable(),
         comboCity: ko.observable(),
         comboCounty: ko.observable(),
+        txtName: ko.observable(),
+        chkNoComplete: ko.observable(1),
         selectItem: ko.observable(),
         sid: ko.observable()
     };
@@ -31,10 +33,7 @@ function ViewModel(templateId) {
     model.comboCounty.subscribe(function (newValue) {
         if (!newValue) return;
         if (settings.gridSettings.datagrid)
-            settings.gridSettings.datagrid({
-                url: "/r/grade_m/list_e",
-                queryParams: {P_COUNTY: newValue}
-            })
+            events.gridEvents.refreshClick();
     });
     
     var settings = {
@@ -66,6 +65,11 @@ function ViewModel(templateId) {
                         width: 200
                     },
                     {
+                        field: 'S_REVIEW',
+                        title: '评审机构名称',
+                        width: 200
+                    },
+                    {
                         field: 'SID',
                         title: '评审',
                         width: 60,
@@ -78,20 +82,17 @@ function ViewModel(templateId) {
             ],
             onDblClickRow: function () {
                 events.gridEvents.editClick();
-            }/*,
-            onClickCell:function(index, field, value){
-                if (field=='SID'){
-                    self.sid(value);
-                    events.gridEvents.editClick();
-                }
-            }*/
+            }
         }
     };
 
     var events = {
         gridEvents: {
             refreshClick: function () {
-                settings.gridSettings.datagrid('reload');
+                settings.gridSettings.datagrid({
+                    url: "/r/grade_m/list_e"+ (model.chkNoComplete()==1?"?N_STATE=1":""),
+                    queryParams: {P_COUNTY: model.comboCounty(),C_NAME:model.txtName()}
+                });
             }, editClick: function () {
                 var sid = self.sid();//企业自评主表SID
                 var url = 'rec_new?R_EID={0}'.format(sid);

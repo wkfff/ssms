@@ -5,6 +5,7 @@ function ViewModel(templateId) {
         comboPro: ko.observable(),
         comboCity: ko.observable(),
         comboCounty: ko.observable(),
+        txtName: ko.observable(),
         selectItem: ko.observable(),
         /*
         selectIndex: ko.pureComputed(function () {
@@ -36,10 +37,7 @@ function ViewModel(templateId) {
     model.comboCounty.subscribe(function (newValue) {
         if (!newValue) return;
         if (settings.gridSettings.datagrid)
-            settings.gridSettings.datagrid({
-                url: "/r/grade_m/list_r",
-                queryParams: {P_COUNTY: newValue}
-            })
+            events.gridEvents.refreshClick();
     });
     
     var settings = {
@@ -79,22 +77,19 @@ function ViewModel(templateId) {
                     {
                         field: 'SID',
                         title: '评审',
-                        width: 60,
+                        width: 120,
                         align:'center',
                         formatter:function(value,row){
-                                return "<a href='#'>评审</a>";
+                            var html = "<a href='/r/grade_m/rec?sid="+value+"'>评审</a>&nbsp;&nbsp;<a href='/r/grade_m/report_rec?sid="+value+"'>编辑评审报告</a>";
+                            if (row.N_STATE && row.N_STATE==0)
+                            html +="&nbsp;&nbsp;<a href='javascript:undo("+value+");'>撤销误评审</a>";
+                            return  html;
                         }
                     }
                 ]
             ],
             onDblClickRow: function () {
                 events.gridEvents.editClick();
-            },
-            onClickCell:function(index, field, value){
-                if (field=='SID'){
-                    self.sid(value);
-                    events.gridEvents.editClick();
-                }
             }
         }
     };
@@ -102,7 +97,10 @@ function ViewModel(templateId) {
     var events = {
         gridEvents: {
             refreshClick: function () {
-                settings.gridSettings.datagrid('reload');
+                settings.gridSettings.datagrid({
+                    url: "/r/grade_m/list_r",
+                    queryParams: {P_COUNTY: model.comboCounty(),C_NAME:model.txtName()}
+                });
             }, editClick: function () {
                 var sid = self.sid();
                 var url = '/r/grade_m/rec?sid={0}'.format(sid);
@@ -112,4 +110,20 @@ function ViewModel(templateId) {
     };
 
     $.extend(self, model, settings, events);
+}
+
+function undo(sid){
+    $.messager.confirm("撤销评审确认", "您确认要撤销对当前企业正在进行的评审吗？", function (deleteAction) {
+        if (deleteAction) {
+            $.get("/r/grade_m/undo", {sid:sid}, function (data) {
+                if (data.result == "OK") {
+                    $.messager.alert("提示", "撤销评审成功！");
+                    vm.gridEvents.refreshClick();
+                }
+                else {
+                    $.messager.alert("提示", data);
+                }
+            });
+        }
+    });
 }

@@ -23,7 +23,7 @@ function ViewModel(recId) {
     };
     
     model.noComplete.subscribe(function (newValue) {
-        var url = '/r/grade_d/list_detail?R_SID='+recId;
+        var url = '/r/grade_d/list?R_SID='+recId;
         url += (newValue == 1? "&NOCOMPLETE=1":"");
         settings.gridSettings.datagrid({url:url});
     });

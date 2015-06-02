@@ -29,6 +29,7 @@ public abstract class AbstractTask implements StatefulJob {
 
     /**
      * 真正执行的任务调度类
+     * @param dataMap 有状态任务的数据存储集合
      */
     protected abstract void doExecute( JobDataMap dataMap ) throws Exception;
 }
