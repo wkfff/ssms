@@ -44,15 +44,40 @@ module.exports = function (grunt) {
                     fast: 'never'
                 }
             }
+        },
+        uglify: {
+            options: {
+                sourceMap: true
+            },
+            knockout: {
+                files: {
+                    'main/webapp/resource/js/knockout/knockout.min.js': [
+                        'main/webapp/resource/js/knockout/knockout.debug.js',
+                        'main/webapp/resource/js/knockout/knockout.mapping.debug.js',
+                        'main/webapp/resource/js/knockout/component.js',
+                        'main/webapp/resource/js/knockout/upload.js'
+                    ]
+                }
+            },
+            plupload: {
+                files: {
+                    'main/webapp/resource/js/plupload/plupload.min.js': [
+                        'main/webapp/resource/js/plupload/moxie.js',
+                        'main/webapp/resource/js/plupload/plupload.dev.js',
+                        'main/webapp/resource/js/plupload/zh_CN.js'
+                    ]
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-ts');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.event.on('watch', function (action, filepath) {
-        var d = '!dist/'+path.basename(filepath, '.ts')+'.d.ts';
+        var d = '!dist/' + path.basename(filepath, '.ts') + '.d.ts';
         grunt.config('ts.build.src', [filepath, 'typings/tsd.d.ts', 'dist/*.d.ts', d]);
     });
 

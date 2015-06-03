@@ -53,7 +53,7 @@
     </div>
 
     <div class="easyui-panel" title="附件" style="padding-bottom: 10px;">
-        <@layout.com.upload module="STDTMP_FILE_05" sid=SID />
+        <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_05', sid: '${SID}'}">[选择文件]</a>
     </div>
 </form>
 </@>

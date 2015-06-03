@@ -20,9 +20,7 @@ ${footer}</html>
     <link rel="stylesheet" href="/resource/css/common.css"/>
     <link rel="stylesheet" href="/resource/css/fix.css"/>
     <#--knockout-->
-    <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
-    <script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
-    <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
     <#--jquery-->
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/jquery.json.min.js"></script>
