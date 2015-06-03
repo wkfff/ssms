@@ -121,7 +121,7 @@
                 </ul>
             </div>
             <div class="content">
-                <iframe src="home.html" id="iframe" width="100%" height="100%" frameborder="0"></iframe>
+                <iframe src="${HOME_PAGE!"home.html"}" id="iframe" width="100%" height="100%" frameborder="0"></iframe>
             </div>
         </div>
     </div>

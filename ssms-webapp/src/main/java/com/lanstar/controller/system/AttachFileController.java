@@ -11,6 +11,7 @@ package com.lanstar.controller.system;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.lanstar.common.log.Logger;
 import com.lanstar.core.Controller;
 import com.lanstar.core.upload.UploadFile;
 import com.lanstar.identity.IdentityContext;
@@ -25,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 public class AttachFileController extends Controller {
+    private final Logger log = Logger.getLogger( AttachFileController.class );
+
     public void list() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
 
@@ -59,10 +62,10 @@ public class AttachFileController extends Controller {
         for ( UploadFile file : files ) {
             try {
                 service.save( module, recordSid, new FileResource( file ), identityContext.getIdentity() );
-                file.getFile().delete();
             } catch ( IOException e ) {
                 throw new RuntimeException( e );
             }
+            if ( file.getFile().delete() == false ) log.warn( "删除文件%s失败", file.getFileName() );
         }
         renderNull();
     }
@@ -76,11 +79,11 @@ public class AttachFileController extends Controller {
         renderJson( service.remove( module, sid ) );
     }
 
-    public void down(){
+    public void down() {
         Integer id = getParaToInt( "id" );
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         AttachFileService service = identityContext.getAttachFileService();
         Resource file = service.getFile( id );
-        render(new ResourceRender( file ));
+        render( new ResourceRender( file ) );
     }
 }

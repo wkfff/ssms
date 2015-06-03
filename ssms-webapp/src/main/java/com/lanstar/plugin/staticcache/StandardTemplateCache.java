@@ -9,24 +9,16 @@
 package com.lanstar.plugin.staticcache;
 
 import com.google.common.collect.Maps;
-import com.lanstar.common.kit.ServletKit;
+import com.lanstar.common.kit.Prop;
+import com.lanstar.common.kit.PropKit;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Map;
-import java.util.Properties;
 
 public class StandardTemplateCache extends Cache<String> {
     @Override
     protected void load( Map<String, String> pools ) {
-        InputStream stream = ServletKit.getResource( "WEB-INF/stdtmpmap.properties" );
-        Properties ps = new Properties();
-        try {
-            ps.load( new InputStreamReader( stream, "UTF-8" ) );
-        } catch ( IOException ignored ) {
-        }
-        pools.putAll( Maps.fromProperties( ps ) );
+        Prop prop = PropKit.use( "stdtmpmap.properties" );
+        pools.putAll( Maps.fromProperties( prop.getProperties() ) );
     }
 
     @Override

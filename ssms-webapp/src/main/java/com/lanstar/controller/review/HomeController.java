@@ -8,10 +8,15 @@
 
 package com.lanstar.controller.review;
 
+import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 
 public class HomeController extends Controller {
     public void index(){
+        setAttr( Const.HOME_PAGE, "/r/home" );
+    }
+
+    public void home(){
 
     }
 }

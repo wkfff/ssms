@@ -13,4 +13,5 @@ public interface Const {
 
     String CAPTCHA_KEY = "LANSTAR_VALIDATE_CODE";
     String TENANT_DB_NAME = "TENANT_DB";
+    String HOME_PAGE = "HOME_PAGE";
 }
