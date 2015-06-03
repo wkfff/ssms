@@ -30,7 +30,7 @@ public class HomeController extends Controller {
             }
         }
 
-        setAttr( "needChooseProfessions", needChooseProfessions );
+        setSessionAttr( "needChooseProfessions", needChooseProfessions );
 
         if ( needChooseProfessions == false ) setAttr( "profession", enterpriseService.getProfessionService() );
     }

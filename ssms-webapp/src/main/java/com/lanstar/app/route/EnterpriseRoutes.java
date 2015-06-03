@@ -23,7 +23,6 @@ public class EnterpriseRoutes extends Routes {
     public void config() {
         add( "/e", com.lanstar.controller.enterprise.HomeController.class );
         add( "/e/stdtmp", com.lanstar.controller.enterprise.TemplateController.class );
-        add( "/e/stdtmp_file", com.lanstar.controller.enterprise.TemplateFileController.class );
         add( "/e/stdtmp_file_01", com.lanstar.controller.enterprise.TemplateFile01Controller.class );
         add( "/e/stdtmp_file_02", com.lanstar.controller.enterprise.TemplateFile02Controller.class );
         add( "/e/stdtmp_file_03", com.lanstar.controller.enterprise.TemplateFile03Controller.class );
