@@ -79,11 +79,13 @@
                 fileMap[file.id].find('b').html($("<span>").append(file.percent).append('%'));
             });
             this.uploader.bind("UploadComplete", function (up, files) {
-                if (files.length > 0) $.messager.alert("提醒", "文件上传成功", "info", function () { self.list(); })
+                if (files.length > 0) $.messager.alert("提醒", "文件上传成功", "info", function () {
+                    self.list();
+                })
             });
             this.uploader.bind("Error", function (up, err) {
                 $('<p>')
-                    .append($("<span class='errorCode'>").text("ERROR"+err.code + ":"))
+                    .append($("<span class='errorCode'>").text("ERROR" + err.code + ":"))
                     .append($("<span class='errorMsg'>").text(err.message))
                     .appendTo($console);
             });

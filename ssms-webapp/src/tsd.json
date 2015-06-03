@@ -7,6 +7,12 @@
   "installed": {
     "jquery/jquery.d.ts": {
       "commit": "61d066fef5a1ac9e2389b51b9cf88746b7bbfde9"
+    },
+    "knockout/knockout.d.ts": {
+      "commit": "c50b111ded0a3a18b87b5abffea3150d6aca94da"
+    },
+    "knockout.mapping/knockout.mapping.d.ts": {
+      "commit": "c50b111ded0a3a18b87b5abffea3150d6aca94da"
     }
   }
 }
