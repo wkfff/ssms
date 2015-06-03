@@ -61,7 +61,7 @@ ${footer}</html>
             $('.exit').click(function () {
                 $.messager.confirm('提示', '是否要退出系统？', function (r) {
                     if (r) {
-                        window.location.href = 'logout';
+                        window.location.href = '/logout';
                     }
                 });
             });
