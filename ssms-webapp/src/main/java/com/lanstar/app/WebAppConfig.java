@@ -68,13 +68,14 @@ public class WebAppConfig extends RapidwareConfig {
 
         me.setBaseViewPath( "/WEB-INF/views" );
         me.setDevMode( devMode );
-        configTemplate( FreeMarkerRender.getConfiguration() );
+        configTemplate( FreeMarkerRender.getConfiguration(), devMode );
     }
 
-    private void configTemplate( Configuration me ) {
+    private void configTemplate( Configuration me, Boolean devMode ) {
         try {
             me.setSharedVariable( "_TITLE_", "安全生产标准化管理系统" );
-            me.setSharedVariable( "BASE_PATH", Rapidware.me().getContextPath() );
+            me.setSharedVariable( "CONTEXT_PATH", Rapidware.me().getContextPath() );
+            me.setSharedVariable( "DEV_MODE", devMode );
             // 添加JSON扩展方法               by 张铮彬#2015-5-7
             me.setSharedVariable( "json", new JsonMethod() );
         } catch ( TemplateModelException ignored ) {
@@ -118,7 +119,7 @@ public class WebAppConfig extends RapidwareConfig {
                 .setContainerFactory( new CaseInsensitiveContainerFactory() );
         me.add( arp2 );
         new TenantModelMapping().mappingTo( arp );
-        
+
         //任务调度
         QuartzPlugin quartzPlugin = new QuartzPlugin("quartz_jobs.properties","quartz.properties");
         me.add( quartzPlugin );
@@ -128,6 +129,7 @@ public class WebAppConfig extends RapidwareConfig {
     public void configInterceptor( Interceptors me ) {
         me.add( new IdentityInterceptor() );
         me.add( new TenantDsSwitcher() );
+        me.add( new TemplateVariableInjector() );
         me.add( new TxByActionMethods( "save", "batchSave" ) );
     }
 

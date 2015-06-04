@@ -1296,11 +1296,13 @@ ko.bindingHandlers.formValue = {
     (function () {
         function getEditor(element, valueAccessor, allBindingsAccessor) {
             var editor = $.data(element, 'htmledit');
+            var loaded = false;
             if (editor == null) {
-                editor = KindEditor.create(element, {
+                editor = KindEditor.create($(element), {
                     uploadUrl: '',
                     allowFileManager: false,
                     allowUpload: false,
+                    autoHeightMode: true,
                     items: [
                         'fontname',
                         'fontsize',
@@ -1324,7 +1326,7 @@ ko.bindingHandlers.formValue = {
                         'fullscreen'
                     ],
                     afterChange: function () {
-                        valueAccessor()(editor.html());
+                        if (loaded == true) valueAccessor()(this.html());
                     }
                 });
 
@@ -1346,6 +1348,7 @@ ko.bindingHandlers.formValue = {
                     });
                 };
                 options.load = function () {
+                    loaded = true;
                     $.post("/sys/attachtext/get", {
                         table: options.table,
                         field: options.field,
@@ -1373,9 +1376,7 @@ ko.bindingHandlers.formValue = {
                 var options = $.data(element, 'htmleditOptions');
                 var value = valueAccessor();
                 if (value()==null) options.load();
-                if (value() != editor.html()) {
-                    editor.html(value());
-                }
+                else if (value() != editor.html()) editor.html(value());
             },
             update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                 var editor = getEditor(element, valueAccessor, allBindingsAccessor);

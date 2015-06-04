@@ -67,6 +67,15 @@ module.exports = function (grunt) {
                         'main/webapp/resource/js/plupload/zh_CN.js'
                     ]
                 }
+            },
+            kindeditor: {
+                files: {
+                    'main/webapp/resource/js/kindeditor/kindeditor.min.js': [
+                        'main/webapp/resource/js/kindeditor/kindeditor.js',
+                        'main/webapp/resource/js/kindeditor/plugins/autoheight/autoheight.js',
+                        'main/webapp/resource/js/kindeditor/zh_CN.js'
+                    ]
+                }
             }
         }
     });

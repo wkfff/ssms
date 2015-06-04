@@ -1,5 +1,78 @@
-<#import "../../layout/_rec.ftl" as layout/>
-<#assign script>
+<div id="kocontainer">
+    <div class="z-toolbar">
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+    </div>
+    <form class="form" method="post" style="padding:10px 31px;">
+        <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
+            <p class="long-input ue-clear">
+                <label>文件名称</label>
+            <span class="control">
+                <input data-bind="textboxValue: C_NAME"/>
+            </span>
+            </p>
+
+            <p class="ue-clear">
+                <label>是否受控</label>
+            <span class="control">
+                <label><input type="radio" name="B_CONTROL" data-bind="checked: B_CONTROL" value="1"/>受控</label>
+                <label><input type="radio" name="B_CONTROL" data-bind="checked: B_CONTROL" value="0"/>非受控</label>
+            </span>
+            </p>
+
+            <p class="ue-clear">
+                <label>文件编号</label>
+            <span class="control">
+                <input data-bind="textboxValue: C_NUMBER"/>
+            </span>
+            </p>
+
+            <p class="ue-clear">
+                <label>执行部门</label>
+            <span class="control">
+                <input data-bind="textboxValue: C_DEPT_01"/>
+            </span>
+            </p>
+
+            <p class="ue-clear">
+                <label>监督部门</label>
+            <span class="control">
+                <input data-bind="textboxValue: C_DEPT_02"/>
+            </span>
+            </p>
+        </div>
+
+        <div class="easyui-panel" title="正文" style="padding: 6px">
+            <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
+        </div>
+
+        <div class="easyui-panel" title="编制信息" style="padding-bottom: 10px;">
+            <p class="ue-clear">
+                <label>编制日期</label>
+            <span class="control">
+                <input data-bind="dateboxValue: T_DATE_01"/>
+            </span>
+            </p>
+
+            <p class="ue-clear">
+                <label>审核日期</label>
+            <span class="control">
+                <input data-bind="dateboxValue: T_DATE_02"/>
+            </span>
+            </p>
+
+            <p class="ue-clear">
+                <label>评审日期</label>
+            <span class="control">
+                <input data-bind="dateboxValue: T_DATE_03"/>
+            </span>
+            </p>
+        </div>
+
+        <div class="easyui-panel" title="附件" style="padding-bottom: 10px;">
+            <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_01', sid: '${SID}'}">[选择文件]</a>
+        </div>
+    </form>
+</div>
 <script type="text/javascript">
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
@@ -25,12 +98,12 @@
     var events = {
         saveClick: function () {
             utils.messager.showProgress();
-            $.post('save', model, function (result) {
+            $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
                     settings.htmleditSettings.save(function (editorResult) {
                         $.messager.alert("提示", "保存成功", "info", function () {
                             utils.messager.closeProgress();
-                            window.location.href = 'rec?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                            refreshPanel();
                         });
                     });
                 } else {
@@ -41,83 +114,7 @@
         }
     };
 
-    $(function () {
-        ko.applyBindings($.extend({}, model, events, settings, extModel));
-    });
+    var onPanelLoad = function () {
+        ko.applyBindings($.extend({}, model, events, settings, extModel), document.getElementById('kocontainer'));
+    };
 </script>
-</#assign>
-<@layout.doLayout script>
-<div class="z-toolbar">
-    <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-</div>
-<form class="form" method="post" style="padding:10px 31px;">
-    <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
-        <p class="long-input ue-clear">
-            <label>文件名称</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_NAME"/>
-            </span>
-        </p>
-
-        <p class="ue-clear">
-            <label>是否受控</label>
-            <span class="control">
-                <label><input type="radio" name="B_CONTROL" data-bind="checked: B_CONTROL" value="1"/>受控</label>
-                <label><input type="radio" name="B_CONTROL" data-bind="checked: B_CONTROL" value="0"/>非受控</label>
-            </span>
-        </p>
-
-        <p class="ue-clear">
-            <label>文件编号</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_NUMBER"/>
-            </span>
-        </p>
-
-        <p class="ue-clear">
-            <label>执行部门</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_DEPT_01"/>
-            </span>
-        </p>
-
-        <p class="ue-clear">
-            <label>监督部门</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_DEPT_02"/>
-            </span>
-        </p>
-    </div>
-
-    <div class="easyui-panel" title="正文" style="padding: 6px">
-        <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
-    </div>
-
-    <div class="easyui-panel" title="编制信息" style="padding-bottom: 10px;">
-        <p class="ue-clear">
-            <label>编制日期</label>
-            <span class="control">
-                <input data-bind="dateboxValue: T_DATE_01"/>
-            </span>
-        </p>
-
-        <p class="ue-clear">
-            <label>审核日期</label>
-            <span class="control">
-                <input data-bind="dateboxValue: T_DATE_02"/>
-            </span>
-        </p>
-
-        <p class="ue-clear">
-            <label>评审日期</label>
-            <span class="control">
-                <input data-bind="dateboxValue: T_DATE_03"/>
-            </span>
-        </p>
-    </div>
-
-    <div class="easyui-panel" title="附件" style="padding-bottom: 10px;">
-        <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_01', sid: '${SID}'}">[选择文件]</a>
-    </div>
-</form>
-</@layout.doLayout>
