@@ -10,12 +10,14 @@ package com.lanstar.identity;
 
 import com.lanstar.app.Const;
 import com.lanstar.common.TreeNode;
+import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.Navgate;
 import com.lanstar.plugin.activerecord.*;
 import com.lanstar.plugin.tlds.DsKit;
 import com.lanstar.service.AttachFileService;
 import com.lanstar.service.AttachTextService;
 import com.lanstar.service.EnterpriseService;
+import com.lanstar.service.review.ReviewService;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -94,6 +96,7 @@ public class TenantContext {
         return node != null ? node.getChildren() : null;
     }
 
+    /** 获取企业服务 */
     public synchronized EnterpriseService getEnterpriseService() {
         if ( TenantType.ENTERPRISE.equals( getTenantType() ) == false )
             throw new RuntimeException( "tenant type must equals 'ENTERPRISE'" );
@@ -105,6 +108,7 @@ public class TenantContext {
         return service;
     }
 
+    /** 获取富文本服务 */
     public synchronized AttachTextService getAttachTextService() {
         AttachTextService service = getValue( AttachTextService.class );
         if ( service == null ) {
@@ -114,11 +118,28 @@ public class TenantContext {
         return service;
     }
 
-    public AttachFileService getAttachFileService() {
+    /** 获取附件服务 */
+    public synchronized AttachFileService getAttachFileService() {
         AttachFileService service = getValue( AttachFileService.class );
         if ( service == null ) {
             service = new AttachFileService( this );
             setValue( service );
+        }
+        return service;
+    }
+
+    /** 获取评审服务 */
+    public synchronized ReviewService getReviewService( Enterprise tenant ) {
+        if ( TenantType.REVIEW.equals( getTenantType() ) == false )
+            throw new RuntimeException( "tenant type must equals 'REVIEW'" );
+        ReviewService service = getValue( ReviewService.class );
+        if ( service == null ) {
+            service = new ReviewService( this, new TenantContext( tenant ) );
+            this.setValue( service );
+        } else {
+            if ( tenant.getTenantCode().equalsIgnoreCase( service.getEnterpriseContext().getTenantCode() ) == false ) {
+                service.setEnterpriseContext( new TenantContext( tenant ) );
+            }
         }
         return service;
     }
