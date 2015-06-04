@@ -10,6 +10,7 @@
     <script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/upload.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/dataPager.js"></script>
     <#else>
     <script type="text/javascript" src="/resource/js/kindeditor/kindeditor.min.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>

@@ -1,7 +1,7 @@
 <#import "../../layout/_rec.ftl" as layout/>
 <#assign script>
 <style type="text/css">
-    .kowrap {
+    .kocontainer {
         position: absolute;
         top: 0;
         left: 0;
@@ -10,7 +10,7 @@
         overflow: auto;
     }
 
-    .kocontainer, .tbwarp {
+    .kowrap, .tbwarp {
         width: 800px;
         margin: 0 auto;
     }
@@ -35,14 +35,14 @@
 </style>
 <script type="text/javascript" src="rec.js"></script>
 <script type="text/javascript">
-    var items = <#if list??>${json(list)}<#else>[]</#if>;
+    var items = ${json(list.rows)};
     $(function () {
-        ko.applyBindings(new LedgerModel(items));
+        ko.applyBindings(new LedgerModel(items, ${list.total!0}));
     });
 </script>
 </#assign>
 <@layout.doLayout script>
-<div class="kowrap">
+<div class="kocontainer">
     <h1 style="font-size: xx-large;text-align: center;">${template.C_NAME}</h1>
 
     <div class="z-toolbar">
@@ -51,11 +51,11 @@
             <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer!}'">返回</a>
         </div>
     </div>
-    <div class="kocontainer">
-        <div class="lager" data-bind="foreach: items">
-            <div class="item">
+    <div class="kowrap">
+        <div class="lager" data-bind="foreach: dataViewModel.data">
+            <div class="item" data-bind="attr: {index: $index}">
                 <div class="z-toolbar">
-                    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: $root.save">保存</a>
+                    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: function(data, event){ $root.save(data, event, $index()) }">保存</a>
                     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-remove" data-bind="click: $root.remove">删除</a>
                 </div>
                 <table>
@@ -69,7 +69,9 @@
                         <td class="label">检查时间</td>
                         <td><input data-bind="dateboxValue: T_EXAMINE" required/></td>
                         <td class="label">隐患等级</td>
-                        <td><input data-bind="comboboxSource: $root.levelSource, comboboxValue: P_LEVEL, easyuiOptions: $root.levelSettings" required/></td>
+                        <td>
+                            <input data-bind="comboboxSource: $root.levelSource, comboboxValue: P_LEVEL, easyuiOptions: $root.levelSettings" required/>
+                        </td>
                     </tr>
                     <tr>
                         <td class="label">整改措施</td>
@@ -84,13 +86,15 @@
                         <td><input data-bind="textboxValue: C_ACCEPTANCE" required/></td>
                     </tr>
                     <tr data-bind="visible: SID">
-                        <td colspan="6">
+                        <td colspan="6" style="padding: 10px;">
                             <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_06', sid: $data.SID}">[选择文件]</a>
                         </td>
                     </tr>
                 </table>
             </div>
         </div>
+
+        <div data-bind="dataPager: dataViewModel"></div>
     </div>
 </div>
 </@>

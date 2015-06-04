@@ -67,6 +67,11 @@ public class ModelKit {
         } ) );
     }
 
+    public static Page<Map<String, Object>> toMap( Page<? extends Model<?>> page, final String... columns ) {
+        return new Page<>( toMap( page.getList(), columns ), page.getPageNumber(), page.getPageSize(), page.getTotalPage(), page
+                .getTotalRow() );
+    }
+
     public static Model<?> fromBean( Class<? extends Model<?>> clazz, Object bean ) {
         Model<?> model = null;
         try {

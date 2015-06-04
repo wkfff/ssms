@@ -27,14 +27,14 @@
         function Uploader(element, options) {
             var self = this;
             this.element = element;
-            var $element = $(element);
+            var $element = $(element).addClass("btn_choose");
             // 为父元素添加样式
             $element.parent().addClass("uploader");
             // 添加容器元素
             var $container = $('<div class="container">');
             $element.before($container);
             // 添加上传按钮
-            var $uploadBtn = $('<a class="upload" href="javascript:void(0);">[上传文件]</a>');
+            var $uploadBtn = $('<a class="btn_upload" href="javascript:void(0);">[上传文件]</a>');
             $element.after($uploadBtn);
             // 添加控制台输出元素
             var $console = $('<div class="console">');
@@ -110,7 +110,7 @@
                 for (var i = 0; i < result.length; i++) {
                     var item = result[i];
                     $('<div class="file">')
-                        .append("<span filename>" + item.outerFilename + "</span>")
+                        .append("<span class='filename'>" + item.outerFilename + "</span>")
                         .append("<span class='filesize'>(" + plupload.formatSize(item.length) + ")</span>")
                         .append($("<a class='download'>[下载]</a>").attr("href", "/sys/attachfile/down?id=" + item.id))
                         .append($('<a class="delete" href="javascript:void(0);">[删除]</a>').click(delClick(uploader, item)))

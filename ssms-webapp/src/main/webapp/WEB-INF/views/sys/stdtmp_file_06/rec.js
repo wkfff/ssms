@@ -6,14 +6,19 @@
  * 创建用户：张铮彬
  */
 
-function LedgerModel(items) {
+function LedgerModel(items, total) {
     var self = this;
-    self.items = ko.mapping.fromJS(items);
+    self.dataViewModel = new ko.dataPager.viewModel({
+        data: items,
+        total: total,
+        src: 'recJson',
+        pageSize: 3
+    });
     self.levelSource = ko.observableArray([{code: '01', name: '一般隐患'}, {code: '02', name: '重大隐患'}]);
     self.levelSettings = {valueField: 'code', textField: 'name'};
 
     self.addItem = function () {
-        self.items.push(ko.mapping.fromJS({
+        self.dataViewModel.data.push(ko.mapping.fromJS({
             SID: null,
             C_NAME: null,
             C_EXAMINER: null,
@@ -26,8 +31,8 @@ function LedgerModel(items) {
         }));
     };
 
-    self.save = function (item, event) {
-        if ($form.validate('.item') == false) return;
+    self.save = function (item, event, index) {
+        if ($form.validate($('.lager .item[index=' +index+']')) == false) return;
         utils.messager.showProgress();
         $.post('save', ko.mapping.toJS(item), function (result) {
             utils.messager.closeProgress();
@@ -40,13 +45,13 @@ function LedgerModel(items) {
     };
 
     self.remove = function (item) {
-        if (item.SID() == null) self.items.remove(item);
+        if (item.SID() == null) self.dataViewModel.data.remove(item);
         else {
             utils.messager.showProgress();
             $.post('del', {sid: item.SID()}, function (result) {
                 utils.messager.closeProgress();
                 if (result) {
-                    self.items.remove(item);
+                    self.dataViewModel.data.remove(item);
                     $.messager.alert("提醒", "删除成功");
                 }
                 else $.messager.alert("提醒", "删除失败");
