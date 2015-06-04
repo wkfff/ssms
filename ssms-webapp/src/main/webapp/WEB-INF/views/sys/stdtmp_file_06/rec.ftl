@@ -7,7 +7,6 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: #FAFAFA;
         overflow: auto;
     }
 
@@ -19,7 +18,7 @@
     .lager .item {
         margin: 10px;
         border: 1px solid #CCCCCC;
-        background: #EED;
+        background: #FAFAFA;
     }
 
     .lager .item table {
@@ -82,7 +81,7 @@
                         <td class="label">要求整改日期</td>
                         <td><input data-bind="dateboxValue: T_RECTIFICATION" required/></td>
                         <td class="label">验收人</td>
-                        <td class="label"><input data-bind="textboxValue: C_ACCEPTANCE" required/></td>
+                        <td><input data-bind="textboxValue: C_ACCEPTANCE" required/></td>
                     </tr>
                     <tr data-bind="visible: SID">
                         <td colspan="6">
