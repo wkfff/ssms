@@ -35,6 +35,7 @@ public class SystemRoutes extends Routes {
         add( "/sys/stdtmp_file_03", com.lanstar.controller.system.TemplateFileController03.class );
         add( "/sys/stdtmp_file_04", com.lanstar.controller.system.TemplateFileController04.class );
         add( "/sys/stdtmp_file_05", com.lanstar.controller.system.TemplateFileController05.class );
+        add( "/sys/stdtmp_file_06", com.lanstar.controller.system.TemplateFileController06.class );
 
         add( "/sys/para_multi", com.lanstar.controller.system.MultiParaController.class );
         add( "/sys/industry", com.lanstar.controller.system.IndustryController.class );

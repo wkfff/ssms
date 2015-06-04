@@ -143,6 +143,9 @@
             var uploader = $(element).data(DATA_KEY);
             if (uploader == null) {
                 var options = ko.unwrap(valueAccessor());
+                for (var item in options) {
+                    if (typeof options[item] === 'function') options[item] = options[item]();
+                }
                 uploader = new Uploader(element, options);
 
                 $(element).data(DATA_KEY, uploader);

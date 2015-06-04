@@ -45,21 +45,26 @@ public class ModelKit {
         return record;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static Map<String, Object> toMap( Model model ) {
+    public static Map<String, Object> toMap( Model<?> model, String... columns ) {
         Asserts.notNull( model, "model can not be null" );
         Map<String, Object> map = new LinkedHashMap<>();
-        map.putAll( model.getAttrs() );
+        if ( columns.length == 0 ) {
+            map.putAll( model.getAttrs() );
+        } else {
+            for ( String column : columns ) {
+                map.put( column, model.get( column ) );
+            }
+        }
         return map;
     }
 
-    public static List<Map<String, Object>> toMap( List<? extends Model<?>> list ) {
-        return Lists.transform( list, new Function<Model<?>, Map<String, Object>>() {
+    public static List<Map<String, Object>> toMap( List<? extends Model<?>> list, final String... columns ) {
+        return Lists.newArrayList( Lists.transform( list, new Function<Model<?>, Map<String, Object>>() {
             @Override
             public Map<String, Object> apply( Model<?> input ) {
-                return toMap( input );
+                return toMap( input, columns );
             }
-        } );
+        } ) );
     }
 
     public static Model<?> fromBean( Class<? extends Model<?>> clazz, Object bean ) {
