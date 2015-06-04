@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.service;
+package com.lanstar.service.enterprise;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;

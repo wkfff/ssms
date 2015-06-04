@@ -6,10 +6,10 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.service.tmpsync;
+package com.lanstar.service.enterprise;
 
 import com.lanstar.identity.IdentityContext;
 
-public interface SyncProcessor {
+interface SyncProcessor {
     void sync( IdentityContext target );
 }

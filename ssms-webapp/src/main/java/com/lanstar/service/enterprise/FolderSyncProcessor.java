@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.service.tmpsync;
+package com.lanstar.service.enterprise;
 
 import com.lanstar.common.ModelInjector;
 import com.lanstar.common.log.Logger;

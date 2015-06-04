@@ -15,7 +15,7 @@ import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.EnterpriseProfession;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
-import com.lanstar.service.EnterpriseProfessionService;
+import com.lanstar.service.enterprise.EnterpriseProfessionService;
 import com.lanstar.service.TenantService;
 
 import java.util.ArrayList;

@@ -6,8 +6,9 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.service;
+package com.lanstar.service.enterprise;
 
+import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
 
@@ -18,8 +19,15 @@ public class ProfessionService {
         this.profession = profession;
     }
 
+    /**
+     * 同步专业模板到指定租户上下文中
+     */
+    public void sync( IdentityContext identityContext ) {
+        TemplateSyncProcessor.process(getSystemTemplate(), identityContext);
+    }
+
     public Template getSystemTemplate() {
-        return Template.list( profession.getId() );
+        return Template.getByProfession( profession.getId() );
     }
 
     public String getName() {return profession.getName();}
