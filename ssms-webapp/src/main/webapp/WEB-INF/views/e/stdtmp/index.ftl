@@ -1,12 +1,15 @@
 <#import "../../layout/_layout.ftl" as layout/>
 <#assign script>
-<script type="text/javascript" src="/resource/js/kindeditor/kindeditor-min.js"></script>
+
 <script type="text/javascript" src="/resource/js/plupload/plupload.min.js"></script>
 <#if DEV_MODE>
+<script type="text/javascript" src="/resource/js/kindeditor/kindeditor.js"></script>
+<script type="text/javascript" src="/resource/js/kindeditor/plugins/autoheight/autoheight.js"></script>
 <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
 <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
 <script type="text/javascript" src="/resource/js/knockout/upload.js"></script>
 <#else>
+<script type="text/javascript" src="/resource/js/kindeditor/kindeditor.min.js"></script>
 <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
 </#if>
 <script type="text/javascript">

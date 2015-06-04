@@ -1302,6 +1302,7 @@ ko.bindingHandlers.formValue = {
                     uploadUrl: '',
                     allowFileManager: false,
                     allowUpload: false,
+                    autoHeightMode: true,
                     items: [
                         'fontname',
                         'fontsize',
