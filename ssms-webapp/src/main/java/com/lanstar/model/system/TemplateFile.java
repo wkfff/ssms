@@ -101,4 +101,8 @@ public class TemplateFile extends Model<TemplateFile> {
     }
 
     private String getTableName() {return StandardTemplateFileKit.getSystemTableName( getTemplateFileCode() );}
+
+    public static TemplateFile findByFileContent(String fileCode, int fileId){
+        dao.findFirst( "SELECT * FROM " )
+    }
 }

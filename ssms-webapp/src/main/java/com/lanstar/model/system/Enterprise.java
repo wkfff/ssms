@@ -8,13 +8,14 @@
 
 package com.lanstar.model.system;
 
+import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantType;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
 import java.util.List;
 
-public class Enterprise extends Model<Enterprise> {
+public class Enterprise extends Model<Enterprise> implements Tenant {
     public static final Enterprise dao = new Enterprise();
 
     public EnterpriseUser getUser( String username, String password ) {
@@ -32,6 +33,16 @@ public class Enterprise extends Model<Enterprise> {
 
     public String getCountyCode() {
         return getStr( "P_COUNTY" );
+    }
+
+    @Override
+    public int getTenantId() {
+        return getId();
+    }
+
+    @Override
+    public String getTenantName() {
+        return getName();
     }
 
     public String getTenantCode() {
