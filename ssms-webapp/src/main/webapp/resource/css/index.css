@@ -25,7 +25,7 @@ h1{ float:left; margin:14px 0 0 24px; width:296px; height:54px; background:url(.
 .tool_bar{ float:right; margin:20px 14px 0 0;}
 .tool_bar a{ float:left; height:42px; line-height:42px;}
 .tool_bar a.home-btn{ width:40px; padding-left:46px; background:url(../images/home.png) no-repeat left top; color:#fff; font-size:14px;}
-.tool_bar a.quit-btn{ width:39px; background:url(../images/exit.png) no-repeat left top;}
+.tool_bar a.quit-btn{ width:39px; background:url(../images/exit.png) no-repeat left top;color:#fff; font-size:14px;}
 
 /*页面主体*/
 #bd{ padding-top:6px; margin:0 4px; background:#fff url(../images/centertopbg.png) repeat-x left top;}
@@ -62,6 +62,12 @@ h1{ float:left; margin:14px 0 0 24px; width:296px; height:54px; background:url(.
 .sidebar .nav>li .subnav li{ line-height:28px; margin-left:30px; padding-left:10px; background:url(../images/leftjt04.png) no-repeat left center;}
 .sidebar .nav>li .subnav li a{ color:#000; font-size:12px;}
 
+.sidebar .nav>li.do .nav-header a{ background:url(../images/nav/do.png) no-repeat left center;}
+.sidebar .nav>li.history .nav-header a{ background:url(../images/nav/history.png) no-repeat left center;}
+.sidebar .nav>li.statistics .nav-header a{ background:url(../images/nav/statistics.png) no-repeat left center;}
+.sidebar .nav>li.notice .nav-header a{ background:url(../images/nav/notice.png) no-repeat left center;}
+.sidebar .nav>li.knowledge .nav-header a{ background:url(../images/nav/knowledge.png) no-repeat left center;}
+.sidebar .nav>li.config .nav-header a{ background:url(../images/nav/config.png) no-repeat left center;}
 
 
 .content{ float:left; width:100%; overflow:auto;}

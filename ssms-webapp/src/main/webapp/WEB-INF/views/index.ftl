@@ -97,11 +97,6 @@
             <div class="sidebar">
                 <h2 class="sidebar-header"><p>功能导航</p></h2>
                 <ul class="nav">
-                    <li class="office current">
-                        <div class="nav-header">
-                            <a href="javascript:;" date-src="home.html" class="ue-clear"><span>日常办公</span><i class="icon"></i></a>
-                        </div>
-                    </li>
                     <#list nav as map>
                         <li class="<#if map.attributes.C_ICON?length=0>office<#else>${map.attributes.C_ICON}</#if>">
                             <div class="nav-header">

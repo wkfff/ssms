@@ -44,6 +44,10 @@ public class GradePlanController extends SimplateController<GradePlanR> {
     public void select() {
 
     }
+    
+    public void select2() {
+
+    }
 
     /**
      * 待评审的企业数据
@@ -86,6 +90,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         String myDbCode = this.identityContext.getTenantDbCode(); // 评审的
         Config config = DbKit.getConfig( Const.TENANT_DB_NAME );
         if ( this.isNew && eid != null ) {
+            //设置企业的评审状态与评审机构
             // TODO:切换到企业租户库,根据企业编码取企业租户数据库
             // DsKit.switchDs( config.getDataSource(), myDbCode );
 
@@ -157,7 +162,8 @@ public class GradePlanController extends SimplateController<GradePlanR> {
     @Override
     protected SqlBuilder buildWhere() {
         SqlBuilder builder = new SqlBuilder();
-        builder.WHERE()._If( this.isParaExists( "P_PRO" ), "P_PRO = ?", this.getPara( "P_PRO" ) )
+        builder.WHERE()
+        ._If( this.isParaExists( "P_PRO" ), "P_PRO = ?", this.getPara( "P_PRO" ) )
         ._If( this.isParaExists( "P_CITY" ), "P_CITY = ?", this.getPara( "P_CITY" ) )
         ._If( this.isParaExists( "P_COUNTY" ), "P_COUNTY = ?", this.getPara( "P_COUNTY" ) )
         ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
@@ -210,4 +216,25 @@ public class GradePlanController extends SimplateController<GradePlanR> {
     public void report_rec(){
         rec();
     }
+    /**
+     * 上传评审结果
+     */
+    public void upload_rec(){
+        rec();
+    }
+    /**
+     * 评审历史
+     */
+    public void history(){
+
+    }
+    
+    @Override
+    protected SqlBuilder buildOrder() {
+        SqlBuilder builder = new SqlBuilder();
+        builder.ORDER_BY( "T_END DESC" );
+        return builder;
+    }
+    
+    
 }

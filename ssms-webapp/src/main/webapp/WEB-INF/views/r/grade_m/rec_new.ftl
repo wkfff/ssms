@@ -32,7 +32,7 @@
                 }
             }, "json");
         },backClick: function(){
-            window.location.href='/r/grade_m/index';
+            window.location.href= '${referer!'/r/grade_m/index'}';
         }
     };
 
@@ -43,7 +43,7 @@
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div title="评审" data-options="region:'center',collapsible:false" style="overflow:hidden;">
+    <div title="第二步，请填写评审概要信息" data-options="region:'center',collapsible:false" style="overflow:hidden;">
           <div class="z-toolbar">
                 <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
                 <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-back" data-bind="click: backClick">返回</a>

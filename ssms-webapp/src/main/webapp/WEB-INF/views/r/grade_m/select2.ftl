@@ -14,7 +14,7 @@
          企业名称：<input class="easyui-textbox" id="txt_name" style="width:80px;" data-bind="textboxValue:txtName">
     <input class="easyui-checkbox" id="chk" data-bind="booleanValue:chkNoComplete">只显示未评审的企业
     <a class="easyui-linkbutton" iconCls="icon-search" plain="true" data-bind="click:gridEvents.refreshClick">查询</a>
-    <a class="easyui-linkbutton" iconCls="icon-back" plain="true"  onclick="window.location.href='/r/grade_m/'">返回</a>
+    <a class="easyui-linkbutton" iconCls="icon-back" plain="true"  onclick="window.location.href='/r/home'">返回</a>
 </div>
 <table data-bind="datagridValue:selectItem,easyuiOptions: gridSettings" ></table>
 </@>
