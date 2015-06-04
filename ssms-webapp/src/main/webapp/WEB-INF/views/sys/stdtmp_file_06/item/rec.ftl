@@ -1,4 +1,4 @@
-<#import "../../layout/_rec.ftl" as layout/>
+<#import "../../../layout/_rec.ftl" as layout/>
 <#assign script>
 <style type="text/css">
     .kocontainer {
@@ -37,7 +37,7 @@
 <script type="text/javascript">
     var items = ${json(list.rows)};
     $(function () {
-        ko.applyBindings(new LedgerModel(items, ${list.total!0}));
+        ko.applyBindings(new LedgerModel(items, ${list.total!0}, ${pid}));
     });
 </script>
 </#assign>

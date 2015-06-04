@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-function LedgerModel(items, total) {
+function LedgerModel(items, total, pid) {
     var self = this;
     self.dataViewModel = new ko.dataPager.viewModel({
         data: items,
@@ -32,9 +32,9 @@ function LedgerModel(items, total) {
     };
 
     self.save = function (item, event, index) {
-        if ($form.validate($('.lager .item[index=' +index+']')) == false) return;
+        if ($form.validate($('.lager .item[index=' + index + ']')) == false) return;
         utils.messager.showProgress();
-        $.post('save', ko.mapping.toJS(item), function (result) {
+        $.post('save', ko.utils.extend({R_SID: pid}, ko.mapping.toJS(item)), function (result) {
             utils.messager.closeProgress();
             if (result.SID) {
                 item.SID(result.SID);

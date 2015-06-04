@@ -11,7 +11,7 @@ package com.lanstar.controller.system;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.TemplateFile03;
 
-public class TemplateFileController03 extends SimplateController<TemplateFile03> {
+public class TemplateFile03Controller extends SimplateController<TemplateFile03> {
     @Override
     protected TemplateFile03 getDao() {
         return TemplateFile03.dao;
