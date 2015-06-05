@@ -15,7 +15,7 @@
         <sql id="list">SELECT A.* FROM SYS_TEMPLATE A INNER JOIN SYS_PROFESSION B ON A.SID=B.R_TEMPLATE WHERE B.SID=?</sql>
     </sqlGroup>
     <sqlGroup name="templateFolder">
-        <sql id="getFolders">SELECT * FROM SYS_STDTMP_FOLDER WHERE R_TEMPLATE = ?</sql>
+        <sql id="getFolders">SELECT * FROM SYS_STDTMP_FOLDER WHERE R_TEMPLATE = ? ORDER BY N_INDEX, T_CREATE</sql>
         <sql id="getFoldersByParentId">SELECT * FROM SYS_STDTMP_FOLDER WHERE R_TEMPLATE = ? AND R_SID = ?</sql>
     </sqlGroup>
     <sqlGroup name="templateFile">

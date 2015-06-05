@@ -33,6 +33,11 @@ public class TemplateFolderController extends SimplateController<TemplateFolder>
     }
 
     @Override
+    protected SqlBuilder buildOrder() {
+        return new SqlBuilder().ORDER_BY( "N_INDEX, T_CREATE" );
+    }
+
+    @Override
     public void rec() {
         super.rec();
         renderJson();
