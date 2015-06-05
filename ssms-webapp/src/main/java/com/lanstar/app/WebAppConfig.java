@@ -32,8 +32,8 @@ import com.lanstar.plugin.attachfile.SimpleResourceService;
 import com.lanstar.plugin.druid.DruidPlugin;
 import com.lanstar.plugin.quartz.QuartzPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
-import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
 import com.lanstar.plugin.template.TemplatePropPlugin;
+import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
 import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateMethodModelEx;
@@ -111,7 +111,7 @@ public class WebAppConfig extends RapidwareConfig {
         QuartzPlugin quartzPlugin = new QuartzPlugin( "quartz_jobs.properties", "quartz.properties" );
         me.add( quartzPlugin );
 
-        TemplatePropPlugin templatePropPlugin = new TemplatePropPlugin().add( new TemplatePropsConfig() );
+        TemplatePropPlugin templatePropPlugin = TemplatePropPlugin.me().add( new TemplatePropsConfig() );
         me.add( templatePropPlugin );
     }
 

@@ -15,10 +15,6 @@
     <div class="content">
         <ul class="toollist ue-clear">
             <li>
-                <a href="javascript:doCreate();" class="img"><img src="/resource/images/icon01.png" /></a>
-                <p><a href="javascript:doCreate();" title="开始自评">企业自评</a></p>
-            </li>
-            <li>
                 <a href="javascript:doChangePwd();" class="img"><img src="/resource/images/icon03.png" /></a>
                 <p><a href="javascript:doChangePwd();">密码修改</a></p>
             </li>
@@ -83,8 +79,9 @@
         <h2>统计分析</h2>
         <a href="/e/statistics/index" class="more">更多</a>
     </div>
-    <div class="content" style="height:500px;">
-        <iframe src="/charts.html" frameborder="0" width="100%" height="100%"></iframe>
+    <div class="content" style="height:220px;">
+        
+
     </div>
 </div>
 </body>
@@ -104,11 +101,11 @@
     });
 
     $(".duty").find("tbody").find("tr:even").css("backgroundColor","#eff6fa");
-
+    
     $("#more").on("click",function(){
         window.location.href = "/e/"+(aIndex==0?"todo":"done")+"/index.html";
     });
-
+    
     function nav(url){
         window.location.href = url;
     }
@@ -116,13 +113,13 @@
     function doCreate(){
         window.location.href = '/e/grade_m/rec_new';
     }
-
+    
     function doChangePwd(){
-
+    
     }
-
+    
     function doConfig(){
-
+        
     }
 </script>
 </html>
