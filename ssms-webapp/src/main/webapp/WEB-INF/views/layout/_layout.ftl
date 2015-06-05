@@ -73,14 +73,15 @@ ${footer}</html>
     </#local>
     <#local EnterpriseProcession>
     <div id="dd" class="easyui-dialog" title="选择专业" style="width:400px;height:200px;"
-         data-options="iconCls:'icon-save',resizable:true,modal:true, buttons:'#bb', closable:false<#if LANSTAR_IDENTITY.tenantType='E'&&needChooseProfessions=false>, closed:true</#if>">
+         data-options="iconCls:'icon-save',resizable:true,modal:true, buttons:'#bb', closable:true<#if LANSTAR_IDENTITY.tenantType='E'&&needChooseProfessions=false>, closed:true</#if>">
         <div style="position: absolute; top: 80px; left: 80px;">
             选择专业
-            <input id="cc" class="easyui-combobox" name="dept" required data-options="valueField:'SID',textField:'C_NAME',url:'/e/getProfessions'">
+            <input id="cc" class="easyui-combobox" name="dept" required data-options="valueField:'SID',textField:'C_NAME',url:'/e/getProfessions',width:160">
         </div>
     </div>
     <div id="bb">
         <a href="#" class="easyui-linkbutton" onclick="choose()">确定</a>
+        <a href="#" class="easyui-linkbutton" onclick="opClose()">取消</a>
     </div>
     <script type="text/javascript">
         function choose() {
@@ -93,6 +94,9 @@ ${footer}</html>
         function opChoose() {
             $('#dd').dialog('open');
         }
+        function opClose(){
+            $('#dd').dialog('close');
+        }
     </script>
     </#local>
     <@base header=_header footer=_footer>
@@ -101,24 +105,25 @@ ${footer}</html>
             <div class="hd-wrap ue-clear">
                 <div class="top-light"></div>
                 <h1 class="logo"></h1>
-
-                <div class="login-info ue-clear">
-                    <div class="welcome ue-clear">
-                        <span>欢迎您,</span><a href="javascript:void(0);" class="user-name">${LANSTAR_IDENTITY.name}(${LANSTAR_IDENTITY.tenantName})</a>
-                        <#if LANSTAR_IDENTITY.tenantType='E' && profession??>
-                            <span style="float: left">|</span>
-                            <span style="float: left">当前专业:${profession.name}</span>
-                            <a href="javascript:void(0);" class="user-name" onclick="opChoose()">(切换专业)</a>
-                        </#if>
-                    </div>
-                <#--<div class="login-msg ue-clear">
-                    <a href="javascript:;" class="msg-txt">消息</a>
-                    <a href="javascript:;" class="msg-num">10</a>
-                </div>-->
+                <div class="client${LANSTAR_IDENTITY.tenantType!}">
                 </div>
-                <div class="tool_bar ue-clear">
-                    <a href="/" class="home-btn" title="回到首页">首页</a>
-                    <a href="javascript:void(0);" class="quit-btn exit" title="退出系统"></a>
+                <div class="login-info ue-clear">
+                   
+                </div>
+                <div class="actionbar">
+                    <ul class="actionbar">
+                        <li><a href="#" class="exit" title="退出系统">退出</a></li>
+                        
+                        <#if LANSTAR_IDENTITY.tenantType='E' && profession??>
+                        <li>|</li>
+                        <li>
+                            <a href="#" onclick="opChoose()" title="点击切换专业">专业:${profession.name}  <b class="c-icon c-icon-triangle-down"></b></a>
+                        </li>
+                        </#if>
+                        
+                        <li>|</li>
+                        <li>${LANSTAR_IDENTITY.tenantName}</a>
+                    </ul>
                 </div>
             </div>
         </div>

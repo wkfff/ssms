@@ -14,4 +14,8 @@ public class HomeController extends Controller {
     public void index(){
 
     }
+    
+    public void home(){
+
+    }
 }

@@ -84,3 +84,43 @@ h1{ float:left; margin:14px 0 0 24px; width:296px; height:54px; background:url(.
 
 /*弹窗内容样式*/
 .dialog-content .buttons{margin-top:30px;}
+
+.actionbar{float:right;padding-right:10px;color:#FFF;font-size:14px;font-weight:bold;}
+.actionbar a{color:#FFF;font-weight:bold;}
+.actionbar ul{}
+.actionbar ul li{margin:12px 0px 0px 10px;float:right;}
+
+.c-icon{
+	background: url(../images/icons.png) no-repeat 0 0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+}
+
+.c-icon-triangle-down{
+    background-position: 0px -224px;
+    width: 10px;
+    height: 8px;
+    margin-top: -1px;
+    margin-left: 2px;
+    background-repeat: no-repeat;
+}
+
+.clientE{
+    background:url(../images/client_e.png) no-repeat left center;
+    width:180px;height:54px;
+    position:absolute;
+    left:310px;top:10px;
+}
+.clientR{
+    background:url(../images/client_r.png) no-repeat left center;
+    width:180px;height:54px;
+    position:absolute;
+    left:310px;top:10px;
+}
+.clientG{
+    background:url(../images/client_g.png) no-repeat left center;
+    width:180px;height:54px;
+    position:absolute;
+    left:310px;top:10px;
+}

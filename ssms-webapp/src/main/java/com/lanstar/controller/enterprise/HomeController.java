@@ -46,4 +46,8 @@ public class HomeController extends Controller {
     public void getProfessions() {
         renderJson( IdentityContext.getIdentityContext( this ).getEnterpriseService().getProfessions() );
     }
+    
+    public void home(){
+
+    }
 }
