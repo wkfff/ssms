@@ -6,9 +6,9 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.template;
+package com.lanstar.app.template;
 
-import com.lanstar.plugin.staticcache.SyncUnitFactory;
+import com.lanstar.plugin.template.SyncUnitFactory;
 
 public class SyncUnitFactory06 extends SyncUnitFactory<SyncUnit06> {
     @Override

@@ -17,6 +17,7 @@ import com.lanstar.app.route.EnterpriseRoutes;
 import com.lanstar.app.route.GovernmentRoutes;
 import com.lanstar.app.route.ReviewRoutes;
 import com.lanstar.app.route.SystemRoutes;
+import com.lanstar.app.template.TemplatePropsConfig;
 import com.lanstar.common.kit.JsonKit;
 import com.lanstar.common.kit.ServletKit;
 import com.lanstar.config.*;
@@ -31,9 +32,8 @@ import com.lanstar.plugin.attachfile.SimpleResourceService;
 import com.lanstar.plugin.druid.DruidPlugin;
 import com.lanstar.plugin.quartz.QuartzPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
-import com.lanstar.plugin.staticcache.StaticCachePlugin;
 import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
-import com.lanstar.template.TemplatePropCache;
+import com.lanstar.plugin.template.TemplatePropPlugin;
 import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateMethodModelEx;
@@ -110,8 +110,9 @@ public class WebAppConfig extends RapidwareConfig {
         // 任务调度插件配置
         QuartzPlugin quartzPlugin = new QuartzPlugin( "quartz_jobs.properties", "quartz.properties" );
         me.add( quartzPlugin );
-        // 静态缓存插件配置
-        me.add( new StaticCachePlugin( new TemplatePropCache() ) );
+
+        TemplatePropPlugin templatePropPlugin = new TemplatePropPlugin().add( new TemplatePropsConfig() );
+        me.add( templatePropPlugin );
     }
 
     @Override

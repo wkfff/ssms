@@ -10,9 +10,8 @@ package com.lanstar.model.tenant;
 
 import com.google.common.collect.Lists;
 import com.lanstar.plugin.activerecord.ModelExt;
-import com.lanstar.plugin.staticcache.CacheManager;
-import com.lanstar.plugin.staticcache.TemplateProp;
-import com.lanstar.template.TemplatePropCache;
+import com.lanstar.plugin.template.TemplateProp;
+import com.lanstar.plugin.template.TemplatePropPlugin;
 
 public class TemplateFile extends ModelExt<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
@@ -23,8 +22,7 @@ public class TemplateFile extends ModelExt<TemplateFile> {
 
     /** 获取模板属性 */
     public TemplateProp getTemplateProp() {
-        TemplatePropCache cache = CacheManager.me().getCache( TemplatePropCache.class );
-        return cache.getValue( getTemplateFileCode() );
+        return TemplatePropPlugin.me().get( getTemplateFileCode() );
     }
 
     public Integer getId() {

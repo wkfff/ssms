@@ -6,11 +6,11 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.template;
+package com.lanstar.app.template;
 
 import com.lanstar.model.tenant.TemplateFile06Item;
 import com.lanstar.plugin.activerecord.ModelKit;
-import com.lanstar.plugin.staticcache.SyncUnit;
+import com.lanstar.plugin.template.SyncUnit;
 
 import java.util.List;
 

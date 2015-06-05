@@ -9,13 +9,12 @@
 package com.lanstar.model.system;
 
 import com.google.common.collect.Lists;
-import com.lanstar.template.TemplatePropCache;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.sqlinxml.SqlKit;
-import com.lanstar.plugin.staticcache.CacheManager;
-import com.lanstar.plugin.staticcache.ModelWrap;
-import com.lanstar.plugin.staticcache.TemplateProp;
+import com.lanstar.plugin.template.ModelWrap;
+import com.lanstar.plugin.template.TemplateProp;
+import com.lanstar.plugin.template.TemplatePropPlugin;
 
 import java.util.Date;
 import java.util.List;
@@ -57,8 +56,7 @@ public class TemplateFile extends ModelExt<TemplateFile> {
 
     /** 获取模板属性 */
     public TemplateProp getTemplateProp() {
-        TemplatePropCache cache = CacheManager.me().getCache( TemplatePropCache.class );
-        return cache.getValue( getTemplateFileCode() );
+        return TemplatePropPlugin.me().get( getTemplateFileCode() );
     }
 
     public String getTemplateFileCode() {

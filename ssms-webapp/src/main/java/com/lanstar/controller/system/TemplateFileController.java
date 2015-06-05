@@ -8,7 +8,6 @@
 
 package com.lanstar.controller.system;
 
-import com.lanstar.common.StandardTemplateFileKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.MultiPara;
 import com.lanstar.model.system.TemplateFile;
@@ -17,6 +16,7 @@ import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
 import com.lanstar.service.Parameter;
+import com.lanstar.plugin.template.TemplatePropPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class TemplateFileController extends SimplateController<TemplateFile> {
             setAttr( "SYS_CYCLE", list );
             setAttr( "folder", folder );
         }
-        setAttr( "tmpfiles", StandardTemplateFileKit.listStandardTemplate() );
+        setAttr( "tmpfiles", TemplatePropPlugin.me().listParameter() );
         super.rec();
     }
 
