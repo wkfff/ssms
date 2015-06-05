@@ -8,6 +8,7 @@
 
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Profession;
@@ -33,6 +34,8 @@ public class HomeController extends Controller {
         setSessionAttr( "needChooseProfessions", needChooseProfessions );
 
         if ( needChooseProfessions == false ) setAttr( "profession", enterpriseService.getProfessionService() );
+        
+        setAttr( Const.HOME_PAGE, "/e/home" );
     }
 
     public void setTemplate() {

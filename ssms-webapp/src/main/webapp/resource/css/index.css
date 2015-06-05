@@ -87,7 +87,7 @@ h1.logo{ float:left; margin:14px 0 0 24px; width:296px; height:54px; background:
 
 .actionbar{float:right;padding-right:10px;color:#FFF;font-size:14px;font-weight:bold;}
 .actionbar a{color:#FFF;font-weight:bold;}
-.actionbar ul{}
+.actionbar .split{color:#CCC;font-weight:normal;}
 .actionbar ul li{margin:12px 0px 0px 10px;float:right;}
 
 .c-icon{

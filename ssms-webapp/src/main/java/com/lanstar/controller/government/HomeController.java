@@ -8,11 +8,12 @@
 
 package com.lanstar.controller.government;
 
+import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 
 public class HomeController extends Controller {
     public void index(){
-
+        setAttr( Const.HOME_PAGE, "/g/home" );
     }
     
     public void home(){

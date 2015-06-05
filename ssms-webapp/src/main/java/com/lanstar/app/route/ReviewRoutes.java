@@ -10,6 +10,7 @@ package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
 import com.lanstar.controller.review.*;
+import com.lanstar.controller.system.NoticeController;
 
 public class ReviewRoutes extends Routes {
     private static Routes me = new ReviewRoutes();
@@ -26,5 +27,8 @@ public class ReviewRoutes extends Routes {
 
         add( "/r/review", ReviewController.class );
         add( "/r/e/stdtmp", TemplateController.class );
+        
+        add( "/r/notice", NoticeController.class );
+        add( "/r/task", NoticeController.class );
     }
 }

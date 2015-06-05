@@ -16,7 +16,7 @@
         <ul class="toollist ue-clear">
             <li>
                 <a href="javascript:doCreate();" class="img"><img src="/resource/images/icon01.png" /></a>
-                <p><a href="javascript:doCreate();" title="选择企业后开始评审">企业评审</a></p>
+                <p><a href="javascript:doCreate();" title="开始自评">企业自评</a></p>
             </li>
             <li>
                 <a href="javascript:doChangePwd();" class="img"><img src="/resource/images/icon03.png" /></a>
@@ -33,14 +33,14 @@
     <div class="wrap-l">
         <div class="title ue-clear">
             <h2>通知公告</h2>
-            <a href="/r/notice/index.html" class="more">更多</a>
+            <a href="/e/notice/index.html" class="more">更多</a>
         </div>
         <div class="content">
             <ul class="notice-list">
                   <#if rs_notice?exists && rs_notice?size!=0>
                     <#list rs_notice as rs>
                      <li class="ue-clear">
-                        <a href="javascript:nav('/r/notice/rec.html?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
+                        <a href="javascript:nav('/e/notice/rec.html?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
                         <div class="notice-time">${rs.T_PUBLISH}</div>
                     </li>
                     </#list>
@@ -57,7 +57,7 @@
     <div class="wrap-r">
         <div class="title ue-clear">
             <h2>待办</h2>
-            <a href="/r/grade_m/index" class="more">更多</a>
+            <a href="/e/grade_m/index" class="more">更多</a>
         </div>
         <div class="content">
                 <ul class="matter-list">
@@ -81,18 +81,13 @@
 <div class="article toolbar">
     <div class="title ue-clear">
         <h2>统计分析</h2>
-        <a href="/r/statistics/index" class="more">更多</a>
+        <a href="/e/statistics/index" class="more">更多</a>
     </div>
     <div class="content" style="height:220px;">
         
 
     </div>
 </div>
-
-<!-- <div id="win_select" class="easyui-window" title="企业评审" data-options="onLoad:winSelectOnLoad,iconCls:'icon-add',modal:true,minimizable:false,closed:true,href:'/r/grade_m/select'" style="width:900px;height:500px;padding:6px;" >
-    
-</div> -->
-    
 </body>
 
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
@@ -112,7 +107,7 @@
     $(".duty").find("tbody").find("tr:even").css("backgroundColor","#eff6fa");
     
     $("#more").on("click",function(){
-        window.location.href = "/r/"+(aIndex==0?"todo":"done")+"/index.html";
+        window.location.href = "/e/"+(aIndex==0?"todo":"done")+"/index.html";
     });
     
     function nav(url){
@@ -120,7 +115,7 @@
     }
 
     function doCreate(){
-        window.location.href = '/r/grade_m/select2';
+        window.location.href = '/e/grade_m/rec_new';
     }
     
     function doChangePwd(){

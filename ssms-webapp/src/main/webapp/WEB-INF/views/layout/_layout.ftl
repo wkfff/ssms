@@ -112,17 +112,18 @@ ${footer}</html>
                 </div>
                 <div class="actionbar">
                     <ul class="actionbar">
-                        <li><a href="#" class="exit" title="退出系统">退出</a></li>
+                        <li class="action"><a href="#" class="exit" title="退出系统">退出</a></li>
+                        <li class="split">|</li>
+                        <li class="action"><a href="/"> 首页 </a></li>
                         
                         <#if LANSTAR_IDENTITY.tenantType='E' && profession??>
-                        <li>|</li>
-                        <li>
+                        <li class="split">|</li>
+                        <li class="action">
                             <a href="#" onclick="opChoose()" title="点击切换专业">专业:${profession.name}  <b class="c-icon c-icon-triangle-down"></b></a>
                         </li>
                         </#if>
-                        
-                        <li>|</li>
-                        <li>${LANSTAR_IDENTITY.tenantName}</a>
+                        <li class="split">|</li>
+                        <li class="action">${LANSTAR_IDENTITY.tenantName}</a>
                     </ul>
                 </div>
             </div>

@@ -10,6 +10,7 @@ package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
 import com.lanstar.controller.enterprise.*;
+import com.lanstar.controller.system.NoticeController;
 
 public class EnterpriseRoutes extends Routes {
     private static final Routes me = new EnterpriseRoutes();
@@ -32,5 +33,6 @@ public class EnterpriseRoutes extends Routes {
 
         add( "/e/grade_m", GradePlanController.class );
         add( "/e/grade_d", GradeContentController.class );
+        add( "/e/notice", NoticeController.class );
     }
 }
