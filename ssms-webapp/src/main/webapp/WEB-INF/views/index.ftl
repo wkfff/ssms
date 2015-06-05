@@ -38,7 +38,7 @@
         <ul class="nav">
             <li class="office current">
                 <div class="nav-header">
-                    <a href="javascript:void(0);" date-src="home.html" class="ue-clear"><span>日常办公</span><i class="icon"></i></a>
+                    <a href="javascript:void(0);" date-src="home.html" class="ue-clear"><span>首页</span><i class="icon"></i></a>
                 </div>
             </li>
             <#list nav as map>

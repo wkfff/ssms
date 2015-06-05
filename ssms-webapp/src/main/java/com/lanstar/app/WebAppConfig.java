@@ -68,6 +68,7 @@ public class WebAppConfig extends RapidwareConfig {
 
         me.setBaseViewPath( "/WEB-INF/views" );
         me.setDevMode( devMode );
+        me.setError404View( "404.html" );
         configTemplate( FreeMarkerRender.getConfiguration(), devMode );
     }
 

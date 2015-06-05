@@ -41,7 +41,14 @@
             </div>
         </div>
     </div>
+    <div style="text-align:center;color:#FFF;">快速测试入口 >  
+     <a href="javascript:doTest('E3501029901');"><span style="color:#FFF">企业端测试用户：E3501029901</span></a>,&nbsp;
+     <a href="javascript:doTest('R3501029902');"><span style="color:#FFF">评审端测试用户：R3501029902</span></a>,&nbsp;
+     <a href="javascript:doTest('G3501029903');"><span style="color:#FFF">政府端测试用户: G3501029903</span></a>,&nbsp;
+     <a href="javascript:doTest('system');"><span style="color:#FFF">系统端测试用户: system</span></a>
+    </div>
 </div>
+
 <div id="ft">CopyRight&nbsp;2015&nbsp;&nbsp;版权所有&nbsp;&nbsp;福建永创意信息科技有限公司,福州蓝石电子有限公司 技术支持</div>
 </body>
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
@@ -122,6 +129,17 @@
 
     if (top != window) {
         top.window.location.href = window.location.href;
+    }
+    
+    function doTest(usr){
+        var parms = {
+            username: usr,
+            password: 'e10adc3949ba59abbe56e057f20f883e'
+        };
+        $.post('login', parms, function (result) {
+            if (result.state == "success") window.location.href = "/";
+            else alert(result.msg);
+        }, "json")
     }
 </script>
 </html>

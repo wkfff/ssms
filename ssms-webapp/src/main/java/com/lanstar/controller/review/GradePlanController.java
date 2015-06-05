@@ -16,16 +16,26 @@ import java.util.List;
 import com.lanstar.app.Const;
 import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.identity.Tenant;
+import com.lanstar.identity.TenantContext;
+import com.lanstar.identity.TenantType;
+import com.lanstar.model.system.Enterprise;
+import com.lanstar.model.tenant.GradeContent;
+import com.lanstar.model.tenant.GradeContentR;
+import com.lanstar.model.tenant.GradePlan;
 import com.lanstar.model.tenant.GradePlanR;
 import com.lanstar.plugin.activerecord.Config;
 import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.DbKit;
+import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.Page;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
 import com.lanstar.plugin.sqlinxml.SqlKit;
+import com.lanstar.service.ProfessionService;
+import com.lanstar.service.review.ReviewService;
 
 /**
  * 评审
@@ -79,59 +89,25 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         if ( sid == null ) {
             this.isNew = true;
             model.setTitle( model.getStartDate() + "评审" );
-            model.setState( ReviewState.DOING.getValue() );
+            model.setState( ReviewState.START.getValue() );
         }
     }
-
+   
     @Override
     protected void afterSave( GradePlanR model ) {
         Integer sid = model.getInt( "SID" );
         String eid = this.getPara( "R_EID" );// 企业的SID
-        String myDbCode = this.identityContext.getTenantDbCode(); // 评审的
-        Config config = DbKit.getConfig( Const.TENANT_DB_NAME );
-        if ( this.isNew && eid != null ) {
-            //设置企业的评审状态与评审机构
-            // TODO:切换到企业租户库,根据企业编码取企业租户数据库
-            // DsKit.switchDs( config.getDataSource(), myDbCode );
 
-            // 从企业租户库中获取指定企业的自评数据
-            String sql = SqlKit.sql( "tenant.grade.getDataFromEnterprise" );
-            // List<Record> rs = Db.use( Const.TENANT_DB_NAME ).find( sql, eid
-            // );
-            // 切换回评审端租户库
-            // DsKit.switchDs( config.getDataSource(), myDbCode );
-            List<Record> rs = Db.find( sql, eid );
-            List<String> sqls = new ArrayList<String>();
-            for ( Record r : rs ) {
-                // 写入到评审租户库的评审明细表
-                // sql = SqlKit.sql( "tenant.grade.insertToReview" );
-                sql = "insert into ssm_grade_r_d (R_SID,C_CATEGORY,C_PROJECT,C_REQUEST,C_CONTENT,N_SCORE,C_METHOD,C_DESC,B_BLANK,N_SCORE_REAL,C_DESC_REVIEW,N_SCORE_REVIEW) values("
-                        + sid
-                        + ",'"
-                        + r.getStr( "C_CATEGORY" )
-                        + "','"
-                        + r.getStr( "C_PROJECT" )
-                        + "','"
-                        + r.getStr( "C_REQUEST" )
-                        + "','"
-                        + r.getStr( "C_CONTENT" )
-                        + "',"
-                        + r.getInt( "N_SCORE" )
-                        + ",'"
-                        + r.getStr( "C_METHOD" )
-                        + "','"
-                        + r.getStr( "C_DESC" )
-                        + "','"
-                        + (r.getStr( "B_BLANK" ) == null || r.getStr( "B_BLANK" ).equals( "null" ) ? "" : r
-                                .getStr( "B_BLANK" ))
-                                + "',"
-                                + r.getInt( "N_SCORE_REAL" )
-                                + ",'"
-                                + (r.getStr( "C_DESC_REVIEW" ) == null || r.getStr( "C_DESC_REVIEW" ).equals( "null" ) ? "" : r
-                                        .getStr( "C_DESC_REVIEW" )) + "'," + r.getStr( "N_SCORE_REVIEW" ) + ")";
-                sqls.add( sql );
-            }
-            if ( sqls.size() > 0 ) Db.use( Const.TENANT_DB_NAME ).batch( sqls, 500 );
+        if ( this.isNew && eid != null ) {
+            // 设置企业的评审状态与评审机构
+            Enterprise enterprise = Enterprise.dao.findById(eid);
+            enterprise.setReview( enterprise );
+            enterprise.setGradeState( ReviewState.START.getValue() );
+            
+            // 获取评审服务
+            ReviewService service  = this.identityContext.getReviewService(enterprise);
+            // 同步企业的自评数据
+            service.sync(sid);
         }
     }
 
@@ -205,7 +181,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         Integer sid = this.getParaToInt( "sid" );
         if ( sid != null ) {
             Db.update( "UPDATE sys_tenant_e  SET N_STATE=? WHERE sid=(SELECT r_eid FROM SSM_GRADE_R_M WHERE sid=?)",
-                    ReviewState.NOSTART.getValue(), sid );
+                    ReviewState.NONE.getValue(), sid );
             this.setAttr( "result", "OK" );
         }
         this.renderJson();
