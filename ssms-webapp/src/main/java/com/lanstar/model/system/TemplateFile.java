@@ -9,12 +9,13 @@
 package com.lanstar.model.system;
 
 import com.google.common.collect.Lists;
-import com.lanstar.common.StandardTemplateFileKit;
-import com.lanstar.plugin.activerecord.Db;
+import com.lanstar.template.TemplatePropCache;
+import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.activerecord.ModelExt;
-import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.sqlinxml.SqlKit;
-import com.lanstar.service.AttachTextService;
+import com.lanstar.plugin.staticcache.CacheManager;
+import com.lanstar.plugin.staticcache.ModelWrap;
+import com.lanstar.plugin.staticcache.TemplateProp;
 
 import java.util.Date;
 import java.util.List;
@@ -34,9 +35,8 @@ public class TemplateFile extends ModelExt<TemplateFile> {
     public boolean delete() {
         // TODO:
         //context.getAttachTextService().del( "STDTMP_FILE_" + code, "C_CONTENT", tmpfileId );
-        String tableName = getTableName();
-        Db.deleteById( tableName, "SID", getTemplateFileId() );
 
+        getTemplateProp().getSystemModelWrap().getDao().deleteById( getTemplateFileId() );
         return super.delete();
     }
 
@@ -44,8 +44,7 @@ public class TemplateFile extends ModelExt<TemplateFile> {
     public boolean deleteById( Object id ) {
         // TODO:
         //context.getAttachTextService().del( "STDTMP_FILE_" + code, "C_CONTENT", tmpfileId );
-        String tableName = getTableName();
-        Db.deleteById( tableName, "SID", getTemplateFileId() );
+        getTemplateProp().getSystemModelWrap().getDao().deleteById( getTemplateFileId() );
 
         return super.deleteById( id );
     }
@@ -56,6 +55,12 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return super.save();
     }
 
+    /** 获取模板属性 */
+    public TemplateProp getTemplateProp() {
+        TemplatePropCache cache = CacheManager.me().getCache( TemplatePropCache.class );
+        return cache.getValue( getTemplateFileCode() );
+    }
+
     public String getTemplateFileCode() {
         return getStr( "P_TMPFILE" );
     }
@@ -64,13 +69,9 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return getInt( "R_TMPFILE" );
     }
 
+    /** 设置模板文件ID */
     public void setTemplateFileId( Integer id ) {
         set( "R_TMPFILE", id );
-    }
-
-    public Record getFileContent() {
-        String tableName = getTableName();
-        return Db.findById( tableName, "SID", getTemplateFileId() );
     }
 
     public Integer getId() {
@@ -81,28 +82,22 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return getStr( "C_NAME" );
     }
 
-    public String getAttachText() {
-        return AttachTextService.SYSTEM.getContent(
-                "STDTMP_FILE_" + getTemplateFileCode(), "C_CONTENT", getTemplateFileId() );
-    }
-
-    private String getTableName() {return StandardTemplateFileKit.getSystemTableName( getTemplateFileCode() );}
-
+    @SuppressWarnings("rawtypes")
     private boolean initFileContent() {
-        String tableName = getTableName();
+        ModelWrap modelWrap = getTemplateProp().getSystemModelWrap();
+        Model model = modelWrap.getModel();
+        model.set( "R_CREATE", get( "R_CREATE" ) )
+             .set( "S_CREATE", get( "S_CREATE" ) )
+             .set( "T_CREATE", new Date() )
+             .set( "R_UPDATE", get( "R_UPDATE" ) )
+             .set( "S_UPDATE", get( "S_UPDATE" ) )
+             .set( "T_UPDATE", new Date() )
+             .set( "R_TENANT", get( "R_TENANT" ) )
+             .set( "S_TENANT", get( "S_TENANT" ) )
+             .set( "P_TENANT", get( "P_TENANT" ) );
 
-        Record record = new Record()
-                .set( "R_CREATE", get( "R_CREATE" ) )
-                .set( "S_CREATE", get( "S_CREATE" ) )
-                .set( "T_CREATE", new Date() )
-                .set( "R_UPDATE", get( "R_UPDATE" ) )
-                .set( "S_UPDATE", get( "S_UPDATE" ) )
-                .set( "T_UPDATE", new Date() )
-                .set( "R_TENANT", get( "R_TENANT" ) )
-                .set( "S_TENANT", get( "S_TENANT" ) )
-                .set( "P_TENANT", get( "P_TENANT" ) );
-        boolean success = Db.save( tableName, "SID", record );
-        setTemplateFileId( record.getLong( "SID" ).intValue() );
+        boolean success = model.save();
+        setTemplateFileId( model.getInt( modelWrap.getTable().getPrimaryKey() ) );
 
         return success;
     }

@@ -17,6 +17,10 @@ public class CacheManager {
     private static CacheManager me = new CacheManager();
     private final Map<String, ICache<?>> caches = new LinkedHashMap<>();
 
+    public static CacheManager me() {
+        return me;
+    }
+
     /**
      * 注册缓存
      */
@@ -37,7 +41,10 @@ public class CacheManager {
      */
     @SuppressWarnings("unchecked")
     public <T extends ICache<?>> T getCache( Class<T> clazz ) {
-        return (T) caches.get( clazz.getName() );
+        for ( Object cache : caches.values() ) {
+            if ( clazz.isAssignableFrom( cache.getClass() ) ) return (T) cache;
+        }
+        throw new RuntimeException( "not exits cache " + clazz.getName() );
     }
 
     /**
@@ -63,9 +70,5 @@ public class CacheManager {
         for ( ICache<?> cache : caches.values() ) {
             cache.clear();
         }
-    }
-
-    public static CacheManager me() {
-        return me;
     }
 }
