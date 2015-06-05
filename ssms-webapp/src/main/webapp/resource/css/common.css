@@ -78,7 +78,7 @@
     margin-bottom: 5px
 }
 
-input.readonly{
+input.readonly {
     border: 0;
     line-height: 30px;
     height: 30px;
@@ -151,3 +151,68 @@ input.readonly,
     padding-bottom: 10px;
     border-bottom: 1px solid #CCCCCC;
 }
+
+/* @group uploader */
+
+.uploader {
+
+}
+
+.uploader .container {
+
+}
+
+.uploader .container .file {
+    height: 20px;
+    border-bottom: 1px dotted #ccc;
+}
+
+.uploader .container .file .filename {
+
+}
+
+.uploader .container .file .filesize {
+
+}
+
+.uploader .container .file .download {
+
+}
+
+.uploader .container .file .delete {
+
+}
+
+.uploader .btn_choose {
+
+}
+
+.uploader .btn_upload {
+
+}
+
+.uploader .console {
+
+}
+
+.uploader .loadingError {
+
+}
+
+/* @end */
+
+/* @group dataPager */
+.ko-dataPage-pageLinks {
+    margin-bottom: 1em;
+}
+
+.ko-dataPage-pageLinks a {
+    padding: 0.5em;
+}
+
+.ko-dataPage-pageLinks a.selected {
+    background-color: #4040ca;
+    color: White;
+}
+
+/* @end */

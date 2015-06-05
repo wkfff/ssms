@@ -9,6 +9,7 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
+import com.lanstar.controller.system.*;
 
 public class SystemRoutes extends Routes {
     private static Routes me = new SystemRoutes();
@@ -30,11 +31,13 @@ public class SystemRoutes extends Routes {
         add( "/sys/stdtmp_file", com.lanstar.controller.system.TemplateFileController.class );
         add( "/sys/stdtmp_grade", com.lanstar.controller.system.TemplateGradeController.class );
         add( "/sys/stdtmp_rep", com.lanstar.controller.system.TemplateRepController.class );
-        add( "/sys/stdtmp_file_01", com.lanstar.controller.system.TemplateFileController01.class );
-        add( "/sys/stdtmp_file_02", com.lanstar.controller.system.TemplateFileController02.class );
-        add( "/sys/stdtmp_file_03", com.lanstar.controller.system.TemplateFileController03.class );
-        add( "/sys/stdtmp_file_04", com.lanstar.controller.system.TemplateFileController04.class );
-        add( "/sys/stdtmp_file_05", com.lanstar.controller.system.TemplateFileController05.class );
+        add( "/sys/stdtmp_file_01", TemplateFile01Controller.class );
+        add( "/sys/stdtmp_file_02", TemplateFile02Controller.class );
+        add( "/sys/stdtmp_file_03", TemplateFile03Controller.class );
+        add( "/sys/stdtmp_file_04", TemplateFile04Controller.class );
+        add( "/sys/stdtmp_file_05", TemplateFile05Controller.class );
+        add( "/sys/stdtmp_file_06", TemplateFile06Controller.class );
+        add( "/sys/stdtmp_file_06/item", TemplateFile06ItemController.class );
 
         add( "/sys/para_multi", com.lanstar.controller.system.MultiParaController.class );
         add( "/sys/industry", com.lanstar.controller.system.IndustryController.class );

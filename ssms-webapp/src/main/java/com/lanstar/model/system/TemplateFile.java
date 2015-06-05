@@ -8,9 +8,10 @@
 
 package com.lanstar.model.system;
 
+import com.google.common.collect.Lists;
 import com.lanstar.common.StandardTemplateFileKit;
 import com.lanstar.plugin.activerecord.Db;
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.AttachTextService;
@@ -18,28 +19,15 @@ import com.lanstar.service.AttachTextService;
 import java.util.Date;
 import java.util.List;
 
-public class TemplateFile extends Model<TemplateFile> {
+public class TemplateFile extends ModelExt<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
 
     public static List<TemplateFile> list( Integer folderId ) {
         return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFiles" ), folderId );
     }
 
-    public String getTemplateFileCode() {
-        return getStr( "P_TMPFILE" );
-    }
-
-    public Integer getTemplateFileId() {
-        return getInt( "R_TMPFILE" );
-    }
-
-    public void setTemplateFileId( Integer id ) {
-        set( "R_TMPFILE", id );
-    }
-
-    public Record getFileContent() {
-        String tableName = getTableName();
-        return Db.findById( tableName, "SID", getTemplateFileId() );
+    public static TemplateFile findByFileContent( String fileCode, int fileId ) {
+        return dao.findFirstByColumns( Lists.newArrayList( "P_TMPFILE", "R_TMPFILE" ), Lists.newArrayList( fileCode, (Object) fileId ) );
     }
 
     @Override
@@ -68,6 +56,23 @@ public class TemplateFile extends Model<TemplateFile> {
         return super.save();
     }
 
+    public String getTemplateFileCode() {
+        return getStr( "P_TMPFILE" );
+    }
+
+    public Integer getTemplateFileId() {
+        return getInt( "R_TMPFILE" );
+    }
+
+    public void setTemplateFileId( Integer id ) {
+        set( "R_TMPFILE", id );
+    }
+
+    public Record getFileContent() {
+        String tableName = getTableName();
+        return Db.findById( tableName, "SID", getTemplateFileId() );
+    }
+
     public Integer getId() {
         return getInt( "SID" );
     }
@@ -80,6 +85,8 @@ public class TemplateFile extends Model<TemplateFile> {
         return AttachTextService.SYSTEM.getContent(
                 "STDTMP_FILE_" + getTemplateFileCode(), "C_CONTENT", getTemplateFileId() );
     }
+
+    private String getTableName() {return StandardTemplateFileKit.getSystemTableName( getTemplateFileCode() );}
 
     private boolean initFileContent() {
         String tableName = getTableName();
@@ -98,11 +105,5 @@ public class TemplateFile extends Model<TemplateFile> {
         setTemplateFileId( record.getLong( "SID" ).intValue() );
 
         return success;
-    }
-
-    private String getTableName() {return StandardTemplateFileKit.getSystemTableName( getTemplateFileCode() );}
-
-    public static TemplateFile findByFileContent(String fileCode, int fileId){
-        dao.findFirst( "SELECT * FROM " )
     }
 }
