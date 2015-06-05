@@ -67,7 +67,7 @@
         <span class="control">
             <input data-bind="numberboxValue:N_CYCLE" style="width: 50px"/>
             <input data-bind="comboboxSource:cycleSource,comboboxValue:P_CYCLE,comboboxText:S_CYCLE,easyuiOptions:paramViewSettings" style="width: 50px"/>
-            <label><input data-bind="booleanValue: B_REMIND"/>是否提醒</label>
+            <label><input type="checkbox" data-bind="booleanValue: B_REMIND"/>是否提醒</label>
         </span>
     </p>
 
