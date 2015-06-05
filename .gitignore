@@ -41,3 +41,5 @@ logs
 node_modules
 dist
 .tscache
+
+SSMS_DATA
