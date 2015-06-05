@@ -16,7 +16,7 @@ import com.lanstar.plugin.activerecord.*;
 import com.lanstar.plugin.tlds.DsKit;
 import com.lanstar.service.AttachFileService;
 import com.lanstar.service.AttachTextService;
-import com.lanstar.service.EnterpriseService;
+import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.review.ReviewService;
 
 import java.util.*;

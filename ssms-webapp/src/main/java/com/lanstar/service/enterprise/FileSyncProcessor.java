@@ -6,14 +6,12 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.service.tmpsync;
+package com.lanstar.service.enterprise;
 
-import com.lanstar.common.ModelInjector;
 import com.lanstar.common.log.Logger;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
-import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
 class FileSyncProcessor implements SyncProcessor {
@@ -30,7 +28,7 @@ class FileSyncProcessor implements SyncProcessor {
     @Override
     public void sync( IdentityContext target ) {
         log.debug( "========>开始同步文件[%s->%s]...", tenantFolder.getName(), systemFile.getName() );
-        // 同步文件信息
+        // 获取或创建租户文件
         com.lanstar.model.tenant.TemplateFile tenantFile =
                 com.lanstar.model.tenant.TemplateFile.dao.findFirst(
                         SqlKit.sql( "tenant.templateFile.getFileByFileTmp" ),
@@ -38,25 +36,9 @@ class FileSyncProcessor implements SyncProcessor {
                         this.tenantFolder.getId(),
                         target.getTenantId(),
                         target.getTenantType().getName() );
-
         if ( tenantFile == null ) tenantFile = new com.lanstar.model.tenant.TemplateFile();
-        ModelKit.copyColumnsSkipEquals( systemFile, tenantFile,
-                "C_NAME", "C_DESC", "B_REMIND", "N_CYCLE", "P_CYCLE", "S_CYCLE", "C_EXPLAIN", "P_TMPFILE", "S_TMPFILE", "N_STATE", "B_DELETE", "N_INDEX", "N_VERSION" );
-        if ( tenantFile.isModified() ) {
-            // tenantFile.setTenant(target.getIdentity() );
-            ModelInjector.injectOpreator( tenantFile, target );
-        }
-        if ( tenantFile.getInt( "SID" ) == null ) {
-            log.debug( "================>文件不存在，创建文件中..." );
-            // 新建模板文件，要同步拷贝文件内容。
-            tenantFile.setSourceFile( systemFile );
-            tenantFile.setFolder( tenantFolder );
-            log.debug( "================>拷贝文件内容->表单数据..." );
-            tenantFile.setFileContent( systemFile.getFileContent() );
-            log.debug( "================>拷贝文件内容->富文本数据..." );
-            tenantFile.setAttachText( systemFile.getAttachText(), target );
-            tenantFile.save();
-            log.debug( "========>创建文件完成..." );
-        } else tenantFile.update();
+
+        // 同步文件
+        systemFile.getTemplateProp().sync( systemFile, tenantFile, tenantFolder, target );
     }
 }

@@ -10,6 +10,7 @@ package com.lanstar.common;
 
 import com.lanstar.plugin.staticcache.CacheManager;
 import com.lanstar.plugin.staticcache.StandardTemplateCache;
+import com.lanstar.plugin.staticcache.TemplateProp;
 import com.lanstar.service.Parameter;
 
 import java.util.ArrayList;
@@ -20,7 +21,8 @@ public abstract class StandardTemplateFileKit {
         List<Parameter> list = new ArrayList<>();
         StandardTemplateCache templateCache = CacheManager.me().getCache( StandardTemplateCache.class );
         for ( String key : templateCache.getKeys() ) {
-            list.add( new Parameter( key, templateCache.getValue( key ) ) );
+            TemplateProp prop = templateCache.getValue( key );
+            list.add( prop.getParameter() );
         }
         return list;
     }
@@ -30,11 +32,11 @@ public abstract class StandardTemplateFileKit {
      *
      * @param code 文件类型编码
      */
-    public static String getSystemTableName( String code ) {
+    /*public static String getSystemTableName( String code ) {
         return "SYS_STDTMP_FILE_" + code;
     }
 
     public static String getTenantTableName( String code ) {
         return "SSM_STDTMP_FILE_" + code;
-    }
+    }*/
 }

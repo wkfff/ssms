@@ -84,7 +84,7 @@
     <div data-options="region:'center'" >
         <div id="db_tb">
             <div class="db_tb">
-                <input data-bind="booleanValue:noComplete"/>
+                <input type="checkbox" data-bind="booleanValue:noComplete"/>
                 <a href="javascript:void(0)" data-bind="click:gridEvents.noCompleteClick">只显示未评审项</a>
             </div>
         </div>

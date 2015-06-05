@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.service.tmpsync;
+package com.lanstar.service.enterprise;
 
 import com.lanstar.common.log.Logger;
 import com.lanstar.identity.IdentityContext;
@@ -15,12 +15,16 @@ import com.lanstar.model.system.TemplateFolder;
 
 import java.util.List;
 
-public class TemplateSyncProcessor implements SyncProcessor {
+class TemplateSyncProcessor implements SyncProcessor {
     private static final Logger log = Logger.getLogger( TemplateSyncProcessor.class );
     private final Template template;
 
     public TemplateSyncProcessor( Template template ) {
         this.template = template;
+    }
+
+    public static void process( Template template, IdentityContext identityContext ) {
+        new TemplateSyncProcessor( template ).sync( identityContext );
     }
 
     @Override

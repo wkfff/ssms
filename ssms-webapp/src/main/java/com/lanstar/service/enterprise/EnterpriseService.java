@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.service;
+package com.lanstar.service.enterprise;
 
 import com.lanstar.identity.TenantContext;
 import com.lanstar.identity.TenantType;

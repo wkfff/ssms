@@ -8,12 +8,24 @@
 
 package com.lanstar.model.tenant;
 
-import com.lanstar.common.StandardTemplateFileKit;
-import com.lanstar.identity.IdentityContext;
-import com.lanstar.plugin.activerecord.*;
+import com.google.common.collect.Lists;
+import com.lanstar.plugin.activerecord.ModelExt;
+import com.lanstar.plugin.staticcache.CacheManager;
+import com.lanstar.plugin.staticcache.TemplateProp;
+import com.lanstar.template.TemplatePropCache;
 
-public class TemplateFile extends Model<TemplateFile> {
+public class TemplateFile extends ModelExt<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
+
+    public static TemplateFile findByFileContent( String fileCode, int fileId ) {
+        return dao.findFirstByColumns( Lists.newArrayList( "P_TMPFILE", "R_TMPFILE" ), Lists.newArrayList( fileCode, (Object) fileId ) );
+    }
+
+    /** 获取模板属性 */
+    public TemplateProp getTemplateProp() {
+        TemplatePropCache cache = CacheManager.me().getCache( TemplatePropCache.class );
+        return cache.getValue( getTemplateFileCode() );
+    }
 
     public Integer getId() {
         return getInt( "SID" );
@@ -31,26 +43,8 @@ public class TemplateFile extends Model<TemplateFile> {
         set( "R_TMPFILE", id );
     }
 
-    public Record getFileContent() {
-        Config config = DbKit.getConfig( TemplateFile.class );
-        DbPro dbPro = DbPro.use( config.getName() );
-        String tableName = getTableName();
-        return dbPro.findById( tableName, "SID", getTemplateFileId() );
-    }
-
-    public void setFileContent( Record content ) {
-        if (content == null) return;
-        Config config = DbKit.getConfig( TemplateFile.class );
-        DbPro dbPro = DbPro.use( config.getName() );
-        String tableName = getTableName();
-        Record record = new Record();
-        record.setColumns( content );
-        record.remove( "SID", "R_TENANT", "S_TENANT", "P_TENANT" );
-        record.set( "R_TENANT", get( "R_TENANT" ) );
-        record.set( "S_TENANT", get( "S_TENANT" ) );
-        record.set( "P_TENANT", get( "P_TENANT" ) );
-        dbPro.save( tableName, "SID", record );
-        setTemplateFileId( record.getLong( "SID" ).intValue() );
+    public Integer getSourceFileId() {
+        return getInt( "R_SOURCE" );
     }
 
     public void setFolder( TemplateFolder tenantFolder ) {
@@ -61,16 +55,5 @@ public class TemplateFile extends Model<TemplateFile> {
     public void setSourceFile( com.lanstar.model.system.TemplateFile file ) {
         set( "R_SOURCE", file.getId() );
     }
-
-    public Integer getSourceFileId() {
-        return getInt( "R_SOURCE" );
-    }
-
-    public void setAttachText( String attachText, IdentityContext target ) {
-        target.getAttachTextService()
-              .save( "STDTMP_FILE_" + getTemplateFileCode(), "C_CONTENT", getTemplateFileId(), attachText, target );
-    }
-
-    private String getTableName() {return StandardTemplateFileKit.getTenantTableName( getTemplateFileCode() );}
 }
 

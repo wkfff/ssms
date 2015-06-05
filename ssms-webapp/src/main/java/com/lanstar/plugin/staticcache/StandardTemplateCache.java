@@ -8,21 +8,24 @@
 
 package com.lanstar.plugin.staticcache;
 
-import com.google.common.collect.Maps;
-import com.lanstar.common.kit.Prop;
-import com.lanstar.common.kit.PropKit;
-
 import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
 
-public class StandardTemplateCache extends Cache<String> {
-    @Override
-    protected void load( Map<String, String> pools ) {
-        Prop prop = PropKit.use( "stdtmpmap.properties" );
-        pools.putAll( Maps.fromProperties( prop.getProperties() ) );
+public class StandardTemplateCache extends Cache<TemplateProp> {
+    private final Map<String, TemplateProp> map = new ConcurrentSkipListMap<>();
+
+    public final StandardTemplateCache add( TemplateProp prop ) {
+        map.put( prop.getCode(), prop );
+        return this;
     }
 
     @Override
     public String getName() {
         return "标准模板映射信息";
+    }
+
+    @Override
+    protected void load( Map<String, TemplateProp> pools ) {
+        pools.putAll( map );
     }
 }

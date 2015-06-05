@@ -9,6 +9,7 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
+import com.lanstar.controller.government.HomeController;
 
 public class GovernmentRoutes extends Routes {
     private static Routes me = new GovernmentRoutes();
@@ -19,6 +20,6 @@ public class GovernmentRoutes extends Routes {
 
     @Override
     public void config() {
-        add( "/g", com.lanstar.controller.government.HomeController.class );
+        add( "/g", HomeController.class );
     }
 }

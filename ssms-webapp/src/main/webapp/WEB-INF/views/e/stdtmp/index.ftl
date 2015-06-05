@@ -6,6 +6,7 @@
 <script type="text/javascript" src="/resource/js/kindeditor/kindeditor.js"></script>
 <script type="text/javascript" src="/resource/js/kindeditor/plugins/autoheight/autoheight.js"></script>
 <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
+<script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
 <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
 <script type="text/javascript" src="/resource/js/knockout/upload.js"></script>
 <script type="text/javascript" src="/resource/js/knockout/dataPager.js"></script>
@@ -42,7 +43,7 @@
         </div>
     </div>
     <div data-options="region:'center', border:false">
-        <div id="content" class="easyui-panel" data-options="onLoad: onLoad" fit="true" title="${firstRec.text}" href="${firstRec.attributes.C_URL!}"></div>
+        <div id="content" class="easyui-panel" style="position: relative;" data-options="onLoad: onLoad" fit="true" title="${firstRec.text}" href="${firstRec.attributes.C_URL!}"></div>
     </div>
 </div>
 </@>

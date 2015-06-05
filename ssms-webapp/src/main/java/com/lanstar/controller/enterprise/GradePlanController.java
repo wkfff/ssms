@@ -15,7 +15,7 @@ import com.lanstar.model.tenant.GradeContent;
 import com.lanstar.model.tenant.GradePlan;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
-import com.lanstar.service.ProfessionService;
+import com.lanstar.service.enterprise.ProfessionService;
 
 public class GradePlanController extends SimplateController<GradePlan> {
     boolean isNew = false;

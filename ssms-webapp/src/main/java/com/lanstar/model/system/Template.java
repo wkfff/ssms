@@ -16,7 +16,7 @@ import java.util.List;
 public class Template extends Model<Template> {
     public static final Template dao = new Template();
 
-    public static Template list( int professionId ) {
+    public static Template getByProfession( int professionId ) {
         return dao.findFirst( SqlKit.sql( "system.template.list" ), professionId );
     }
 

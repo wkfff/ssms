@@ -25,6 +25,7 @@ function ViewModel(catalogId) {
             rownumbers: true,
             pagination: true,
             fit: true,
+            pageSize: 50,
             toolbar: '#toolbar',
             columns: [
                 [

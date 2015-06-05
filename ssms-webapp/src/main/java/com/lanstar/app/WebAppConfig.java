@@ -11,7 +11,6 @@ package com.lanstar.app;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-
 import com.lanstar.app.model.SystemModelMapping;
 import com.lanstar.app.model.TenantModelMapping;
 import com.lanstar.app.route.EnterpriseRoutes;
@@ -32,15 +31,13 @@ import com.lanstar.plugin.attachfile.SimpleResourceService;
 import com.lanstar.plugin.druid.DruidPlugin;
 import com.lanstar.plugin.quartz.QuartzPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
-import com.lanstar.plugin.staticcache.StandardTemplateCache;
 import com.lanstar.plugin.staticcache.StaticCachePlugin;
 import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
-
+import com.lanstar.template.TemplatePropCache;
 import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
-
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
@@ -50,37 +47,20 @@ public class WebAppConfig extends RapidwareConfig {
     @Override
     public void configConstant( Constants me ) {
         // 初始化日志
-        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-        try {
-            JoranConfigurator configurator = new JoranConfigurator();
-            configurator.setContext( context );
-            context.reset();
-            // 按顺序搜索配置文件
-            InputStream resource = ServletKit.getResource( "/logback.xml", "/WEB-INF/logback.xml" );
-            if ( resource == null )
-                resource = WebAppConfig.class.getResourceAsStream( "/logback.xml" );
-            configurator.doConfigure( resource );
-        } catch ( JoranException ignored ) {
-        }
+        initLog();
 
+        // 加载配置文件
         loadPropertyFile( "system.properties" );
+        // 设置开发是否为开发模式
         Boolean devMode = getPropertyToBoolean( "devMode", false );
-
-        me.setBaseViewPath( "/WEB-INF/views" );
         me.setDevMode( devMode );
-        me.setError404View( "404.html" );
-        configTemplate( FreeMarkerRender.getConfiguration(), devMode );
-    }
 
-    private void configTemplate( Configuration me, Boolean devMode ) {
-        try {
-            me.setSharedVariable( "_TITLE_", "安全生产标准化管理系统" );
-            me.setSharedVariable( "CONTEXT_PATH", Rapidware.me().getContextPath() );
-            me.setSharedVariable( "DEV_MODE", devMode );
-            // 添加JSON扩展方法               by 张铮彬#2015-5-7
-            me.setSharedVariable( "json", new JsonMethod() );
-        } catch ( TemplateModelException ignored ) {
-        }
+        // 配置模板
+        me.setBaseViewPath( "/WEB-INF/views" );
+        configTemplate( FreeMarkerRender.getConfiguration(), devMode );
+
+        // 配置错误页
+        me.setError404View( "404.html" );
     }
 
     @Override
@@ -94,36 +74,44 @@ public class WebAppConfig extends RapidwareConfig {
 
     @Override
     public void configPlugin( Plugins me ) {
+        // SqlInXmlPlugin配置
         me.add( new SqlInXmlPlugin().setPath( "/sqls" ) );
-        me.add( new StaticCachePlugin( new StandardTemplateCache() ) );
+        // 资源插件（文件管理）插件配置
         me.add( new ResourcePlugin( new SimpleResourceService( ServletKit.getRealPath( getProperty( "uploadPath", "SSMS_DATA" ) ) ) ) );
 
-        // main ds
+        // ================================================
+        // 数据库配置
+
+        // 1)主数据源配置
         DruidPlugin c3p0Plugin = new DruidPlugin( getProperty( "jdbc_url" ), getProperty( "jdbc_user" ), getProperty( "jdbc_password" ) );
         me.add( c3p0Plugin );
 
-        // tenant ds
+        // 2)租户数据源配置
         ThreadLocalDataSourcePlugin threadLocalDataSourcePlugin = new ThreadLocalDataSourcePlugin();
         // TODO: add tenant db config
         threadLocalDataSourcePlugin.set( "tenant0", c3p0Plugin );
         me.add( threadLocalDataSourcePlugin );
 
+        // 3)主数据库配置
         ActiveRecordPlugin arp = new ActiveRecordPlugin( c3p0Plugin )
                 .setShowSql( true )
                 .setContainerFactory( new CaseInsensitiveContainerFactory() );
         me.add( arp );
         new SystemModelMapping().mappingTo( arp );
 
-        // tenant ds
+        // 4)租户数据库配置 ds
         ActiveRecordPlugin arp2 = new ActiveRecordPlugin( Const.TENANT_DB_NAME, c3p0Plugin )
                 .setShowSql( true )
                 .setContainerFactory( new CaseInsensitiveContainerFactory() );
         me.add( arp2 );
         new TenantModelMapping().mappingTo( arp );
+        // ================================================
 
-        //任务调度
-        QuartzPlugin quartzPlugin = new QuartzPlugin("quartz_jobs.properties","quartz.properties");
+        // 任务调度插件配置
+        QuartzPlugin quartzPlugin = new QuartzPlugin( "quartz_jobs.properties", "quartz.properties" );
         me.add( quartzPlugin );
+        // 静态缓存插件配置
+        me.add( new StaticCachePlugin( new TemplatePropCache() ) );
     }
 
     @Override
@@ -139,6 +127,33 @@ public class WebAppConfig extends RapidwareConfig {
         me.add( new ActionJsHandle() );
     }
 
+    private void initLog() {// 初始化日志
+        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+        try {
+            JoranConfigurator configurator = new JoranConfigurator();
+            configurator.setContext( context );
+            context.reset();
+            // 按顺序搜索配置文件
+            InputStream resource = ServletKit.getResource( "/logback.xml", "/WEB-INF/logback.xml" );
+            if ( resource == null )
+                resource = WebAppConfig.class.getResourceAsStream( "/logback.xml" );
+            configurator.doConfigure( resource );
+        } catch ( JoranException ignored ) {
+        }
+    }
+
+    private void configTemplate( Configuration me, Boolean devMode ) {
+        try {
+            me.setSharedVariable( "_TITLE_", "安全生产标准化管理系统" );
+            me.setSharedVariable( "CONTEXT_PATH", Rapidware.me().getContextPath() );
+            me.setSharedVariable( "DEV_MODE", devMode );
+            // 添加JSON扩展方法               by 张铮彬#2015-5-7
+            me.setSharedVariable( "json", new JsonMethod() );
+        } catch ( TemplateModelException ignored ) {
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
     private class JsonMethod implements TemplateMethodModelEx {
         @Override
         public Object exec( List arguments ) throws TemplateModelException {

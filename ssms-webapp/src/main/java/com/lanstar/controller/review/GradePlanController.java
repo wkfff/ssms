@@ -7,35 +7,22 @@
  */
 package com.lanstar.controller.review;
 
-import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
-import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.lanstar.app.Const;
 import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.controller.SimplateController;
-import com.lanstar.identity.Tenant;
-import com.lanstar.identity.TenantContext;
-import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Enterprise;
-import com.lanstar.model.tenant.GradeContent;
-import com.lanstar.model.tenant.GradeContentR;
-import com.lanstar.model.tenant.GradePlan;
 import com.lanstar.model.tenant.GradePlanR;
-import com.lanstar.plugin.activerecord.Config;
 import com.lanstar.plugin.activerecord.Db;
-import com.lanstar.plugin.activerecord.DbKit;
-import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.Page;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
-import com.lanstar.plugin.sqlinxml.SqlKit;
-import com.lanstar.service.ProfessionService;
 import com.lanstar.service.review.ReviewService;
+
+import java.util.List;
+
+import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
+import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
 
 /**
  * 评审
@@ -54,7 +41,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
     public void select() {
 
     }
-    
+
     public void select2() {
 
     }
@@ -92,7 +79,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
             model.setState( ReviewState.START.getValue() );
         }
     }
-   
+
     @Override
     protected void afterSave( GradePlanR model ) {
         Integer sid = model.getInt( "SID" );
@@ -103,7 +90,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
             Enterprise enterprise = Enterprise.dao.findById(eid);
             enterprise.setReview( enterprise );
             enterprise.setGradeState( ReviewState.START.getValue() );
-            
+
             // 获取评审服务
             ReviewService service  = this.identityContext.getReviewService(enterprise);
             // 同步企业的自评数据
@@ -204,13 +191,13 @@ public class GradePlanController extends SimplateController<GradePlanR> {
     public void history(){
 
     }
-    
+
     @Override
     protected SqlBuilder buildOrder() {
         SqlBuilder builder = new SqlBuilder();
         builder.ORDER_BY( "T_END DESC" );
         return builder;
     }
-    
-    
+
+
 }

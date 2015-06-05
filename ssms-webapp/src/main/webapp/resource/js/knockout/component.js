@@ -1258,9 +1258,9 @@ ko.bindingHandlers.formValue = {
 
     ko.bindingHandlers.booleanValue = {
         init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            if (element.type !== 'checkbox') element.type = "checkbox";
+            var $element = $(element);
             var value = valueAccessor();
-            $(element).change(function (e) {
+            $element.change(function (e) {
                 value($(this).prop("checked") ? 1 : 0);
             }).prop('checked', value() === 1);
         },

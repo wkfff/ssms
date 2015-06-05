@@ -11,7 +11,7 @@ package com.lanstar.controller.enterprise;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Profession;
-import com.lanstar.service.EnterpriseService;
+import com.lanstar.service.enterprise.EnterpriseService;
 
 import java.util.List;
 
