@@ -116,14 +116,14 @@ ${footer}</html>
                         <li class="split">|</li>
                         <li class="action"><a href="/"> 首页 </a></li>
                         
-                        <#if LANSTAR_IDENTITY.tenantType='E' && profession??>
+                        <#if LANSTAR_IDENTITY.tenantType='E' && LANSTAR_IDENTITY.enterpriseService.professionService??>
                         <li class="split">|</li>
                         <li class="action">
-                            <a href="#" onclick="opChoose()" title="点击切换专业">专业:${profession.name}  <b class="c-icon c-icon-triangle-down"></b></a>
+                            <a href="#" onclick="opChoose()" title="点击切换专业">专业:${LANSTAR_IDENTITY.enterpriseService.professionService.name}  <b class="c-icon c-icon-triangle-down"></b></a>
                         </li>
                         </#if>
                         <li class="split">|</li>
-                        <li class="action">${LANSTAR_IDENTITY.tenantName}</a>
+                        <li class="action">${LANSTAR_IDENTITY.tenantName}</a></li>
                     </ul>
                 </div>
             </div>
