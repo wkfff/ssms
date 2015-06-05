@@ -11,7 +11,6 @@ package com.lanstar.app;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-
 import com.lanstar.app.model.SystemModelMapping;
 import com.lanstar.app.model.TenantModelMapping;
 import com.lanstar.app.route.EnterpriseRoutes;
@@ -32,15 +31,13 @@ import com.lanstar.plugin.attachfile.SimpleResourceService;
 import com.lanstar.plugin.druid.DruidPlugin;
 import com.lanstar.plugin.quartz.QuartzPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
-import com.lanstar.plugin.staticcache.StandardTemplateCache;
 import com.lanstar.plugin.staticcache.StaticCachePlugin;
 import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
-
+import com.lanstar.template.TemplatePropCache;
 import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
-
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
@@ -61,7 +58,7 @@ public class WebAppConfig extends RapidwareConfig {
         // 配置模板
         me.setBaseViewPath( "/WEB-INF/views" );
         configTemplate( FreeMarkerRender.getConfiguration(), devMode );
-        
+
         // 配置错误页
         me.setError404View( "404.html" );
     }
