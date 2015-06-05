@@ -55,7 +55,8 @@ module.exports = function (grunt) {
                         'main/webapp/resource/js/knockout/knockout.debug.js',
                         'main/webapp/resource/js/knockout/knockout.mapping.debug.js',
                         'main/webapp/resource/js/knockout/component.js',
-                        'main/webapp/resource/js/knockout/upload.js'
+                        'main/webapp/resource/js/knockout/upload.js',
+                        'main/webapp/resource/js/knockout/dataPager.js'
                     ]
                 }
             },
