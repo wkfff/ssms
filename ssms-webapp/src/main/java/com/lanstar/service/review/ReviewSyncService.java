@@ -8,7 +8,14 @@
 
 package com.lanstar.service.review;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.lanstar.identity.TenantContext;
+import com.lanstar.model.system.Enterprise;
+import com.lanstar.model.tenant.GradeContent;
+import com.lanstar.model.tenant.GradeContentR;
+import com.lanstar.plugin.activerecord.ModelKit;
 
 class ReviewSyncService {
     private final TenantContext source;
@@ -19,12 +26,29 @@ class ReviewSyncService {
         this.target = target;
     }
 
-    public static boolean sync( TenantContext source, TenantContext target ) {
-        return new ReviewSyncService(source, target).execute();
+    public static boolean sync( TenantContext source, TenantContext target,int sid) {
+        return new ReviewSyncService(source, target).execute(sid);
     }
-
-    private boolean execute() {
-        // TODO 同步企业的部分数据到评审中
+    
+    /**
+     * 同步企业的自评数据到评审中
+     */
+    private boolean execute(int r_sid) {
+        try{
+            String sql = "select";
+            source.getTenantDb().find( sql ,GradeContent.class,r_sid);
+            List<GradeContent> list = new ArrayList<GradeContent>();
+            
+            for(GradeContent gc:list){
+                GradeContentR gcr = new GradeContentR();
+                ModelKit.copyColumns( gc, gcr, "C_CATEGORY","C_PROJECT","C_REQUEST","C_CONTENT","N_SCORE","C_METHOD","C_DESC","B_BLANK","N_SCORE_REAL" );
+                gcr.setR_SID( r_sid );
+                gcr.save();
+                return true;
+            }
+        }catch(Exception e){
+            
+        }
         return false;
     }
 }

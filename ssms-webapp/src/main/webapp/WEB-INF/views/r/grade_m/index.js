@@ -42,11 +42,12 @@ function ViewModel(templateId) {
     
     var settings = {
         comboProSettings:{
-            url:'/sys/para_area/list?N_LEVEL=1',
+            /*url:'/sys/para_area/list?N_LEVEL=1',*/
             valueField:'C_CODE',
             textField:'C_VALUE'
         },
         comboCitySettings:{
+            url:'/sys/para_area/list?R_CODE=350000',
             valueField:'C_CODE',
             textField:'C_VALUE'
         },
@@ -56,7 +57,7 @@ function ViewModel(templateId) {
         },
         gridSettings: {
             idField: 'SID',
-            title:'评审',
+            title:'评审办理',
             url:'/r/grade_m/list_r',
             rownumbers: true,
             pagination: true,
@@ -77,11 +78,11 @@ function ViewModel(templateId) {
                     {
                         field: 'SID',
                         title: '评审',
-                        width: 120,
+                        width: 260,
                         align:'center',
                         formatter:function(value,row){
-                            var html = "<a href='/r/grade_m/rec?sid="+value+"'>评审</a>&nbsp;&nbsp;<a href='/r/grade_m/report_rec?sid="+value+"'>编辑评审报告</a>";
-                            if (row.N_STATE && row.N_STATE==0)
+                            var html = "<a href='/r/grade_m/rec?sid="+value+"'>评审</a>&nbsp;&nbsp;<a href='/r/grade_m/report_rec?sid="+value+"'>编辑评审报告</a>&nbsp;&nbsp;<a href='/r/grade_m/upload_rec?sid="+value+"'>上传评审结果</a>";
+                            if (row.N_STATE==0)
                             html +="&nbsp;&nbsp;<a href='javascript:undo("+value+");'>撤销误评审</a>";
                             return  html;
                         }
@@ -105,6 +106,8 @@ function ViewModel(templateId) {
                 var sid = self.sid();
                 var url = '/r/grade_m/rec?sid={0}'.format(sid);
                window.location.href = url;
+            },createClick:function(){
+                window.location.href = '/r/grade_m/select';
             }
         }
     };

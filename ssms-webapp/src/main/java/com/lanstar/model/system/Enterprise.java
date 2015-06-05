@@ -8,19 +8,19 @@
 
 package com.lanstar.model.system;
 
+import java.util.List;
+
 import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantType;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
-import java.util.List;
-
 public class Enterprise extends Model<Enterprise> implements Tenant {
     public static final Enterprise dao = new Enterprise();
 
     public EnterpriseUser getUser( String username, String password ) {
-        return EnterpriseUser.dao.findFirst( SqlKit.sql( "system.enterprise.getuser" ), username.toUpperCase(), password
-                .toUpperCase(), getStr( "SID" ) );
+        return EnterpriseUser.dao.findFirst( SqlKit.sql( "system.enterprise.getuser" ), username.toUpperCase(),
+                password.toUpperCase(), this.getStr( "SID" ) );
     }
 
     public static Enterprise findByCode( String code ) {
@@ -28,53 +28,91 @@ public class Enterprise extends Model<Enterprise> implements Tenant {
     }
 
     public List<EnterpriseProfession> listProfession() {
-        return EnterpriseProfession.listProfession( getId() );
+        return EnterpriseProfession.listProfession( this.getId() );
     }
 
     public String getCountyCode() {
-        return getStr( "P_COUNTY" );
+        return this.getStr( "P_COUNTY" );
     }
 
     @Override
     public int getTenantId() {
-        return getId();
+        return this.getId();
     }
 
     @Override
     public String getTenantName() {
-        return getName();
+        return this.getName();
     }
 
+    @Override
     public String getTenantCode() {
-        return getStr( "C_CODE" );
+        return this.getStr( "C_CODE" );
     }
 
     public void setTenantCode( String tenantCode ) {
-        set( "C_CODE", tenantCode );
+        this.set( "C_CODE", tenantCode );
     }
 
     public Integer getId() {
-        return getInt( "SID" );
+        return this.getInt( "SID" );
     }
 
     public String getName() {
-        return getStr( "C_NAME" );
+        return this.getStr( "C_NAME" );
     }
 
+    @Override
     public TenantType getTenantType() {
         return TenantType.ENTERPRISE;
     }
 
     @Override
     public boolean delete() {
-        set( "B_DELETE", 1 );
-        return update();
+        this.set( "B_DELETE", 1 );
+        return this.update();
     }
 
     @Override
     public boolean deleteById( Object id ) {
         Enterprise model = dao.findById( id );
         model.set( "B_DELETE", 1 );
-        return update();
+        return this.update();
+    }
+
+    /**
+     * 获取企业状态
+     */
+    public int getState() {
+        return this.getInt( "P_STATE" );
+    }
+
+    /**
+     * 设置企业状态
+     */
+    public void setState( int value ) {
+        this.set( "P_STATE", value );
+    }
+
+    /**
+     * 获取企业自评状态
+     */
+    public int getGradeState() {
+        return this.getInt( "N_STATE" );
+    }
+
+    /**
+     * 设置企业自评状态
+     */
+    public void setGradeState( int value ) {
+        this.set( "N_STATE", value );
+    }
+
+    /**
+     * @param tenant
+     */
+    public void setReview( Tenant tenant ) {
+        this.set( "R_REVIEW", tenant.getTenantId() );
+        this.set( "S_REVIEW", tenant.getTenantName() );
     }
 }

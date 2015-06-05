@@ -15,31 +15,33 @@ public  enum ReviewState {
     /**
      * 未开始
      */
-    NOSTART(-1),
-
+    NONE(-1),
     /**
      * 评审中
      */
-    DOING(0),
-
+    START(0),
     /**
-     * 已评审
+     * 已完成评审填报
      */
-    END(1),
+    CONTENT(1),
     /**
-     * 评审报告
+     * 已完成评审报告
      */
-    REP(2),
+    REPORT(2),
     /**
-     * 文件上传
+     * 已完成评审结果上传
      */
-    UPLOAD(3)
+    UPLOAD(3),
+    /**
+     * 评审结束
+     */
+    END(4)
     ;
 
     private int value;
 
-    ReviewState( int code) {
-        this.value = code;
+    ReviewState( int value) {
+        this.value = value;
     }
 
     public int getValue() {

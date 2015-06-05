@@ -17,7 +17,9 @@ import com.lanstar.model.system.TenantUser;
 import com.lanstar.render.CaptchaRender;
 
 public class HomeController extends Controller {
-
+    /**是否需要验证码*/
+    boolean bCheckCode = false;
+    
     public void index() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         setAttr( "nav", identityContext.getSystemNavgate() );
@@ -35,7 +37,7 @@ public class HomeController extends Controller {
             // 解析用户名格式
             String[] strings = StrKit.split( username, "@" );
             // 验证验证码
-            if ( CaptchaRender.validate( this, vCode ) == false ) {
+            if ( bCheckCode && CaptchaRender.validate( this, vCode ) == false ) {
                 setAttr( "state", "error" ).setAttr( "msg", "验证码不正确。" );
             } else if ( strings.length != 2 ) {
                 setAttr( "state", "error" ).setAttr( "msg", "用户名格式不正确。" );

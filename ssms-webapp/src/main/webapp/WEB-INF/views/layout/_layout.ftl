@@ -42,6 +42,7 @@ ${footer}</html>
     <link rel="stylesheet" href="/resource/css/base.css"/>
     <link rel="stylesheet" href="/resource/css/common.css"/>
     <link rel="stylesheet" href="/resource/css/index.css"/>
+    <link rel="stylesheet" href="/resource/css/kefu.css"/>
     <#--easyui-->
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
@@ -50,6 +51,7 @@ ${footer}</html>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/resource/js/core.js"></script>
     <script type="text/javascript" src="/resource/js/common.js"></script>
+    <script type="text/javascript" src="/resource/js/kefu.js"></script>
     ${header}</#local>
     <#local _footer>
     <#--首页脚本-->
@@ -123,15 +125,8 @@ ${footer}</html>
         <div id="bd">
             <#nested />
         </div>
-        <div id="ft" class="ue-clear">
-            <div class="ft-left">
-                <span>福建永创意信息科技有限公司,福州蓝石电子有限公司</span>
-                <em>版权所有</em>
-            </div>
-            <div class="ft-right">
-                <span>福州蓝石电子有限公司</span>
-                <em>技术支持</em>
-            </div>
+        <div id="ft" class="ue-clear" style="text-align:center;">
+            <span style="color:#EEE;">copyright @2015 福建永创意信息科技有限公司,福州蓝石电子有限公司</span>
         </div>
     </div>
         <#if LANSTAR_IDENTITY.tenantType='E'>${EnterpriseProcession!}</#if>

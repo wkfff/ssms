@@ -7,6 +7,9 @@
     .content {
         height: 100%;
     }
+    .ft{
+        text-align:center;
+    }
 </style>
 </#assign>
 <#assign _footer>
@@ -65,8 +68,8 @@
             </div>-->
             </div>
             <div class="tool_bar ue-clear">
-                <a href="/" class="home-btn">首页</a>
-                <a href="javascript:void(0);" class="quit-btn exit"></a>
+                <a href="/" class="home-btn" title="打开首页">首页</a>
+                <a href="javascript:void(0);" class="quit-btn exit" title="退出系统"></a>
             </div>
         </div>
     </div>
@@ -95,13 +98,13 @@
 
                     <li class="gongwen">
                         <div class="nav-header">
-                            <a href="javascript:void(0);" data-src="/test.html" class="ue-clear"><span>填写评审表格</span><i class="icon"></i></a>
+                            <a href="javascript:void(0);" data-src="/r/grade_m/index" class="ue-clear"><span>填写评审表格</span><i class="icon"></i></a>
                         </div>
                     </li>
 
                     <li class="konwledge">
                         <div class="nav-header">
-                            <a href="javascript:void(0);" data-src="/test.html" class="ue-clear"><span>填写评审报告</span><i class="icon"></i></a>
+                            <a href="javascript:void(0);" data-src="/r/grade_m/report_rec?sid=${sid!}" class="ue-clear"><span>填写评审报告</span><i class="icon"></i></a>
                         </div>
                     </li>
 
@@ -119,15 +122,8 @@
             </div>
         </div>
     </div>
-    <div id="ft" class="ue-clear">
-        <div class="ft-left">
-            <span>福建永创意信息科技有限公司,福州蓝石电子有限公司</span>
-            <em>版权所有</em>
-        </div>
-        <div class="ft-right">
-            <span>福州蓝石电子有限公司</span>
-            <em>技术支持</em>
-        </div>
+    <div id="ft" class="ft ue-clear">
+        <span>Copyright © 2015 福建永创意信息科技有限公司,福州蓝石电子有限公司 , All Rights Reserved.</span>
     </div>
 </div>
 </@>
