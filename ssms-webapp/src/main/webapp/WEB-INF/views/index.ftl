@@ -36,9 +36,9 @@
     <div class="sidebar">
         <h2 class="sidebar-header"><p>功能导航</p></h2>
         <ul class="nav">
-            <li class="office current">
+            <li class="home current">
                 <div class="nav-header">
-                    <a href="javascript:void(0);" date-src="home.html" class="ue-clear"><span>首页</span><i class="icon"></i></a>
+                    <a href="javascript:void(0);" date-src="${BASE_PATH}/home" class="ue-clear"><span>首页</span><i class="icon"></i></a>
                 </div>
             </li>
             <#list nav as map>

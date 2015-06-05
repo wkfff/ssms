@@ -1,77 +1,21 @@
-﻿body {
-	font-family: Arial, Helvetica, Verdana, sans-serif;
-	background: #fff;
-	font-size: 12px;
-	margin: 0;
-	padding: 0;
-	color: #333;
-}
-h1, h2, h3, h4, h5, h6 {
-	font-size: 12px;
-}
-ol, ul, li, p, h1, h2, h3, h4, h5, h6, dl, dt, dd, form, input, fieldset, select, textarea, object, embed {
-	margin: 0;
-	padding: 0;
-}
-input, img {
-	vertical-align: middle;
-}
+﻿*{ margin:0; padding:0; list-style:none;}
+img{ border:0;}
 
-
-.services {
-	float: left;
-}
-.services .con {
-	background: url(../images/kefu/service.gif) no-repeat 0 0;
-	width: 127px;
-	height: 368px;
-	position: relative;
-}
-.services .shares {
-	position: absolute;
-	left: 10px;
-	top: 275px;
-	white-space: nowrap;
-	color: #666;
-}
-.services .shares img {
-	margin-right: 5px;
-}
-.services li {
-	text-align: center;
-}
-.services .qq {
-	padding-top: 105px;
-}
-.services .name {
-	padding-top: 8px;
-	float: left;
-	display: block;
-	width: 60px;
-	text-align: right;
-}
-#kf .s-btn {
-	background-position: 0 -89px;
-	width: 38px;
-	height: 198px;
-	margin-top: 104px;
-	float: left;
-}
-#kf .Obtn {
-	background: url(../images/kefu/service.gif) no-repeat -331px -53px;
-	float: left;
-	width: 39px;
-	height: 197px;
-	margin-top: 30px;
-	margin-left: -1px;
-}
-#kf a.wx {
-	position: absolute;
-	top: 166px;
-	left: 15px;
-	overflow: hidden;
-	text-indent: -999em;
-	display: block;
-	width: 95px;
-	height: 95px;
-}
+.rides-cs {  font-size: 12px; background:#29a7e2; position: fixed; top: 450px; left: 0px; _position: absolute; z-index: 1500; border-radius:6px 0px 0 6px;}
+.rides-cs a { color: #00A0E9;}
+.rides-cs a:hover { color: #ff8100; text-decoration: none;}
+.rides-cs .floatL { width: 36px; float:left; position: relative; z-index:1;margin-top: 21px;height: 181px;}
+.rides-cs .floatL a { font-size:0; text-indent: -999em; display: block;}
+.rides-cs .floatR { width: 130px; float: left; padding: 5px; overflow:hidden;}
+.rides-cs .floatR .cn {background:#F7F7F7; border-radius:6px;margin-top:4px;}
+.rides-cs .cn .titZx{ font-size: 14px; color: #333;font-weight:600; line-height:24px;padding:5px;text-align:center;}
+.rides-cs .cn ul {padding:0px;}
+.rides-cs .cn ul li { line-height: 38px; height:38px;border-bottom: solid 1px #E6E4E4;overflow: hidden;text-align:center;}
+.rides-cs .cn ul li span { color: #777;}
+.rides-cs .cn ul li a{color: #777;}
+.rides-cs .cn ul li img { vertical-align: middle;}
+.rides-cs .btnOpen, .rides-cs .btnCtn {  position: relative; z-index:9; top:25px; left: 0;  background-image: url(../images/kefu.png); background-repeat: no-repeat; display:block;  height: 146px; padding: 8px;}
+.rides-cs .btnOpen { background-position: 0 0;}
+.rides-cs .btnCtn { background-position: -37px 0;}
+.rides-cs ul li.top { border-bottom: solid #ACE5F9 1px;}
+.rides-cs ul li.bot { border-bottom: none;}

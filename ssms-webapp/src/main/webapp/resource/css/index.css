@@ -62,6 +62,7 @@ h1{ float:left; margin:14px 0 0 24px; width:296px; height:54px; background:url(.
 .sidebar .nav>li .subnav li{ line-height:28px; margin-left:30px; padding-left:10px; background:url(../images/leftjt04.png) no-repeat left center;}
 .sidebar .nav>li .subnav li a{ color:#000; font-size:12px;}
 
+.sidebar .nav>li.home .nav-header a{ background:url(../images/nav/home.png) no-repeat left center;}
 .sidebar .nav>li.do .nav-header a{ background:url(../images/nav/do.png) no-repeat left center;}
 .sidebar .nav>li.history .nav-header a{ background:url(../images/nav/history.png) no-repeat left center;}
 .sidebar .nav>li.statistics .nav-header a{ background:url(../images/nav/statistics.png) no-repeat left center;}
