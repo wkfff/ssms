@@ -8,13 +8,18 @@
 
 package com.lanstar.model.tenant;
 
-import com.lanstar.template.TemplatePropCache;
-import com.lanstar.plugin.activerecord.Model;
+import com.google.common.collect.Lists;
+import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.staticcache.CacheManager;
 import com.lanstar.plugin.staticcache.TemplateProp;
+import com.lanstar.template.TemplatePropCache;
 
-public class TemplateFile extends Model<TemplateFile> {
+public class TemplateFile extends ModelExt<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
+
+    public static TemplateFile findByFileContent( String fileCode, int fileId ) {
+        return dao.findFirstByColumns( Lists.newArrayList( "P_TMPFILE", "R_TMPFILE" ), Lists.newArrayList( fileCode, (Object) fileId ) );
+    }
 
     /** 获取模板属性 */
     public TemplateProp getTemplateProp() {

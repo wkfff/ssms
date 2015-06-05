@@ -9,8 +9,7 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
-import com.lanstar.controller.enterprise.GradeContentController;
-import com.lanstar.controller.enterprise.GradePlanController;
+import com.lanstar.controller.enterprise.*;
 
 public class EnterpriseRoutes extends Routes {
     private static final Routes me = new EnterpriseRoutes();
@@ -21,15 +20,17 @@ public class EnterpriseRoutes extends Routes {
 
     @Override
     public void config() {
-        add( "/e", com.lanstar.controller.enterprise.HomeController.class );
-        add( "/e/stdtmp", com.lanstar.controller.enterprise.TemplateController.class );
-        add( "/e/stdtmp_file_01", com.lanstar.controller.enterprise.TemplateFile01Controller.class );
-        add( "/e/stdtmp_file_02", com.lanstar.controller.enterprise.TemplateFile02Controller.class );
-        add( "/e/stdtmp_file_03", com.lanstar.controller.enterprise.TemplateFile03Controller.class );
-        add( "/e/stdtmp_file_04", com.lanstar.controller.enterprise.TemplateFile04Controller.class );
-        add( "/e/stdtmp_file_05", com.lanstar.controller.enterprise.TemplateFile05Controller.class );
+        add( "/e", HomeController.class );
+        add( "/e/stdtmp", TemplateController.class );
+        add( "/e/stdtmp_file_01", TemplateFile01Controller.class );
+        add( "/e/stdtmp_file_02", TemplateFile02Controller.class );
+        add( "/e/stdtmp_file_03", TemplateFile03Controller.class );
+        add( "/e/stdtmp_file_04", TemplateFile04Controller.class );
+        add( "/e/stdtmp_file_05", TemplateFile05Controller.class );
+        add( "/e/stdtmp_file_06", TemplateFile06Controller.class );
+        add( "/e/stdtmp_file_06/item", TemplateFile06ItemController.class );
 
-        add("/e/grade_m", GradePlanController.class);
-        add("/e/grade_d", GradeContentController.class);
+        add( "/e/grade_m", GradePlanController.class );
+        add( "/e/grade_d", GradeContentController.class );
     }
 }

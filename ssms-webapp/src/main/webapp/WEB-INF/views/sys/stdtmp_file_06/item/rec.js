@@ -12,6 +12,7 @@ function LedgerModel(items, total, pid) {
         data: items,
         total: total,
         src: 'recJson',
+        params: {pid: pid},
         pageSize: 3
     });
     self.levelSource = ko.observableArray([{code: '01', name: '一般隐患'}, {code: '02', name: '重大隐患'}]);
