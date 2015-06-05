@@ -62,6 +62,7 @@ function ViewModel(templateId) {
             pagination: true,
             fit: true,
             toolbar: '#toolbar',
+            pageSize: 50,
             columns: [
                 [
                     {
