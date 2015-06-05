@@ -20,6 +20,9 @@ public class TemplatePropPlugin implements IPlugin {
     private static final TemplatePropPlugin me = new TemplatePropPlugin();
     private final Map<String, TemplateProp> map = new ConcurrentSkipListMap<>();
 
+    private TemplatePropPlugin() {
+    }
+
     public static TemplatePropPlugin me() {
         return me;
     }
