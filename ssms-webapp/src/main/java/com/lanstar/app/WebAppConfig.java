@@ -60,7 +60,10 @@ public class WebAppConfig extends RapidwareConfig {
         configTemplate( FreeMarkerRender.getConfiguration(), devMode );
 
         // 配置错误页
+        me.setError404View( "401.html" );
+        me.setError500View( "403.html" );
         me.setError404View( "404.html" );
+        me.setError500View( "500.html" );
     }
 
     @Override

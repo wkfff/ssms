@@ -10,7 +10,11 @@ package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
 import com.lanstar.controller.review.*;
+import com.lanstar.controller.system.DoneController;
+import com.lanstar.controller.system.KnowledgeFileController;
+import com.lanstar.controller.system.KnowledgeSortController;
 import com.lanstar.controller.system.NoticeController;
+import com.lanstar.controller.system.TodoController;
 
 public class ReviewRoutes extends Routes {
     private static Routes me = new ReviewRoutes();
@@ -29,6 +33,9 @@ public class ReviewRoutes extends Routes {
         add( "/r/e/stdtmp", TemplateController.class );
         
         add( "/r/notice", NoticeController.class );
-        add( "/r/task", NoticeController.class );
+        add( "/r/todo", TodoController.class );
+        add( "/r/done", DoneController.class );
+        add( "/r/knowledge_sort", KnowledgeSortController.class );
+        add( "/r/knowledge_file", KnowledgeFileController.class );
     }
 }

@@ -13,7 +13,7 @@
         <h2>快捷入口</h2>
     </div>
     <div class="content">
-        <ul class="toollist ue-clear">            
+        <ul class="toollist ue-clear">
             <li>
                 <a href="javascript:doChangePwd();" class="img"><img src="/resource/images/icon03.png" /></a>
                 <p><a href="javascript:doChangePwd();">密码修改</a></p>

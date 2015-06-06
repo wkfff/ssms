@@ -98,10 +98,9 @@ h1.not-found-text{
 }
 
 div.not-found-text{
-	
 	position:absolute;
-	top:35px;
-	right:0px;
+	top:30%;
+	left:30%;
 	width:430px;
 	
 }
