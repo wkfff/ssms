@@ -25,7 +25,7 @@
                     settings.htmleditSettings.save(function (editorResult) {
                         utils.messager.closeProgress();
                         $.messager.alert("提示", "保存成功", "info", function () {
-                            window.location.href = 'rec?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                            window.location.href = 'rec?sid=' + result.SID + "&backUrl=${backUrl!}";
                         });
                     });
                 } else {
