@@ -40,7 +40,6 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_STDTMP_FILE_04", "SID", TemplateFile04.class );
         addMapping( "SYS_STDTMP_FILE_05", "SID", TemplateFile05.class );
         addMapping( "SYS_STDTMP_FILE_06", "SID", TemplateFile06.class );
-        addMapping( "SYS_STDTMP_FILE_06_ITEM", "SID", TemplateFile06Item.class );
         
         addMapping( "SYS_STDTMP_FILE_07", "SID", TemplateFile07.class );
         addMapping( "SYS_STDTMP_FILE_08", "SID", TemplateFile08.class );
