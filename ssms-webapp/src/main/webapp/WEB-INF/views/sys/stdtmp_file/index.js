@@ -109,11 +109,7 @@ function doEdit(sid) {
 }
 function configTemplate(R_TMPFILE, P_TMPFILE) {
     if (P_TMPFILE != null) {
-    	if(R_TMPFILE==3){
-    		 window.location.href = "/sys/stdtmp_file_0" + R_TMPFILE + "/rec?sid=" + P_TMPFILE;
-    	}else{
     		 window.location.href = "/sys/stdtmp_file_0" + R_TMPFILE + "/?sid=" + P_TMPFILE;
-    	}
     } else {
         $.messager.alert('警告', '没有配置模版', 'warning');
     }

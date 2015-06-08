@@ -9,33 +9,38 @@
 
 <body>
 <div class="article toolbar">
-    <div class="title ue-clear">
-        <h2>快捷入口</h2>
-    </div>
-    <div class="content">
-        <ul class="toollist ue-clear">
-            <li>
-                <a href="javascript:doCreate();" class="img"><img src="/resource/images/icon01.png" /></a>
-                <p><a href="javascript:doCreate();" title="开始自评">企业自评</a></p>
+    <div class="content" style="border: 1px solid #c1d3de;">
+        <ul class="toollist ue-clear" >
+            <li style="width:;">
+                <a href="javascript:void;" class="img"><img src="/resource/images/icon01.png" /></a>
+                <p><a href="javascript:void" >体系创建</a></p>
             </li>
+            <li style="padding-top:6px;width:100px;margin-left:5px;margin-right:0px;"><p>完成项/合计项</p><font style="color:red;font-size:20px;">2000/20000</font></li>
+            <li style="padding-top:5px;margin-left:0px;"><img src="/resource/images/arrow_right.png" /></li>
             <li>
-                <a href="javascript:doChangePwd();" class="img"><img src="/resource/images/icon03.png" /></a>
-                <p><a href="javascript:doChangePwd();">密码修改</a></p>
+                <a href="javascript:void;" class="img"><img src="/resource/images/icon04.png" /></a>
+                <p><a href="javascript:void;">在线自评</a></p>
             </li>
+            <li style="padding-top:5px;"><img src="/resource/images/arrow_right.png" /></li>
             <li>
-                <a href="javascript:doConfig();" class="img"><img src="/resource/images/icon09.png" /></a>
-                <p><a href="javascript:doConfig();">系统配置</a></p>
+                <a href="javascript:void;" class="img"><img src="/resource/images/icon02.png" /></a>
+                <p><a href="javascript:void;">申报评审</a></p>
+            </li>
+            <li style="padding-top:5px;"><img src="/resource/images/arrow_right.png" /></li>
+            <li>
+                <a href="javascript:void;" class="img"><img src="/resource/images/icon09.png" /></a>
+                <p><a href="javascript:void;">评审管理</a></p>
             </li>
         </ul>
     </div>
 </div>
-<div class="article half notice">
+<div class="article hleft notice">
     <div class="wrap-l">
         <div class="title ue-clear">
             <h2>通知公告</h2>
             <a href="/e/notice/index" class="more">更多</a>
         </div>
-        <div class="content">
+        <div class="content" >
             <ul class="notice-list">
                   <#if rs_notice?exists && rs_notice?size!=0>
                     <#list rs_notice as rs>
@@ -52,14 +57,19 @@
             </ul>
         </div>
     </div>
-</div>
-<div class="article half matter">
-    <div class="wrap-r">
+    <div class="wrap-l" style="margin-top:6px;">
         <div class="title ue-clear">
-            <h2>待办</h2>
-            <a href="/e/grade_m/index" class="more">更多</a>
+            <h2 style="margin-right:10px;width:200px;">工作提醒</h2>
+			<ul class="tabs">
+				<li id="t1" class="current">未完成要素</li>
+            	<li id="tabz1">隐患排查</li>
+            	<li id="tabz2">特种设备</li>
+            	<li id="tabz3">特种人员</li>
+            	<li id="tabz4">安全附件</li>
+        	</ul>
+            <#-- <a href="/e/grade_m/index" class="more">更多</a> -->
         </div>
-        <div class="content">
+        <div class="content" style="height:300px">
                 <ul class="matter-list">
                     <#if rs_todo?exists && rs_todo?size!=0>
                     <#list rs_todo as rs>
@@ -77,16 +87,28 @@
         </div>
     </div>
 </div>
-
-<div class="article toolbar">
-    <div class="title ue-clear">
-        <h2>统计分析</h2>
-        <a href="/e/statistics/index" class="more">更多</a>
-    </div>
-    <div class="content" style="height:500px;">
-        <iframe src="/charts.html" frameborder="0" width="100%" height="100%"></iframe>
-    </div>
+<div class="article hright matter">
+    <div class="wrap-r">
+	    <div class="article toolbar" >
+		    <div class="title ue-clear">
+		        <h2>统计分析</h2>
+		        <#--<a href="/e/statistics/index" class="more">更多</a>-->
+		    </div>
+		    <div class="content" style="height:200px;text-align:center;">
+		        <img src="/resource/images/chart_e01.png" />
+		    </div>
+		    <div class="content" style="height:200px;text-align:center;">
+		        <img src="/resource/images/chart_e02.png" />
+		    </div>
+		    <#--
+		    <div class="content" style="height:500px;">
+		        <iframe src="/charts.html" frameborder="0" width="100%" height="100%"></iframe>
+		    </div>
+		    -->
+    	</div>
+	</div>
 </div>
+
 </body>
 
 <script type="text/javascript" src="/resource/js/jquery.min.js"></script>

@@ -28,25 +28,11 @@ function ViewModel(templateId) {
                 [
                     {field: 'C_NAME', title: '姓名', width: 120,
                         editor: {type: 'textbox', options: {validType: ['length[0, 300]']}}},
-                    {field: 'S_SEX', title: '性别', width: 60,
-                        editor: {type: 'combobox', options: {data: SEX, valueField: "value", textField: "text"}},
-                        formatter:function(value,row){
-                            return value=='1'?'男':'女';
-                        }},
+
                     {field: 'C_CARD', title: '身份证号码', width: 100,
                         editor: {type: 'textbox', options: {validType: ['length[0, 18]']}}},
                     {field: 'C_DEPT', title: '所在部门', width: 300,
-                        editor: {type: 'textbox', options: {}}},
-                    {field: 'C_WORKTYPE', title: '工种',align:'center',width: 60,
-                        editor: {type: 'textbox', options: {}}},
-                    {field: 'C_AUTH', title: '发证机关', width: 200,
-                        editor: {type: 'textbox', options: {validType: ['length[0, 200]']}}},
-                    {field: 'T_CERT_GET', title: '取证时间', width: 100,
-                        editor: {type: 'datebox', options: {}}},
-                    {field: 'C_CERT', title: '证书编号', width: 100,
-                        editor: {type: 'textbox', options: {}}},
-                    {field: 'T_CERT_REVIEW', title: '复审时间', width: 100,
-                        editor: {type: 'datebox', options: {}}}
+                        editor: {type: 'textbox', options: {}}}
                 ]
             ]
         }
@@ -131,7 +117,7 @@ function ViewModel(templateId) {
                             settings.gridSettings.datagrid('getData').rows[index] = toup;
                             settings.gridSettings.datagrid('refreshRow', index);
                             settings.gridSettings.datagrid('refreshRow', index + 1);
-                            settings.gridSettings.datagrid('selectRow', index + 1);
+                            settings.gridSettings.datagrid('selectRow', index + 1);                            
                             var d = [{'SID':todown.SID,'N_INDEX':toup.N_INDEX},{'SID':toup.SID,'N_INDEX':todown.N_INDEX}];
                             $.post("batchSave", {data:$.toJSON(d)}, function () {});
                         }

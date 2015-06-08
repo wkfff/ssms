@@ -1,6 +1,6 @@
 <#import "_layout.ftl" as layout/>
 
-<#macro doLayout script header="">
+<#macro doLayout script="" header="">
     <#local _header>
         <#if (header?length>0)>${header}</#if>
     </#local>
