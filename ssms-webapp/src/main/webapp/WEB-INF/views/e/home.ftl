@@ -82,17 +82,24 @@
 </div>
 <div class="article hright matter">
     <div class="wrap-r">
-    <div class="article toolbar">
-    <div class="title ue-clear">
-        <h2>统计分析</h2>
-        <a href="/e/statistics/index" class="more">更多</a>
-    </div>
-    <div class="content" style="height:200px;">
-        <iframe src="/charts.html" frameborder="0" width="100%" height="100%"></iframe>
-    </div>
-    </div>
-</div>
-
+	    <div class="article toolbar" >
+		    <div class="title ue-clear">
+		        <h2>统计分析</h2>
+		        <#--<a href="/e/statistics/index" class="more">更多</a>-->
+		    </div>
+		    <div class="content" style="height:200px;text-align:center;">
+		        <img src="/resource/images/chart_e01.png" />
+		    </div>
+		    <div class="content" style="height:200px;text-align:center;">
+		        <img src="/resource/images/chart_e02.png" />
+		    </div>
+		    <#--
+		    <div class="content" style="height:500px;">
+		        <iframe src="/charts.html" frameborder="0" width="100%" height="100%"></iframe>
+		    </div>
+		    -->
+    	</div>
+	</div>
 </div>
 
 </body>

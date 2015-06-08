@@ -5,8 +5,8 @@ body{ font-family:'Œ¢»Ì—≈∫⁄';}
 .half{ width:50%;*width: 49.999%;}
 .article .wrap-l{ margin-right:3px;}
 .article .wrap-r{ margin-left:3px;}
-.hleft{width:60%;*width:59.999%;}
-.hright{width:40%;*width:39.999%;}
+.hleft{width:70%;*width:69.999%;}
+.hright{width:30%;*width:29.999%;}
 
 /*±ÍÃ‚*/
 .article .title{ position:relative; line-height:33px; background:url(../images/righttitlebig.png) repeat-x; border:1px solid #c1d3de; overflow:visible;}

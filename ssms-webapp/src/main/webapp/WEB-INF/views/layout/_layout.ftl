@@ -133,10 +133,11 @@ ${footer}</html>
                 </div>
                 <div style="position:absolute;right:20px;top:40px;">
                 	<span>在线客服：</span>
-                	<a target="_blank" href="http://wpa.qq.com/msgrd?v=1&uin=38142116&site=&Menu=yes">
+                	<a target="_blank" href="http://wpa.qq.com/msgrd?v=1&uin=38142116&site=&Menu=yes" >
                 		<#--<img border="0" src="http://wpa.qq.com/pa?p=41:38142116:41" alt="点击这里获取客户服务" title="点击这里获取客户服务">-->
                 		<#-- <img border="0" src="http://wpa.qq.com/pa?p=20:38142116:20" alt="点击这里获取客户服务" title="点击这里获取客户服务"> -->
-                		<img border="0" src="http://wpa.qq.com/pa?p=1:38142116:1" alt="点击这里获取客户服务" title="点击这里获取客户服务">
+                		<#-- <img border="0" src="http://wpa.qq.com/pa?p=1:38142116:1" alt="点击这里获取客户服务" title="点击这里获取客户服务"> -->
+                		<img border="0" align="absmiddle" src="/resource/images/icon_kefu.png" alt="点击这里获取客户服务" title="点击这里获取客户服务">
                 	</a>
                 	<#--
                 	<a target=blank valign="middle" style="color:white;" href="http://wpa.qq.com/msgrd?V=1&Uin=99536247&Site=http://www.mudiao.com&Menu=yes">
