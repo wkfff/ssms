@@ -74,6 +74,10 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
+                if (value.B_FINISH == '1') {
+                    $.messager.alert("警告", "已闭环数据不可删除！", "warning");
+                    return;
+                }
                 $.post('del', {sid: value.SID}, function () {
                     $.messager.alert('消息', '成功删除记录！', "info", function () {
                         events.refreshClick();

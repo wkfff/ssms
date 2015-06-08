@@ -34,9 +34,10 @@
                     [
                         {field: 'C_NAME', title: '姓名', width: 120,
                             editor: {type: 'textbox', options: {validType: ['length[0, 300]']}}},
-                        {field: 'S_SEX', title: '性别', width: 60,
+                        {field: 'P_SEX', title: '性别', width: 60,
                             editor: {type: 'combobox', options: {data: SEX, valueField: "value", textField: "text"}},
                             formatter:function(value,row){
+                                console.log(value);
                                 return value=='1'?'男':'女';
                             }},
                         {field: 'C_CARD', title: '身份证号码', width: 140,
