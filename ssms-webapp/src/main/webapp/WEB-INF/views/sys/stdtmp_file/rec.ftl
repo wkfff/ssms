@@ -45,7 +45,7 @@
 <@layout.doLayout script>
 <div class="z-toolbar">
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer!}'">返回</a>
+    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${BASE_PATH}/?R_SID=${R_SID!folder.SID}'">返回</a>
 </div>
 <form class="form" method="post">
     <p class="ue-clear">

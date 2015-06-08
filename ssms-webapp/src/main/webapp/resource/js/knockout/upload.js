@@ -34,8 +34,10 @@
             var $container = $('<div class="container">');
             $element.before($container);
             // 添加上传按钮
-            var $uploadBtn = $('<a class="btn_upload" href="javascript:void(0);">[上传文件]</a>');
-            $element.after($uploadBtn);
+            if ($element.is(':visible')) {
+                var $uploadBtn = $('<a class="btn_upload" href="javascript:void(0);">[上传文件]</a>');
+                $element.after($uploadBtn);
+            }
             // 添加控制台输出元素
             var $console = $('<div class="console">');
             $uploadBtn.after($console);

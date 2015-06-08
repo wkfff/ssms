@@ -42,9 +42,7 @@ function ViewModel(templateId) {
                     {field: 'C_TEST_CON', title: '检验结论',width: 100,
                         editor: {type: 'textbox', options: {}}},
                     {field: 'C_TEST_UNIT', title: '检验单位',width: 100,
-                        editor: {type: 'textbox', options: {}}},
-                    {field: 'N_INDEX', title: '排序', width: 100,hidden:true,
-                        editor: {type: 'numberbox', options: {}}}
+                        editor: {type: 'textbox', options: {}}}
                 ]
             ]
         }

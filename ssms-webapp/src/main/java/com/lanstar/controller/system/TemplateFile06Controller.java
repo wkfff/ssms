@@ -10,16 +10,21 @@ package com.lanstar.controller.system;
 
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.TemplateFile06;
+import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile06Controller extends SimplateController<TemplateFile06> {
     @Override
-    public void rec() {
-        //TemplateFile templateFile = TemplateFile.findByFileContent( "06", getParaToInt( "sid" ) );
-        //redirect( "/sys/stdtmp_file_06/item/rec?pid=" + getParaToInt( "sid" ) + "&fileid=" + templateFile.getId() );
+    protected TemplateFile06 getDao() {
+        return TemplateFile06.dao;
     }
 
     @Override
-    protected TemplateFile06 getDao() {
-        return TemplateFile06.dao;
+    protected SqlBuilder buildWhere() {
+        return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt( "R_SID" ) );
+    }
+
+    @Override
+    protected SqlBuilder buildOrder() {
+        return new SqlBuilder().ORDER_BY( "T_CREATE DESC" );
     }
 }

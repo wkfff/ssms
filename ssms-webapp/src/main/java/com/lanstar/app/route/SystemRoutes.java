@@ -37,7 +37,6 @@ public class SystemRoutes extends Routes {
         add( "/sys/stdtmp_file_04", TemplateFile04Controller.class );
         add( "/sys/stdtmp_file_05", TemplateFile05Controller.class );
         add( "/sys/stdtmp_file_06", TemplateFile06Controller.class );
-        add( "/sys/stdtmp_file_06/item", TemplateFile06ItemController.class );
         
         add( "/sys/stdtmp_file_07", TemplateFile07Controller.class );
         add( "/sys/stdtmp_file_08", TemplateFile08Controller.class );
