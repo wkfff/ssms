@@ -140,6 +140,9 @@ function ViewModel(recId) {
                         return false;
                     }
                 },onClickRow: function(index){
+                    var b = settings.gridSettings.datagrid('getRows')[index]['B_BLANK'];
+                    if (b){alert(b)}
+                    
                     var v = settings.gridSettings.datagrid('getRows')[index]['C_PROJECT'];
                     if (v=='小计' || v=='总计'){
                         return;
