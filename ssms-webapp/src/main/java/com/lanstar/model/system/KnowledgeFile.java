@@ -13,7 +13,7 @@ import com.lanstar.plugin.activerecord.Model;
  * 知识库
  *
  */
-public class Knowledge extends Model<Knowledge>{
-    public static Knowledge dao = new Knowledge();
+public class KnowledgeFile extends Model<KnowledgeFile>{
+    public static KnowledgeFile dao = new KnowledgeFile();
 
 }

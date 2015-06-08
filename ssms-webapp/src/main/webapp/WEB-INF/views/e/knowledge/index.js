@@ -1,107 +1,153 @@
+/*
+ * 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
+ * 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
+ * 文件名称：index.js
+ * 创建时间：2015-05-22
+ * 创建用户：张铮彬
+ */
 function ViewModel(templateId) {
     var self = this;
 
     var model = {
-        comboPro: ko.observable(),
-        comboCity: ko.observable(),
-        comboCounty: ko.observable(),
-        comboCountyText: ko.observable(),
-        txtName: ko.observable(),
-        chkNoComplete: ko.observable(1),
+        selectedNode: ko.observable(),
         selectItem: ko.observable(),
-        sid: ko.observable()
+        selectIndex: ko.pureComputed(function () {
+            var row = model.selectItem();
+            if (row) return settings.gridSettings.datagrid('getRowIndex', row);
+        }),
+        editItem: ko.observable(),
+        sid: ko.observable(),
+        rec: ko.mapping.fromJS({
+            C_NAME: null,
+            C_DESC: null,
+            SID: null,
+            R_TEMPLATE: templateId
+        })
     };
-    model.comboPro.subscribe(function (newValue) {
+    model.selectedNode.subscribe(function (newValue) {
         if (!newValue) return;
-        if (settings.comboCountySettings.combobox){
-            settings.comboCountySettings.combobox("clear");
-            settings.comboCountySettings.combobox("loadData",[]);
-        }
-        if (settings.comboCitySettings.combobox)
-            settings.comboCitySettings.combobox({
-                url: "/sys/para_area/list",
-                queryParams: {R_CODE: newValue}
-            })
+        model.sid(newValue.id);
     });
-    model.comboCity.subscribe(function (newValue) {
-        if (!newValue) return;
-        if (settings.comboCountySettings.combobox)
-            settings.comboCountySettings.combobox({
-                url: "/sys/para_area/list",
-                queryParams: {R_CODE: newValue}
-            })
-    });
-    model.comboCounty.subscribe(function (newValue) {
-        if (!newValue) return;
+    model.sid.subscribe(function (newValue) {
+        $.post('rec', {sid: newValue}, function (result) {
+            ko.mapping.fromJS(result, model.rec);
+        });
         if (settings.gridSettings.datagrid)
-            events.gridEvents.refreshClick();
+            settings.gridSettings.datagrid({
+                url: "list",
+                queryParams: {R_SID: newValue}
+            })
     });
-    
+
     var settings = {
-        comboProSettings:{
-            /*url:'/sys/para_area/list?N_LEVEL=1',*/
-            valueField:'C_CODE',
-            textField:'C_VALUE'
-        },
-        comboCitySettings:{
-            url:'/sys/para_area/list?R_CODE=350000',
-            valueField:'C_CODE',
-            textField:'C_VALUE'
-        },
-        comboCountySettings:{
-            valueField:'C_CODE',
-            textField:'C_VALUE'
+        treeSettings: {
+            url: 'tree',
+            queryParams: {template: templateId},
+            onLoadSuccess: function () {
+                var node = settings.treeSettings.tree('getRoot');
+                if (node.id !== model.sid()) {
+                    node = settings.treeSettings.tree('find', model.sid()) || node;
+                }
+                model.selectedNode(node);
+            }
         },
         gridSettings: {
             idField: 'SID',
-            title:'第一步，请选择待评审的企业',
             rownumbers: true,
             pagination: true,
             fit: true,
             toolbar: '#toolbar',
+            pageSize: 50,
             columns: [
                 [
                     {
                         field: 'C_NAME',
-                        title: '企业名称',
-                        width: 200
+                        title: '名称',
+                        width: 100,
+                        editor: {type: 'validatebox', options: {required: true, validType: ['length[0, 300]']}}
                     },
                     {
-                        field: 'S_REVIEW',
-                        title: '评审机构名称',
-                        width: 200
+                        field: 'C_DESC',
+                        title: '描述',
+                        width: 200,
+                        editor: {type: 'textarea', options: {validType: ['length[0, 1000]']}}
                     },
                     {
-                        field: 'SID',
-                        title: '评审',
-                        width: 60,
-                        align:'center',
-                        formatter:function(value,row){
-                                return "<a href='rec_new?R_EID="+value+"'>评审</a>";
-                        }
+                        field: 'N_INDEX',
+                        title: '排序',
+                        width: 80,
+                        align: "center",
+                        editor: {type: 'numberbox', options: {required: true}}
                     }
                 ]
-            ],
-            onDblClickRow: function () {
-                events.gridEvents.editClick();
-            }
+            ]
         }
     };
 
     var events = {
+        recEvents: {
+            saveClick: function () {
+                if ($form.validate($('.form'))) {
+                    var value = ko.mapping.toJS(model.rec);
+                    $.post('save', value, function (result) {
+                        if (result.SID)
+                            $.messager.alert("提示", "保存成功", "info", function () {
+                                settings.treeSettings.tree('reload');
+                            });
+                        else {
+                            $.messager.alert("提示", "保存失败", "warning");
+                        }
+                    }, "json")
+                }
+            },
+            removeClick: function () {
+                $.post('del', {sid: model.sid()}, function () {
+                    settings.treeSettings.tree('reload');
+                })
+            }
+        },
         gridEvents: {
             refreshClick: function () {
-                settings.gridSettings.datagrid({
-                    url: "/r/grade_m/list_e"+ (model.chkNoComplete()==1?"?N_STATE=0":""),
-                    queryParams: {P_CITY:model.comboCity(),P_COUNTY: model.comboCounty(),C_NAME:model.txtName()}
-                });
+                settings.gridSettings.datagrid('reload');
+            }, addClick: function () {
+                if (settings.gridSettings.datagrid('validateRow', model.selectIndex())) {
+                    var row = {SID: utils.uuid(), R_SID: model.sid(), R_TEMPLATE: templateId};
+                    settings.gridSettings.datagrid('appendRow', row);
+                    model.editItem(row);
+                }
             }, editClick: function () {
-                var sid = self.sid();//企业自评主表SID
-                var url = 'rec_new?R_EID={0}'.format(sid);
-               window.location.href = url;
+                model.editItem(model.selectItem());
+            }, deleteClick: function () {
+                var row = model.selectItem();
+                if (row) {
+                    if (!row.SID.toString().startsWith("_"))
+                        $.post('del', {sid: row.SID}, function () {
+                            $.messager.alert('消息', '成功删除记录！', 'info', function () {
+                                settings.gridSettings.datagrid('reload');
+                            });
+                        });
+                    else {
+                        settings.gridSettings.datagrid('deleteRow', model.selectIndex());
+                    }
+                }
+            }, saveClick: function () {
+                model.editItem(null);
+                if (model.editItem()) {
+                    $.messager.alert('警告', '当前编辑行数据不正确', 'warning');
+                    return;
+                }
+                var changes = settings.gridSettings.datagrid('getChanges');
+                if (changes.length > 0) {
+                    $.post("batchSave", {data: $.toJSON(changes)}, function () {
+                        $.messager.alert('消息', '成功保存记录！', "info", function () {
+                            settings.treeSettings.tree('reload');
+                        });
+                    });
+                }
             }
         }
     };
 
     $.extend(self, model, settings, events);
 }
+

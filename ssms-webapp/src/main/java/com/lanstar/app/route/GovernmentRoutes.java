@@ -10,6 +10,9 @@ package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
 import com.lanstar.controller.government.HomeController;
+import com.lanstar.controller.system.KnowledgeFileController;
+import com.lanstar.controller.system.KnowledgeSortController;
+import com.lanstar.controller.system.NoticeController;
 
 public class GovernmentRoutes extends Routes {
     private static Routes me = new GovernmentRoutes();
@@ -20,6 +23,10 @@ public class GovernmentRoutes extends Routes {
 
     @Override
     public void config() {
-        add( "/g", HomeController.class );
+        this.add( "/g", HomeController.class );
+
+        this.add( "/g/notice", NoticeController.class );
+        this.add( "/g/knowledge_sort", KnowledgeSortController.class );
+        this.add( "/g/knowledge_file", KnowledgeFileController.class );
     }
 }

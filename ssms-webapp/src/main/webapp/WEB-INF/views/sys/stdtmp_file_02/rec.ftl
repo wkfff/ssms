@@ -52,52 +52,54 @@
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer!}'">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
-    <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
-        <p class="long-input ue-clear">
-            <label>通知标题</label>
-            <span class="control">
+    <table>
+        <tr>
+            <td>通知标题:</td>
+            <td>
                 <input data-bind="textboxValue: C_NAME"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="long-input ue-clear">
-            <label>通知编号</label>
-            <span class="control">
+        <tr>
+            <td>通知编号:</td>
+            <td>
                 <input data-bind="textboxValue: C_NUMBER"/>
-            </span>
-        </p>
-    </div>
-    <div class="easyui-panel" title="正文" style="padding: 6px">
-        <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
-    </div>
-    <div class="easyui-panel" title="发布信息" style="padding-bottom: 10px;">
-        <p class="ue-clear">
-            <label>发布部门</label>
-            <span class="control">
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="4">
+               <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
+            </td>
+        </tr>
+ 
+        <tr>
+            <td>发布部门:</td>
+            <td>
                 <input data-bind="textboxValue: C_DEPT_01"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="ue-clear">
-            <label>发布日期</label>
-            <span class="control">
+        <tr>
+            <td>发布日期:</td>
+            <td>
                 <input data-bind="dateboxValue: T_DATE_01"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="ue-clear">
-            <label>主送部门</label>
-            <span class="control">
+        <tr>
+            <td>主送部门:</td>
+            <td>
                 <input data-bind="textboxValue: C_DEPT_02"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="ue-clear">
-            <label>抄送部门</label>
-            <span class="control">
+        <tr>
+            <td>抄送部门:</td>
+            <td>
                 <input data-bind="textboxValue: C_DEPT_03"/>
-            </span>
-        </p>
-    </div>
+            </td>
+        </tr>
+    </table>
 </form>
 </@>

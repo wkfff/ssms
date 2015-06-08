@@ -33,14 +33,14 @@
     <div class="wrap-l">
         <div class="title ue-clear">
             <h2>通知公告</h2>
-            <a href="/e/notice/index.html" class="more">更多</a>
+            <a href="/e/notice/index" class="more">更多</a>
         </div>
         <div class="content">
             <ul class="notice-list">
                   <#if rs_notice?exists && rs_notice?size!=0>
                     <#list rs_notice as rs>
                      <li class="ue-clear">
-                        <a href="javascript:nav('/e/notice/rec.html?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
+                        <a href="javascript:nav('/e/notice/rec?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
                         <div class="notice-time">${rs.T_PUBLISH}</div>
                     </li>
                     </#list>
@@ -106,7 +106,7 @@
     $(".duty").find("tbody").find("tr:even").css("backgroundColor","#eff6fa");
 
     $("#more").on("click",function(){
-        window.location.href = "/e/"+(aIndex==0?"todo":"done")+"/index.html";
+        window.location.href = "/e/"+(aIndex==0?"todo":"done")+"/index";
     });
 
     function nav(url){

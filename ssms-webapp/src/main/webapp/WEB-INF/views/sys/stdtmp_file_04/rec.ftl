@@ -52,58 +52,61 @@
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer}'">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
-    <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
-        <p class="long-input ue-clear">
-            <label>文件名称</label>
-            <span class="control">
+    <table>
+        <tr>
+            <td>文件名称:</td>
+            <td>
                 <input data-bind="textboxValue: C_NAME"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="long-input ue-clear">
-            <label>培训日期</label>
-            <span class="control">
+        <tr>
+            <td>培训日期:</td>
+            <td>
                 <input data-bind="dateboxValue: T_TIME"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="long-input ue-clear">
-            <label>教育人</label>
-            <span class="control">
+        <tr>
+            <td>教育人:</td>
+            <td>
                 <input data-bind="textboxValue: C_USER_01"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="long-input ue-clear">
-            <label>培训地址</label>
-            <span class="control">
+        <tr>
+            <td>培训地址:</td>
+            <td>
                 <input data-bind="textboxValue: C_ADDR"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="long-input ue-clear">
-            <label>培训种类</label>
-            <span class="control">
+        <tr>
+            <td>培训种类:</td>
+            <td>
                 <input data-bind="textboxValue: S_TYPE"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="long-input ue-clear">
-            <label>学时</label>
-            <span class="control">
+        <tr>
+            <td>学时:</td>
+            <td>
                 <input data-bind="textboxValue: N_TIME"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="long-input ue-clear">
-            <label>记录人</label>
-            <span class="control">
+        <tr>
+            <td>记录人:</td>
+            <td>
                 <input data-bind="textboxValue: C_USER_02"/>
-            </span>
-        </p>
-    </div>
-    <div class="easyui-panel" title="正文" style="padding: 6px">
-        <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
-    </div>
+            </td>
+        </tr>
+
+        <tr>
+             <td colspan="4">
+                  <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
+             </td>
+        </tr>
+    </table>
 </form>
 </@>
