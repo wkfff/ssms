@@ -2,18 +2,18 @@
 <#assign script>
 
 <script type="text/javascript" src="/resource/js/plupload/plupload.min.js"></script>
-<#if DEV_MODE>
-<script type="text/javascript" src="/resource/js/kindeditor/kindeditor.js"></script>
-<script type="text/javascript" src="/resource/js/kindeditor/plugins/autoheight/autoheight.js"></script>
-<script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
-<script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
-<script type="text/javascript" src="/resource/js/knockout/component.js"></script>
-<script type="text/javascript" src="/resource/js/knockout/upload.js"></script>
-<script type="text/javascript" src="/resource/js/knockout/dataPager.js"></script>
-<#else>
-<script type="text/javascript" src="/resource/js/kindeditor/kindeditor.min.js"></script>
-<script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
-</#if>
+    <#if DEV_MODE>
+    <script type="text/javascript" src="/resource/js/kindeditor/kindeditor.js"></script>
+    <script type="text/javascript" src="/resource/js/kindeditor/plugins/autoheight/autoheight.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/upload.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/dataPager.js"></script>
+    <#else>
+    <script type="text/javascript" src="/resource/js/kindeditor/kindeditor.min.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
+    </#if>
 <script type="text/javascript">
     function doSelect(node) {
         if (node.url != null && node.url.length > 0)
@@ -25,6 +25,9 @@
     }
     function refreshPanel() {
         $("#content").panel("refresh");
+    }
+    function panelLoad(url) {
+        $("#content").panel("refresh", url);
     }
     function onLoad() {
         if (isFunction(onPanelLoad)) onPanelLoad();
