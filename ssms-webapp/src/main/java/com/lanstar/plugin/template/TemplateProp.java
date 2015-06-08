@@ -11,7 +11,7 @@ package com.lanstar.plugin.template;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.service.Parameter;
 
 /**
@@ -27,11 +27,11 @@ public class TemplateProp {
     private Parameter parameter;
     private SyncUnitFactory syncUnitFactory;
 
-    public static TemplateProp with( String code, String name, Class<? extends Model> systemModelClazz, Class<? extends Model> tenantModelClazz ) {
+    public static TemplateProp with( String code, String name, Class<? extends ModelExt> systemModelClazz, Class<? extends ModelExt> tenantModelClazz ) {
         return with( code, name, systemModelClazz, tenantModelClazz, SyncUnitFactory.DEFAULT );
     }
 
-    public static TemplateProp with( String code, String name, Class<? extends Model> systemModelClazz, Class<? extends Model> tenantModelClazz, SyncUnitFactory unitFactory ) {
+    public static TemplateProp with( String code, String name, Class<? extends ModelExt> systemModelClazz, Class<? extends ModelExt> tenantModelClazz, SyncUnitFactory unitFactory ) {
         TemplateProp prop = new TemplateProp();
         prop.code = code;
         prop.name = name;

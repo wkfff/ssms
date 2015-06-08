@@ -9,29 +9,29 @@
 package com.lanstar.plugin.template;
 
 import com.lanstar.common.kit.BeanKit;
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.activerecord.Table;
 import com.lanstar.plugin.activerecord.TableMapping;
 
 @SuppressWarnings("rawtypes")
 public class ModelWrap {
-    private final Model dao;
-    private final Class<? extends Model> clazz;
+    private final ModelExt dao;
+    private final Class<? extends ModelExt> clazz;
 
-    private ModelWrap( Class<? extends Model> model ) {
+    private ModelWrap( Class<? extends ModelExt> model ) {
         clazz = model;
         dao = BeanKit.newInstance( model );
     }
 
-    public static ModelWrap wrap( Class<? extends Model> model ) {
+    public static ModelWrap wrap( Class<? extends ModelExt> model ) {
         return new ModelWrap( model );
     }
 
-    public Model getModel() {
+    public ModelExt getModel() {
         return BeanKit.newInstance( clazz );
     }
 
-    public Class<? extends Model> getModelClass() {
+    public Class<? extends ModelExt> getModelClass() {
         return clazz;
     }
 
@@ -39,7 +39,7 @@ public class ModelWrap {
         return TableMapping.me().getTable( clazz );
     }
 
-    public Model getDao() {
+    public ModelExt getDao() {
         return dao;
     }
 }

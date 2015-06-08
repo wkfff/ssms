@@ -50,7 +50,7 @@ function ViewModel(catalogId) {
                     {
                         field: 'SID', title: '操作', width: 130, align: 'center',
                         formatter: function (value, row) {
-                            return "<a href='#' onclick='doEdit(" + value + ")'>编辑文件</a>&nbsp&nbsp<a href='#' onclick='configTemplate(" + row.R_TMPFILE + ',' + row.P_TMPFILE + ")'>配置模版</a>";
+                            return "<a href='#' onclick='doEdit(" + value + ")'>编辑文件</a>&nbsp&nbsp<a href='#' onclick='configTemplate(" + row.R_TMPFILE + ',' + row.SID + ")'>配置模版</a>";
                         }
                     }
 
@@ -109,7 +109,7 @@ function doEdit(sid) {
 }
 function configTemplate(R_TMPFILE, P_TMPFILE) {
     if (P_TMPFILE != null) {
-        window.location.href = "/sys/stdtmp_file_0" + P_TMPFILE + "/rec?sid=" + R_TMPFILE;
+        window.location.href = "/sys/stdtmp_file_" + P_TMPFILE + "/?sid=" + R_TMPFILE;
     } else {
         $.messager.alert('警告', '没有配置模版', 'warning');
     }
