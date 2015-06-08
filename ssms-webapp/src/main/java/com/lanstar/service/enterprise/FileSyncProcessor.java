@@ -13,6 +13,7 @@ import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.plugin.sqlinxml.SqlKit;
+import com.lanstar.plugin.template.TemplateProp;
 
 class FileSyncProcessor implements SyncProcessor {
     private final Logger log = Logger.getLogger( FileSyncProcessor.class );
@@ -39,6 +40,8 @@ class FileSyncProcessor implements SyncProcessor {
         if ( tenantFile == null ) tenantFile = new com.lanstar.model.tenant.TemplateFile();
 
         // 同步文件
-        systemFile.getTemplateProp().sync( systemFile, tenantFile, tenantFolder, target );
+        TemplateProp templateProp = systemFile.getTemplateProp();
+        if (templateProp == null) return;
+        templateProp.sync( systemFile, tenantFile, tenantFolder, target );
     }
 }

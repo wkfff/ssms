@@ -39,26 +39,56 @@
         ko.applyBindings($.extend({}, model, settings, extModel, events));
     });
 </script>
+<style type="text/css">
+    .form table {
+        width: 100%;
+        margin: 5px auto;
+        table-layout: fixed;
+    }
+
+    .form table tr {
+        height: 40px;
+    }
+
+    .form table .label {
+        width: 90px;
+    }
+</style>
 </#assign>
 <@layout.doLayout script>
 <div class="z-toolbar">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+    <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-word" onClick="alert('未写')">导出(WORD)</a>
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer}'">返回</a>
+    <span><a class="easyui-linkbutton"  plain="true"  onClick="alert('未写')">模板查看</a></span>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
-    <table>
-        <tr>
+    <table >
+        <colgroup>
+            <col class="label"/>
+            <col/>
+            <col class="label"/>
+            <col/>
+        </colgroup>
+        <tr >
             <td>文件名称:</td>
-            <td>
-                <input data-bind="textboxValue: C_NAME"/>
+            <td colspan="3">
+                <input data-bind="textboxValue: C_NAME" required/>
             </td>
         </tr>
-        
-        <tr>
+     </table>
+     <table >
+        <tr >
             <td colspan="4">
                 <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
             </td>
         </tr>
     </table>
+    <div>
+     <span>附件：</span>
+    </div>
+    <div>
+    操作指南：
+    </div>
 </form>
 </@>
