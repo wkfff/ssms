@@ -1,0 +1,43 @@
+-- 删除模板文件字段调整
+ALTER TABLE `sys_stdtmp_file`
+DROP COLUMN `R_TMPFILE`;
+
+ALTER TABLE `sys_stdtmp_file_01`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+ALTER TABLE `sys_stdtmp_file_02`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+ALTER TABLE `sys_stdtmp_file_03`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+ALTER TABLE `sys_stdtmp_file_04`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+ALTER TABLE `sys_stdtmp_file_05`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+ALTER TABLE `sys_stdtmp_file_06`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+
+ALTER TABLE `ssm_stdtmp_file`
+DROP COLUMN `R_TMPFILE`;
+
+ALTER TABLE `ssm_stdtmp_file_01`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+ALTER TABLE `ssm_stdtmp_file_02`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+ALTER TABLE `ssm_stdtmp_file_03`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+ALTER TABLE `ssm_stdtmp_file_04`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+ALTER TABLE `ssm_stdtmp_file_05`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
+
+ALTER TABLE `ssm_stdtmp_file_06`
+ADD COLUMN `R_TMPFILE`  int(11) NOT NULL AFTER `SID`;
