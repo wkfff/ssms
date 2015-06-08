@@ -61,7 +61,7 @@
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-word" onClick="alert('未写')">导出(WORD)</a>
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer}'">返回</a>
-    <span><a class="easyui-linkbutton" onclick="" plain="true"  onClick="alert('未写')">模板查看</a></span>
+    <span><a class="easyui-linkbutton"  plain="true"  onClick="alert('未写')">模板查看</a></span>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
     <table >
