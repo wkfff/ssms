@@ -8,8 +8,8 @@
 
 package com.lanstar.model.system;
 
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 
-public class TemplateFile02 extends Model<TemplateFile02> {
+public class TemplateFile02 extends ModelExt<TemplateFile02> {
     public static TemplateFile02 dao = new TemplateFile02();
 }

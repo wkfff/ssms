@@ -8,15 +8,11 @@
 
 package com.lanstar.model.system;
 
-import com.google.common.collect.Lists;
-import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.sqlinxml.SqlKit;
-import com.lanstar.plugin.template.ModelWrap;
 import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 
-import java.util.Date;
 import java.util.List;
 
 public class TemplateFile extends ModelExt<TemplateFile> {
@@ -26,16 +22,11 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFiles" ), folderId );
     }
 
-    public static TemplateFile findByFileContent( String fileCode, int fileId ) {
-        return dao.findFirstByColumns( Lists.newArrayList( "P_TMPFILE", "R_TMPFILE" ), Lists.newArrayList( fileCode, (Object) fileId ) );
-    }
-
     @Override
     public boolean delete() {
         // TODO:
         //context.getAttachTextService().del( "STDTMP_FILE_" + code, "C_CONTENT", tmpfileId );
-
-        getTemplateProp().getSystemModelWrap().getDao().deleteById( getTemplateFileId() );
+        getTemplateProp().getSystemModelWrap().getDao().deleteById( getId(), "R_TMPFILE" );
         return super.delete();
     }
 
@@ -43,15 +34,8 @@ public class TemplateFile extends ModelExt<TemplateFile> {
     public boolean deleteById( Object id ) {
         // TODO:
         //context.getAttachTextService().del( "STDTMP_FILE_" + code, "C_CONTENT", tmpfileId );
-        getTemplateProp().getSystemModelWrap().getDao().deleteById( getTemplateFileId() );
-
+        getTemplateProp().getSystemModelWrap().getDao().deleteById( getId(), "R_TMPFILE" );
         return super.deleteById( id );
-    }
-
-    @Override
-    public boolean save() {
-        initFileContent();
-        return super.save();
     }
 
     /** 获取模板属性 */
@@ -63,40 +47,11 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return getStr( "P_TMPFILE" );
     }
 
-    public Integer getTemplateFileId() {
-        return getInt( "R_TMPFILE" );
-    }
-
-    /** 设置模板文件ID */
-    public void setTemplateFileId( Integer id ) {
-        set( "R_TMPFILE", id );
-    }
-
     public Integer getId() {
         return getInt( "SID" );
     }
 
     public Object getName() {
         return getStr( "C_NAME" );
-    }
-
-    @SuppressWarnings("rawtypes")
-    private boolean initFileContent() {
-        ModelWrap modelWrap = getTemplateProp().getSystemModelWrap();
-        Model model = modelWrap.getModel();
-        model.set( "R_CREATE", get( "R_CREATE" ) )
-             .set( "S_CREATE", get( "S_CREATE" ) )
-             .set( "T_CREATE", new Date() )
-             .set( "R_UPDATE", get( "R_UPDATE" ) )
-             .set( "S_UPDATE", get( "S_UPDATE" ) )
-             .set( "T_UPDATE", new Date() )
-             .set( "R_TENANT", get( "R_TENANT" ) )
-             .set( "S_TENANT", get( "S_TENANT" ) )
-             .set( "P_TENANT", get( "P_TENANT" ) );
-
-        boolean success = model.save();
-        setTemplateFileId( model.getInt( modelWrap.getTable().getPrimaryKey() ) );
-
-        return success;
     }
 }

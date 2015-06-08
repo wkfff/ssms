@@ -17,7 +17,7 @@ public class TemplatePropsConfig extends TemplateProps {
         add( TemplateProp.with( "02", "通知文件", com.lanstar.model.system.TemplateFile02.class, com.lanstar.model.tenant.TemplateFile02.class ) );
         add( TemplateProp.with( "03", "执行文件", com.lanstar.model.system.TemplateFile03.class, com.lanstar.model.tenant.TemplateFile03.class ) );
         add( TemplateProp.with( "04", "培训执行文件", com.lanstar.model.system.TemplateFile04.class, com.lanstar.model.tenant.TemplateFile04.class ) );
-        add( TemplateProp.with( "05", "培训文件", com.lanstar.model.system.TemplateFile05.class, com.lanstar.model.tenant.TemplateFile05.class ) );
-        add( TemplateProp.with( "06", "隐患汇总登记台帐", com.lanstar.model.system.TemplateFile06.class, com.lanstar.model.tenant.TemplateFile06.class, new SyncUnitFactory06() ) );
+        //add( TemplateProp.with( "05", "培训文件", com.lanstar.model.system.TemplateFile05.class, com.lanstar.model.tenant.TemplateFile05.class ) );
+        add( TemplateProp.with( "06", "隐患汇总登记台帐", com.lanstar.model.system.TemplateFile06.class, com.lanstar.model.tenant.TemplateFile06.class ) );
     }
 }

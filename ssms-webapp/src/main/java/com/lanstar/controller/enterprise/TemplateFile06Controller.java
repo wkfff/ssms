@@ -9,14 +9,13 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.controller.SimplateController;
-import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile06;
 
 public class TemplateFile06Controller extends SimplateController<TemplateFile06> {
     @Override
     public void rec() {
-        TemplateFile templateFile = TemplateFile.findByFileContent( "06", getParaToInt( "sid" ) );
-        redirect( "/e/stdtmp_file_06/item/rec?pid=" + getParaToInt( "sid" ) + "&fileid=" + templateFile.getId() );
+        //TemplateFile templateFile = TemplateFile.findByFileContent( "06", getParaToInt( "sid" ) );
+        //redirect( "/e/stdtmp_file_06/item/rec?pid=" + getParaToInt( "sid" ) + "&fileid=" + templateFile.getId() );
     }
 
     @Override

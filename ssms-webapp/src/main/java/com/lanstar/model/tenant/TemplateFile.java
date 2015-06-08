@@ -8,17 +8,12 @@
 
 package com.lanstar.model.tenant;
 
-import com.google.common.collect.Lists;
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 
 public class TemplateFile extends ModelExt<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
-
-    public static TemplateFile findByFileContent( String fileCode, int fileId ) {
-        return dao.findFirstByColumns( Lists.newArrayList( "P_TMPFILE", "R_TMPFILE" ), Lists.newArrayList( fileCode, (Object) fileId ) );
-    }
 
     /** 获取模板属性 */
     public TemplateProp getTemplateProp() {
@@ -31,14 +26,6 @@ public class TemplateFile extends ModelExt<TemplateFile> {
 
     public String getTemplateFileCode() {
         return getStr( "P_TMPFILE" );
-    }
-
-    public Integer getTemplateFileId() {
-        return getInt( "R_TMPFILE" );
-    }
-
-    public void setTemplateFileId( Integer id ) {
-        set( "R_TMPFILE", id );
     }
 
     public Integer getSourceFileId() {

@@ -8,16 +8,20 @@
 
 package com.lanstar.plugin.template;
 
+import com.lanstar.app.Const;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.common.log.Logger;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.service.AttachTextService;
 
-@SuppressWarnings("rawtypes")
+import java.util.List;
+
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class SyncUnit {
     private final Logger log = Logger.getLogger( SyncUnit.class );
     com.lanstar.model.system.TemplateFile sourceFile;
@@ -67,41 +71,47 @@ public class SyncUnit {
         // 新建模板文件，要同步拷贝文件内容。
         targetFile.setSourceFile( sourceFile );
         targetFile.setFolder( tenantFolder );
+        targetFile.save();
 
         // 复制文件内容
         copyFileContent();
-        // 复制富文本
-        copyAttachText();
-        // 保存模板文件
-        targetFile.save();
+
         log.debug( "========>创建文件完成..." );
     }
 
     protected void copyFileContent() {
         log.debug( "================>拷贝文件内容->表单数据..." );
         // 获取系统文件内容
-        Model systemFileContent = templateProp.getSystemModelWrap().getDao().findById( sourceFile.getTemplateFileId() );
-        if ( systemFileContent == null ) return;
+        Integer sourceFileId = sourceFile.getId();
+        ModelExt systemFileDao = templateProp.getSystemModelWrap().getDao();
+        List<ModelExt> systemFileContents = systemFileDao.findByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFileId );
+        if ( systemFileContents.size() == 0 ) return;
+        for ( ModelExt systemFileContent : systemFileContents ) {
+            Model tenantFileContent = copyFileContent( systemFileContent );
+            copyAttachText(systemFileContent, tenantFileContent);
+        }
+    }
 
+    protected Model copyFileContent( ModelExt systemFileContent ) {
         // 拷贝到租户文件中
         Model tenantFileContent = templateProp.getTenantModelWrap().getModel();
         ModelKit.clone( systemFileContent, tenantFileContent );
-        tenantFileContent.remove( "SID", "R_TENANT", "S_TENANT", "P_TENANT" );
+        tenantFileContent.remove( "SID", Const.TEMPLATE_FILE_PARENT_FIELD, "R_TENANT", "S_TENANT", "P_TENANT" );
+        tenantFileContent.set( Const.TEMPLATE_FILE_PARENT_FIELD, targetFile.getId() );
         tenantFileContent.set( "R_TENANT", targetFile.get( "R_TENANT" ) );
         tenantFileContent.set( "S_TENANT", targetFile.get( "S_TENANT" ) );
         tenantFileContent.set( "P_TENANT", targetFile.get( "P_TENANT" ) );
         tenantFileContent.save();
-        Integer id = tenantFileContent.getInt( templateProp.getTenantModelWrap().getTable().getPrimaryKey() );
-        targetFile.setTemplateFileId( id );
+        return tenantFileContent;
     }
 
-    protected void copyAttachText() {
+    protected void copyAttachText( ModelExt systemFileContent, Model tenantFileContent ) {
         String src = templateProp.getSystemModelWrap().getTable().getName();
-        Integer srcId = sourceFile.getTemplateFileId();
+        Integer srcId = systemFileContent.getInt( "SID" );
         if ( srcId == null ) return;
 
         String dest = templateProp.getTenantModelWrap().getTable().getName();
-        Integer destId = targetFile.getTemplateFileId();
+        Integer destId = tenantFileContent.getInt( "SID" );
         if ( destId == null ) return;
 
         copyAttachText( src, srcId, dest, destId );
