@@ -87,3 +87,33 @@ body{ font-family:'Î¢ÈíÑÅºÚ';}
 .email .content table tbody tr td.subject .td-wrap a{ color:#000;}
 .email .content table tbody tr td.subject .td-wrap a:hover{ text-decoration:underline;}
 .email .content table tbody tr td.time .td-wrap{ margin-left:10px; color:#969696;}
+
+
+
+
+/**  ²¹³äÔö¼ÓµÄ */
+ul.list li {
+list-style-type:none;
+margin-left:20px;
+}
+
+ul.tabs { overflow:hidden;display:inline; margin-top:5px;right:100px;;height:30px;line-height:30px; }
+
+ul.tabs li {
+height:20px; line-height:20px;
+list-style-type:none;
+display:block;
+float:left;
+padding:3px 8px 0px 8px;
+margin-right:2px;margin-top:6px;
+-moz-border-radius: 4px 4px 0 0;
+-webkit-border-radius: 4px 4px 0 0;
+cursor:pointer;
+}
+
+ul.tabs li:hover { background-color:#43b0ce;}
+
+ul.tabs li.current {
+border-bottom:2px solid #43b0ce;
+background-color:#43b0ce;
+}
