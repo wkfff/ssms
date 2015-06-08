@@ -46,9 +46,7 @@ function ViewModel(templateId) {
                     {field: 'C_CERT', title: '证书编号', width: 100,
                         editor: {type: 'textbox', options: {}}},
                     {field: 'T_CERT_REVIEW', title: '复审时间', width: 100,
-                        editor: {type: 'datebox', options: {}}},
-                    {field: 'N_INDEX', title: '排序', width: 100,hidden:true,
-                        editor: {type: 'numberbox', options: {}}}
+                        editor: {type: 'datebox', options: {}}}
                 ]
             ]
         }
@@ -133,7 +131,7 @@ function ViewModel(templateId) {
                             settings.gridSettings.datagrid('getData').rows[index] = toup;
                             settings.gridSettings.datagrid('refreshRow', index);
                             settings.gridSettings.datagrid('refreshRow', index + 1);
-                            settings.gridSettings.datagrid('selectRow', index + 1);                            
+                            settings.gridSettings.datagrid('selectRow', index + 1);
                             var d = [{'SID':todown.SID,'N_INDEX':toup.N_INDEX},{'SID':toup.SID,'N_INDEX':todown.N_INDEX}];
                             $.post("batchSave", {data:$.toJSON(d)}, function () {});
                         }
