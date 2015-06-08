@@ -50,7 +50,7 @@
                         <ul class="subnav">
                             <#list map.children as item>
                                 <li>
-                                    <a href="javascript:void(0);" date-src="${item.attributes.C_URL}">${item.text}</a>
+                                    <a href="javascript:void(0);" date-src="${item.attributes.C_URL!}">${item.text}</a>
                                 </li>
                             </#list>
                         </ul>
