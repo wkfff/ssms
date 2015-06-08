@@ -54,69 +54,69 @@
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer}'">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
-    <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
-        <p class="long-input ue-clear">
-            <label>文件名称</label>
-            <span class="control">
+    <table>
+        <tr>
+             <td>文件名称:</td>
+             <td>
                 <input data-bind="textboxValue: C_NAME"/>
-            </span>
-        </p>
-
-        <p class="ue-clear">
-            <label>是否受控</label>
-            <span class="control">
+             </td>
+        </tr>
+       
+        <tr>
+            <td>是否受控:</td>
+            <td>
                 <label><input type="radio" name="B_CONTROL" data-bind="checked: B_CONTROL" value="1"/>受控</label>
                 <label><input type="radio" name="B_CONTROL" data-bind="checked: B_CONTROL" value="0"/>非受控</label>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="ue-clear">
-            <label>文件编号</label>
-            <span class="control">
+        <tr>
+            <td>文件编号:</td>
+            <td>
                 <input data-bind="textboxValue: C_NUMBER"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="ue-clear">
-            <label>执行部门</label>
-            <span class="control">
+        <tr>
+            <td>执行部门:</td>
+            <td>
                 <input data-bind="textboxValue: C_DEPT_01"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="ue-clear">
-            <label>监督部门</label>
-            <span class="control">
+        <tr>
+            <td>监督部门:</td>
+            <td>
                 <input data-bind="textboxValue: C_DEPT_02"/>
-            </span>
-        </p>
-    </div>
+            </td>
+        </tr>
 
-    <div class="easyui-panel" title="正文" style="padding: 6px">
+        <tr>
+        <td colspan="4">
         <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
-    </div>
+        </td>
+        </tr>
 
-    <div class="easyui-panel" title="编制信息" style="padding-bottom: 10px;">
-        <p class="ue-clear">
-            <label>编制日期</label>
-            <span class="control">
+        <tr>
+            <td>编制日期:</td>
+            <td>
                 <input data-bind="dateboxValue: T_DATE_01"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="ue-clear">
-            <label>审核日期</label>
-            <span class="control">
+        <tr>
+            <td>审核日期:</td>
+            <td>
                 <input data-bind="dateboxValue: T_DATE_02"/>
-            </span>
-        </p>
+            </td>
+        </tr>
 
-        <p class="ue-clear">
-            <label>评审日期</label>
-            <span class="control">
+        <tr>
+            <td>评审日期:</td>
+            <td>
                 <input data-bind="dateboxValue: T_DATE_03"/>
-            </span>
-        </p>
-    </div>
+            </td>
+        </tr>
+    </table>
 </form>
 </@layout.doLayout>
