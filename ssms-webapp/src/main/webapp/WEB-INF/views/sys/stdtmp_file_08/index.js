@@ -1,6 +1,5 @@
 function ViewModel(templateId) {
     var self = this;
-    var SEX = [{ "value": "1", "text": "男" }, { "value": "2", "text": "女" }];
     var model = {
         selectedNode: ko.observable(),
         selectItem: ko.observable(),
