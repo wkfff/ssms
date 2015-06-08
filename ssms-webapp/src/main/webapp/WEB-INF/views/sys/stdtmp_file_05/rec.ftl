@@ -46,13 +46,13 @@
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer}'">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
-    <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
-        <p class="long-input ue-clear">
-            <label>文件名称</label>
-            <span class="control">
+    <table>
+        <tr>
+            <td>文件名称</td>
+            <td>
                 <input data-bind="textboxValue: C_NAME"/>
-            </span>
-        </p>
-    </div>
+            </td>
+        </tr>
+    </table>
 </form>
 </@>
