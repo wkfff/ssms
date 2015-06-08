@@ -22,4 +22,9 @@ public class TemplateFile02Controller extends SimplateController<TemplateFile02>
     protected SqlBuilder buildWhere() {
         return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt("R_SID") );
     }
+
+    @Override
+    protected SqlBuilder buildOrder() {
+        return new SqlBuilder().ORDER_BY( "T_CREATE DESC" );
+    }
 }
