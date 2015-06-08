@@ -42,7 +42,7 @@
                 </div>
             </li>
             <#list nav as map>
-                <li class="<#if map.attributes.C_ICON?length=0>office<#else>${map.attributes.C_ICON}</#if>">
+                <li class="<#if !map.attributes.C_ICON??||map.attributes.C_ICON?length=0>office<#else>${map.attributes.C_ICON}</#if>">
                     <div class="nav-header">
                         <a href="javascript:void(0);" date-src="${map.attributes.C_URL!""}" class="ue-clear"><span>${map.text}</span><i class="icon"></i></a>
                     </div>
