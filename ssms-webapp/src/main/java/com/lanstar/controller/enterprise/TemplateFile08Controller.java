@@ -9,11 +9,18 @@ package com.lanstar.controller.enterprise;
 
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.TemplateFile08;
+import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile08Controller extends SimplateController<TemplateFile08> {
 
     @Override
     protected TemplateFile08 getDao() {
         return TemplateFile08.dao;
+    }
+    @Override
+    protected SqlBuilder buildWhere() {
+        SqlBuilder sb = new SqlBuilder();
+        sb.WHERE(" R_TMPFILE=?",this.getParaValues( "R_TMPFILE" ));
+        return sb;
     }
 }
