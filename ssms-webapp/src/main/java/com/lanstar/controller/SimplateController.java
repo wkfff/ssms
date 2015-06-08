@@ -61,7 +61,6 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
         T model = getModel();
 
         Integer sid = model.getInt( "SID" );
-
         boolean[] handled = new boolean[1];
         beforeSave( model, handled );
         if ( handled[0] == false ) {
