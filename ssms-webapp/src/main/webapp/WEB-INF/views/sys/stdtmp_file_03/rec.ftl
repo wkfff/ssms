@@ -3,7 +3,7 @@
 <script type="text/javascript">
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
-        R_TMPFILE: '${R_TMPFILE!pid!}',
+        R_TMPFILE: '${R_TMPFILE!}',
         SID: '${SID!}'
     };
     var extModel = {
@@ -25,7 +25,7 @@
                     settings.htmleditSettings.save(function (editorResult) {
                         utils.messager.closeProgress();
                         $.messager.alert("提示", "保存成功", "info", function () {
-                            window.location.href = 'rec?sid=' + result.SID + "&backURL=${backURL!referer!}";
+                            window.location.href = 'rec?sid=' + result.SID + "&backUrl=${backUrl!}";
                         });
                     });
                 } else {
@@ -59,9 +59,9 @@
 <@layout.doLayout script>
 <div class="z-toolbar">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-    <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-word" onClick="alert('未写')">导出(WORD)</a>
-    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer}'">返回</a>
-    <span><a class="easyui-linkbutton"  plain="true"  onClick="alert('未写')">模板查看</a></span>
+    <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-word" onClick="alert('还未开发')">导出(WORD)</a>
+    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backUrl}'">返回</a>
+    <span><a class="easyui-linkbutton"  plain="true"  onClick="alert('还未开发')">模板查看</a></span>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
     <table >
@@ -85,9 +85,7 @@
             </td>
         </tr>
     </table>
-    <div>
-     <span>附件：</span>
-    </div>
+    
     <div>
     操作指南：
     </div>
