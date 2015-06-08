@@ -1,59 +1,74 @@
+<style type="text/css">
+    .form table {
+        width: 100%;
+        margin: 5px auto;
+        table-layout: fixed;
+    }
+
+    .form table tr {
+        height: 40px;
+    }
+
+    .form table .label {
+        width: 90px;
+    }
+</style>
 <div id="kocontainer">
     <div class="z-toolbar">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回</a>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
-        <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
-            <p class="long-input ue-clear">
-                <label>通知标题</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_NAME"/>
-            </span>
-            </p>
+        <table>
+            <colgroup>
+                <col class="label"/>
+                <col/>
+                <col class="label"/>
+                <col/>
+            </colgroup>
+            <tr>
+                <td>通知标题:</td>
+                <td colspan="3">
+                    <input data-bind="textboxValue: C_NAME" required/>
+                </td>
+            </tr>
 
-            <p class="long-input ue-clear">
-                <label>通知编号</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_NUMBER"/>
-            </span>
-            </p>
-        </div>
-        <div class="easyui-panel" title="正文" style="padding: 6px">
-            <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
-        </div>
-        <div class="easyui-panel" title="发布信息" style="padding-bottom: 10px;">
-            <p class="ue-clear">
-                <label>发布部门</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_DEPT_01"/>
-            </span>
-            </p>
+            <tr>
+                <td>通知编号:</td>
+                <td colspan="3">
+                    <input data-bind="textboxValue: C_NUMBER" required/>
+                </td>
+            </tr>
 
-            <p class="ue-clear">
-                <label>发布日期</label>
-            <span class="control">
-                <input data-bind="dateboxValue: T_DATE_01"/>
-            </span>
-            </p>
+            <tr>
+                <td colspan="4">
+                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px"></textarea>
+                </td>
+            </tr>
 
-            <p class="ue-clear">
-                <label>主送部门</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_DEPT_02"/>
-            </span>
-            </p>
+            <tr>
+                <td>发布部门:</td>
+                <td>
+                    <input data-bind="textboxValue: C_DEPT_01" required/>
+                </td>
+                <td>发布日期:</td>
+                <td>
+                    <input data-bind="dateboxValue: T_DATE_01" required/>
+                </td>
+            </tr>
 
-            <p class="ue-clear">
-                <label>抄送部门</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_DEPT_03"/>
-            </span>
-            </p>
-        </div>
+            <tr>
+                <td>主送部门:</td>
+                <td>
+                    <input data-bind="textboxValue: C_DEPT_02"/>
+                </td>
 
-        <div class="easyui-panel" title="附件" style="padding-bottom: 10px;">
-            <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_02', sid: '${SID}'}">[选择文件]</a>
-        </div>
+                <td>抄送部门:</td>
+                <td>
+                    <input data-bind="textboxValue: C_DEPT_03"/>
+                </td>
+            </tr>
+        </table>
     </form>
 </div>
 <script type="text/javascript">
@@ -64,7 +79,8 @@
         T_DATE_01: ko.observable('${T_DATE_01!}'),
         C_DEPT_02: ko.observable('${C_DEPT_02!}'),
         C_DEPT_03: ko.observable('${C_DEPT_03!}'),
-        SID: '${SID!}'
+        SID: '${SID!}',
+        R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
         htmlContent: ko.observable()
@@ -78,18 +94,19 @@
     };
     var events = {
         saveClick: function () {
+            if ($form.validate('.form') != true) return;
             utils.messager.showProgress();
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
+                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
                     settings.htmleditSettings.save(function (editorResult) {
-                        $.messager.alert("提示", "保存成功", "info", function () {
-                            utils.messager.closeProgress();
-                            refreshPanel();
-                        });
+                        utils.messager.closeProgress();
+                        $.messager.alert("提示", "保存成功", "info");
                     });
                 } else {
-                    utils.messager.closeProgress();
-                    $.messager.alert("提示", "保存失败", "warning");
+                    $.messager.alert("提示", "保存失败", "warning", function () {
+                        utils.messager.closeProgress();
+                    });
                 }
             }, "json");
         }
