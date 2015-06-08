@@ -35,6 +35,6 @@ public class NavgateController extends SimplateController<Navgate> {
 
     @Override
     protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE( "R_SID=?", getPara( "R_SID" ) );
+        return new SqlBuilder().WHERE( "R_SID=?", getPara( "R_SID" ) ).ORDER_BY( "N_INDEX, T_CREATE" );
     }
 }
