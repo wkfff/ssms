@@ -123,7 +123,7 @@ public class WebAppConfig extends RapidwareConfig {
         me.add( new IdentityInterceptor() );
         me.add( new TenantDsSwitcher() );
         me.add( new TemplateVariableInjector() );
-        me.add( new TxByActionMethods( "save", "batchSave" ) );
+        me.add( new TxByActionMethods( "save", "batchSave", "del" ) );
     }
 
     @Override
