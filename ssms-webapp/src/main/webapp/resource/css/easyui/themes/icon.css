@@ -187,3 +187,12 @@
 .icon-folder {
     background: url('default/images/tree_icons.png') no-repeat -224px 0;
 }
+
+.icon-next {
+    background: url('icons/next.png') no-repeat center center;
+}
+
+.icon-pre {
+    background: url('icons/pre.png') no-repeat center center;
+}
+

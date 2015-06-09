@@ -1,4 +1,9 @@
 <style type="text/css">
+    .form {
+        margin: 0 auto;
+        width: 80%;
+    }
+
     .form table {
         width: 100%;
         margin: 5px auto;
@@ -44,7 +49,8 @@
 
             <tr>
                 <td colspan="4">
-                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px"></textarea>
+                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions: {table: 'STDTMP_FILE_02', field: 'C_CONTENT', sid: '${SID!}'}"
+                              style="width: 100%; min-height: 400px"></textarea>
                 </td>
             </tr>
 
@@ -72,7 +78,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_02', sid: '${SID}'}">[选择文件]</a>
+                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_02', sid: '${SID!}'}">[选择文件]</a>
                 </td>
             </tr>
         </table>
@@ -91,13 +97,6 @@
     };
     var extModel = {
         htmlContent: ko.observable()
-    };
-    var settings = {
-        htmleditSettings: {
-            table: "STDTMP_FILE_02",
-            field: 'C_CONTENT',
-            sid: '${SID!}'
-        }
     };
     var events = {
         saveClick: function () {
@@ -120,6 +119,7 @@
     };
 
     var onPanelLoad = function () {
-        ko.applyBindings($.extend({}, model, events, settings, extModel), document.getElementById('kocontainer'));
-    };
+        var vm = $.extend({}, model, extModel, events);
+        ko.applyBindings(vm, document.getElementById('kocontainer'));
+    }
 </script>
