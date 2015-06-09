@@ -6,7 +6,7 @@ body{ font-family:'Œ¢»Ì—≈∫⁄';}
 .article .wrap-l{ margin-right:3px;}
 .article .wrap-r{ margin-left:3px;}
 .hleft{width:70%;*width:69.999%;}
-.hright{width:30%;*width:29.999%;}
+.hright{width:30%; *width:29.999%;}
 
 /*±ÍÃ‚*/
 .article .title{ position:relative; line-height:33px; background:url(../images/righttitlebig.png) repeat-x; border:1px solid #c1d3de; overflow:visible;}
