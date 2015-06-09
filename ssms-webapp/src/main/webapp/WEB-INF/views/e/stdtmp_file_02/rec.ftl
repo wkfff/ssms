@@ -16,7 +16,8 @@
 <div id="kocontainer">
     <div class="z-toolbar">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回</a>
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf" data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">导出</a>
+        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-back" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回列表</a>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
         <table>
@@ -66,6 +67,11 @@
                 <td>抄送部门:</td>
                 <td>
                     <input data-bind="textboxValue: C_DEPT_03"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_02', sid: '${SID}'}">[选择文件]</a>
                 </td>
             </tr>
         </table>
