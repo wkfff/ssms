@@ -8,8 +8,10 @@
 
 package com.lanstar.controller.system;
 
+import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.core.render.JsonRender;
+import com.lanstar.model.system.GovernmentUser;
 import com.lanstar.model.system.Review;
 import com.lanstar.model.system.ReviewUser;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
@@ -31,14 +33,11 @@ public class ReviewUserController extends SimplateController<ReviewUser> {
 
     }
 
-    public void updtePSW() {
-        String sid = getPara( "SID" );
-        String oldPwd = getPara( "oldPwd" );
-        String newPwd = getPara( "newPwd" );
-
-        ReviewUser user = ReviewUser.getUser( sid, oldPwd );
+    public void resetPsw() {
+        String sid = getPara( "sid" );
+        ReviewUser user = ReviewUser.dao.findById( sid );
         if ( user != null ) {
-            user.setPassword( newPwd );
+            user.setPassword( StrKit.toMD5( "123456" ) );
             user.update();
             renderJson( true );
         } else renderJson( false );

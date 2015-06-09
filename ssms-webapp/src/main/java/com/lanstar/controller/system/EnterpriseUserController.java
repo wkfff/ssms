@@ -8,6 +8,7 @@
 
 package com.lanstar.controller.system;
 
+import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.core.render.JsonRender;
 import com.lanstar.model.system.Enterprise;
@@ -38,14 +39,11 @@ public class EnterpriseUserController extends SimplateController<EnterpriseUser>
         setAttr( "tenant", enterprise );
     }
 
-    public void updtePSW() {
-        String sid = getPara( "SID" );
-        String oldPwd = getPara( "oldPwd" );
-        String newPwd = getPara( "newPwd" );
-
-        EnterpriseUser user = EnterpriseUser.getUser( sid, oldPwd );
+    public void resetPsw() {
+        String sid = getPara( "sid" );
+        EnterpriseUser user = EnterpriseUser.dao.findById( sid );
         if ( user != null ) {
-            user.setPassword( newPwd );
+            user.setPassword( StrKit.toMD5( "123456" ) );
             user.update();
             renderJson( true );
         } else renderJson( false );
