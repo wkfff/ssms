@@ -128,7 +128,7 @@ ${footer}</html>
                         </li>
                         </#if>
                         <li class="split">|</li>
-                        <li class="action">${LANSTAR_IDENTITY.tenantName}</a></li>
+                        <li class="action">${LANSTAR_IDENTITY.tenantName}(${LANSTAR_IDENTITY.name})</a></li>
                     </ul>
                 </div>
                 <div style="position:absolute;right:20px;top:40px;">
