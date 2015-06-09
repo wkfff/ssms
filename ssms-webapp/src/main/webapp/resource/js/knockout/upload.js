@@ -28,16 +28,16 @@
             var self = this;
             this.element = element;
             var $element = $(element).addClass("btn_choose");
+
             // 为父元素添加样式
             $element.parent().addClass("uploader");
             // 添加容器元素
             var $container = $('<div class="container">');
             $element.before($container);
+
             // 添加上传按钮
-            if ($element.is(':visible')) {
-                var $uploadBtn = $('<a class="btn_upload" href="javascript:void(0);">[上传文件]</a>');
-                $element.after($uploadBtn);
-            }
+            var $uploadBtn = $('<a class="btn_upload" href="javascript:void(0);">[上传文件]</a>');
+            $element.after($uploadBtn);
             // 添加控制台输出元素
             var $console = $('<div class="console">');
             $uploadBtn.after($console);
@@ -148,10 +148,12 @@
                 for (var item in options) {
                     if (typeof options[item] === 'function') options[item] = options[item]();
                 }
-                uploader = new Uploader(element, options);
+                if ($(element).is(':visible')) {
+                    uploader = new Uploader(element, options);
 
-                $(element).data(DATA_KEY, uploader);
-                options.uploader = uploader;
+                    $(element).data(DATA_KEY, uploader);
+                    options.uploader = uploader;
+                }
             }
         },
         update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {

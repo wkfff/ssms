@@ -1,4 +1,9 @@
 <style type="text/css">
+    .form {
+        margin: 0 auto;
+        width: 80%;
+    }
+
     .form table {
         width: 100%;
         margin: 5px auto;

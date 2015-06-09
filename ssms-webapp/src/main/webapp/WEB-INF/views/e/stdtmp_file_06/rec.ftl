@@ -32,8 +32,8 @@
         <a class="easyui-linkbutton" plain="true" iconCls="icon-remove" data-bind="visible:!isReadonly, click: remove">删除</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}')">返回列表</a>
 
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">上一条</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">下一条</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-pre" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">上一条</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-next" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">下一条</a>
     </div>
     <form class="form">
         <table>
