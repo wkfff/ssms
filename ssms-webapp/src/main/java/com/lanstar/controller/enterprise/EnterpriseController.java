@@ -33,7 +33,8 @@ public class EnterpriseController  extends SimplateController<Enterprise>{
     
      public void rec(){
          IdentityContext identityContext=IdentityContext.getIdentityContext( this );
-         int id=identityContext.getId();
+         //通过当前用户find出租户id
+         int id=identityContext.getTenantId();
          Enterprise model=Enterprise.dao.findById( id );
          List<EnterpriseProfession> professions = model.listProfession();
 
