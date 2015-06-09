@@ -1,4 +1,9 @@
 <style type="text/css">
+    .form {
+        margin: 0 auto;
+        width: 80%;
+    }
+
     .form table {
         width: 100%;
         margin: 5px auto;
@@ -16,7 +21,9 @@
 <div id="kocontainer">
     <div class="z-toolbar">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回</a>
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf" data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">导出</a>
+        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-back" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回列表</a>
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">查看模板</a>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
         <table>
@@ -42,7 +49,8 @@
 
             <tr>
                 <td colspan="4">
-                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px"></textarea>
+                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions: {table: 'STDTMP_FILE_02', field: 'C_CONTENT', sid: '${SID!}'}"
+                              style="width: 100%; min-height: 400px"></textarea>
                 </td>
             </tr>
 
@@ -68,6 +76,11 @@
                     <input data-bind="textboxValue: C_DEPT_03"/>
                 </td>
             </tr>
+            <tr>
+                <td colspan="4">
+                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_02', sid: '${SID!}'}">[选择文件]</a>
+                </td>
+            </tr>
         </table>
     </form>
 </div>
@@ -84,13 +97,6 @@
     };
     var extModel = {
         htmlContent: ko.observable()
-    };
-    var settings = {
-        htmleditSettings: {
-            table: "STDTMP_FILE_02",
-            field: 'C_CONTENT',
-            sid: '${SID!}'
-        }
     };
     var events = {
         saveClick: function () {
@@ -113,6 +119,7 @@
     };
 
     var onPanelLoad = function () {
-        ko.applyBindings($.extend({}, model, events, settings, extModel), document.getElementById('kocontainer'));
-    };
+        var vm = $.extend({}, model, extModel, events);
+        ko.applyBindings(vm, document.getElementById('kocontainer'));
+    }
 </script>

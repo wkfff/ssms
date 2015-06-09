@@ -76,6 +76,24 @@ function ViewModel(recId) {
                 }
             },
             gridEvents: {
+                fullScreenClick:function(){
+                    var e = $('#full');
+                    if (e.hasClass('panel-tool-max')){
+                        $('#north').panel('collapse');
+                        $('#center').panel('maximize');
+                        $('.layout-panel-north').hide();
+                        e.removeClass('panel-tool-max');
+                        e.addClass('panel-tool-min');
+                        e.attr('title','还原');
+                    }else{
+                        $('#north').panel('expand');
+                        $('#center').panel('restore');
+                        $('.layout-panel-north').show();
+                        e.addClass('panel-tool-max');
+                        e.removeClass('panel-tool-min');
+                        e.attr('title','最大化');
+                    }
+                },
                 refreshClick: function () {
                     settings.gridSettings.datagrid('reload');
                 }, addClick: function () {
@@ -197,6 +215,7 @@ function ViewModel(recId) {
             fit:true,
             border:false,
             striped: false,
+            //maximizable:true,
             tools:'#db_tb',
             columns: [[
                 {field: 'C_CATEGORY', title: '类目', width: 100},

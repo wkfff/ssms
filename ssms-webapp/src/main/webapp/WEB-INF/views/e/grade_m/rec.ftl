@@ -42,7 +42,7 @@
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div title="在线自评" data-options="region:'north',collapsible:true" style="height:230px;overflow:hidden;">
+    <div id="north" title="在线自评" data-options="region:'north',collapsible:true" style="height:230px;overflow:hidden;">
           <div id="toolbar" class="toolbar">
                 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:gridEvents.refreshClick">刷新</a> -->
                 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: recEvents.completeClick">完成自评</a>
@@ -83,11 +83,12 @@
         </div>
     </div>
     
-    <div data-options="region:'center'" >
+    <div id="center" data-options="region:'center'" >
         <div id="db_tb">
             <div class="db_tb">
                 <input type="checkbox" data-bind="booleanValue:noComplete"/>
                 <a href="javascript:void(0)" data-bind="click:gridEvents.noCompleteClick">只显示未完成项</a>
+                <a id="full" href="javascript:void(0)" data-bind="click:gridEvents.fullScreenClick" class="panel-tool-max" style="width:16px;height:16px;" title="最大化"></a>
             </div>
         </div>
         <table data-bind="datagridValue:selectItem,datagridEditValue:editItem,easyuiOptions:gridSettings"></table>

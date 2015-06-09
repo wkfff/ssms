@@ -32,7 +32,13 @@ function ViewModel() {
     });
     model.sid.subscribe(function (newValue) {
         $.post('rec', {sid: model.sid()}, function (result) {
-            ko.mapping.fromJS(result, model.rec);
+            for (var obj in model.rec) {
+                var field = model.rec[obj];
+                var value = null;
+                if (obj in result) value = result[obj] ;
+                if (typeof field == 'function') field(value);
+                else field = value;
+            }
         });
         if (settings.gridSettings.datagrid)
             settings.gridSettings.datagrid({

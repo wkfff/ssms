@@ -11,6 +11,10 @@ package com.lanstar.service.enterprise;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
+import com.lanstar.plugin.activerecord.Db;
+import com.lanstar.plugin.activerecord.IAtom;
+
+import java.sql.SQLException;
 
 public class ProfessionService {
     private final Profession profession;
@@ -22,8 +26,14 @@ public class ProfessionService {
     /**
      * 同步专业模板到指定租户上下文中
      */
-    public void sync( IdentityContext identityContext ) {
-        TemplateSyncProcessor.process(getSystemTemplate(), identityContext);
+    public void sync( final IdentityContext identityContext ) {
+        Db.tx( new IAtom() {
+            @Override
+            public boolean run() throws SQLException {
+                TemplateSyncProcessor.process(getSystemTemplate(), identityContext);
+                return true;
+            }
+        } );
     }
 
     public Template getSystemTemplate() {
