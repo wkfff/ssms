@@ -46,9 +46,10 @@
         </div>
     </div>
     <div data-options="region:'center', border:false">
-        <div id="content" class="easyui-panel" style="position: relative;" data-options="onLoad: onLoad" fit="true" title="${firstRec.text}" href="${firstRec.attributes.C_URL!}"></div>
+        <div id="content" class="easyui-panel" iconCls="icon-search" style="position: relative;" data-options="onLoad: onLoad,tools:'#tt'" fit="true" title="${firstRec.text}" href="${firstRec.attributes.C_URL!}"></div>
     </div>
 </div>
+<div id="tt"><a style="width:60px;height:20px;line-height:20px;padding:0px 4px 4px 8px;color:black;" href="javascript:parent">返回首页</a></div>
 </@>
 <#macro buildTree list root=false>
     <#if (list?size>0)>
