@@ -25,6 +25,7 @@ public class SystemTemplateFileLinstener extends FilterCallbackLinstener<Templat
 
     @Override
     protected void innerBeforeUpdate( TemplateFileModel<?> m ) {
+        if ( m.isModified() == false ) return;
         m.setVersion( m.getVersion() + 1 );
     }
 

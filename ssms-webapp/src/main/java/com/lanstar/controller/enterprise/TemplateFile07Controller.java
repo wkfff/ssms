@@ -17,11 +17,11 @@ public class TemplateFile07Controller extends SimplateController<TemplateFile07>
     protected TemplateFile07 getDao() {
         return TemplateFile07.dao;
     }
-    
+
     @Override
     protected SqlBuilder buildWhere() {
         SqlBuilder sb = new SqlBuilder();
-        sb.WHERE(" R_TMPFILE=?",this.getParaValues( "R_TMPFILE" ));
+        sb.WHERE( " R_TMPFILE=?", this.getPara( "R_TMPFILE" ) );
         return sb;
     }
 }
