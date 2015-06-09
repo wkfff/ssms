@@ -53,6 +53,15 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return getInt( "R_SID" );
     }
 
+    public int getVersion() {
+        Integer version = getInt( "N_VERSION" );
+        return version == null ? 0 : version;
+    }
+
+    public void setVersion( int version ) {
+        set( "N_VERSION", version );
+    }
+
     public void setSourceFile( com.lanstar.model.system.TemplateFile file ) {
         set( "R_SOURCE", file.getId() );
     }

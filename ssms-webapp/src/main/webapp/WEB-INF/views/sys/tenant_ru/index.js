@@ -51,15 +51,15 @@ function ViewModel(pid) {
 							if (row.C_USER == 'admin') {
 								return "<a href='#' onclick='doEdit("
 										+ value
-										+ "," + pid + ")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doUpPsw("
-										+ value + ")'>修改密码</a>"
+										+ "," + pid + ")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='resetPsw("
+										+ value + ")'>重置密码</a>"
 							} else {
 								return "<a href='#' onclick='doEdit("
 										+ value
 										+ "," +  pid + ")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("
 										+ value
-										+ ")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='doUpPsw("
-										+ value + ")'>修改密码</a>"
+										+ ")'>删除</a>&nbsp;&nbsp;<a href='#' onclick='resetPsw("
+										+ value + ")'>重置密码</a>"
 							}
 						}
 					} ] ]
@@ -95,9 +95,19 @@ function doDel(sid) {
 
 }
 
-function doUpPsw(sid) {
-	window.location.href = 'psw?sid=' + sid;
+function resetPsw(sid) {
+	$.get("resetPsw",{sid : sid
+		},function(result){
+			if(result)
+				$.messager.alert("提示","密码重置成功","info",function(){
+					 window.location.href= window.location.href;
+				});
+			else{
+				 $.messager.alert("提示", "密码重置失败", "warning");
+			}
+		})
 }
+
 
 function doEdit(sid,pid) {
 	window.location.href = 'rec?sid=' + sid + '&pid='+pid;

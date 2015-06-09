@@ -251,7 +251,8 @@
                 </span>
             </p>
         </div>
-        <div class="easyui-panel" border="false" style="padding:10px; display:none;" title="费用信息">
+       <div style="display:none;">
+        <div class="easyui-panel" border="false" style="padding:10px; " title="费用信息">
             <p class="ue-clear">
                 <label>缴费日期</label>
                 <span class="control">
@@ -273,6 +274,7 @@
                 </span>
             </p>
         </div>
+       </div>
     </form>
 </div>
 </@>
