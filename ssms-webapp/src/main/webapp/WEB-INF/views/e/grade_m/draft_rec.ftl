@@ -151,6 +151,31 @@
             } else {
                 $('#dg').datagrid('selectRow', editIndex);
             }
+            
+            var ed = settings.gridSettings.datagrid('getEditor', {index:index,field:'N_SCORE_REAL'});
+                        var ed1 = settings.gridSettings.datagrid('getEditor', {index:index,field:'C_DESC'});
+                        var ed2 = settings.gridSettings.datagrid('getEditor', {index:index,field:'B_BLANK'});
+                        $(ed2.target).bind("change",function(e){
+                            var chk = $(ed2.target)[0].checked;
+                            if (chk){
+                                $(ed.target).numberbox("setValue",'');
+                                $(ed.target).numberbox("disable",true);
+                                $(ed1.target)[0].value = '';
+                            }
+                            else
+                                $(ed.target).numberbox("enable",true);
+                            $(ed1.target)[0].disabled = chk;
+                        });
+                          
+                        var chk = $(ed2.target)[0].checked;
+                        if (chk){
+                            $(ed.target).numberbox("setValue",'');
+                            $(ed.target).numberbox("disable",true);
+                            $(ed1.target)[0].value = '';
+                        }
+                        else
+                            $(ed.target).numberbox("enable",true);
+                        $(ed1.target)[0].disabled = chk;
         }
     }
     $(function () {

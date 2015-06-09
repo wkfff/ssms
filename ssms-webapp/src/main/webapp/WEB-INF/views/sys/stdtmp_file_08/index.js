@@ -25,7 +25,7 @@ function ViewModel(templateId) {
             toolbar: '#toolbar',
             columns: [
                 [
-                    {field: 'C_NAME', title: '设备名称', width: 120,
+                    {field: 'C_NAME', title: '设备名称', width: 220,
                         editor: {type: 'textbox', options: {validType: ['length[0, 300]']}}},
                     {field: 'C_NO_REG', title: '登记证号', width: 100,
                         editor: {type: 'textbox', options: {validType: ['length[0, 100]']}}},
@@ -46,9 +46,7 @@ function ViewModel(templateId) {
                     {field: 'C_TEST_CON', title: '检验结论',width: 100,
                         editor: {type: 'textbox', options: {}}},
                     {field: 'C_TEST_UNIT', title: '检验单位',width: 100,
-                        editor: {type: 'textbox', options: {}}},
-                    {field: 'N_INDEX', title: '排序', width: 100,hidden:true,
-                        editor: {type: 'numberbox', options: {}}}
+                        editor: {type: 'textbox', options: {}}}
                 ]
             ]
         }
@@ -133,7 +131,7 @@ function ViewModel(templateId) {
                             settings.gridSettings.datagrid('getData').rows[index] = toup;
                             settings.gridSettings.datagrid('refreshRow', index);
                             settings.gridSettings.datagrid('refreshRow', index + 1);
-                            settings.gridSettings.datagrid('selectRow', index + 1);                            
+                            settings.gridSettings.datagrid('selectRow', index + 1);
                             var d = [{'SID':todown.SID,'N_INDEX':toup.N_INDEX},{'SID':toup.SID,'N_INDEX':todown.N_INDEX}];
                             $.post("batchSave", {data:$.toJSON(d)}, function () {});
                         }
