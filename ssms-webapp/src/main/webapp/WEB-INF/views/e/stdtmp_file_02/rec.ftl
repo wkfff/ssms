@@ -77,7 +77,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_02', sid: '${SID}'}">[选择文件]</a>
+                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_02', sid: '${SID!}'}">[选择文件]</a>
                 </td>
             </tr>
         </table>
@@ -125,6 +125,7 @@
     };
 
     var onPanelLoad = function () {
-        ko.applyBindings($.extend({}, model, events, settings, extModel), document.getElementById('kocontainer'));
-    };
+        var vm = $.extend({}, model, settings, extModel, events);
+        ko.applyBindings(vm, document.getElementById('kocontainer'));
+    }
 </script>
