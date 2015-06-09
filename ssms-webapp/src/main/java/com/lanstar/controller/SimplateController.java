@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
 import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
@@ -139,7 +140,7 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
     protected SqlBuilder buildOrder() {
         return null;
     }
-    
+
     protected void beforeSave( T model, boolean[] handled ) {
     }
 
@@ -155,13 +156,17 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
 
     }
 
+    @SuppressWarnings({ "unchecked", "MismatchedQueryAndUpdateOfCollection" })
     protected T getModel() {
         Enumeration<String> paraNames = this.getParaNames();
-        @SuppressWarnings("unchecked")
         Map<String, String> paraMap = new CaseInsensitiveContainerFactory.CaseInsensitiveMap();
+        Set<String> removeParas = new CaseInsensitiveContainerFactory.CaseInsensitiveSet();
         while ( paraNames.hasMoreElements() ) {
             String paraName = paraNames.nextElement();
-            if ( isParaBlank( paraName ) ) continue;
+            if ( isParaBlank( paraName ) ) {
+                removeParas.add( paraName );
+                continue;
+            }
             String para = getPara( paraName );
             if ( "undefined".equalsIgnoreCase( para ) ) continue;
             if ( "null".equalsIgnoreCase( para ) ) continue;
@@ -172,6 +177,9 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
         String tmp = paraMap.get( "SID" );
         if ( StrKit.isEmpty( tmp ) == false ) model = getDao().findById( tmp );
         else model = newModel();
+        for ( String removePara : removeParas ) {
+            model.set( removePara, null );
+        }
 
         ModelInjector.injectActiveRecordModel( model, paraMap );
         ModelInjector.injectOpreator( model, identityContext );
