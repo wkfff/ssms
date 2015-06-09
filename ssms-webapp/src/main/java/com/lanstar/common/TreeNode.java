@@ -17,6 +17,7 @@ import java.util.Objects;
 public class TreeNode {
     private String id;
     private String text;
+    private int level;
     private Map<String, Object> attributes;
     private List<TreeNode> children = new ArrayList<>();
 
@@ -50,6 +51,7 @@ public class TreeNode {
                 rootNode.id = id;
                 rootNode.text = getString( record.get( textField ) );
                 rootNode.attributes = record;
+                rootNode.level = 0;
                 rootWrap.children.add( rootNode );
             }
         }
@@ -74,6 +76,7 @@ public class TreeNode {
             String pid = getString( record.get( pidField ) );
             if ( root.getId().equalsIgnoreCase( pid ) ) {
                 TreeNode node = getNode( record, idField, textField );
+                node.level = root.level+1;
                 root.children.add( node );
                 build( node, records, idField, pidField, textField );
             }
@@ -102,5 +105,9 @@ public class TreeNode {
 
     public List<TreeNode> getChildren() {
         return children;
+    }
+
+    public int getLevel() {
+        return level;
     }
 }
