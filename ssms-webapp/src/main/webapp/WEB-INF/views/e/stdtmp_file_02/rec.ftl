@@ -49,7 +49,8 @@
 
             <tr>
                 <td colspan="4">
-                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px"></textarea>
+                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions: {table: 'STDTMP_FILE_02', field: 'C_CONTENT', sid: '${SID!}'}"
+                              style="width: 100%; min-height: 400px"></textarea>
                 </td>
             </tr>
 
@@ -97,13 +98,6 @@
     var extModel = {
         htmlContent: ko.observable()
     };
-    var settings = {
-        htmleditSettings: {
-            table: "STDTMP_FILE_02",
-            field: 'C_CONTENT',
-            sid: '${SID!}'
-        }
-    };
     var events = {
         saveClick: function () {
             if ($form.validate('.form') != true) return;
@@ -125,7 +119,7 @@
     };
 
     var onPanelLoad = function () {
-        var vm = $.extend({}, model, settings, extModel, events);
+        var vm = $.extend({}, model, extModel, events);
         ko.applyBindings(vm, document.getElementById('kocontainer'));
     }
 </script>

@@ -16,8 +16,6 @@ public class TemplateFile06Controller extends SimplateController<TemplateFile06>
     @Override
     public void rec() {
         super.rec();
-
-
     }
 
     @Override
