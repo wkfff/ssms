@@ -21,7 +21,7 @@
                 }, function (flag) {
                     if (flag) {
                         $.messager.alert("提示", "密码修改成功", 'info', function () {
-                            window.location.href = '${Referer!}';
+                            window.location.href = window.location.href;
                         })
                     } else {
                         $.messager.alert("提示", "密码修改失败")
