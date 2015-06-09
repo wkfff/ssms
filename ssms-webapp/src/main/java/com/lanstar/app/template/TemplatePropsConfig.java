@@ -24,6 +24,7 @@ public class TemplatePropsConfig extends TemplateProps {
         add( TemplateProp.with( "08", "特种设备台账及定期检验记录", com.lanstar.model.system.TemplateFile08.class, com.lanstar.model.tenant.TemplateFile08.class ) );
         add( TemplateProp.with( "09", "安全附件定期检查检验记录", com.lanstar.model.system.TemplateFile09.class, com.lanstar.model.tenant.TemplateFile09.class ) );
 
-        ModelExt.addCallbackListener( new TemplateFileLinstener() );
+        ModelExt.addCallbackListener( new TenantTemplateFileLinstener() );
+        ModelExt.addCallbackListener( new SystemTemplateFileLinstener() );
     }
 }

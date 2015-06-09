@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.model.tenant;
+package com.lanstar.model.system;
 
 import com.lanstar.app.Const;
 import com.lanstar.plugin.activerecord.ModelExt;
@@ -18,14 +18,5 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends ModelExt<
 
     public TemplateFile getTemplateFile() {
         return TemplateFile.dao.findById( getTemplateFileId() );
-    }
-
-    public int getVersion() {
-        Integer version = getInt( "N_VERSION" );
-        return version == null ? 0 : version;
-    }
-
-    public void setVersion( int version ) {
-        set( "N_VERSION", version );
     }
 }

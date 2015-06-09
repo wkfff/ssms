@@ -14,7 +14,7 @@ import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.plugin.activerecord.FilterCallbackLinstener;
 import com.lanstar.plugin.activerecord.Model;
 
-public class TemplateFileLinstener extends FilterCallbackLinstener<TemplateFileModel<?>> {
+public class TenantTemplateFileLinstener extends FilterCallbackLinstener<TemplateFileModel<?>> {
     @Override
     public void innerBeforeSave( TemplateFileModel<?> m ) {
     }
