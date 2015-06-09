@@ -9,11 +9,23 @@
 package com.lanstar.controller.system;
 
 import com.lanstar.controller.SimplateController;
+import com.lanstar.model.system.TemplateFile02;
 import com.lanstar.model.system.TemplateFile04;
+import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile04Controller extends SimplateController<TemplateFile04> {
     @Override
     protected TemplateFile04 getDao() {
         return TemplateFile04.dao;
+    }
+
+    @Override
+    protected SqlBuilder buildWhere() {
+        return new SqlBuilder().WHERE("R_TMPFILE=?", getParaToInt("R_SID"));
+    }
+
+    @Override
+    protected SqlBuilder buildOrder() {
+        return new SqlBuilder().ORDER_BY("T_CREATE DESC");
     }
 }
