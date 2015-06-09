@@ -49,5 +49,6 @@ public class EnterpriseRoutes extends Routes {
         
         add( "/e/psw_change", PswChangeController.class);
         add( "/e/tenant_e", EnterpriseController.class);
+        add( "/e/tenant_eu", EnterpriseUserController.class);
     }
 }
