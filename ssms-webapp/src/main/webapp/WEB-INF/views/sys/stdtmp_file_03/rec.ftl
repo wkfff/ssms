@@ -59,9 +59,9 @@
 <@layout.doLayout script>
 <div class="z-toolbar">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-    <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-word" onClick="alert('还未开发')">导出(WORD)</a>
+    <a class="easyui-linkbutton"  plain="true" iconCls="icon-word" onclick="alert('还未开发')">导出</a>
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backUrl}'">返回</a>
-    <span><a class="easyui-linkbutton"  plain="true"  onClick="alert('还未开发')">模板查看</a></span>
+    <span><a class="easyui-linkbutton"  plain="true" iconCls="icon-temp"  onclick="alert('还未开发')">模板查看</a></span>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
     <table >

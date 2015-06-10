@@ -202,6 +202,6 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
     }
     
     protected boolean isReadonly(HttpServletRequest request){
-        return this.getParaToBoolean( Const.READONLY_KEY ,true);
+        return this.getParaToBoolean( Const.READONLY_KEY ,false);
     }
 }

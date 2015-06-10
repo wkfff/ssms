@@ -10,6 +10,7 @@ package com.lanstar.controller.enterprise;
 
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.model.tenant.TemplateFile01;
 import com.lanstar.model.tenant.TemplateFile03;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SQL;
@@ -23,15 +24,18 @@ public class TemplateFile03Controller extends SimplateController<TemplateFile03>
     }
     @Override
     public void index() {
-        int R_SID=getParaToInt("sid");
-        SqlBuilder builder=SQL.SELECT( "*" ).FROM( "ssm_stdtmp_file_03" ).WHERE("R_TMPFILE = ?" , R_SID);
-        SqlStatement statement=builder.toSqlStatement();
-        TemplateFile03 model=getDao().findFirst( statement.getSql(), statement.getParams() );
-        if ( model != null ) {
-            setAttrs( ModelKit.toMap( model ) );
-        }else{
-            setAttr( "R_TMPFILE",R_SID);
+        //先判断sid 是否有值，如果有值根据模板获R_TMPFILE取到对应的模板，如果没值根据SID获取到模板。。。
+        TemplateFile03 model = null;
+        String sid = getPara("sid");
+        if (StrKit.isEmpty(sid)) {
+            sid = getPara("SID");
+            if (sid == null)
+                return;
+            model = getDao().findById(sid);
+        } else {
+            model = getDao().findFirstByColumn("R_TMPFILE", sid);
         }
-        
+        if (model != null)
+            setAttrs(ModelKit.toMap(model));
     }
 }
