@@ -121,7 +121,7 @@ ${footer}</html>
                         <#if LANSTAR_IDENTITY.tenantType='E' && LANSTAR_IDENTITY.enterpriseService.professionService??>
                         <li class="split">|</li>
                         <li class="action">
-                        	<#-- 暂时先用工贸企业，常常应该根据
+                        	<#-- 暂时先用工贸企业，以后再修改
                             <a href="#" onclick="opChoose()" title="点击切换专业">专业:${LANSTAR_IDENTITY.enterpriseService.professionService.name}  <b class="c-icon c-icon-triangle-down"></b></a>
                             -->
                             <a href="#" >${LANSTAR_IDENTITY.enterpriseService.professionService.name}专业 <b class="c-icon c-icon-triangle-down"></b></a>
@@ -133,7 +133,7 @@ ${footer}</html>
                 </div>
                 <div style="position:absolute;right:20px;top:40px;">
                 	<span>在线客服：</span>
-                	<a target="_blank" href="http://wpa.qq.com/msgrd?v=1&uin=38142116&site=&Menu=yes" >
+                	<a target="_blank" href="http://wpa.qq.com/msgrd?v=1&uin=2055419486&site=&Menu=yes" >
                 		<#--<img border="0" src="http://wpa.qq.com/pa?p=41:38142116:41" alt="点击这里获取客户服务" title="点击这里获取客户服务">-->
                 		<#-- <img border="0" src="http://wpa.qq.com/pa?p=20:38142116:20" alt="点击这里获取客户服务" title="点击这里获取客户服务"> -->
                 		<#-- <img border="0" src="http://wpa.qq.com/pa?p=1:38142116:1" alt="点击这里获取客户服务" title="点击这里获取客户服务"> -->
@@ -144,7 +144,7 @@ ${footer}</html>
                 	<img border="0" align="absmiddle" SRC=http://wpa.qq.com/pa?p=1:50858745:4 alt="技术支持"> 在线客服
                 	</a>
                 	-->
-                	<span style="padding-left:30px;">热线电话：0591-88888888</span>
+                	<span style="padding-left:30px;">热线电话：0591-87762196  传真：0591-87275136</span>
                 </div>
             </div>
         </div>
