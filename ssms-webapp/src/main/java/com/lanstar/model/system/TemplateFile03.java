@@ -10,4 +10,11 @@ package com.lanstar.model.system;
 
 public class TemplateFile03 extends TemplateFileModel<TemplateFile03> {
     public static TemplateFile03 dao = new TemplateFile03();
+
+    /**
+     * @return
+     */
+    public Integer getId() {
+        return getInt( "SID" );
+    }
 }

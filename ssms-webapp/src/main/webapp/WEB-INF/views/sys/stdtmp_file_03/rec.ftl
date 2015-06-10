@@ -7,13 +7,15 @@
         SID: '${SID!}'
     };
     var extModel = {
-        htmlContent: ko.observable()
+        htmlContent: ko.observable(),
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         htmleditSettings: {
             table: "STDTMP_FILE_03",
             field: 'C_CONTENT',
-            sid: '${SID!}'
+            sid: '${SID!}',
+            readonly: extModel.readonly
         }
     };
     var events = {
@@ -57,9 +59,9 @@
 </style>
 </#assign>
 <@layout.doLayout script>
-<div class="z-toolbar">
+<div class="z-toolbar" data-bind="visible: !readonly">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backUrl}'">返回</a>
+    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${backUrl!}'">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
     <table >
@@ -72,14 +74,14 @@
         <tr >
             <td>文件名称:</td>
             <td colspan="3">
-                <input data-bind="textboxValue: C_NAME" required/>
+                <input data-bind="disable: readonly, textboxValue: C_NAME" required/>
             </td>
         </tr>
      </table>
      <table >
         <tr >
             <td colspan="4">
-                <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
+                <textarea data-bind=" htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
             </td>
         </tr>
     </table>
