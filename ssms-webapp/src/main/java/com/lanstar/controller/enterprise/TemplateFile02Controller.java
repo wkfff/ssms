@@ -18,11 +18,14 @@ public class TemplateFile02Controller extends SimplateController<TemplateFile02>
     @Override
     public void rec() {
         super.rec();
-        TemplateFile file = TemplateFile.dao.findById( getAttrForInt( Const.TEMPLATE_FILE_PARENT_FIELD ) );
+        Integer pid = getAttrForInt( Const.TEMPLATE_FILE_PARENT_FIELD );
+        if (pid == null) pid = getParaToInt("pid");
+        TemplateFile file = TemplateFile.dao.findById( pid );
         com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
 
-        setAttr( "TEMPLATE_ID", com.lanstar.model.system.TemplateFile02.dao.findFirstByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFile
-                .getId() ).getId() );
+        com.lanstar.model.system.TemplateFile02 sysFile = com.lanstar.model.system.TemplateFile02.dao.findFirstByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFile.getId() );
+        if (sysFile == null) return;
+        setAttr( "TEMPLATE_ID", sysFile.getId() );
     }
 
     @Override
@@ -33,5 +36,11 @@ public class TemplateFile02Controller extends SimplateController<TemplateFile02>
     @Override
     protected SqlBuilder buildWhere() {
         return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt( "R_SID" ) );
+    }
+    
+    public void view(){
+        super.index();
+        setAttr( "@READONLY", "true" );
+        render( "index.ftl" );
     }
 }

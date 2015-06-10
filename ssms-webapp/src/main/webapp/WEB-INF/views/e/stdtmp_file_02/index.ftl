@@ -1,12 +1,10 @@
 <div id="kocontainer" class="easyui-panel" border="false" fit="true">
-    <#if _R_== false >
-    <div id="toolbar">
+    <div class="z-toolbar" data-bind="visible:!readonly">
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" data-bind="click: deleteClick">删除</a>
     </div>
-    </#if>
     <table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table>
 </div>
 <script type="text/javascript">
@@ -17,7 +15,8 @@
             selectIndex: ko.pureComputed(function () {
                 var row = model.selectItem();
                 if (row) return settings.gridSettings.datagrid('getRowIndex', row);
-            })
+            }),
+            readonly: ${@READONLY!'false'}
         };
         var settings = {
             viewSettings: {
@@ -40,10 +39,12 @@
                         {field: 'C_DEPT_02', title: '主送部门', width: 80},
                         {field: 'C_DEPT_03', title: '抄送部门', width: 80}
                     ]
-                ],
+                ]
+                <#if @READONLY== 'false' >,
                 onDblClickRow: function (index, row) {
                     events.editClick();
                 }
+                </#if>
             }
         };
         var events = {
@@ -67,10 +68,14 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
-                $.post('${BASE_PATH}/del', {sid: value.SID}, function () {
-                    $.messager.alert('消息', '成功删除记录！', "info", function () {
-                        events.refreshClick();
-                    });
+                $.messager.confirm('确认', '是否确认要删除选中数据？', function (r) {
+                    if (r) {
+                        $.post('${BASE_PATH}/del', {sid: value.SID}, function () {
+                            $.messager.alert('消息', '成功删除记录！', "info", function () {
+                                events.refreshClick();
+                            });
+                        });
+                    }
                 });
             }
         };

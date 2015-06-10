@@ -19,19 +19,16 @@
     }
 </style>
 <div id="kocontainer">
-    <#if _R_== false >
+<#if _R_== false >
     <div class="z-toolbar">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search"
-           data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">年审通过</a>
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: passClick">年审通过</a>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf"
-           data-bind="click: function(){}">导出</a>
-        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-back"
-           onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!sid}');">返回</a>
-        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search"
-           data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">查看模板</a>
+           data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">导出</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-search"
+           data-bind="click: function(){window.open('/sys/stdtmp_file_01/view?sid=${TEMPLATE_ID!}')}">查看模板</a>
     </div>
-    </#if>
+</#if>
     <form class="form" method="post" style="padding:10px 31px;">
         <table>
             <colgroup>
@@ -104,6 +101,27 @@
                     <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_01', sid: '${SID!}'}">[选择文件]</a>
                 </td>
             </tr>
+
+        <#if pass?? && pass?size gt 0 >
+            <tr>
+                <td colspan="4">
+                    <table id="item">
+                        <tr>
+                        <td>序号</td>
+                        <td>年审时间</td>
+                        <td>操作人</td>
+                        </tr>
+                        <#list pass as list>
+                            <tr>
+                            <td>${list_index+1}</td>
+                            <td>${list.T_DATE_01!}</td>
+                            <td>${list.S_CREATE!}</td>
+                            </tr>
+                        </#list>
+                    </table>
+                </td>
+            </tr>
+        </#if>
         </table>
     </form>
 </div>
@@ -148,7 +166,27 @@
                     });
                 }
             }, "json");
-        }
+        },
+        passClick: function () {
+            if ($form.validate('.form') != true) return;
+            utils.messager.showProgress();
+            $.post('${BASE_PATH}/pass', model, function (result) {
+                if (result == '1') {
+                    utils.messager.closeProgress();
+                    $.messager.alert("提示", "年审通过", "info", function () {
+
+                    });
+                } else if (result == '3') {
+                    $.messager.alert("提示", "该制度文件已通过年审，不要重复年审。", "warning", function () {
+                        utils.messager.closeProgress();
+                    });
+                } else {
+                    $.messager.alert("提示", "年审不通过。", "warning", function () {
+                        utils.messager.closeProgress();
+                    });
+                }
+            }, "json");
+        },
     };
 
     var onPanelLoad = function () {

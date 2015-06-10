@@ -19,9 +19,9 @@
     }
 </style>
 <div id="kocontainer">
-    <div class="z-toolbar">
+    <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-        <a class="easyui-linkbutton"  plain="true" iconCls="icon-word" data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">导出</a>
+        <a class="easyui-linkbutton"  plain="true" iconCls="icon-word" data-bind="click: function(){}">导出</a>
         <#if TEMPLATE_ID??>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_03/view?sid=${TEMPLATE_ID}')}">查看模板</a>
         </#if> 
@@ -37,7 +37,7 @@
             <tr>
                 <td>文件名称</td>
             <td colspan="3">
-                <input data-bind="textboxValue: C_NAME"/>
+                <input data-bind="disable: readonly,textboxValue: C_NAME"/>
             </td>
             </tr>
         
@@ -48,7 +48,7 @@
         </tr>
         <tr>
             <td colspan="4">
-            <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_03', sid: '${SID!}'}">[选择文件]</a>
+            <a href="javascript:void(0);" data-bind="disable: readonly,uploadOptions: {module: 'STDTMP_FILE_03', sid: '${SID!}'}">[选择文件]</a>
             </td>
         </tr>
         </table>
@@ -62,13 +62,15 @@ function ViewModel(catalogId){
         SID: '${SID!}'
     };
     var extModel = {
-        htmlContent: ko.observable()
+        htmlContent: ko.observable(),
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         htmleditSettings: {
             table: "STDTMP_FILE_03",
             field: 'C_CONTENT',
-            sid: '${SID!}'
+            sid: '${SID!}',
+            readonly: extModel.readonly
         }
     };
     var events = {

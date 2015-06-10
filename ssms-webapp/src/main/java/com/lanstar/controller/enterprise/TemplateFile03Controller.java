@@ -8,35 +8,36 @@
 
 package com.lanstar.controller.enterprise;
 
-import com.lanstar.app.Const;
-import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.TemplateFile;
-import com.lanstar.model.tenant.TemplateFile01;
 import com.lanstar.model.tenant.TemplateFile03;
 import com.lanstar.plugin.activerecord.ModelKit;
-import com.lanstar.plugin.activerecord.statement.SQL;
-import com.lanstar.plugin.activerecord.statement.SqlBuilder;
-import com.lanstar.plugin.activerecord.statement.SqlStatement;
 
 public class TemplateFile03Controller extends SimplateController<TemplateFile03> {
+    @Override
+    public void index() {
+        String sid = getPara( "sid" );
+        TemplateFile03 templateFile = getDao().findFirstByColumn( "R_TMPFILE", sid );
+        if (templateFile == null) return;
+        setAttrs( ModelKit.toMap( templateFile ) );
+        TemplateFile file = templateFile.getTemplateFile();
+        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
+        if ( sourceFile == null ) return;
+        int sourceId = sourceFile.getId();
+        com.lanstar.model.system.TemplateFile03 m = com.lanstar.model.system.TemplateFile03.dao.findFirstByColumn( "R_TMPFILE", sourceId );
+        if ( m == null ) return;
+        int id = m.getId();
+        setAttr( "TEMPLATE_ID", id );
+    }
+
     @Override
     protected TemplateFile03 getDao() {
         return TemplateFile03.dao;
     }
-    @Override
-    public void index() {
-        String sid = getPara("sid");
-        TemplateFile03 model = getDao().findFirstByColumn("R_TMPFILE", sid);
-        TemplateFile03 templateFile = model;
-        setAttrs(ModelKit.toMap(templateFile));
-        TemplateFile file = templateFile.getTemplateFile();
-        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
-        if (sourceFile == null) return;
-        int sourceId=sourceFile.getId();
-        com.lanstar.model.system.TemplateFile03 m=com.lanstar.model.system.TemplateFile03.dao.findFirstByColumn( "R_TMPFILE", sourceId );
-        if (m == null) return;
-        int id=m.getId();
-        setAttr( "TEMPLATE_ID",id);
+    
+    public void view(){
+        super.index();
+        setAttr( "@READONLY", "true" );
+        render( "index.ftl" );
     }
 }

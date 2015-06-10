@@ -46,7 +46,7 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
         if ( identityContext == null ) return;
         tenantDb = identityContext.getTenantDb();
         
-        setAttr(Const.READONLY_KEY,isReadonly( request ));
+        setAttr(Const.READONLY_KEY,Boolean.toString( isReadonly( request )));
     }
 
     public void index() {

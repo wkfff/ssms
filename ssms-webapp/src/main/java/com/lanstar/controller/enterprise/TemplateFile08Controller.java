@@ -23,4 +23,10 @@ public class TemplateFile08Controller extends SimplateController<TemplateFile08>
         sb.WHERE(" R_TMPFILE=?",this.getPara( "R_TMPFILE" ));
         return sb;
     }
+    
+    public void view(){
+        super.index();
+        setAttr( "@READONLY", "true" );
+        render( "index.ftl" );
+    }
 }

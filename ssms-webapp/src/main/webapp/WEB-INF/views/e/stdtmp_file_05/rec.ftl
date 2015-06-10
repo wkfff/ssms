@@ -1,5 +1,5 @@
 <div id="kocontainer">
-    <div class="z-toolbar">
+    <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
@@ -7,13 +7,13 @@
             <p class="long-input ue-clear">
                 <label>文件名称</label>
             <span class="control">
-                <input data-bind="textboxValue: C_NAME"/>
+                <input data-bind="disable: readonly,textboxValue: C_NAME"/>
             </span>
             </p>
         </div>
 
         <div class="easyui-panel" title="附件" style="padding-bottom: 10px;">
-            <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_05', sid: '${SID}'}">[选择文件]</a>
+            <a href="javascript:void(0);" data-bind="disable: readonly,uploadOptions: {module: 'STDTMP_FILE_05', sid: '${SID}'}">[选择文件]</a>
         </div>
     </form>
 </div>
@@ -23,13 +23,15 @@
         SID: '${SID!}'
     };
     var extModel = {
-        htmlContent: ko.observable()
+        htmlContent: ko.observable(),
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         htmleditSettings: {
             table: "STDTMP_FILE_05",
             field: 'C_CONTENT',
-            sid: '${SID!}'
+            sid: '${SID!}',
+            readonly: extModel.readonly
         }
     };
     var events = {
