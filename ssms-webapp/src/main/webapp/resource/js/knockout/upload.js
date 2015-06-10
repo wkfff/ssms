@@ -114,11 +114,13 @@
                     var item = result[i];
                     $('<tr class="file">')
                         .append("<td class='filename'>" + item.outerFilename + "</td>")
-                        .append("<td class='filesize'>(" + plupload.formatSize(item.length) + ")</td>")
+                        .append("<td class='filesize'>" + plupload.formatSize(item.length) + "</td>")
                         .append($('<td class="operate">').append($("<a class='download'>[下载]</a>").attr("href", "/sys/attachfile/down?id=" + item.id))
                             .append($('<a class="delete" href="javascript:void(0);">[删除]</a>').click(delClick(uploader, item))))
                         .appendTo($container);
                 }
+                uploader.uploader.splice();
+                uploader.uploader.refresh();
             }
         }
 
@@ -131,9 +133,13 @@
 
         function delClick(uploader, item) {
             return function () {
-                $.post('/sys/attachfile/del', {module: item.module, recordSid: item.recordSid}, function () {
-                    uploader.list();
-                })
+                $.messager.confirm('提示', '是否要删除文件？', function (r) {
+                    if (r){
+                        $.post('/sys/attachfile/del', {module: item.module, recordSid: item.recordSid}, function () {
+                            uploader.list();
+                        })
+                    }
+                });
             }
         }
 
