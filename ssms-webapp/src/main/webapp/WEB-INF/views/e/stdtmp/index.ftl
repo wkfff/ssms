@@ -41,7 +41,7 @@
         if (isFunction(onPanelLoad)) onPanelLoad();
     }
     function showDev() {
-        $.messager.alert('提示', '功能正在开发中...');
+//        $.messager.alert('提示', '功能正在开发中...');
     }
     $(function () {
         var $tree = $($('#accordion').accordion('getSelected').children().get(0));
@@ -98,7 +98,7 @@
         <div id="content" class="easyui-panel" style="position: relative;" data-options="onLoad: onLoad" fit="true">
             <header>
                 <span id="content_title">正在加载中...</span>
-                <a href="/" style="position: absolute; right: 2px">返回首页</a>
+                <a href="/" style="position: absolute; right: 3px">返回首页</a>
             </header>
         </div>
     </div>
@@ -114,13 +114,15 @@
                         <#if map.attributes.C_URL??>
                         <#--文件如果数量为0则表示'未创建'-->
                             <#if (map.attributes.N_COUNT == 0)>
-                                <a href="javascript:;" onclick="showDev()" class="icon-notCreated">[未创建]</a></#if>
-                            <#if (map.attributes.N_STATE == 1)>
-                                <a href="javascript:;" onclick="showDev()" class="icon-new">[新增]</a>
-                            <#elseif (map.attributes.N_STATE == 2)>
-                                <a href="javascript:;" onclick="showDev()" class="icon-del">[删除]</a>
-                            <#elseif (map.attributes.N_STATE == 3)>
-                                <a href="javascript:;" onclick="showDev()" class="icon-update">[更新]</a>
+                                <a href="javascript:;" onclick="showDev()" class="icon-notCreated">[未创建]</a>
+                            <#else>
+                                <#if (map.attributes.N_STATE == 1)>
+                                    <a href="javascript:;" onclick="showDev()" class="icon-new">[新增]</a>
+                                <#elseif (map.attributes.N_STATE == 2)>
+                                    <a href="javascript:;" onclick="showDev()" class="icon-del">[删除]</a>
+                                <#elseif (map.attributes.N_STATE == 3)>
+                                    <a href="javascript:;" onclick="showDev()" class="icon-update">[更新]</a>
+                                </#if>
                             </#if>
                         </#if>
                         <span class="title">${map.text}</span>

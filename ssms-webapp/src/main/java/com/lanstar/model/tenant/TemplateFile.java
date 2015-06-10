@@ -49,6 +49,14 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return getInt( "R_SOURCE" );
     }
 
+    public com.lanstar.model.system.TemplateFile getSourceFile() {
+        return com.lanstar.model.system.TemplateFile.dao.findById( getSourceFileId() );
+    }
+
+    public void setSourceFile( com.lanstar.model.system.TemplateFile file ) {
+        set( "R_SOURCE", file.getId() );
+    }
+
     public int getFolderId() {
         return getInt( "R_SID" );
     }
@@ -60,10 +68,6 @@ public class TemplateFile extends ModelExt<TemplateFile> {
 
     public void setVersion( int version ) {
         set( "N_VERSION", version );
-    }
-
-    public void setSourceFile( com.lanstar.model.system.TemplateFile file ) {
-        set( "R_SOURCE", file.getId() );
     }
 }
 

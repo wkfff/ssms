@@ -12,13 +12,15 @@
         R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
-        htmlContent: ko.observable()
+        htmlContent: ko.observable(),
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         htmleditSettings: {
             table: "STDTMP_FILE_02",
             field: 'C_CONTENT',
-            sid: '${SID!}'
+            sid: '${SID!}',
+            readonly: extModel.readonly
         }
     };
     var events = {
@@ -64,7 +66,7 @@
 </style>
 </#assign>
 <@layout.doLayout header=script>
-<div class="z-toolbar">
+<div class="z-toolbar" data-bind="visible: !readonly">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${referer}'">返回</a>
 </div>
@@ -79,14 +81,14 @@
         <tr>
             <td>通知标题:</td>
             <td colspan="3">
-                <input data-bind="textboxValue: C_NAME" required/>
+                <input data-bind="disable: readonly, textboxValue: C_NAME" required/>
             </td>
         </tr>
 
         <tr>
             <td>通知编号:</td>
             <td colspan="3">
-                <input data-bind="textboxValue: C_NUMBER" required/>
+                <input data-bind="disable: readonly, textboxValue: C_NUMBER" required/>
             </td>
         </tr>
 
@@ -99,23 +101,23 @@
         <tr>
             <td>发布部门:</td>
             <td>
-                <input data-bind="textboxValue: C_DEPT_01" required/>
+                <input data-bind="disable: readonly, textboxValue: C_DEPT_01" required/>
             </td>
             <td>发布日期:</td>
             <td>
-                <input data-bind="dateboxValue: T_DATE_01" required/>
+                <input data-bind="disable: readonly, dateboxValue: T_DATE_01" required/>
             </td>
         </tr>
 
         <tr>
             <td>主送部门:</td>
             <td>
-                <input data-bind="textboxValue: C_DEPT_02"/>
+                <input data-bind="disable: readonly, textboxValue: C_DEPT_02"/>
             </td>
 
             <td>抄送部门:</td>
             <td>
-                <input data-bind="textboxValue: C_DEPT_03"/>
+                <input data-bind="disable: readonly, textboxValue: C_DEPT_03"/>
             </td>
         </tr>
     </table>

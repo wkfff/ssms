@@ -28,7 +28,7 @@
     }
 </style>
 <div class="kocontainer">
-    <div class="z-toolbar">
+    <div class="z-toolbar" data-bind="visible: !readonly">
         <a class="easyui-linkbutton" plain="true" iconCls="icon-add" data-bind="click: addItem">新建隐患项目</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-remove" data-bind="click: remove">删除</a>
@@ -41,54 +41,54 @@
         <table>
             <tr>
                 <td class="label">存在问题</td>
-                <td colspan="5"><input data-bind="textboxValue: C_NAME" required/></td>
+                <td colspan="5"><input data-bind="disable: readonly, textboxValue: C_NAME" required/></td>
             </tr>
             <tr>
                 <td class="label">检查人</td>
-                <td><input data-bind="textboxValue: C_EXAMINER" required/></td>
+                <td><input data-bind="disable: readonly, textboxValue: C_EXAMINER" required/></td>
                 <td class="label">检查时间</td>
-                <td><input data-bind="dateboxValue: T_EXAMINE" required/></td>
+                <td><input data-bind="disable: readonly, dateboxValue: T_EXAMINE" required/></td>
                 <td class="label">隐患类型</td>
                 <td>
-                    <input data-bind="comboboxSource: typeSource, comboboxValue: P_TYPE, easyuiOptions: levelSettings" required/>
+                    <input data-bind="disable: readonly, comboboxSource: typeSource, comboboxValue: P_TYPE, easyuiOptions: levelSettings" required/>
                 </td>
             </tr>
             <tr>
                 <td class="label">隐患所在区域/部门</td>
                 <td colspan="3">
-                    <input data-bind="textboxValue: C_DEPT" required/>
+                    <input data-bind="disable: readonly, textboxValue: C_DEPT" required/>
                 </td>
                 <td class="label">隐患等级</td>
                 <td>
-                    <input data-bind="comboboxSource: levelSource, comboboxValue: P_LEVEL, easyuiOptions: levelSettings" required/>
+                    <input data-bind="disable: readonly, comboboxSource: levelSource, comboboxValue: P_LEVEL, easyuiOptions: levelSettings" required/>
                 </td>
             </tr>
 
             <tr>
                 <td class="label">整改措施（包括<br/>工程技术措施、<br/>管理措施、<br/>教育措施、<br/>防护措施、<br/>应急措施）</td>
                 <td colspan="5">
-                    <textarea data-bind="textareaValue: C_MEASURE, easyuiOptions: {validType:['length[0,2000]']}" required style="height: 300px;"></textarea>
+                    <textarea data-bind="disable: readonly, textareaValue: C_MEASURE, easyuiOptions: {validType:['length[0,2000]']}" required style="height: 300px;"></textarea>
                 </td>
             </tr>
             <tr>
                 <td class="label">整改负责人</td>
-                <td><input data-bind="textboxValue: C_RESPONSIBLE" required/></td>
+                <td><input data-bind="disable: readonly, textboxValue: C_RESPONSIBLE" required/></td>
                 <td class="label">要求整改日期</td>
-                <td><input data-bind="dateboxValue: T_RECTIFICATION" required/></td>
+                <td><input data-bind="disable: readonly, dateboxValue: T_RECTIFICATION" required/></td>
             </tr>
             <tr>
                 <td class="label">治理方案</td>
                 <td colspan="5">
-                    <textarea data-bind="textareaValue: C_PLANT, easyuiOptions: {validType:['length[0,2000]']}" required style="height: 300px;"></textarea>
+                    <textarea data-bind="disable: readonly, textareaValue: C_PLANT, easyuiOptions: {validType:['length[0,2000]']}" required style="height: 300px;"></textarea>
                 </td>
             </tr>
             <tr>
                 <td class="label">验收部门</td>
-                <td><input data-bind="textboxValue: C_ACCEPTANCE_DEPT"/></td>
+                <td><input data-bind="disable: readonly, textboxValue: C_ACCEPTANCE_DEPT"/></td>
                 <td class="label">验收人</td>
-                <td><input data-bind="textboxValue: C_ACCEPTANCE"/></td>
+                <td><input data-bind="disable: readonly, textboxValue: C_ACCEPTANCE"/></td>
                 <td class="label">验收时间</td>
-                <td><input data-bind="dateboxValue: T_ACCEPTANCE"/></td>
+                <td><input data-bind="disable: readonly, dateboxValue: T_ACCEPTANCE"/></td>
             </tr>
         <#--<tr>
             <td class="label">隐患闭环情况</td>
@@ -141,7 +141,8 @@
                 }
             }
             return !hasnovalue;
-        })
+        }),
+        readonly: ${@READONLY!'false'}
     };
     var events = {
         saveClick: function () {
