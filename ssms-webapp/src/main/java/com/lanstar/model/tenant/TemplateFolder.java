@@ -8,9 +8,9 @@
 
 package com.lanstar.model.tenant;
 
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 
-public class TemplateFolder extends Model<TemplateFolder> {
+public class TemplateFolder extends ModelExt<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
 
     public Integer getFileCount() {

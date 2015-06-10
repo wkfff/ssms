@@ -5,6 +5,11 @@
     <link rel="stylesheet" href="/resource/css/base.css" />
     <link rel="stylesheet" href="/resource/css/home.css" />
     <title>安全生产标准化管理系统</title>
+    <style type="text/css">
+        a:visited{
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
@@ -12,19 +17,21 @@
     <div class="content" style="border: 1px solid #c1d3de;">
         <ul class="toollist ue-clear" >
             <li style="width:;">
-                <a href="javascript:void;" class="img"><img src="/resource/images/icon01.png" /></a>
-                <p><a href="javascript:void" >体系创建</a></p>
+                <a href="/e/stdtmp/" target="_top" class="img"><img src="/resource/images/icon01.png" />
+                <p>体系创建</p></a>
             </li>
-            <li style="padding-top:6px;width:100px;margin-left:5px;margin-right:0px;"><p>完成项/合计项</p><font style="color:red;font-size:20px;">2000/20000</font></li>
-            <li style="padding-top:5px;margin-left:0px;"><img src="/resource/images/arrow_right.png" /></li>
+            <li style="padding-top:6px;width:100px;margin-left:5px;margin-right:0;">
+                <a href="/e/stdtmp/query"><p>未创建项/合计项</p><span style="color:red;font-size:20px;">${FILE_NO_CREATE}/${FILE_COUNT}</span></a>
+            </li>
+            <li style="padding-top:5px;margin-left:0;"><img src="/resource/images/arrow_right.png" /></li>
             <li>
-                <a href="javascript:void;" class="img"><img src="/resource/images/icon04.png" /></a>
-                <p><a href="javascript:void;">在线自评</a></p>
+                <a href="/e/grade_m/" class="img"><img src="/resource/images/icon04.png" />
+                <p>在线自评</p></a>
             </li>
             <li style="padding-top:5px;"><img src="/resource/images/arrow_right.png" /></li>
             <li>
-                <a href="javascript:void;" class="img"><img src="/resource/images/icon02.png" /></a>
-                <p><a href="javascript:void;">申报评审</a></p>
+                <a href="http://aqbzh.chinasafety.gov.cn/sps/loginaction!initPage.action" target="_blank" class="img"><img src="/resource/images/icon02.png" />
+                <p>申报评审</p></a>
             </li>
             <li style="padding-top:5px;"><img src="/resource/images/arrow_right.png" /></li>
             <li>

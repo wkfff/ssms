@@ -68,7 +68,7 @@
 <@layout.doLayout header=script>
 <div class="z-toolbar" data-bind="visible: !readonly">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${referer}'">返回</a>
+    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${referer!}'">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
     <table>

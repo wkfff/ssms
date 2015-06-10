@@ -12,6 +12,7 @@ import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Profession;
+import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.service.enterprise.EnterpriseService;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class HomeController extends Controller {
         setSessionAttr( "needChooseProfessions", needChooseProfessions );
 
         if ( needChooseProfessions == false ) setAttr( "profession", enterpriseService.getProfessionService() );
-        
+
         setAttr( Const.HOME_PAGE, "/e/home" );
     }
 
@@ -49,8 +50,14 @@ public class HomeController extends Controller {
     public void getProfessions() {
         renderJson( IdentityContext.getIdentityContext( this ).getEnterpriseService().getProfessions() );
     }
-    
-    public void home(){
 
+    public void home() {
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        TemplateFolder folder = identityContext.getEnterpriseService()
+                                                             .getProfessionService()
+                                                             .getTenantTemplateFolder();
+        setAttr( "FILE_COUNT", folder.getFileCount() );
+
+        setAttr( "FILE_NO_CREATE", identityContext.getTenantDb().queryLong( "select COUNT(*) from ssm_stdtmp_file where N_COUNT = 0" ) );
     }
 }

@@ -74,14 +74,14 @@ ${footer}</html>
     ${footer}
     </#local>
     <#local EnterpriseProcession>
-    <div id="dd" class="easyui-dialog" title="选择专业" style="width:400px;height:200px;"
+    <div id="dd" class="easyui-dialog" title="选择专业" style="width:400px;height:200px; display: none"
          data-options="iconCls:'icon-save',resizable:true,modal:true, buttons:'#bb', closable:true<#if LANSTAR_IDENTITY.tenantType='E'&&needChooseProfessions=false>, closed:true</#if>">
         <div style="position: absolute; top: 80px; left: 80px;">
             选择专业
             <input id="cc" class="easyui-combobox" name="dept" required data-options="valueField:'SID',textField:'C_NAME',url:'/e/getProfessions',width:160">
         </div>
     </div>
-    <div id="bb">
+    <div id="bb" style="display: none">
         <a href="#" class="easyui-linkbutton" onclick="choose()">确定</a>
         <a href="#" class="easyui-linkbutton" onclick="opClose()">取消</a>
     </div>
