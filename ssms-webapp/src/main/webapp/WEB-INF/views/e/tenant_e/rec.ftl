@@ -149,7 +149,7 @@
                 </span>
             </p>
         </div>
-        <div  border="false" style="padding-top:20px;">
+        <div  border="false">
             <p class="long-input ue-clear">
                 <label>电子邮箱</label>
                 <span class="control">
@@ -195,7 +195,7 @@
                 </span>
             </p>
         </div>
-        <div  border="false" style="padding-top:20px;">
+        <div  border="false" >
             <p class="long-input ue-clear">
                 <label>营业执照注册号</label>
                 <span class="control">
@@ -245,7 +245,7 @@
                 </span>
             </p>
         </div>
-        <div  border="false" style="padding-top:20px;">
+        <div  border="false" >
             <p class="ue-clear">
                 <label>达标等级</label>
                 <span class="control">
@@ -261,7 +261,7 @@
             </p>
         </div>
        <div style="display:none;">
-        <div  border="false" style="padding-top:20px;">
+        <div  border="false" >
             <p class="ue-clear">
                 <label>缴费日期</label>
                 <span class="control">

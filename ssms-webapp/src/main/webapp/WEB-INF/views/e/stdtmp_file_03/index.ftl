@@ -22,7 +22,7 @@
     <div class="z-toolbar">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a class="easyui-linkbutton"  plain="true" iconCls="icon-word" onclick="alert('还未开发')">导出</a>
-        <span><a class="easyui-linkbutton"  plain="true" iconCls="icon-temp" onClick="alert('还未开发')">模板查看</a></span>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_03/view?sid=${TEMPLATE_ID}')}">查看模板</a>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
         <table>

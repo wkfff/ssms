@@ -66,26 +66,24 @@
                 <colgroup>
                     <col class="label" />
                     <col />
-                    <col class="label" />
-                    <col />
                 </colgroup>
                 <tr>
                     <td>旧密码</td>
-                    <td colspan='2'><input
+                    <td ><input
                         data-bind="textboxValue: oldPwd" type="password"
                         required /></td>
                 </tr>
     
                 <tr>
                     <td>新密码</td>
-                    <td colspan='2'><input
+                    <td ><input
                         data-bind="textboxValue: newPwd" type="password"
                         required /></td>
                 </tr>
     
                 <tr>
                     <td>确认密码</td>
-                    <td colspan='2'><input
+                    <td ><input
                         data-bind="textboxValue: confirmPwd" type="password"
                         required /></td>
                 </tr>
