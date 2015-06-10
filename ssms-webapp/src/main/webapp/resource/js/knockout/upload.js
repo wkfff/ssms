@@ -32,8 +32,9 @@
             // 为父元素添加样式
             $element.parent().addClass("uploader");
             // 添加容器元素
-            var $container = $('<div class="container">');
+            var $container = $('<table class="container">');
             $element.before($container);
+            $container.before('<div class="title">附件:</div>')
 
             // 添加上传按钮
             var $uploadBtn = $('<a class="btn_upload" href="javascript:void(0);">[上传文件]</a>');
@@ -64,12 +65,12 @@
             }, this);
             this.uploader.bind("FilesAdded", function (up, files) {
                 plupload.each(files, function (file) {
-                    fileMap[file.id] = $('<div class="file">')
-                        .append("<span class='filename'>" + file.name + "</span>")
-                        .append("<span class='filesize'>(" + plupload.formatSize(file.size) + ")</span>")
-                        .append($('<a class="delete" href="javascript:void(0);">[删除]</a>').click(function () {
+                    fileMap[file.id] = $('<tr class="file">')
+                        .append("<td class='filename'>" + file.name + "</td>")
+                        .append("<td class='filesize'>" + plupload.formatSize(file.size) + "</td>")
+                        .append($('<td class="operate">').append($('<a class="delete" href="javascript:void(0);">[删除]</a>').click(function () {
                             up.removeFile(file);
-                        })).appendTo($container);
+                        }))).appendTo($container);
                 });
             });
             this.uploader.bind("FilesRemoved", function (up, files) {
@@ -111,11 +112,11 @@
             return function (result) {
                 for (var i = 0; i < result.length; i++) {
                     var item = result[i];
-                    $('<div class="file">')
-                        .append("<span class='filename'>" + item.outerFilename + "</span>")
-                        .append("<span class='filesize'>(" + plupload.formatSize(item.length) + ")</span>")
-                        .append($("<a class='download'>[下载]</a>").attr("href", "/sys/attachfile/down?id=" + item.id))
-                        .append($('<a class="delete" href="javascript:void(0);">[删除]</a>').click(delClick(uploader, item)))
+                    $('<tr class="file">')
+                        .append("<td class='filename'>" + item.outerFilename + "</td>")
+                        .append("<td class='filesize'>(" + plupload.formatSize(item.length) + ")</td>")
+                        .append($('<td class="operate">').append($("<a class='download'>[下载]</a>").attr("href", "/sys/attachfile/down?id=" + item.id))
+                            .append($('<a class="delete" href="javascript:void(0);">[删除]</a>').click(delClick(uploader, item))))
                         .appendTo($container);
                 }
             }

@@ -155,11 +155,16 @@ input.readonly,
 /* @group uploader */
 
 .uploader {
+    border: 1px dotted #ccc;
+    margin-bottom: 50px;
+}
 
+.uploader .title {
+    background-color: #CCCCCC;
 }
 
 .uploader .container {
-
+    table-layout: auto;
 }
 
 .uploader .container .file {
@@ -168,11 +173,16 @@ input.readonly,
 }
 
 .uploader .container .file .filename {
-
+    padding-left: 20px;
+    background: url("/resource/images/file.png") no-repeat 0 center;
 }
 
 .uploader .container .file .filesize {
+    width: 60px;
+}
 
+.uploader .container .file .operate {
+    width: 80px;
 }
 
 .uploader .container .file .download {
