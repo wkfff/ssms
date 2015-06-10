@@ -4,6 +4,9 @@
 .icon-word {
     background: url('icons/word.png') no-repeat center center;
 }
+.icon-temp {
+    background: url('icons/temp.png') no-repeat center center;
+}
 .icon-pdf {
     background: url('icons/pdf.png') no-repeat center center;
 }

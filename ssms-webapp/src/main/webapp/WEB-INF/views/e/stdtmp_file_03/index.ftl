@@ -1,32 +1,62 @@
+<style type="text/css">
+    .form {
+        margin: 0 auto;
+        width: 80%;
+    }
+
+    .form table {
+        width: 100%;
+        margin: 5px auto;
+        table-layout: fixed;
+    }
+
+    .form table tr {
+        height: 40px;
+    }
+
+    .form table .label {
+        width: 90px;
+    }
+</style>
 <div id="kocontainer">
     <div class="z-toolbar">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-        <a class="easyui-linkbutton"  plain="true" iconCls="icon-word" onclick="alert('还未开发')">导出(WORD)</a>
-        <span><a class="easyui-linkbutton"  plain="true"  onClick="alert('还未开发')">模板查看</a></span>
+        <a class="easyui-linkbutton"  plain="true" iconCls="icon-word" onclick="alert('还未开发')">导出</a>
+        <span><a class="easyui-linkbutton"  plain="true" iconCls="icon-temp" onClick="alert('还未开发')">模板查看</a></span>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
-        <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
-            <p class="long-input ue-clear">
-                <label>文件名称</label>
-            <span class="control">
+        <table>
+            <colgroup>
+                <col class="label"/>
+                <col/>
+                <col class="label"/>
+                <col/>
+            </colgroup>
+            <tr>
+                <td>文件名称</td>
+            <td colspan="3">
                 <input data-bind="textboxValue: C_NAME"/>
-            </span>
-            </p>
-        </div>
-        <div class="easyui-panel" title="正文" style="padding: 6px">
+            </td>
+            </tr>
+        
+        <tr>
+            <td colspan="4">
             <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
-        </div>
-
-        <div class="easyui-panel" title="附件" style="padding-bottom: 10px;">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
             <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_03', sid: '${SID!}'}">[选择文件]</a>
-        </div>
+            </td>
+        </tr>
+        </table>
     </form>
 </div>
 <script type="text/javascript">
 function ViewModel(catalogId){
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
-        R_TMPFILE: '${R_TMPFILE!}',
+        R_TMPFILE: '${R_TMPFILE!sid}',
         SID: '${SID!}'
     };
     var extModel = {
