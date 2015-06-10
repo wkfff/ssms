@@ -27,15 +27,24 @@
      };
     ko.applyBindings($.extend({}, model, events));
 </script>
-</#assign> <@layout.doLayout script>
-<div class="easyui-panel" title="企业用户信息">
-    <div class="z-toolbar">
+<style type="text/css">
+.layout {
+    width: 700px;
+    margin: 0 auto;
+}
+</style>
+</#assign> 
+<@layout.doLayout script>
+<div class="easyui-panel" title="用户管理" fit='true'>
+    <div class="z-toolbar" >
+        <div class="layout" >
         <a href="#" class="easyui-linkbutton" plain="true"
             iconCls="icon-save" data-bind="click: saveClick">保存</a> 
+        </div>
     </div>
-    <form class="form" style="padding: 20px">
-        <div class="easyui-panel form" style="padding: 10px"
-            title="基本信息">
+    <div class="layout">
+    <form class="form" >
+        <div >
             <p class="ue-clear">
                 <label>用户名:</label> <span class="control"> <input
                     class="readonly" type="text" value="${C_USER}"
@@ -43,7 +52,7 @@
                 </span>
             </p>
 
-            <p class="long-input ue-clear">
+            <p class="ue-clear">
                 <label>姓名:</label> <span class="control"> <input
                     data-bind="textboxValue: C_NAME" required />
                 </span>
@@ -65,5 +74,6 @@
             </p>
         </div>
     </form>
+    </div>
 </div>
 </@layout.doLayout>
