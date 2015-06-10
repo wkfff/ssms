@@ -27,13 +27,17 @@
             $("#content").panel("refresh", node.url);
 
             if ($(node.target).find(".icon-new").length > 0) {
-                $.messager.confirm("提醒", "达标体系模板新增加了【"+$(node.target).find('.title').text()+"】文件。请确认是否同步添加？");
+                $.messager.show({
+                    title:'提醒',
+                    msg:"达标体系模板新增加了【"+$(node.target).find('.title').text()+"】文件。请确认是否同步添加？<br/><div style='position: absolute; right: 2px;'><button>确定</button><button>取消</button></div><br/>",
+                    timeout:5000
+                });
             }
             else if ($(node.target).find(".icon-del").length > 0) {
-                $.messager.confirm("提醒", "达标体系模板删除了【"+$(node.target).find('.title').text()+"】文件。请确认是否同步删除？");
+                $.messager.show("提醒", "达标体系模板删除了【"+$(node.target).find('.title').text()+"】文件。请确认是否同步删除？");
             }
             else if ($(node.target).find(".icon-update").length > 0) {
-                $.messager.confirm("提醒", "达标体系模板修改了【"+$(node.target).find('.title').text()+"】模板。请确认是否同步修改？");
+                $.messager.show("提醒", "达标体系模板修改了【"+$(node.target).find('.title').text()+"】模板。请确认是否同步修改？");
             }
         }
     }

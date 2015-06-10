@@ -67,10 +67,14 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
-                $.post('${BASE_PATH}/del', {sid: value.SID}, function () {
-                    $.messager.alert('消息', '成功删除记录！', "info", function () {
-                        events.refreshClick();
-                    });
+                $.messager.confirm('确认', '是否确认要删除选中数据？', function (r) {
+                    if (r) {
+                        $.post('${BASE_PATH}/del', {sid: value.SID}, function () {
+                            $.messager.alert('消息', '成功删除记录！', "info", function () {
+                                events.refreshClick();
+                            });
+                        });
+                    }
                 });
             }
         };
