@@ -27,8 +27,6 @@ public class TemplateFile03Controller extends SimplateController<TemplateFile03>
         SqlBuilder builder=SQL.SELECT( "*" ).FROM( "ssm_stdtmp_file_03" ).WHERE("R_TMPFILE = ?" , R_SID);
         SqlStatement statement=builder.toSqlStatement();
         TemplateFile03 model=getDao().findFirst( statement.getSql(), statement.getParams() );
-        String sid = getPara( "sid" );
-        if(!StrKit.isEmpty( sid )) super.rec();
         if ( model != null ) {
             setAttrs( ModelKit.toMap( model ) );
         }else{
