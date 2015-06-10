@@ -17,6 +17,12 @@ import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
 
 public class TemplateFile03Controller extends SimplateController<TemplateFile03> {
+    
+    public void view() {
+        super.rec();
+        setAttr( "@READONLY", "true" );
+        render( "rec.ftl" );
+    }
     @Override
     protected TemplateFile03 getDao() {
         return TemplateFile03.dao;

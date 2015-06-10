@@ -34,7 +34,7 @@ function ViewModel(catalogId) {
                     {
                         field: 'N_CYCLE', title: '更新周期', align: 'center', width: 80,
                         formatter: function (value, row) {
-                            if (value) return '{0}/{1}'.format(value, row.S_CYCLE);
+                            if (value && row && row.S_CYCLE) return '{0}/{1}'.format(value, row.S_CYCLE);
                         }
                     },
                     {

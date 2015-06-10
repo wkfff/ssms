@@ -8,35 +8,31 @@
 
 package com.lanstar.controller.enterprise;
 
-import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
-import com.lanstar.model.tenant.TemplateFile01;
+import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile03;
 import com.lanstar.plugin.activerecord.ModelKit;
-import com.lanstar.plugin.activerecord.statement.SQL;
-import com.lanstar.plugin.activerecord.statement.SqlBuilder;
-import com.lanstar.plugin.activerecord.statement.SqlStatement;
 
 public class TemplateFile03Controller extends SimplateController<TemplateFile03> {
     @Override
+    public void index() {
+        String sid = getPara( "sid" );
+        TemplateFile03 templateFile = getDao().findFirstByColumn( "R_TMPFILE", sid );
+        if (templateFile == null) return;
+        setAttrs( ModelKit.toMap( templateFile ) );
+        TemplateFile file = templateFile.getTemplateFile();
+        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
+        if ( sourceFile == null ) return;
+        int sourceId = sourceFile.getId();
+        com.lanstar.model.system.TemplateFile03 m = com.lanstar.model.system.TemplateFile03.dao.findFirstByColumn( "R_TMPFILE", sourceId );
+        if ( m == null ) return;
+        int id = m.getId();
+        setAttr( "TEMPLATE_ID", id );
+    }
+
+    @Override
     protected TemplateFile03 getDao() {
         return TemplateFile03.dao;
-    }
-    @Override
-    public void index() {
-        //先判断sid 是否有值，如果有值根据模板获R_TMPFILE取到对应的模板，如果没值根据SID获取到模板。。。
-        TemplateFile03 model = null;
-        String sid = getPara("sid");
-        if (StrKit.isEmpty(sid)) {
-            sid = getPara("SID");
-            if (sid == null)
-                return;
-            model = getDao().findById(sid);
-        } else {
-            model = getDao().findFirstByColumn("R_TMPFILE", sid);
-        }
-        if (model != null)
-            setAttrs(ModelKit.toMap(model));
     }
     
     public void view(){

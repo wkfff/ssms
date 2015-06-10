@@ -9,6 +9,7 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
+
 import com.lanstar.controller.review.*;
 import com.lanstar.controller.system.DoneController;
 import com.lanstar.controller.system.KnowledgeFileController;
@@ -37,5 +38,7 @@ public class ReviewRoutes extends Routes {
         add( "/r/done", DoneController.class );
         add( "/r/knowledge_sort", KnowledgeSortController.class );
         add( "/r/knowledge_file", KnowledgeFileController.class );
+        
+        add( "/r/psw_change", PswChangeController.class);
     }
 }

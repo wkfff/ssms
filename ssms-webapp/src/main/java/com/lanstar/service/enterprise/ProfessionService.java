@@ -8,9 +8,11 @@
 
 package com.lanstar.service.enterprise;
 
+import com.google.common.collect.Lists;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
+import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.IAtom;
 
@@ -30,7 +32,7 @@ public class ProfessionService {
         Db.tx( new IAtom() {
             @Override
             public boolean run() throws SQLException {
-                TemplateSyncProcessor.process(getSystemTemplate(), identityContext);
+                TemplateSyncProcessor.process( getSystemTemplate(), identityContext );
                 return true;
             }
         } );
@@ -38,6 +40,11 @@ public class ProfessionService {
 
     public Template getSystemTemplate() {
         return Template.getByProfession( profession.getId() );
+    }
+
+    public TemplateFolder getTenantTemplateFolder() {
+        Integer id = getSystemTemplate().getId();
+        return TemplateFolder.dao.findFirstByColumns( Lists.newArrayList( "R_TEMPLATE", "R_SID" ), Lists.newArrayList( id, (Object) 0 ) );
     }
 
     public String getName() {return profession.getName();}

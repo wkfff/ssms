@@ -54,14 +54,17 @@
 //        $.messager.alert('提示', '功能正在开发中...');
     }
     $(function () {
-        var $tree = $($('#accordion').accordion('getSelected').children().get(0));
-        var children = $tree.tree('getChildren');
-        for (var i = 0; i < children.length; i++) {
-            if ($tree.tree('isLeaf', children[i].target)) {
-                $tree.tree('select', children[i].target);
-                return;
+        $('#accordion').parent().show();
+        setTimeout(function () {
+            var $tree = $($('#accordion').accordion('getSelected').children().get(0));
+            var children = $tree.tree('getChildren');
+            for (var i = 0; i < children.length; i++) {
+                if ($tree.tree('isLeaf', children[i].target)) {
+                    $tree.tree('select', children[i].target);
+                    return;
+                }
             }
-        }
+        }, 500);
     })
 </script>
 </#assign>
@@ -92,7 +95,7 @@
     }
 </style>
 <div class="easyui-layout" data-options="fit:true">
-    <div data-options="region:'west', title:'达标体系', split:true" style="width: 250px">
+    <div data-options="region:'west', title:'达标体系', split:true" style="width: 250px;display:none;">
         <div id="accordion" class="easyui-accordion" fit="true" border="false">
             <#list tree as map>
                 <div style="overflow:auto;">
@@ -107,7 +110,7 @@
     <div data-options="region:'center', border:false">
         <div id="content" class="easyui-panel" style="position: relative;" data-options="onLoad: onLoad" fit="true">
             <header>
-                <span id="content_title">正在加载中...</span>
+                <span id="content_title">&nbsp;</span>
                 <a href="/" style="position: absolute; right: 3px">返回首页</a>
             </header>
         </div>
