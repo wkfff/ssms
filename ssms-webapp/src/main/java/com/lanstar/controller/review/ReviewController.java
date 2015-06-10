@@ -8,10 +8,33 @@
 
 package com.lanstar.controller.review;
 
-import com.lanstar.core.Controller;
+import com.lanstar.controller.SimplateController;
+import com.lanstar.identity.IdentityContext;
+import com.lanstar.model.system.Review;
+import com.lanstar.plugin.activerecord.ModelKit;
 
-public class ReviewController extends Controller {
-    public void index() {
+public class ReviewController extends SimplateController<Review> {
 
+    @Override
+    protected Review getDao() {
+        // TODO Auto-generated method stub
+        return Review.dao;
+    }
+    
+    public void rec(){
+        IdentityContext identityContext=IdentityContext.getIdentityContext( this );
+        //通过当前用户find出租户id
+        int id=identityContext.getTenantId();
+        Review model=Review.dao.findById( id );
+        if ( model != null ) setAttrs( ModelKit.toMap( model ) );
+    }
+    @Override
+    public void save(){
+        Review model = getModel();
+        if(model!=null){
+                model.update(); 
+                setAttr( "SID", model.getInt( "SID" ) );
+                renderJson();
+        }
     }
 }

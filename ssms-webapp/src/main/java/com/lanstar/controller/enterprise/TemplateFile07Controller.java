@@ -25,14 +25,10 @@ public class TemplateFile07Controller extends SimplateController<TemplateFile07>
         return sb;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.lanstar.controller.SimplateController#index()
-     */
-    @Override
-    public void index() {
+    public void view() {
         super.index();
+        setAttr( "@READONLY", "true" );
+        render( "index.ftl" );
     }
 
 }

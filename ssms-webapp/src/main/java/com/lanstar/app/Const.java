@@ -16,5 +16,5 @@ public interface Const {
     String HOME_PAGE = "HOME_PAGE";
     String TEMPLATE_FILE_PARENT_FIELD = "R_TMPFILE";
     
-    String READONLY_KEY = "_R_";
+    String READONLY_KEY = "@READONLY";
 }
