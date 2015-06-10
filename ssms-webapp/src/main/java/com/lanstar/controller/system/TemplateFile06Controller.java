@@ -13,6 +13,12 @@ import com.lanstar.model.system.TemplateFile06;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile06Controller extends SimplateController<TemplateFile06> {
+    public void view() {
+        super.rec();
+        setAttr( "@READONLY", "true" );
+        render( "rec.ftl" );
+    }
+
     @Override
     protected TemplateFile06 getDao() {
         return TemplateFile06.dao;

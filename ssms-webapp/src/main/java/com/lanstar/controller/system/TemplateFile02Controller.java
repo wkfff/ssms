@@ -13,6 +13,12 @@ import com.lanstar.model.system.TemplateFile02;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile02Controller extends SimplateController<TemplateFile02> {
+    public void view() {
+        super.rec();
+        setAttr( "@READONLY", "true" );
+        render( "rec.ftl" );
+    }
+
     @Override
     protected TemplateFile02 getDao() {
         return TemplateFile02.dao;
@@ -20,7 +26,7 @@ public class TemplateFile02Controller extends SimplateController<TemplateFile02>
 
     @Override
     protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt("R_SID") );
+        return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt( "R_SID" ) );
     }
 
     @Override

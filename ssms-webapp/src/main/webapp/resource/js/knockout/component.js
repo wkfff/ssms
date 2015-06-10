@@ -1298,11 +1298,18 @@ ko.bindingHandlers.formValue = {
             var editor = $.data(element, 'htmledit');
             var loaded = false;
             if (editor == null) {
+                var allBindings = allBindingsAccessor();
+                var options = allBindings['htmleditOptions'] || {};
+                if (utils.isFunction(options)) {
+                    options = options();
+                }
+
                 editor = KindEditor.create($(element), {
                     uploadUrl: '',
                     allowFileManager: false,
                     allowUpload: false,
                     autoHeightMode: true,
+                    readonlyMode: options.readonly,
                     items: [
                         'fontname',
                         'fontsize',
@@ -1330,11 +1337,6 @@ ko.bindingHandlers.formValue = {
                     }
                 });
 
-                var allBindings = allBindingsAccessor();
-                var options = allBindings['htmleditOptions'] || {};
-                if (utils.isFunction(options)) {
-                    options = options();
-                }
                 options.$element = $(element);
                 options.save = function (callback) {
                     var postData = {

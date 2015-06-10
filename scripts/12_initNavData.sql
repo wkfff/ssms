@@ -28,8 +28,9 @@ INSERT INTO `sys_nav` VALUES ('36', '20', '行业管理', '/sys/industry/', '', 
 INSERT INTO `sys_nav` VALUES ('37', '20', '参数管理', '/sys/para_multi/', '', '', '1', 'admin', '2015-05-14 23:11:43', null, null, '2015-05-22 14:55:02', '1', 'admin', 'S', null, null, '98', null);
 INSERT INTO `sys_nav` VALUES ('43', '13', '通知公告', '/development/', null, null, '1', 'admin', '2015-05-16 10:50:39', '1', 'admin', '2015-06-08 20:30:05', '1', 'admin', 'S', '0', null, '4', '0');
 INSERT INTO `sys_nav` VALUES ('44', '13', '知识库', '/development/', null, null, '1', 'admin', '2015-05-16 10:50:39', '1', 'admin', '2015-05-22 14:55:02', '1', 'admin', 'S', '0', null, '6', '0');
-INSERT INTO `sys_nav` VALUES ('45', '13', '设置', null, null, null, '1', 'admin', '2015-05-16 10:50:39', '1', 'admin', '2015-06-09 10:30:22', '1', 'admin', 'S', '0', null, '3', '0');
+INSERT INTO `sys_nav` VALUES ('45', '13', '设置', null, null, null, '1', 'admin', '2015-05-16 10:50:39', '1', 'admin', '2015-06-09 20:56:51', '1', 'admin', 'S', '0', '', '3', '0');
 INSERT INTO `sys_nav` VALUES ('51', '13', '评审结果', '/development/', null, null, null, null, null, null, null, '2015-06-08 20:32:08', null, null, null, null, null, '5', null);
-INSERT INTO `sys_nav` VALUES ('63', '45', '用户管理', '/development/', null, null, null, null, null, '1', 'admin', '2015-06-09 10:38:14', null, null, null, null, null, '2', null);
-INSERT INTO `sys_nav` VALUES ('54', '13', '密码修改', '/development/', null, null, null, null, null, null, null, '2015-06-08 20:32:08', null, null, null, null, null, '7', null);
-INSERT INTO `sys_nav` VALUES ('62', '45', '企业信息维护', '/development/', null, null, null, null, null, '1', 'admin', '2015-06-09 10:38:18', null, null, null, null, null, '1', null);
+INSERT INTO `sys_nav` VALUES ('63', '45', '用户管理', '/e/tenant_eu/rec', '123', 'agency', null, null, null, '1', 'admin', '2015-06-09 17:20:57', null, null, null, null, null, '2', null);
+INSERT INTO `sys_nav` VALUES ('54', '13', '密码修改', '/e/psw_change/psw', '123', 'agency', null, null, null, '1', 'admin', '2015-06-09 12:19:13', null, null, null, null, null, '7', null);
+INSERT INTO `sys_nav` VALUES ('62', '45', '企业信息维护', '/e/tenant_e/rec', '123', 'agency', null, null, null, '1', 'admin', '2015-06-09 14:59:31', null, null, null, null, null, '1', null);
+INSERT INTO `sys_nav` VALUES ('64', '13', '13要素查看', '/e/stdtmp/query', null, null, null, null, null, null, null, '2015-06-09 21:32:47', null, null, null, null, null, '2', null);

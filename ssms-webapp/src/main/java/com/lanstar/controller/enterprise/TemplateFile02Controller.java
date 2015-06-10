@@ -8,11 +8,23 @@
 
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.app.Const;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile02;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile02Controller extends SimplateController<TemplateFile02> {
+    @Override
+    public void rec() {
+        super.rec();
+        TemplateFile file = TemplateFile.dao.findById( getAttrForInt( Const.TEMPLATE_FILE_PARENT_FIELD ) );
+        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
+
+        setAttr( "TEMPLATE_ID", com.lanstar.model.system.TemplateFile02.dao.findFirstByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFile
+                .getId() ).getId() );
+    }
+
     @Override
     protected TemplateFile02 getDao() {
         return TemplateFile02.dao;
@@ -20,6 +32,6 @@ public class TemplateFile02Controller extends SimplateController<TemplateFile02>
 
     @Override
     protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt("R_SID") );
+        return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt( "R_SID" ) );
     }
 }
