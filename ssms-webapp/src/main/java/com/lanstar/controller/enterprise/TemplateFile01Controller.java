@@ -8,12 +8,31 @@
 
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.TemplateFile01;
+import com.lanstar.plugin.activerecord.ModelKit;
 
 public class TemplateFile01Controller extends SimplateController<TemplateFile01> {
     @Override
     protected TemplateFile01 getDao() {
         return TemplateFile01.dao;
+    }
+
+    public void index() {
+        //先判断sid 是否有值，如果有值根据模板获R_TMPFILE取到对应的模板，如果没值根据SID获取到模板。。。
+        TemplateFile01 model = null;
+        String sid = getPara("sid");
+        if (StrKit.isEmpty(sid)) {
+            sid = getPara("SID");
+            if (sid == null)
+                return;
+            model = getDao().findById(sid);
+        } else {
+            model = getDao().findFirstByColumn("R_TMPFILE", sid);
+        }
+
+        if (model != null)
+            setAttrs(ModelKit.toMap(model));
     }
 }
