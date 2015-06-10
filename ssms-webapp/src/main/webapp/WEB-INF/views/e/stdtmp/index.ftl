@@ -27,17 +27,13 @@
             $("#content").panel("refresh", node.url);
 
             if ($(node.target).find(".icon-new").length > 0) {
-                $.messager.show({
-                    title:'提醒',
-                    msg:"达标体系模板新增加了【"+$(node.target).find('.title').text()+"】文件。请确认是否同步添加？<br/><div style='position: absolute; right: 2px;'><button>确定</button><button>取消</button></div><br/>",
-                    timeout:5000
-                });
+                $.messager.confirm("提醒", "达标体系模板新增加了【"+$(node.target).find('.title').text()+"】文件。请确认是否同步添加？");
             }
             else if ($(node.target).find(".icon-del").length > 0) {
-                $.messager.show("提醒", "达标体系模板删除了【"+$(node.target).find('.title').text()+"】文件。请确认是否同步删除？");
+                $.messager.confirm("提醒", "达标体系模板删除了【"+$(node.target).find('.title').text()+"】文件。请确认是否同步删除？");
             }
             else if ($(node.target).find(".icon-update").length > 0) {
-                $.messager.show("提醒", "达标体系模板修改了【"+$(node.target).find('.title').text()+"】模板。请确认是否同步修改？");
+                $.messager.confirm("提醒", "达标体系模板修改了【"+$(node.target).find('.title').text()+"】模板。请确认是否同步修改？");
             }
         }
     }
@@ -58,14 +54,17 @@
 //        $.messager.alert('提示', '功能正在开发中...');
     }
     $(function () {
-        var $tree = $($('#accordion').accordion('getSelected').children().get(0));
-        var children = $tree.tree('getChildren');
-        for (var i = 0; i < children.length; i++) {
-            if ($tree.tree('isLeaf', children[i].target)) {
-                $tree.tree('select', children[i].target);
-                return;
+        $('#accordion').parent().show();
+        setTimeout(function () {
+            var $tree = $($('#accordion').accordion('getSelected').children().get(0));
+            var children = $tree.tree('getChildren');
+            for (var i = 0; i < children.length; i++) {
+                if ($tree.tree('isLeaf', children[i].target)) {
+                    $tree.tree('select', children[i].target);
+                    return;
+                }
             }
-        }
+        }, 500);
     })
 </script>
 </#assign>
@@ -96,7 +95,7 @@
     }
 </style>
 <div class="easyui-layout" data-options="fit:true">
-    <div data-options="region:'west', title:'达标体系', split:true" style="width: 250px">
+    <div data-options="region:'west', title:'达标体系', split:true" style="width: 250px;display:none;">
         <div id="accordion" class="easyui-accordion" fit="true" border="false">
             <#list tree as map>
                 <div style="overflow:auto;">
@@ -111,7 +110,7 @@
     <div data-options="region:'center', border:false">
         <div id="content" class="easyui-panel" style="position: relative;" data-options="onLoad: onLoad" fit="true">
             <header>
-                <span id="content_title">正在加载中...</span>
+                <span id="content_title">&nbsp;</span>
                 <a href="/" style="position: absolute; right: 3px">返回首页</a>
             </header>
         </div>
