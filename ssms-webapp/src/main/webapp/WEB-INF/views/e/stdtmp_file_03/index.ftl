@@ -19,7 +19,7 @@
     }
 </style>
 <div id="kocontainer">
-    <div class="z-toolbar">
+    <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a class="easyui-linkbutton"  plain="true" iconCls="icon-word" onclick="alert('还未开发')">导出</a>
         <span><a class="easyui-linkbutton"  plain="true" iconCls="icon-temp" onClick="alert('还未开发')">模板查看</a></span>
@@ -35,7 +35,7 @@
             <tr>
                 <td>文件名称</td>
             <td colspan="3">
-                <input data-bind="textboxValue: C_NAME"/>
+                <input data-bind="disable: readonly,textboxValue: C_NAME"/>
             </td>
             </tr>
         
@@ -46,7 +46,7 @@
         </tr>
         <tr>
             <td colspan="4">
-            <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_03', sid: '${SID!}'}">[选择文件]</a>
+            <a href="javascript:void(0);" data-bind="disable: readonly,uploadOptions: {module: 'STDTMP_FILE_03', sid: '${SID!}'}">[选择文件]</a>
             </td>
         </tr>
         </table>
@@ -60,13 +60,15 @@ function ViewModel(catalogId){
         SID: '${SID!}'
     };
     var extModel = {
-        htmlContent: ko.observable()
+        htmlContent: ko.observable(),
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         htmleditSettings: {
             table: "STDTMP_FILE_03",
             field: 'C_CONTENT',
-            sid: '${SID!}'
+            sid: '${SID!}',
+            readonly: extModel.readonly
         }
     };
     var events = {

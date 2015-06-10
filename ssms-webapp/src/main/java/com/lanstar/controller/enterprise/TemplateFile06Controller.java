@@ -29,6 +29,12 @@ public class TemplateFile06Controller extends SimplateController<TemplateFile06>
     protected TemplateFile06 getDao() {
         return TemplateFile06.dao;
     }
+    
+    public void view(){
+        super.index();
+        setAttr( "@READONLY", "true" );
+        render( "index.ftl" );
+    }
 
     @Override
     protected SqlBuilder buildWhere() {

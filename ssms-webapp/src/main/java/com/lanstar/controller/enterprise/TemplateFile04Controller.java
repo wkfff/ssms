@@ -22,4 +22,10 @@ public class TemplateFile04Controller extends SimplateController<TemplateFile04>
     protected SqlBuilder buildWhere() {
         return new SqlBuilder().WHERE("R_TMPFILE=?", getParaToInt("R_SID"));
     }
+    
+    public void view(){
+        super.index();
+        setAttr( "@READONLY", "true" );
+        render( "index.ftl" );
+    }
 }

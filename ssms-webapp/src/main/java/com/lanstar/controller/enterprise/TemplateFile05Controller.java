@@ -16,4 +16,10 @@ public class TemplateFile05Controller extends SimplateController<TemplateFile05>
     protected TemplateFile05 getDao() {
         return TemplateFile05.dao;
     }
+    
+    public void view(){
+        super.index();
+        setAttr( "@READONLY", "true" );
+        render( "rec.ftl" );
+    }
 }

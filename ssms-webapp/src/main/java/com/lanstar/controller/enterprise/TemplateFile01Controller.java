@@ -35,4 +35,10 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
         if (model != null)
             setAttrs(ModelKit.toMap(model));
     }
+    
+    public void view(){
+        super.index();
+        setAttr( "@READONLY", "true" );
+        render( "index.ftl" );
+    }
 }

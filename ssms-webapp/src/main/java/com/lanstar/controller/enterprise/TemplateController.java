@@ -15,6 +15,7 @@ import com.lanstar.common.TreeNode;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.TenantContext;
 import com.lanstar.model.system.Template;
 import com.lanstar.plugin.activerecord.DbPro;
 import com.lanstar.plugin.activerecord.Record;
@@ -75,10 +76,12 @@ public class TemplateController extends Controller {
         Template template = professionService.getSystemTemplate();
         // load template tree data
         DbPro tenantDb = identityContext.getTenantDb();
+        int version = this.getParaToInt( "N_VERSION",0 );
+        //setAttr("N_VERSION")
         List<Record> folder = tenantDb.find(
-                SqlKit.sql( "tenant.templateFolder.getFolderByTemplateId" ),
-                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName(),
-                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName() );
+                SqlKit.sql( "tenant.templateFolder.getFolderByTemplateIdAndVersion" ),
+                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName(),version,
+                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName(),version );
         
         List<Map<String, Object>> list = Lists.transform( folder, new Function<Record, Map<String, Object>>() {
             @Override
@@ -94,13 +97,18 @@ public class TemplateController extends Controller {
         List<TreeNode> value = TreeNode.build( "D-0", list, "SID", "R_SID", "C_NAME" );
         setAttr("tree",value);
     }
+    
     /**
      * 显示版本
      */
     public void list_version(){
-        String sql = "select distinct n_version from ssm_stdtmp_folder";
-        
+        String sql = "select distinct N_VERSION from ssm_stdtmp_folder where r_tenant=? and N_VERSION is not null";
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        DbPro tenantDb = identityContext.getTenantDb();
+        List<Record> list = tenantDb.find( sql, identityContext.getTenantId() );
+        setAttr("list",list);
     }
+    
     public void see(){
         
     }

@@ -19,8 +19,7 @@
     }
 </style>
 <div id="kocontainer">
-    <#if _R_== false >
-    <div class="z-toolbar">
+    <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search"
            data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">年审通过</a>
@@ -31,7 +30,7 @@
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search"
            data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">查看模板</a>
     </div>
-    </#if>
+
     <form class="form" method="post" style="padding:10px 31px;">
         <table>
             <colgroup>
@@ -43,31 +42,31 @@
             <tr>
                 <td>文件名称:</td>
                 <td colspan="3">
-                    <input data-bind="textboxValue: C_NAME" required/>
+                    <input data-bind="disable: readonly,textboxValue: C_NAME" required/>
                 </td>
             </tr>
 
             <tr>
                 <td>文件编号:</td>
                 <td>
-                    <input data-bind="textboxValue: C_NUMBER"/>
+                    <input data-bind="disable: readonly,textboxValue: C_NUMBER"/>
                 </td>
 
                 <td>是否受控:</td>
                 <td>
-                    <label><input type="radio" name="B_CONTROL" data-bind="checked: B_CONTROL" value="1"/>受控</label>
-                    <label><input type="radio" name="B_CONTROL" data-bind="checked: B_CONTROL" value="0"/>非受控</label>
+                    <label><input type="radio" name="B_CONTROL" data-bind="disable: readonly,checked: B_CONTROL" value="1"/>受控</label>
+                    <label><input type="radio" name="B_CONTROL" data-bind="disable: readonly,checked: B_CONTROL" value="0"/>非受控</label>
                 </td>
             </tr>
 
             <tr>
                 <td>执行部门:</td>
                 <td>
-                    <input data-bind="textboxValue: C_DEPT_01"/>
+                    <input data-bind="disable: readonly,textboxValue: C_DEPT_01"/>
                 </td>
                 <td>监督部门:</td>
                 <td>
-                    <input data-bind="textboxValue: C_DEPT_02"/>
+                    <input data-bind="disable: readonly,textboxValue: C_DEPT_02"/>
                 </td>
             </tr>
 
@@ -81,27 +80,27 @@
             <tr>
                 <td>编制日期:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_DATE_01"/>
+                    <input data-bind="disable: readonly,textboxValue: T_DATE_01"/>
                 </td>
                 <td>审核日期:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_DATE_02"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_DATE_02"/>
                 </td>
             </tr>
 
             <tr>
                 <td>批准日期:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_DATE_03"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_DATE_03"/>
                 </td>
                 <td>生效日期:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_DATE_04"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_DATE_04"/>
                 </td>
             </tr>
             <tr>
                 <td colspan="4">
-                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_01', sid: '${SID!}'}">[选择文件]</a>
+                    <a href="javascript:void(0);" data-bind="disable: readonly,uploadOptions: {module: 'STDTMP_FILE_01', sid: '${SID!}'}">[选择文件]</a>
                 </td>
             </tr>
         </table>
@@ -119,16 +118,19 @@
         T_DATE_03: ko.observable('${T_DATE_03!}'),
         T_DATE_04: ko.observable('${T_DATE_04!}'),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!sid}'
+        R_TMPFILE: '${R_TMPFILE!sid}',
+        readonly: ${@READONLY!'false'}
     };
     var extModel = {
-        htmlContent: ko.observable()
+        htmlContent: ko.observable(),
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         htmleditSettings: {
             table: "STDTMP_FILE_01",
             field: 'C_CONTENT',
-            sid: '${SID!}'
+            sid: '${SID!}',
+            readonly: extModel.readonly
         }
     };
     var events = {
