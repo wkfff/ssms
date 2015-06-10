@@ -33,6 +33,8 @@ public class ReviewRoutes extends Routes {
         add( "/r/review", ReviewController.class );
         add( "/r/e/stdtmp", TemplateController.class );
         
+        add( "/r/tenant_r" , ReviewController.class );
+        add( "/r/tenant_ru" , ReviewUserController.class );
         add( "/r/notice", NoticeController.class );
         add( "/r/todo", TodoController.class );
         add( "/r/done", DoneController.class );
