@@ -21,7 +21,7 @@ public class TemplateFile09Controller extends SimplateController<TemplateFile09>
     @Override
     protected SqlBuilder buildWhere() {
         SqlBuilder sb = new SqlBuilder();
-        sb.WHERE(" R_TMPFILE=?",this.getParaValues( "R_TMPFILE" ));
+        sb.WHERE(" R_TMPFILE=?",this.getPara( "R_TMPFILE" ) );
         return sb;
     }
 }

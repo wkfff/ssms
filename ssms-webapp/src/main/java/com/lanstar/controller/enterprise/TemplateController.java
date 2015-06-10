@@ -65,4 +65,41 @@ public class TemplateController extends Controller {
 
         setAttr( "R_SID", template.getId() ).setAttr( "tree", value ).setAttr( "firstRec", firstRec );
     }
+    /**
+     * 要素查看
+     */
+    public void query(){
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        ProfessionService professionService = identityContext.getEnterpriseService().getProfessionService();
+        // get template instance
+        Template template = professionService.getSystemTemplate();
+        // load template tree data
+        DbPro tenantDb = identityContext.getTenantDb();
+        List<Record> folder = tenantDb.find(
+                SqlKit.sql( "tenant.templateFolder.getFolderByTemplateId" ),
+                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName(),
+                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName() );
+        
+        List<Map<String, Object>> list = Lists.transform( folder, new Function<Record, Map<String, Object>>() {
+            @Override
+            public Map<String, Object> apply( Record input ) {
+                Map<String, Object> columns = input.getColumns();
+                columns = Maps.newHashMap( columns );
+                String url = input.getStr( "C_URL" );
+                if ( StrKit.isEmpty( url ) == false )
+                    columns.put( "C_URL", "/e/" + url );
+                return columns;
+            }
+        } );
+        List<TreeNode> value = TreeNode.build( "D-0", list, "SID", "R_SID", "C_NAME" );
+        setAttr("tree",value);
+    }
+    
+    public void see(){
+        
+    }
+    
+    public void edit(){
+        
+    }
 }

@@ -1,68 +1,102 @@
+<style type="text/css">
+    .form {
+        margin: 0 auto;
+        width: 80%;
+    }
+
+    .form table {
+        width: 100%;
+        margin: 5px auto;
+        table-layout: fixed;
+    }
+
+    .form table tr {
+        height: 40px;
+    }
+
+    .form table .label {
+        width: 90px;
+    }
+</style>
 <div id="kocontainer">
     <div class="z-toolbar">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf"
+           data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">导出</a>
+        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-back"
+           onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回列表</a>
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search"
+           data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">查看模板</a>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
-        <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
-            <p class="long-input ue-clear">
-                <label>文件名称</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_NAME"/>
-            </span>
-            </p>
+        <table>
+            <colgroup>
+                <col class="label"/>
+                <col/>
+                <col class="label"/>
+                <col/>
+            </colgroup>
+            <tr>
+                <td>主题:</td>
+                <td colspan="3">
+                    <input data-bind="textboxValue: C_NAME" required/>
+                </td>
+            </tr>
 
-            <p class="long-input ue-clear">
-                <label>培训日期</label>
-            <span class="control">
-                <input data-bind="dateboxValue: T_TIME"/>
-            </span>
-            </p>
+            <tr>
+                <td>培训日期:</td>
+                <td>
+                    <input data-bind="dateboxValue: T_TIME"/>
+                </td>
 
-            <p class="long-input ue-clear">
-                <label>教育人</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_USER_01"/>
-            </span>
-            </p>
+                <td>培训地址:</td>
+                <td>
+                    <input data-bind="textboxValue: C_ADDR"/>
+                </td>
+            </tr>
 
-            <p class="long-input ue-clear">
-                <label>培训地址</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_ADDR"/>
-            </span>
-            </p>
+            <tr>
+                <td>讲师:</td>
+                <td>
+                    <input data-bind="textboxValue: C_USER_01"/>
+                </td>
 
-            <p class="long-input ue-clear">
-                <label>培训种类</label>
-            <span class="control">
-                <input data-bind="textboxValue: S_TYPE"/>
-            </span>
-            </p>
+                <td>培训类型:</td>
+                <td>
+                    <input data-bind="textboxValue: S_TYPE"/>
+                </td>
+            </tr>
 
-            <p class="long-input ue-clear">
-                <label>学时</label>
-            <span class="control">
-                <input data-bind="textboxValue: N_TIME"/>
-            </span>
-            </p>
+            <tr>
+                <td>学时:</td>
+                <td>
+                    <input data-bind="textboxValue: N_TIME"/>
+                </td>
 
-            <p class="long-input ue-clear">
-                <label>记录人</label>
-            <span class="control">
-                <input data-bind="textboxValue: C_USER_02"/>
-            </span>
-            </p>
-        </div>
-        <div class="easyui-panel" title="正文" style="padding: 6px">
-            <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
-        </div>
-
-        <div class="easyui-panel" title="附件" style="padding-bottom: 10px;">
-            <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_04', sid: '${SID}'}">[选择文件]</a>
-        </div>
+                <td>记录人:</td>
+                <td>
+                    <input data-bind="textboxValue: C_USER_02"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings"
+                              style="width: 100%; min-height: 400px"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_04', sid: '${SID!}'}">[选择文件]</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    操作指南
+                </td>
+            </tr>
+        </table>
     </form>
 </div>
-
 <script type="text/javascript">
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
@@ -72,7 +106,8 @@
         S_TYPE: ko.observable('${S_TYPE!}'),
         N_TIME: ko.observable('${N_TIME!}'),
         C_USER_02: ko.observable('${C_USER_02!}'),
-        SID: '${SID!}'
+        SID: '${SID!}',
+        R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
         htmlContent: ko.observable()
@@ -86,23 +121,26 @@
     };
     var events = {
         saveClick: function () {
+            if ($form.validate('.form') != true) return;
             utils.messager.showProgress();
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
+                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
                     settings.htmleditSettings.save(function (editorResult) {
-                        $.messager.alert("提示", "保存成功", "info", function () {
-                            utils.messager.closeProgress();
-                            refreshPanel();
-                        });
+                        utils.messager.closeProgress();
+                        $.messager.alert("提示", "保存成功", "info");
                     });
                 } else {
-                    utils.messager.closeProgress();
-                    $.messager.alert("提示", "保存失败", "warning");
+                    $.messager.alert("提示", "保存失败", "warning", function () {
+                        utils.messager.closeProgress();
+                    });
                 }
             }, "json");
         }
     };
+
     var onPanelLoad = function () {
-        ko.applyBindings($.extend({}, model, settings, extModel, events), document.getElementById("kocontainer"));
-    };
+        var vm = $.extend({}, model, settings, extModel, events);
+        ko.applyBindings(vm, document.getElementById('kocontainer'));
+    }
 </script>

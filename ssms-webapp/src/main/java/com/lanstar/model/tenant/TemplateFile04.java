@@ -8,8 +8,6 @@
 
 package com.lanstar.model.tenant;
 
-import com.lanstar.plugin.activerecord.ModelExt;
-
-public class TemplateFile04 extends ModelExt<TemplateFile04> {
+public class TemplateFile04 extends TemplateFileModel<TemplateFile04> {
     public static TemplateFile04 dao = new TemplateFile04();
 }

@@ -13,8 +13,12 @@ import com.lanstar.plugin.activerecord.Model;
 public class TemplateFolder extends Model<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
 
-    public void setParent( TemplateFolder parentFolder ) {
-        set( "R_SID", parentFolder.getId() );
+    public Integer getFileCount() {
+        return getInt( "N_COUNT" );
+    }
+
+    public void setFileCount( int fileCount ) {
+        set( "N_COUNT", fileCount );
     }
 
     public Integer getId() {
@@ -23,6 +27,18 @@ public class TemplateFolder extends Model<TemplateFolder> {
 
     public String getName() {
         return getStr( "C_NAME" );
+    }
+
+    public TemplateFolder getParent() {
+        return TemplateFolder.dao.findById( getParentId() );
+    }
+
+    public void setParent( TemplateFolder parentFolder ) {
+        set( "R_SID", parentFolder.getId() );
+    }
+
+    public Integer getParentId() {
+        return getInt( "R_SID" );
     }
 
     public void setSourceFolder( com.lanstar.model.system.TemplateFolder systemFolder ) {

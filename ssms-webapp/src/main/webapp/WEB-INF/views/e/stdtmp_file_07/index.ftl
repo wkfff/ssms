@@ -1,10 +1,12 @@
 <div id="kocontainer" class="easyui-panel" border="false" fit="true">
+    <#if R?? && R!=1>
     <div id="toolbar">
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" data-bind="click: deleteClick">删除</a>
     </div>
+    </#if>
     <table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table>
 </div>
 <script type="text/javascript">
@@ -55,10 +57,12 @@
                         {field: 'T_CERT_REVIEW', title: '复审时间', width: 100,
                             editor: {type: 'datebox', options: {}}}
                         ]
-                ],
+                ]
+                <#if R?? && R!=1>,
                 onDblClickRow: function (index, row) {
                     events.editClick();
                 }
+                </#if>
             }
         };
         var events = {

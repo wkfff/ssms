@@ -15,6 +15,23 @@ import com.lanstar.plugin.template.TemplatePropPlugin;
 public class TemplateFile extends ModelExt<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
 
+    public TemplateFolder getFolder() {
+        return TemplateFolder.dao.findById( getFolderId() );
+    }
+
+    public void setFolder( TemplateFolder tenantFolder ) {
+        set( "R_SID", tenantFolder.getId() );
+        set( "S_NAME", tenantFolder.getName() );
+    }
+
+    public int getFileCount() {
+        return get( "N_COUNT" );
+    }
+
+    public void setFileCount( int count ) {
+        set( "N_COUNT", count );
+    }
+
     /** 获取模板属性 */
     public TemplateProp getTemplateProp() {
         return TemplatePropPlugin.me().get( getTemplateFileCode() );
@@ -32,9 +49,17 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return getInt( "R_SOURCE" );
     }
 
-    public void setFolder( TemplateFolder tenantFolder ) {
-        set( "R_SID", tenantFolder.getId() );
-        set( "S_NAME", tenantFolder.getName() );
+    public int getFolderId() {
+        return getInt( "R_SID" );
+    }
+
+    public int getVersion() {
+        Integer version = getInt( "N_VERSION" );
+        return version == null ? 0 : version;
+    }
+
+    public void setVersion( int version ) {
+        set( "N_VERSION", version );
     }
 
     public void setSourceFile( com.lanstar.model.system.TemplateFile file ) {

@@ -46,5 +46,9 @@ public class EnterpriseRoutes extends Routes {
         add( "/e/done", DoneController.class );
         add( "/e/knowledge", KnowledgeSortController.class );
         add( "/e/knowledge_file", KnowledgeFileController.class );
+        
+        add( "/e/psw_change", PswChangeController.class);
+        add( "/e/tenant_e", EnterpriseController.class);
+        add( "/e/tenant_eu", EnterpriseUserController.class);
     }
 }

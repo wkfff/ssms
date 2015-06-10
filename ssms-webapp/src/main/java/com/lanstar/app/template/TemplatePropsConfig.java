@@ -8,6 +8,7 @@
 
 package com.lanstar.app.template;
 
+import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplateProps;
 
@@ -22,5 +23,8 @@ public class TemplatePropsConfig extends TemplateProps {
         add( TemplateProp.with( "07", "特种作业人员持证登记表", com.lanstar.model.system.TemplateFile07.class, com.lanstar.model.tenant.TemplateFile07.class ) );
         add( TemplateProp.with( "08", "特种设备台账及定期检验记录", com.lanstar.model.system.TemplateFile08.class, com.lanstar.model.tenant.TemplateFile08.class ) );
         add( TemplateProp.with( "09", "安全附件定期检查检验记录", com.lanstar.model.system.TemplateFile09.class, com.lanstar.model.tenant.TemplateFile09.class ) );
+
+        ModelExt.addCallbackListener( new TenantTemplateFileLinstener() );
+        //ModelExt.addCallbackListener( new SystemTemplateFileLinstener() );
     }
 }
