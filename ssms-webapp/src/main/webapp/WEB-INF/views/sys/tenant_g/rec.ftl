@@ -99,7 +99,7 @@
     <div class="z-toolbar">
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-cancel" data-bind="click: deleteClick">删除</a>
-        <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer}'">返回</a>
+        <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-undo" onclick="window.location.href = '${backURL!referer!}'">返回</a>
     </div>
 
     <form class="form" style="padding: 20px">

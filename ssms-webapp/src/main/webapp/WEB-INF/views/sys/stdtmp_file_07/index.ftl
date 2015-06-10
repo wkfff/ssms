@@ -15,7 +15,7 @@
                     <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" data-bind="click: gridEvents.saveClick">保存</a>
                     <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-up" plain="true" data-bind="click: gridEvents.upClick">上移</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-down" plain="true" data-bind="click: gridEvents.downClick">下移</a> -->
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-back" plain="true" data-bind="click:function(){window.location.href='${referer}';}">返回</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-back" plain="true" data-bind="click:function(){window.location.href='${referer!}';}">返回</a>
 </div>
 <table data-bind="datagridValue:selectItem,datagridEditValue:editItem,easyuiOptions:gridSettings"></table>
 </@>
