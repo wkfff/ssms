@@ -8,12 +8,32 @@
 
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.TemplateFile03;
+import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.plugin.activerecord.statement.SQL;
+import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.plugin.activerecord.statement.SqlStatement;
 
 public class TemplateFile03Controller extends SimplateController<TemplateFile03> {
     @Override
     protected TemplateFile03 getDao() {
         return TemplateFile03.dao;
+    }
+    @Override
+    public void index() {
+        int R_SID=getParaToInt("sid");
+        SqlBuilder builder=SQL.SELECT( "*" ).FROM( "ssm_stdtmp_file_03" ).WHERE("R_TMPFILE = ?" , R_SID);
+        SqlStatement statement=builder.toSqlStatement();
+        TemplateFile03 model=getDao().findFirst( statement.getSql(), statement.getParams() );
+        String sid = getPara( "sid" );
+        if(!StrKit.isEmpty( sid )) super.rec();
+        if ( model != null ) {
+            setAttrs( ModelKit.toMap( model ) );
+        }else{
+            setAttr( "R_TMPFILE",R_SID);
+        }
+        
     }
 }
