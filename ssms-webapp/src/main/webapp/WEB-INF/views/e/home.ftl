@@ -21,7 +21,7 @@
                 <p>体系创建</p></a>
             </li>
             <li style="padding-top:6px;width:100px;margin-left:5px;margin-right:0;">
-                <a href="/e/stdtmp/query"><p>未创建项/合计项</p><span style="color:red;font-size:20px;">${FILE_NO_CREATE}/${FILE_COUNT}</span></a>
+                <a href="/e/stdtmp/query"><p>未创建项/合计项</p><span style="color:red;font-size:20px;">${FILE_NO_CREATE}/${FILE_NO_CREATE+FILE_COUNT}</span></a>
             </li>
             <li style="padding-top:5px;margin-left:0;"><img src="/resource/images/arrow_right.png" /></li>
             <li>
