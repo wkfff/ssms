@@ -84,7 +84,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4">
+                <td colspan="4" data-bind="visible: SID">
                     <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_04', sid: '${SID!}'}">[选择文件]</a>
                 </td>
             </tr>

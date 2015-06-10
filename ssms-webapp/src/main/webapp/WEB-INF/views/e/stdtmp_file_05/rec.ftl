@@ -12,7 +12,7 @@
             </p>
         </div>
 
-        <div class="easyui-panel" title="附件" style="padding-bottom: 10px;">
+        <div class="easyui-panel" title="附件" style="padding-bottom: 10px;" data-bind="visible: SID">
             <a href="javascript:void(0);" data-bind="disable: readonly,uploadOptions: {module: 'STDTMP_FILE_05', sid: '${SID}'}">[选择文件]</a>
         </div>
     </form>

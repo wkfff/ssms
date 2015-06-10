@@ -8,27 +8,15 @@
 
 package com.lanstar.controller.enterprise;
 
-import com.lanstar.app.Const;
-import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.common.ModelInjector;
-import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile01;
 import com.lanstar.model.tenant.TemplateFile01Item;
-import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.ModelKit;
-import com.lanstar.plugin.activerecord.Page;
-import com.lanstar.plugin.activerecord.statement.SQL;
-import com.lanstar.plugin.activerecord.statement.SqlBuilder;
-import com.lanstar.plugin.activerecord.statement.SqlStatement;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-
-import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
-import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
 
 public class TemplateFile01Controller extends SimplateController<TemplateFile01> {
     @Override
@@ -37,30 +25,22 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
     }
 
     public void index() {
-        //先判断sid 是否有值，如果有值根据模板获R_TMPFILE取到对应的模板，如果没值根据SID获取到模板。。。
-        TemplateFile01 model = null;
-        String sid = getPara("sid");
-        if (StrKit.isEmpty(sid)) {
-            sid = getPara("SID");
-            if (sid == null)
-                return;
-            model = getDao().findById(sid);
-        } else {
-            model = getDao().findFirstByColumn("R_TMPFILE", sid);
-        }
-
-        if (model != null)
-            setAttrs(ModelKit.toMap(model));
-
-        // 绕一圈获取到模板id
-        TemplateFile file = TemplateFile.dao.findById(getAttrForInt(Const.TEMPLATE_FILE_PARENT_FIELD));
+        String sid = getPara( "sid" );
+        TemplateFile01 templateFile = getDao().findFirstByColumn( "R_TMPFILE", sid );
+        if (templateFile == null) return;
+        setAttrs( ModelKit.toMap( templateFile ) );
+        TemplateFile file = templateFile.getTemplateFile();
         com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
-
-        setAttr("TEMPLATE_ID", sourceFile.getId());
+        if ( sourceFile == null ) return;
+        int sourceId = sourceFile.getId();
+        com.lanstar.model.system.TemplateFile01 m = com.lanstar.model.system.TemplateFile01.dao.findFirstByColumn( "R_TMPFILE", sourceId );
+        if ( m == null ) return;
+        int id = m.getId();
+        setAttr( "TEMPLATE_ID", id );
 
         String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ?";
 
-        setAttr("pass", TemplateFile01Item.dao.find(sql, model.get("SID")));
+        setAttr("pass", TemplateFile01Item.dao.find(sql, templateFile.get("SID")));
     }
 
     public void pass() {
