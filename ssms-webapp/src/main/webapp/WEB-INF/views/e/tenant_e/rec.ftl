@@ -104,14 +104,23 @@
 
     ko.applyBindings($.extend({}, model, extModel, settings, events));
 </script>
+<style type="text/css">
+.layout {
+    width: 900px;
+    margin: 0 auto;
+}
+</style>
 </#assign>
 <@layout.doLayout script>
-<div class="easyui-panel" title="企业信息">
-    <div class="z-toolbar">
+<div class="easyui-panel" title="企业信息维护" fit='true'>
+    <div class="z-toolbar" >
+    <div class="layout" >
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
     </div>
-    <form class="form" style="padding: 20px">
-        <div class="easyui-panel form" style="padding:10px" title="基本信息">
+    </div>
+    <div class="layout">
+    <form class="form">
+        <div  >
             <p class="ue-clear">
                 <label>租户编码</label>
                 <span class="control">
@@ -140,7 +149,7 @@
                 </span>
             </p>
         </div>
-        <div class="easyui-panel form" style="padding:10px" title="联系方式">
+        <div  border="false" style="padding-top:20px;">
             <p class="long-input ue-clear">
                 <label>电子邮箱</label>
                 <span class="control">
@@ -186,7 +195,7 @@
                 </span>
             </p>
         </div>
-        <div class="easyui-panel form" style="padding:10px" title="扩展信息">
+        <div  border="false" style="padding-top:20px;">
             <p class="long-input ue-clear">
                 <label>营业执照注册号</label>
                 <span class="control">
@@ -236,7 +245,7 @@
                 </span>
             </p>
         </div>
-        <div class="easyui-panel" border="false" style="padding:10px;" title="企业达标情况">
+        <div  border="false" style="padding-top:20px;">
             <p class="ue-clear">
                 <label>达标等级</label>
                 <span class="control">
@@ -252,7 +261,7 @@
             </p>
         </div>
        <div style="display:none;">
-        <div class="easyui-panel" border="false" style="padding:10px; " title="费用信息">
+        <div  border="false" style="padding-top:20px;">
             <p class="ue-clear">
                 <label>缴费日期</label>
                 <span class="control">
@@ -276,5 +285,6 @@
         </div>
        </div>
     </form>
+    </div>
 </div>
 </@>

@@ -13,10 +13,6 @@
 </style>
 <script type="text/javascript">
     $("tbody").find("tr:odd").css("backgroundColor","#eff6fa");
-    function nav1(_url){
-        var url = "/e/stdtmp/see?URL="+ encodeURIComponent(_url+'&R=1');
-        window.location.href = url;
-    }
     function nav(_url){
         var url = "/e/stdtmp/see?URL="+ encodeURIComponent(_url);
         window.location.href = url;
@@ -65,8 +61,8 @@
                 <td></td>
                 <td class="operate">
                     <#if map.attributes.C_URL??>
-                        <a href="javascript:nav1('${map.attributes.C_URL!}')">查看</a>&nbsp;&nbsp;
-                        <a href="javascript:nav('${map.attributes.C_URL!}')">修改</a>&nbsp;&nbsp;
+                        <a href="javascript:nav('${map.attributes.C_URL!}&_R_=1')">查看</a>&nbsp;&nbsp;
+                        <a href="javascript:nav('${map.attributes.C_URL!}&_R_=0')">修改</a>&nbsp;&nbsp;
                     <#else>
                         <span class="nofile"> 当前目录下还没有文件</span>
                     </#if>

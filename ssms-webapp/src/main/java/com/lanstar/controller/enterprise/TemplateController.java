@@ -94,7 +94,13 @@ public class TemplateController extends Controller {
         List<TreeNode> value = TreeNode.build( "D-0", list, "SID", "R_SID", "C_NAME" );
         setAttr("tree",value);
     }
-    
+    /**
+     * 显示版本
+     */
+    public void list_version(){
+        String sql = "select distinct n_version from ssm_stdtmp_folder";
+        
+    }
     public void see(){
         
     }
