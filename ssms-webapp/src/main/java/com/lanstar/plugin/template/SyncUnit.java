@@ -33,7 +33,7 @@ public class SyncUnit {
     public void execute() {
         // 同步文件信息
         ModelKit.copyColumnsSkipEquals( sourceFile, targetFile,
-                "C_NAME", "C_DESC", "B_REMIND", "N_CYCLE", "P_CYCLE", "S_CYCLE", "C_EXPLAIN", "P_TMPFILE", "S_TMPFILE", "N_STATE", "B_DELETE", "N_INDEX", "N_VERSION" );
+                "C_NAME", "C_DESC", "B_REMIND", "N_CYCLE", "P_CYCLE", "S_CYCLE", "C_EXPLAIN", "P_TMPFILE", "S_TMPFILE", "N_INDEX" );
         if ( targetFile.isModified() ) {
             // tenantFile.setTenant(target.getIdentity() );
             ModelInjector.injectOpreator( targetFile, targetContext );
