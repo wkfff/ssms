@@ -11,6 +11,7 @@ package com.lanstar.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.lanstar.app.Const;
 import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.common.kit.StrKit;
@@ -24,6 +25,7 @@ import com.lanstar.plugin.activerecord.statement.SqlStatement;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +45,12 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
         identityContext = IdentityContext.getIdentityContext( this );
         if ( identityContext == null ) return;
         tenantDb = identityContext.getTenantDb();
+        
+        setAttr(Const.READONLY_KEY,isReadonly( request ));
     }
 
     public void index() {
-
+        
     }
 
     public void rec() {
@@ -195,5 +199,9 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
         } catch ( InstantiationException | IllegalAccessException e ) {
             throw new RuntimeException( e );
         }
+    }
+    
+    protected boolean isReadonly(HttpServletRequest request){
+        return this.getParaToBoolean( Const.READONLY_KEY ,true);
     }
 }

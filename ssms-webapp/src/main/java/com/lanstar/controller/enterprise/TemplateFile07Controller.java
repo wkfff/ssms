@@ -7,9 +7,6 @@
  */
 package com.lanstar.controller.enterprise;
 
-import org.quartz.utils.StringKeyDirtyFlagMap;
-
-import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.TemplateFile07;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
@@ -28,18 +25,14 @@ public class TemplateFile07Controller extends SimplateController<TemplateFile07>
         return sb;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.lanstar.controller.SimplateController#index()
      */
     @Override
     public void index() {
-        String flag = this.getPara("R");
-        if ( !StrKit.isBlank( flag ) && flag.equals( "1" )){
-            setAttr("R",1);
-        }else
-            setAttr("R",0);
         super.index();
     }
-    
-    
+
 }

@@ -15,4 +15,6 @@ public interface Const {
     String TENANT_DB_NAME = "TENANT_DB";
     String HOME_PAGE = "HOME_PAGE";
     String TEMPLATE_FILE_PARENT_FIELD = "R_TMPFILE";
+    
+    String READONLY_KEY = "_R_";
 }
