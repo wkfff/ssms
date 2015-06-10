@@ -19,6 +19,7 @@
     }
 </style>
 <div id="kocontainer">
+    <#if _R_== false >
     <div class="z-toolbar">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search"
@@ -30,6 +31,7 @@
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search"
            data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">查看模板</a>
     </div>
+    </#if>
     <form class="form" method="post" style="padding:10px 31px;">
         <table>
             <colgroup>
