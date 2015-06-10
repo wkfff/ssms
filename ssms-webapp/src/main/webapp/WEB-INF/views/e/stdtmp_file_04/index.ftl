@@ -1,10 +1,12 @@
 <div id="kocontainer" class="easyui-panel" border="false" fit="true">
+    <#if _R_== false >
     <div id="toolbar">
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" data-bind="click: deleteClick">删除</a>
     </div>
+    </#if>
     <table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table>
 </div>
 <script type="text/javascript">
@@ -38,10 +40,12 @@
                         {field: 'S_TYPE', title: '培训种类', width: 80},
                         {field: 'N_TIME', title: '学时', width: 80}
                     ]
-                ],
+                ]
+                <#if _R_== false >,
                 onDblClickRow: function (index, row) {
                     events.editClick();
                 }
+                </#if>
             }
         };
         var events = {
