@@ -1,6 +1,8 @@
 <div id="kocontainer">
     <div class="z-toolbar">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+        <a class="easyui-linkbutton"  plain="true" iconCls="icon-word" onclick="alert('还未开发')">导出(WORD)</a>
+        <span><a class="easyui-linkbutton"  plain="true"  onClick="alert('还未开发')">模板查看</a></span>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
         <div class="easyui-panel" title="概要" style="padding-bottom: 10px;">
