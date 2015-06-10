@@ -13,13 +13,15 @@
         R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
-        htmlContent: ko.observable()
+        htmlContent: ko.observable(),
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         htmleditSettings: {
             table: "STDTMP_FILE_04",
             field: 'C_CONTENT',
-            sid: '${SID!}'
+            sid: '${SID!}',
+            readonly: extModel.readonly
         }
     };
     var events = {
@@ -65,7 +67,7 @@
 </style>
 </#assign>
 <@layout.doLayout header=script>
-<div class="z-toolbar">
+<div class="z-toolbar" data-bind="visible: !readonly">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${referer!}'">返回</a>
 </div>
@@ -80,43 +82,43 @@
         <tr>
             <td>主题:</td>
             <td colspan="3">
-                <input data-bind="textboxValue: C_NAME" required/>
+                <input data-bind="disable: readonly,textboxValue: C_NAME" required/>
             </td>
         </tr>
 
         <tr>
             <td>培训日期:</td>
             <td>
-                <input data-bind="dateboxValue: T_TIME"/>
+                <input data-bind="disable: readonly,dateboxValue: T_TIME"/>
             </td>
 
             <td>培训地址:</td>
             <td>
-                <input data-bind="textboxValue: C_ADDR"/>
+                <input data-bind="disable: readonly,textboxValue: C_ADDR"/>
             </td>
         </tr>
 
         <tr>
             <td>讲师:</td>
             <td>
-                <input data-bind="textboxValue: C_USER_01"/>
+                <input data-bind="disable: readonly,textboxValue: C_USER_01"/>
             </td>
 
             <td>培训类型:</td>
             <td>
-                <input data-bind="textboxValue: S_TYPE"/>
+                <input data-bind="disable: readonly,textboxValue: S_TYPE"/>
             </td>
         </tr>
 
         <tr>
             <td>学时:</td>
             <td>
-                <input data-bind="textboxValue: N_TIME"/>
+                <input data-bind="disable: readonly,textboxValue: N_TIME"/>
             </td>
 
             <td>记录人:</td>
             <td>
-                <input data-bind="textboxValue: C_USER_02"/>
+                <input data-bind="disable: readonly,textboxValue: C_USER_02"/>
             </td>
         </tr>
         <tr>

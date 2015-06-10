@@ -8,11 +8,24 @@
 
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.app.Const;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile04;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile04Controller extends SimplateController<TemplateFile04> {
+
+    @Override
+    public void rec() {
+        super.rec();
+        TemplateFile file = TemplateFile.dao.findById( getAttrForInt( Const.TEMPLATE_FILE_PARENT_FIELD ) );
+        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
+
+        setAttr( "TEMPLATE_ID", com.lanstar.model.system.TemplateFile04.dao.findFirstByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFile
+            .getId() ).getId() );
+    }
+    
     @Override
     protected TemplateFile04 getDao() {
         return TemplateFile04.dao;

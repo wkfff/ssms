@@ -8,10 +8,27 @@
 
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.app.Const;
+import com.lanstar.common.EasyUIControllerHelper;
+import com.lanstar.common.ModelInjector;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile01;
+import com.lanstar.model.tenant.TemplateFile01Item;
+import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.plugin.activerecord.Page;
+import com.lanstar.plugin.activerecord.statement.SQL;
+import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.plugin.activerecord.statement.SqlStatement;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
+import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
 
 public class TemplateFile01Controller extends SimplateController<TemplateFile01> {
     @Override
@@ -34,6 +51,42 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
 
         if (model != null)
             setAttrs(ModelKit.toMap(model));
+
+        // 绕一圈获取到模板id
+        TemplateFile file = TemplateFile.dao.findById(getAttrForInt(Const.TEMPLATE_FILE_PARENT_FIELD));
+        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
+
+        setAttr("TEMPLATE_ID", sourceFile.getId());
+
+        String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ?";
+
+        setAttr("pass", TemplateFile01Item.dao.find(sql, model.get("SID")));
+    }
+
+    public void pass() {
+        TemplateFile01Item model = new TemplateFile01Item();
+        Integer sid = getParaToInt("SID");
+
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ? and '" + year + "-01-01' <=T_DATE_01 and T_DATE_01<='" + year + "-12-31'";
+
+        if (model.findFirst(sql, sid) == null) {
+            model.set("R_TMPFILE_01", sid);
+            model.set("T_DATE_01", new Date());
+            ModelInjector.injectOpreator(model, identityContext);
+
+            if (model.save()) {
+                //审核通过
+                renderJson("1");
+            } else {
+                //审核不通过
+                renderJson("0");
+            }
+        } else {
+            //已审核通过
+            renderJson("3");
+        }
     }
     
     public void view(){
