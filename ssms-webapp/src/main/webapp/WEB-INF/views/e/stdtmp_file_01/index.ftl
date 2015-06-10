@@ -25,7 +25,7 @@
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search"
            data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">年审通过</a>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf"
-           data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">导出</a>
+           data-bind="click: function(){}">导出</a>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-back"
            onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!sid}');">返回</a>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search"
