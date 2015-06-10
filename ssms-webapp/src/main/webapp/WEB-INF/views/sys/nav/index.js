@@ -158,6 +158,7 @@ function ViewModel() {
                 if (changes.length > 0) {
                     $.post("batchSave", {data: $.toJSON(changes)}, function () {
                         $.messager.alert('消息', '成功保存记录！', "info", function () {
+                            events.gridEvents.refreshClick();
                             settings.treeSettings.tree('reload');
                         });
                     });
