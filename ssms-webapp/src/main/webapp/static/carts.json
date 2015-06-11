@@ -1,0 +1,15 @@
+[
+  {
+    "SID": 1,
+    "C_ENTERPRISE": "单位名称",
+    "C_LEVEL": "3",
+    "C_INDUSTRY": "工贸",
+    "C_PROFESSION": "工贸",
+    "N_STATE": "0",
+    "C_CERTIFICATE_NUMBER": "123456789",
+    "C_ISSUING_AUTHORITY": "福州市安监局",
+    "C_PRINTED_NUMBER": "1234567890",
+    "T_DATE_OF_ISSUE": "2015-6-11",
+    "T_VALIDITY": "2017-6-11"
+  }
+]

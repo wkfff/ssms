@@ -120,7 +120,7 @@ function ViewModel(p_city,p_county,c_name) {
                         width: 260,
                         align:'center',
                         formatter:function(value,row){
-                            var pid = row.P_PROFESSION;alert(pid);
+                            var pid = row.P_PROFESSION;
                             var html = "<a href='/e/stdtmp/list_version?R_TENANT="+value+"'>查看体系</a>&nbsp;&nbsp;<a href='/r/grade_m/tabs?sid="+value+"&pro="+pid+"'>进入评审</a>";
                             return  html;
                         }
