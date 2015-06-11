@@ -26,10 +26,14 @@
         SID: ko.observable()
     };
     var settings={
-            selectOptions :[
-                        {name:"专家",id:"01"},
-                        {name:"评审员",id:"02"}
-                ]
+    		cycleSource:ko.observableArray([
+    		                                 {name:"专家",key:"01"},
+    		                                 {name:"评审员",key:"02"}
+    		                     ]),
+    		     selectOptions : {
+    		                             valueField: 'key',
+    		                             textField: 'name'
+    		                         }
        };
     var events = {
         saveClick: function () {
@@ -129,7 +133,8 @@
             </td>
             <td>人员类别:</td>
             <td >
-                 <select data-bind ="options:selectOptions, optionsText: 'name', optionsValue: 'id', value:C_CLASSWORKER"></select>
+                 <input
+                        data-bind="comboboxSource:cycleSource,comboboxValue:C_CLASSWORKER,easyuiOptions:selectOptions" />
             </td>
             <td>专业技术职务:</td>
             <td>
