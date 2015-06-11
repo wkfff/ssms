@@ -1,13 +1,10 @@
 <#import "../../layout/_list.ftl" as layout/>
 <#assign script>
-<style>
-    .datagrid-cell{
-        white-space:normal !important;
-    }
-</style>
 <script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">
-    ko.applyBindings(new ViewModel(${sid!}));
+    $(function () {
+        ko.applyBindings(new ViewModel(${sid!}));
+    });
 </script>
 </#assign>
 <@layout.doLayout script=script>

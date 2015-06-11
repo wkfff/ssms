@@ -2,7 +2,9 @@
 <#assign script>
 <script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">
-    ko.applyBindings(new ViewModel(${sid!}));
+    $(function () {
+        ko.applyBindings(new ViewModel(${sid!}));
+    });
 </script>
 </#assign>
 <@layout.doLayout script=script>

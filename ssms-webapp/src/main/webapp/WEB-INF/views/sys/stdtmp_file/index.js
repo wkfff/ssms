@@ -29,7 +29,7 @@ function ViewModel(catalogId) {
             toolbar: '#toolbar',
             columns: [
                 [
-                    {field: 'C_NAME', title: '文件名'},
+                    {field: 'C_NAME', title: '文件名', width: 300},
                     {field: 'C_DESC', title: '描述', width: 200},
                     {
                         field: 'N_CYCLE', title: '更新周期', align: 'center', width: 80,
