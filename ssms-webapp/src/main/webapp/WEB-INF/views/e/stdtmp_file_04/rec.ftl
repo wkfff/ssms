@@ -25,7 +25,9 @@
            data-bind="click: function(){}">导出</a>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-back"
            onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回列表</a>
+        <#if TEMPLATE_ID??>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_04/view?sid=${TEMPLATE_ID}')}">查看模板</a>
+        </#if>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
         <table>
