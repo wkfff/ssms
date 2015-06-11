@@ -10,6 +10,12 @@
         S_CITY: ko.observable('${S_CITY!}'),
         P_COUNTY: ko.observable('${P_COUNTY!}'),
         S_COUNTY: ko.observable('${S_COUNTY!}'),
+        P_AT_PROVINCE: ko.observable('${P_AT_PROVINCE!}'),
+        S_AT_PROVINCE: ko.observable('${P_AT_PROVINCE!}'),
+        P_AT_CITY: ko.observable('${P_CITY!}'),
+        S_AT_CITY: ko.observable('${S_CITY!}'),
+        P_AT_COUNTY: ko.observable('${P_COUNTY!}'),
+        S_AT_COUNTY: ko.observable('${S_COUNTY!}'),
         C_ADDR: ko.observable('${C_ADDR!}'),
         C_TEL: ko.observable('${C_TEL!}'),
         C_FAX: ko.observable('${C_FAX!}'),
@@ -130,6 +136,15 @@
                 </span>
             </p>
 
+            <p class="ue-clear">
+                <label>所属辖区</label>
+                <span class="control">
+                    <input style="width: 60px" data-bind="comboboxValue:P_PROVINCE,comboboxText:S_PROVINCE,easyuiOptions:provinceSetting" required/>省
+                    <input style="width: 60px" data-bind="comboboxValue:P_CITY,comboboxText:S_CITY,easyuiOptions:citySetting" required/>市
+                    <input style="width: 60px" data-bind="comboboxValue:P_COUNTY,comboboxText:S_COUNTY,easyuiOptions:countySetting" required/>区(县)
+                </span>
+            </p>
+            
             <p class="ue-clear">
                 <label>专职人员</label>
                 <span class="control">
