@@ -1,6 +1,6 @@
 [
-{"SID":"1","C_NAME":"杨建","S_SEX":"男","T_BIRTH":"2015-06-12","C_POSITION":"工程师","C_TECHNOLOGY":"工程师","C_DEPT":"泉州安全科学研究会"},
-{"SID":"2","C_NAME":"烟岚兰","S_SEX":"女","T_BIRTH":"2015-05-12","C_POSITION":"操盘手","C_TECHNOLOGY":"经济行业师","C_DEPT":"中国科学研究院"},
-{"SID":"3","C_NAME":"小白","S_SEX":"男","T_BIRTH":"2014-05-12","C_POSITION":"兽医","C_TECHNOLOGY":"动物学医生","C_DEPT":"中国防控中心"},
-{"SID":"4","C_NAME":"小黑","S_SEX":"男","T_BIRTH":"2013-05-12","C_POSITION":"游戏选手","C_TECHNOLOGY":"游戏师","C_DEPT":"中国网络游戏研发中心"}
+{"SID":"1","C_NAME":"杨建","S_SEX":"男","T_BIRTH":"2015-06-12","C_CLASSWORKER":"01","C_POSITION":"工程师","C_TECHNOLOGY":"工程师","C_DEPT":"泉州安全科学研究会"},
+{"SID":"2","C_NAME":"烟岚兰","S_SEX":"女","T_BIRTH":"2015-05-12","C_CLASSWORKER":"02","C_POSITION":"操盘手","C_TECHNOLOGY":"经济行业师","C_DEPT":"中国科学研究院"},
+{"SID":"3","C_NAME":"小白","S_SEX":"男","T_BIRTH":"2014-05-12","C_CLASSWORKER":"02","C_POSITION":"兽医","C_TECHNOLOGY":"动物学医生","C_DEPT":"中国防控中心"},
+{"SID":"4","C_NAME":"小黑","S_SEX":"男","T_BIRTH":"2013-05-12","C_CLASSWORKER":"01","C_POSITION":"游戏选手","C_TECHNOLOGY":"游戏师","C_DEPT":"中国网络游戏研发中心"}
 ]

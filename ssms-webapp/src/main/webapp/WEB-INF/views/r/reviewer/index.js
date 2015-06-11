@@ -8,12 +8,10 @@ function ViewModel() {
 			title : '评审员管理',
 			url : '/static/reviewers.json',
 			idField : 'SID',
-			rownumbers : true,
-			pagination : true,
-			singleSelect : true,
-			fitColumns : false,
-			fit : true,
-			border : false,
+			rownumbers: true,
+            pagination: true,
+            fit: true,
+            pageSize: 50,
 			toolbar : '#toolbar',
 			columns : [ [
 					{
@@ -33,6 +31,15 @@ function ViewModel() {
 						align : 'center',
 						title : '出生日期',
 						width : 80
+					},
+					{
+						field : 'C_CLASSWORKER',
+						align : 'center',
+						title : '人员类别',
+						width : 60,
+						formatter: function (value, row) {
+                            if (value) return value == '01' ? "专家" : "评审员"
+                        }
 					},
 					{
 						field : 'C_POSITION',

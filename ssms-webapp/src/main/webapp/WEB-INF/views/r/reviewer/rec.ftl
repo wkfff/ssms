@@ -22,8 +22,16 @@
         S_MAJOR: ko.observable('环境工程'),
         C_ENGPROANDAGE: ko.observable('三年安全技术'),
         C_SUMMARY: ko.observable(),
+        C_CLASSWORKER : ko.observable('01'),
         SID: ko.observable('1')
     };
+    var settings={
+         selectOptions :[
+                     {name:"专家",id:"01"},
+                     {name:"评审员",id:"02"}
+             ]
+    };
+
     var events = {
         saveClick: function () {
             utils.messager.showProgress();
@@ -44,7 +52,7 @@
             }, "json");
         }
     };
-    ko.applyBindings($.extend({}, model, events));
+    ko.applyBindings($.extend({}, model, events,settings));
 </script>
 <style type="text/css">
     .form table {
@@ -118,8 +126,12 @@
         </tr>
         <tr>
             <td>职务:</td>
-            <td colspan="3">
+            <td>
                  <input data-bind="textboxValue: C_POSITION" />
+            </td>
+            <td>人员类别:</td>
+            <td >
+                 <select data-bind ="options:selectOptions, optionsText: 'name', optionsValue: 'id', value:C_CLASSWORKER"></select>
             </td>
             <td>专业技术职务:</td>
             <td>
@@ -197,7 +209,7 @@
         </tr>
         <tr>
             <td colspan="7">
-                <input data-bind="textareaValue: C_SUMMARY" style="width: 100%; height: 300px"/>
+                <input data-bind="textareaValue: C_SUMMARY" style="width: 100%; height: 150px"/>
             </td>
         </tr>
     </table>
