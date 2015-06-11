@@ -24,23 +24,31 @@ public class TemplateFolder extends Model<TemplateFolder> {
         return dao.find( SqlKit.sql( "system.templateFolder.getFoldersByParentId" ), template, parentId );
     }
 
-    public Integer getId() {
-        return getInt( "SID" );
-    }
-
-    public String getName(){
-        return getStr( "C_NAME" );
-    }
-
-    public Integer getTemplateId() {
-        return getInt( "R_TEMPLATE" );
-    }
-
     public List<TemplateFolder> listSubFolder() {
         return list( getTemplateId(), getId() );
     }
 
     public List<TemplateFile> listFile() {
         return TemplateFile.list( getId() );
+    }
+
+    public Integer getIndex() {
+        return getInt( "N_INDEX" );
+    }
+
+    public void setIndex( int index ) {
+        set( "N_INDEX", index );
+    }
+
+    public Integer getId() {
+        return getInt( "SID" );
+    }
+
+    public String getName() {
+        return getStr( "C_NAME" );
+    }
+
+    public Integer getTemplateId() {
+        return getInt( "R_TEMPLATE" );
     }
 }

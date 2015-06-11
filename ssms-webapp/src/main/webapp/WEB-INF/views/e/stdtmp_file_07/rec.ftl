@@ -8,11 +8,10 @@
     .form table tr {
         height: 40px;
     }
-    
+
     .form table td {
-        padding-right:10px;
+        padding-right: 10px;
     }
-    
 
     .form table .label {
         width: 90px;
@@ -37,10 +36,10 @@
                 <td>
                     <input data-bind="disable: readonly,textboxValue: C_NAME" required/>
                 </td>
-                 <td>性别:</td>
+                <td>性别:</td>
                 <td>
-                    <label><input type="radio" name="P_SEX" data-bind="disable: readonly,checked: P_SEX" value="1" />男</label> 
-                    <label><input type="radio" name="P_SEX" data-bind="disable: readonly,checked: P_SEX" value="2" />女</label>
+                    <label><input type="radio" name="P_SEX" data-bind="disable: readonly,checked: P_SEX" value="1"/>男</label>
+                    <label><input type="radio" name="P_SEX" data-bind="disable: readonly,checked: P_SEX" value="2"/>女</label>
                 </td>
             </tr>
 
@@ -54,7 +53,7 @@
                     <input data-bind="disable: readonly,textboxValue: C_DEPT"/>
                 </td>
             </tr>
-           
+
             <tr>
                 <td>工种:</td>
                 <td>
@@ -65,7 +64,7 @@
                     <input data-bind="disable: readonly,textboxValue: C_AUTH"/>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>证书编号:</td>
                 <td>
@@ -76,7 +75,7 @@
                     <input data-bind="disable: readonly,dateboxValue: T_CERT_GET"/>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>复审时间:</td>
                 <td>
@@ -100,15 +99,12 @@
         C_CERT: ko.observable('${C_CERT!}'),
         T_CERT_REVIEW: ko.observable('${T_CERT_REVIEW!}'),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!pid}',
-        readonly: ${@READONLY!'false'}
+        R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
-        
+        readonly: ${@READONLY!'false'}
     };
-    var settings = {
-        
-    };
+    var settings = {};
     var events = {
         saveClick: function () {
             if ($form.validate('.form') != true) return;
@@ -116,7 +112,7 @@
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
                     utils.messager.closeProgress();
-                        $.messager.alert("提示", "保存成功", "info");
+                    $.messager.alert("提示", "保存成功", "info");
                 } else {
                     $.messager.alert("提示", "保存失败", "warning", function () {
                         utils.messager.closeProgress();

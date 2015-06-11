@@ -94,12 +94,11 @@
         C_DEPT_02: ko.observable('${C_DEPT_02!}'),
         C_DEPT_03: ko.observable('${C_DEPT_03!}'),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!pid}',
-        readonly: ${@READONLY!'false'}
+        R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
         htmlContent: ko.observable(),
-        readonly: extModel.readonly
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         htmleditSettings: {

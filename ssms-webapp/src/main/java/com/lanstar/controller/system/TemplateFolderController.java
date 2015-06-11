@@ -17,14 +17,20 @@ import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import java.util.List;
 
 public class TemplateFolderController extends SimplateController<TemplateFolder> {
-    @Override
-    protected TemplateFolder getDao() {
-        return TemplateFolder.dao;
-    }
-
     public void tree() {
         List<TemplateFolder> list = TemplateFolder.list( getParaToInt( "template" ) );
         renderJson( EasyUIControllerHelper.toTree( "0", ModelKit.toMap( list ), "SID", "R_SID", "C_NAME" ) );
+    }
+
+    @Override
+    public void rec() {
+        super.rec();
+        renderJson();
+    }
+
+    @Override
+    protected TemplateFolder getDao() {
+        return TemplateFolder.dao;
     }
 
     @Override
@@ -38,8 +44,7 @@ public class TemplateFolderController extends SimplateController<TemplateFolder>
     }
 
     @Override
-    public void rec() {
-        super.rec();
-        renderJson();
+    protected void afterSave( TemplateFolder model ) {
+        if ( model.getIndex() == null ) model.setIndex( model.getId() );
     }
 }
