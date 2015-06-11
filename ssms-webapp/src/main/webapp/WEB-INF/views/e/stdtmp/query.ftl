@@ -2,7 +2,7 @@
 <#assign script>
 <style>
     .titlebar{background-color:#daeef5;border:1px solid #c1d3de;padding:5px;font-weight:bold;font-size:13px;}
-    .titlebar img{vertical-align:middle;width:16px;height:16px;} 
+    .titlebar img{vertical-align:middle;width:16px;height:16px;}
     .table{ width:100%;  border:1px solid #c1d3de; border-top:none;}
     .table thead tr th{ height:35px; line-height:35px; border:1px solid #c1d3de; background:url(/resource/images/tablelistbg.png) repeat-x; font-weight:bold;padding-left:2px;}
     .table tbody tr td{ border-left:1px dotted #222; line-height:30px;}
@@ -24,8 +24,8 @@
 <@layout.doLayout script>
 <div style="padding:10px;">
     <div class="titlebar">
-        <img src="/resource/images/blue/star.png"/>&nbsp;13要素列表   版本(${N_VERSION!})
-        <span class="back"><a href="list_version">返回</a></span>
+        <img src="/resource/images/blue/star.png"/>&nbsp;企业安全标准化体系创建13要素表 --- 版本(${N_VERSION!})
+        <span class="back"><a href="list_version">返回列表</a></span>
     </div>
     <table class="table">
     <thead>
@@ -40,7 +40,7 @@
     <#list tree as map>
         <@buildTree map.children true/>
     </#list>
-   
+
     </tbody>
     </table>
 </div>
@@ -53,16 +53,17 @@
                 <td>
                 <#if map.attributes.C_URL??>
                     <a href="/e/stdtmp/see?URL=${map.attributes.C_URL!}">
-                        <#list 1..map.level as i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</#list>
-                        <#if map.level=1><img src="/resource/images/listico.png" />&nbsp;</#if>${map.text}
+                        <#list 1..map.level as i>&nbsp;&nbsp;&nbsp;&nbsp;</#list>
+                        <#if map.level=1><img src="/resource/images/listico.png" />
+                        <#else><img src="/resource/images/rmail.png" align="bottom"/></#if>
                     <a>
                 <#else>
-                    <#list 1..map.level as i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</#list>
-                    <#if map.level=1><img src="/resource/images/foot02.png" />&nbsp;</#if>${map.text}
-                </#if>
+                    <#list 1..map.level as i>&nbsp;&nbsp;&nbsp;&nbsp;</#list>
+                    <img src="/resource/images/foot02.png" align="bottom"/>
+                </#if>&nbsp;${map.text}
                 </td>
                 <td class="count">${map.attributes.N_COUNT!}</td>
-                <td class="count">${map.attributes.S_STATE!}</td>
+                <td class="count"><#if map.attributes.C_URL??>${map.attributes.S_STATE!}</#if></td>
                 <td></td>
                 <td class="operate">
                     <#if map.attributes.C_URL??>
@@ -70,7 +71,7 @@
                         <!-- <a href="javascript:nav('${map.attributes.C_URL!}&_R_=0')">修改</a>&nbsp;&nbsp; -->
                     </#if>
                 </td>
-            </tr> 
+            </tr>
            <@buildTree map.children/>
         </#list>
     </#if>
