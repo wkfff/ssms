@@ -79,7 +79,7 @@ public class TenantContext {
     <T> T getValue( Class<T> clazz ) {
         if (valueMap==null || valueMap.isEmpty()) return null;
         Object value = valueMap.get( clazz );
-        if (value == null) throw new RuntimeException( "can not retrive instance of" + clazz.getName() );
+//        if (value == null) throw new RuntimeException( "can not retrive instance of" + clazz.getName() );
         return (T)value;
     }
 
