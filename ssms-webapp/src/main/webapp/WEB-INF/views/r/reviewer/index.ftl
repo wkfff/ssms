@@ -3,6 +3,9 @@
 <script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">
 ko.applyBindings(new ViewModel());
+$('#dg_index').datagrid({onDblClickRow : function(){
+    window.location.href = 'rec';
+}})
 </script>
 </#assign>
 <@layout.doLayout script>
