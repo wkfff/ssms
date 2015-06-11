@@ -2,7 +2,7 @@
 <#assign script>
 <script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">
-    var vm = new ViewModel();
+    var vm = new ViewModel(${P_CITY!},${P_COUNTY!},'${C_NAME!}');
     ko.applyBindings(vm);
 </script>
 </#assign>
@@ -14,8 +14,6 @@
     <input class="easyui-combobox" id="cb_county" style="width:160px;" data-bind="comboboxValue:comboCounty,easyuiOptions:comboCountySettings">&nbsp;区/县&nbsp;&nbsp;
          企业名称：<input class="easyui-textbox" id="txt_name" style="width:80px;" data-bind="textboxValue:txtName">
     <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" data-bind="click:gridEvents.refreshClick">查询</a>
-    
-    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click:gridEvents.createClick">开始新的企业评审</a>
 </div>
 <table data-bind="datagridValue:selectItem,easyuiOptions: gridSettings"></table>
 </@>

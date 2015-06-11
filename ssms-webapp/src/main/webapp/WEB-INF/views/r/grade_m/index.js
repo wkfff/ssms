@@ -1,11 +1,11 @@
-function ViewModel(templateId) {
+function ViewModel(p_city,p_county,c_name) {
     var self = this;
 
     var model = {
-        comboPro: ko.observable(),
+        //comboPro: ko.observable(),
         comboCity: ko.observable(),
         comboCounty: ko.observable(),
-        txtName: ko.observable(),
+        txtName: ko.observable(c_name),
         selectItem: ko.observable(),
         /*
         selectIndex: ko.pureComputed(function () {
@@ -14,7 +14,7 @@ function ViewModel(templateId) {
         }),*/
         sid: ko.observable()
     };
-    model.comboPro.subscribe(function (newValue) {
+    /*model.comboPro.subscribe(function (newValue) {
         if (!newValue) return;
         if (settings.comboCountySettings.combobox){
             settings.comboCountySettings.combobox("clear");
@@ -26,30 +26,44 @@ function ViewModel(templateId) {
                 queryParams: {R_CODE: newValue}
             })
     });
+    */
     model.comboCity.subscribe(function (newValue) {
         if (!newValue) return;
         if (settings.comboCountySettings.combobox)
             settings.comboCountySettings.combobox({
                 url: "/sys/para_area/list",
-                queryParams: {R_CODE: newValue}
+                queryParams: {R_CODE: newValue},
+                valueField:'C_CODE',
+                textField:'C_VALUE',
+                onLoadSuccess: function(){
+                    var data = settings.comboCountySettings.combobox('getData');
+                    for(var i=0;i<data.length;i++){
+                        if (data[i].C_CODE==p_county){
+                            model.comboCounty(p_county);
+                            break;
+                        }
+                    };
+                }
             })
     });
+    /*
     model.comboCounty.subscribe(function (newValue) {
         if (!newValue) return;
-        if (settings.gridSettings.datagrid)
-            events.gridEvents.refreshClick();
     });
-    
+    */
     var settings = {
-        comboProSettings:{
-            /*url:'/sys/para_area/list?N_LEVEL=1',*/
+            /*comboProSettings:{
+            url:'/sys/para_area/list?N_LEVEL=1',
             valueField:'C_CODE',
             textField:'C_VALUE'
-        },
+        },*/
         comboCitySettings:{
             url:'/sys/para_area/list?R_CODE=350000',
             valueField:'C_CODE',
-            textField:'C_VALUE'
+            textField:'C_VALUE',
+            onLoadSuccess: function(){
+                model.comboCity(p_city);
+            }
         },
         comboCountySettings:{
             valueField:'C_CODE',
@@ -58,7 +72,7 @@ function ViewModel(templateId) {
         gridSettings: {
             idField: 'SID',
             title:'评审办理',
-            url:'/r/grade_m/list_r',
+            url:'/r/grade_m/list_e?P_CITY='+p_city+'&P_CONUTY='+p_county+'&C_NAME='+c_name,
             rownumbers: true,
             pagination: true,
             fit: true,
@@ -71,8 +85,33 @@ function ViewModel(templateId) {
                         width: 200
                     },
                     {
-                        field: 'C_TITLE',
-                        title: '标题',
+                        field: 'C_ADDR',
+                        title: '地址',
+                        width: 300
+                    },
+                    {
+                        field: 'C_CONTACT',
+                        title: '联系人',
+                        width: 300
+                    },
+                    {
+                        field: 'C_TEL',
+                        title: '联系电话',
+                        width: 300
+                    },
+                    {
+                        field: 'C_NAME_IND',
+                        title: '行业',
+                        width: 300
+                    },
+                    {
+                        field: 'C_NAME_PRO',
+                        title: '专业',
+                        width: 300
+                    },
+                    {
+                        field: 'N_STATE',
+                        title: '评审状态',
                         width: 300
                     },
                     {
@@ -81,9 +120,7 @@ function ViewModel(templateId) {
                         width: 260,
                         align:'center',
                         formatter:function(value,row){
-                            var html = "<a href='/r/grade_m/rec?sid="+value+"'>评审</a>&nbsp;&nbsp;<a href='/r/grade_m/report_rec?sid="+value+"'>编辑评审报告</a>&nbsp;&nbsp;<a href='/r/grade_m/upload_rec?sid="+value+"'>上传评审结果</a>";
-                            if (row.N_STATE==0)
-                            html +="&nbsp;&nbsp;<a href='javascript:undo("+value+");'>撤销误评审</a>";
+                            var html = "<a href='/e/stdtmp/list_version?R_TENANT="+value+"'>查看体系</a>&nbsp;&nbsp;<a href='/r/grade_m/rec?sid="+value+"'>进入评审</a>";
                             return  html;
                         }
                     }

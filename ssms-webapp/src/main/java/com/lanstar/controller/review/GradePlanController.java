@@ -50,8 +50,8 @@ public class GradePlanController extends SimplateController<GradePlanR> {
      * 待评审的企业数据
      */
     public void list_e() {
-        SqlBuilder select = SQL.SELECT( " SID,C_NAME,C_CODE,R_REVIEW,S_REVIEW " );
-        SqlBuilder from = new SqlBuilder().FROM( "SYS_TENANT_E" );
+        SqlBuilder select = SQL.SELECT( " * " );
+        SqlBuilder from = new SqlBuilder().FROM( "V_TENANT_E" );
         SqlBuilder where = this.buildWhere();
         if ( where != null ) from.append( where );
 
