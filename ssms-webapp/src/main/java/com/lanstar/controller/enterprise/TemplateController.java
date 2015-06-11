@@ -77,7 +77,6 @@ public class TemplateController extends Controller {
         // load template tree data
         DbPro tenantDb = identityContext.getTenantDb();
         int version = this.getParaToInt( "N_VERSION",0 );
-        //setAttr("N_VERSION")
         List<Record> folder = tenantDb.find(
                 SqlKit.sql( "tenant.templateFolder.getFolderByTemplateIdAndVersion" ),
                 template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName(),version,
@@ -105,7 +104,8 @@ public class TemplateController extends Controller {
         String sql = "select distinct N_VERSION from ssm_stdtmp_folder where r_tenant=? and N_VERSION is not null";
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         DbPro tenantDb = identityContext.getTenantDb();
-        List<Record> list = tenantDb.find( sql, identityContext.getTenantId() );
+        int tenantId = this.getParaToInt( "R_TENANT",identityContext.getTenantId() );
+        List<Record> list = tenantDb.find( sql, tenantId );
         setAttr("list",list);
     }
     

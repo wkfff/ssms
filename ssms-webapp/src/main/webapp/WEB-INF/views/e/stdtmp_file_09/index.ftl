@@ -53,12 +53,10 @@
                         {field: 'N_INDEX', title: '排序', width: 100,hidden:true,
                             editor: {type: 'numberbox', options: {}}}
                     ]
-                ]
-                <#if @READONLY== 'false' >,
+                ],
                 onDblClickRow: function (index, row) {
                     events.editClick();
                 }
-                </#if>
             }
         };
         var events = {
@@ -74,7 +72,7 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
-                panelLoad('${BASE_PATH}/rec?sid=' + value.SID);
+                panelLoad('${BASE_PATH}/rec<#if @READONLY== 'true' >_view</#if>?sid=' + value.SID);
             },
             deleteClick: function () {
                 var value = model.selectItem();

@@ -9,9 +9,11 @@
 package com.lanstar.identity;
 
 import com.lanstar.app.Const;
+import com.lanstar.common.Asserts;
 import com.lanstar.common.TreeNode;
 import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.Navgate;
+import com.lanstar.model.system.Profession;
 import com.lanstar.plugin.activerecord.*;
 import com.lanstar.plugin.tlds.DsKit;
 import com.lanstar.service.AttachFileService;
@@ -75,7 +77,10 @@ public class TenantContext {
     /** 根据值的类型从上下文中取出值 */
     @SuppressWarnings("unchecked")
     <T> T getValue( Class<T> clazz ) {
-        return (T) valueMap.get( clazz );
+        if (valueMap==null || valueMap.isEmpty()) return null;
+        Object value = valueMap.get( clazz );
+        if (value == null) throw new RuntimeException( "can not retrive instance of" + clazz.getName() );
+        return (T)value;
     }
 
     /**
@@ -129,19 +134,28 @@ public class TenantContext {
     }
 
     /** 获取评审服务 */
-    public synchronized ReviewService getReviewService( Enterprise tenant ) {
+    public synchronized void initReviewService( Enterprise tenant, Profession profession  ) {
+        Asserts.notNull( tenant, "tenant can not be null" );
+        Asserts.notNull( profession, "profession can not be null" );
         if ( TenantType.REVIEW.equals( getTenantType() ) == false )
             throw new RuntimeException( "tenant type must equals 'REVIEW'" );
+        
         ReviewService service = getValue( ReviewService.class );
         if ( service == null ) {
             service = new ReviewService( this, new TenantContext( tenant ) );
             this.setValue( service );
+            service.getEnterpriseContext().getEnterpriseService().setProfessionService( profession );
         } else {
-            if ( tenant.getTenantCode().equalsIgnoreCase( service.getEnterpriseContext().getTenantCode() ) == false ) {
+            if ( tenant.getTenantCode().equalsIgnoreCase( service.getEnterpriseContext().getTenantCode() ) == false ||
+                 profession.getId().equals( service.getEnterpriseContext().getEnterpriseService().getProfessionService().getId() )   ) {
                 service.setEnterpriseContext( new TenantContext( tenant ) );
+                service.getEnterpriseContext().getEnterpriseService().setProfessionService( profession );
             }
         }
-        return service;
+    }
+    
+    public synchronized ReviewService getReviewService(){
+        return this.getValue( ReviewService.class );
     }
 
     private TreeNode findNode( Collection<TreeNode> nodes, TenantType tenantType ) {

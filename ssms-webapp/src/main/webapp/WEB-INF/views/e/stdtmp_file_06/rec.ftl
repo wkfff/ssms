@@ -25,7 +25,7 @@
     }
 </style>
 
-<div id="kocontainer">
+<div id="kocontainer" data-bind="visible:!readonly">
     <div class="z-toolbar">
         <a class="easyui-linkbutton" plain="true" iconCls="icon-add" data-bind="click: addItem">新建隐患项目</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:!isReadonly, click: saveClick">保存</a>
@@ -143,7 +143,7 @@
             return !hasEmpty;
         }),
         isReadonly: ko.computed(function () {
-            return model.B_FINISH() == '1';
+            return model.B_FINISH() == '1' || ${@READONLY!'false'};
         })
     };
     var events = {

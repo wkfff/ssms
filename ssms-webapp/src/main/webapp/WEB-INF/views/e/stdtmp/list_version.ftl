@@ -10,16 +10,10 @@
     .table tbody tr td{ border-left:1px dotted #222; line-height:30px;padding:5px;}
     .table tbody tr:first-child td{ padding-top:2px;}
     .table tbody tr td:first-child{ border-left:none;}
-    .count{text-align:center;}
     .operate{text-align:center;}
-    .nofile{color:#CCC;}
 </style>
 <script type="text/javascript">
     $("tbody").find("tr:odd").css("backgroundColor","#eff6fa");
-    function nav(_url){
-        var url = "/e/stdtmp/query?N_VERSION=";
-        window.location.href = url;
-    }
 </script>
 </#assign>
 <@layout.doLayout script>
@@ -35,7 +29,7 @@
     <#list list as r>
     <tr>
         <td><a href="query?N_VERSION=${r.N_VERSION!}">版本 ${r.N_VERSION!}</a></td>
-        <td class="operate"><a href="query?N_VERSION=${r.N_VERSION!}">查看</a></td>
+        <td class="operate"><a href="query?N_VERSION=${r.N_VERSION!}&R_TENANT=${R_TENANT!}">查看</a></td>
     </tr> 
     </#list>
     

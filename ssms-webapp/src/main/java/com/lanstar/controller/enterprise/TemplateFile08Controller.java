@@ -29,4 +29,10 @@ public class TemplateFile08Controller extends SimplateController<TemplateFile08>
         setAttr( "@READONLY", "true" );
         render( "index.ftl" );
     }
+    
+    public void rec_view() {
+        super.rec();
+        setAttr( "@READONLY", "true" );
+        render( "rec.ftl" );
+    }
 }

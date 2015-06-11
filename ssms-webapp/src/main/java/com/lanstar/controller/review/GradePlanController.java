@@ -10,6 +10,7 @@ package com.lanstar.controller.review;
 import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.Enterprise;
+import com.lanstar.model.system.Profession;
 import com.lanstar.model.tenant.GradePlanR;
 import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.Page;
@@ -17,6 +18,7 @@ import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
+import com.lanstar.service.enterprise.ProfessionService;
 import com.lanstar.service.review.ReviewService;
 
 import java.util.List;
@@ -92,7 +94,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
             enterprise.setGradeState( ReviewState.START.getValue() );
 
             // 获取评审服务
-            ReviewService service  = this.identityContext.getReviewService(enterprise);
+            ReviewService service  = this.identityContext.getReviewService();
             // 同步企业的自评数据
             service.sync(sid);
         }
@@ -126,7 +128,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
     protected SqlBuilder buildWhere() {
         SqlBuilder builder = new SqlBuilder();
         builder.WHERE()
-        ._If( this.isParaExists( "P_PRO" ), "P_PRO = ?", this.getPara( "P_PRO" ) )
+        ._If( this.isParaExists( "P_PRO" ), "P_PROVINCE = ?", this.getPara( "P_PRO" ) )
         ._If( this.isParaExists( "P_CITY" ), "P_CITY = ?", this.getPara( "P_CITY" ) )
         ._If( this.isParaExists( "P_COUNTY" ), "P_COUNTY = ?", this.getPara( "P_COUNTY" ) )
         ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
@@ -199,5 +201,13 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         return builder;
     }
 
-
+    public void tabs(){
+        //企业
+        int eid = this.getParaToInt( "sid" );
+        //专业
+        int pro = this.getParaToInt( "pro" );
+        Enterprise enterprise = Enterprise.dao.findById(eid);
+        Profession profession = Profession.dao.findById( pro );
+        identityContext.initReviewService(enterprise, profession);
+    }
 }

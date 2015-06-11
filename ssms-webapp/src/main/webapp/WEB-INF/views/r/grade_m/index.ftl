@@ -2,7 +2,7 @@
 <#assign script>
 <script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">
-    var vm = new ViewModel(${P_CITY!},${P_COUNTY!},'${C_NAME!}');
+    var vm = new ViewModel('${P_CITY!}','${P_COUNTY!}','${C_NAME!}');
     ko.applyBindings(vm);
 </script>
 </#assign>
