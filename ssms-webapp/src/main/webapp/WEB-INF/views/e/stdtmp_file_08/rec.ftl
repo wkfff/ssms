@@ -8,11 +8,10 @@
     .form table tr {
         height: 40px;
     }
-    
+
     .form table td {
-        padding-right:10px;
+        padding-right: 10px;
     }
-    
 
     .form table .label {
         width: 90px;
@@ -32,13 +31,13 @@
                 <col class="label"/>
                 <col/>
             </colgroup>
-            
+
             <tr>
                 <td>设备名称:</td>
                 <td>
                     <input data-bind="disable: readonly,textboxValue: C_NAME" required/>
                 </td>
-                 <td>登记证号:</td>
+                <td>登记证号:</td>
                 <td>
                     <input data-bind="disable: readonly,textboxValue: C_NO_REG"/>
                 </td>
@@ -54,7 +53,7 @@
                     <input data-bind="disable: readonly,textboxValue: C_MAKE_UNIT"/>
                 </td>
             </tr>
-           
+
             <tr>
                 <td>出厂编号:</td>
                 <td>
@@ -65,7 +64,7 @@
                     <input data-bind="disable: readonly,textboxValue: C_DEPT"/>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>检验报告编号:</td>
                 <td>
@@ -76,7 +75,7 @@
                     <input data-bind="disable: readonly,textboxValue: C_TEST_UNIT"/>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>最新检验日期:</td>
                 <td>
@@ -108,15 +107,12 @@
         C_TEST_CON: ko.observable('${C_TEST_CON!}'),
         C_TEST_UNIT: ko.observable('${C_TEST_UNIT!}'),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!pid}',
-        readonly: ${@READONLY!'false'}
+        R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
-        
+        readonly: ${@READONLY!'false'}
     };
-    var settings = {
-        
-    };
+    var settings = {};
     var events = {
         saveClick: function () {
             if ($form.validate('.form') != true) return;
@@ -124,7 +120,7 @@
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
                     utils.messager.closeProgress();
-                        $.messager.alert("提示", "保存成功", "info");
+                    $.messager.alert("提示", "保存成功", "info");
                 } else {
                     $.messager.alert("提示", "保存失败", "warning", function () {
                         utils.messager.closeProgress();

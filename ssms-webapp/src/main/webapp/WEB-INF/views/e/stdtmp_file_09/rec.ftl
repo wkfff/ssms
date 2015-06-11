@@ -95,11 +95,10 @@
         C_TEST_CON: ko.observable('${C_TEST_CON!}'),
         C_TEST_UNIT: ko.observable('${C_TEST_UNIT!}'),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!pid}',
-        readonly: ${@READONLY!'false'}
+        R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
-        
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         

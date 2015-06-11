@@ -108,17 +108,18 @@
         N_TIME: ko.observable('${N_TIME!}'),
         C_USER_02: ko.observable('${C_USER_02!}'),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!pid}',
-        readonly: ${@READONLY!'false'}
+        R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
-        htmlContent: ko.observable()
+        htmlContent: ko.observable(),
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         htmleditSettings: {
             table: "STDTMP_FILE_04",
             field: 'C_CONTENT',
-            sid: '${SID!}'
+            sid: '${SID!}',
+            readonly: extModel.readonly
         }
     };
     var events = {
