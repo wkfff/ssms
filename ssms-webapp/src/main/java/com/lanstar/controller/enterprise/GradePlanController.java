@@ -116,6 +116,7 @@ public class GradePlanController extends SimplateController<GradePlan> {
     protected void afterSave( GradePlan model ) {
         ProfessionService service = identityContext.getEnterpriseService().getProfessionService();
         if (isNew)
+            //TODO:这里跨库操作不能用存储过程，林峰
             tenantDb.callProcedure( "P_GRADE_INIT", model.getId(), service.getId(), identityContext.getTenantId(),
                 identityContext.getTenantType().getName() );
 //        int sid = model.get( "SID" );

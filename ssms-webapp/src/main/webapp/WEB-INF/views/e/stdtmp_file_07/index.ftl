@@ -56,12 +56,10 @@
                         {field: 'T_CERT_REVIEW', title: '复审时间', width: 100,
                             editor: {type: 'datebox', options: {}}}
                         ]
-                ]
-                <#if @READONLY== 'false' >,
+                ],
                 onDblClickRow: function (index, row) {
                     events.editClick();
                 }
-                </#if>
             }
         };
         var events = {
@@ -77,7 +75,15 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
-                panelLoad('${BASE_PATH}/rec?sid=' + value.SID);
+                panelLoad('${BASE_PATH}/rec<#if @READONLY== 'true' >_view</#if>?sid=' + value.SID);
+            },
+            viewClick: function () {
+                var value = model.selectItem();
+                if (value == null) {
+                    $.messager.alert("警告", "请先选择一行数据！", "warning");
+                    return;
+                }
+                panelLoad('${BASE_PATH}/view_rec?sid=' + value.SID);
             },
             deleteClick: function () {
                 var value = model.selectItem();

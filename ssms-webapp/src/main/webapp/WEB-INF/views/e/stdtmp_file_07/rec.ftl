@@ -19,7 +19,7 @@
     }
 </style>
 <div id="kocontainer">
-    <div class="z-toolbar">
+    <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回</a>
     </div>
@@ -35,52 +35,52 @@
             <tr>
                 <td>姓名:</td>
                 <td>
-                    <input data-bind="textboxValue: C_NAME" required/>
+                    <input data-bind="disable: readonly,textboxValue: C_NAME" required/>
                 </td>
                  <td>性别:</td>
                 <td>
-                    <label><input type="radio" name="P_SEX" data-bind="checked: P_SEX" value="1" />男</label> 
-                    <label><input type="radio" name="P_SEX" data-bind="checked: P_SEX" value="2" />女</label>
+                    <label><input type="radio" name="P_SEX" data-bind="disable: readonly,checked: P_SEX" value="1" />男</label> 
+                    <label><input type="radio" name="P_SEX" data-bind="disable: readonly,checked: P_SEX" value="2" />女</label>
                 </td>
             </tr>
 
             <tr>
                 <td>身份证号码:</td>
                 <td>
-                    <input data-bind="textboxValue: C_CARD"/>
+                    <input data-bind="disable: readonly,textboxValue: C_CARD"/>
                 </td>
                 <td>所在部门:</td>
                 <td>
-                    <input data-bind="textboxValue: C_DEPT"/>
+                    <input data-bind="disable: readonly,textboxValue: C_DEPT"/>
                 </td>
             </tr>
            
             <tr>
                 <td>工种:</td>
                 <td>
-                    <input data-bind="textboxValue: C_WORKTYPE"/>
+                    <input data-bind="disable: readonly,textboxValue: C_WORKTYPE"/>
                 </td>
                 <td>发证机关:</td>
                 <td>
-                    <input data-bind="textboxValue: C_AUTH"/>
+                    <input data-bind="disable: readonly,textboxValue: C_AUTH"/>
                 </td>
             </tr>
             
             <tr>
                 <td>证书编号:</td>
                 <td>
-                    <input data-bind="textboxValue: C_CERT"/>
+                    <input data-bind="disable: readonly,textboxValue: C_CERT"/>
                 </td>
                 <td>取证时间:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_CERT_GET"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_CERT_GET"/>
                 </td>
             </tr>
             
             <tr>
                 <td>复审时间:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_CERT_REVIEW"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_CERT_REVIEW"/>
                 </td>
                 <td></td>
                 <td></td>
@@ -100,7 +100,8 @@
         C_CERT: ko.observable('${C_CERT!}'),
         T_CERT_REVIEW: ko.observable('${T_CERT_REVIEW!}'),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!pid}'
+        R_TMPFILE: '${R_TMPFILE!pid}',
+        readonly: ${@READONLY!'false'}
     };
     var extModel = {
         

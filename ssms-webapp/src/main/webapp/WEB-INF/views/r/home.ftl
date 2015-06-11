@@ -20,9 +20,9 @@
 <body>
 <div class="search" align="right" style="background:url(/resource/images/tu15.jpg);padding-right:60px;">
 	<div style="background-color:rgb(104,183,209);padding:3px 3px 2px 5px;width:700px;" align="center">
-       <input class="easyui-combobox" id="cb_city" style="width:80px;" data-bind="comboboxValue:comboCity,easyuiOptions:comboCitySettings">&nbsp;市&nbsp;&nbsp;
+       <input id="cb_city" style="width:80px;" data-bind="comboboxValue:comboCity,easyuiOptions:comboCitySettings">&nbsp;市&nbsp;&nbsp;
        <input class="easyui-combobox" id="cb_county" style="width:80px;" data-bind="comboboxValue:comboCounty,easyuiOptions:comboCountySettings">&nbsp;区/县&nbsp;&nbsp;
-                 <input id="txt_name" style="width:380px;height:24px;line-height:24px;" data-bind="textboxValue:txtName" placeholder="请输入要查找的企业">
+       <input id="txt_name" style="width:380px;height:24px;line-height:24px;" data-bind="textboxValue:txtName" placeholder="请输入要查找的企业">
        <a class="easyui-linkbutton" iconCls="icon-search" plain="true" data-bind="click:gridEvents.refreshClick">搜索企业</a>
     </div>
 
