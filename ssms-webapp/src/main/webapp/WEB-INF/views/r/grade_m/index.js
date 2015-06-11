@@ -72,7 +72,8 @@ function ViewModel(p_city,p_county,c_name) {
         gridSettings: {
             idField: 'SID',
             title:'评审办理',
-            url:'/r/grade_m/list_e?P_CITY='+p_city+'&P_CONUTY='+p_county+'&C_NAME='+c_name,
+            url:'/r/grade_m/list_e',
+            queryParams:{P_CITY:p_city,P_CONUTY:p_county,C_NAME:c_name},
             rownumbers: true,
             pagination: true,
             fit: true,
