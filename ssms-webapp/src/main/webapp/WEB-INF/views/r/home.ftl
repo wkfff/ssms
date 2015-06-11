@@ -13,17 +13,21 @@
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
     <style>
+
     </style>
 </head>
 
 <body>
-<div class="search">
+<div class="search" align="center" style="background:url(/resource/images/tu15.jpg)">
+	<div style="background-color:rgb(104,183,209);padding:3px 3px 2px 5px;width:700px;" align="center">
        <input class="easyui-combobox" id="cb_city" style="width:80px;" data-bind="comboboxValue:comboCity,easyuiOptions:comboCitySettings">&nbsp;市&nbsp;&nbsp;
        <input class="easyui-combobox" id="cb_county" style="width:80px;" data-bind="comboboxValue:comboCounty,easyuiOptions:comboCountySettings">&nbsp;区/县&nbsp;&nbsp;
-                 企业名称：<input class="easyui-textbox" id="txt_name" style="width:280px;" data-bind="textboxValue:txtName" placeholder="请输入要查找的企业">
+                 <input id="txt_name" style="width:380px;height:24px;line-height:24px;" data-bind="textboxValue:txtName" placeholder="请输入要查找的企业">
        <a class="easyui-linkbutton" iconCls="icon-search" plain="true" data-bind="click:gridEvents.refreshClick">搜索企业</a>
-</div>
+    </div>
 
+
+</div>
 <div class="article half notice">
     <div class="wrap-l">
         <div class="title ue-clear">
@@ -125,9 +129,9 @@
 </div>
 
 <!-- <div id="win_select" class="easyui-window" title="企业评审" data-options="onLoad:winSelectOnLoad,iconCls:'icon-add',modal:true,minimizable:false,closed:true,href:'/r/grade_m/select'" style="width:900px;height:500px;padding:6px;" >
-    
+
 </div> -->
-    
+
 </body>
 
 
@@ -141,11 +145,11 @@
     });
 
     $(".duty").find("tbody").find("tr:even").css("backgroundColor","#eff6fa");
-    
+
     $("#more").on("click",function(){
         window.location.href = "/r/"+(aIndex==0?"todo":"done")+"/index";
     });
-    
+
     function nav(url){
         window.location.href = url;
     }
@@ -153,13 +157,13 @@
     function doCreate(){
         window.location.href = '/r/grade_m/select2';
     }
-    
+
     function doChangePwd(){
-    
+
     }
-    
+
     function doConfig(){
-        
+
     }
 </script>
 
