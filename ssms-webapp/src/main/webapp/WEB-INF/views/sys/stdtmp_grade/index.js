@@ -96,7 +96,6 @@ function ViewModel(catalogId) {
                     }
                 }, upClick: function () {
                     events.gridEvents.sort(model.selectIndex(), 'up');
-                    
                 }, downClick: function () {
                     events.gridEvents.sort(model.selectIndex(), 'down');
                 },sort:function(index,type){
@@ -105,26 +104,36 @@ function ViewModel(catalogId) {
                         if (index != 0) {
                             var toup = settings.gridSettings.datagrid('getData').rows[index];
                             var todown = settings.gridSettings.datagrid('getData').rows[index - 1];
+                            var index1 = todown.N_INDEX;
+                            var index2 = toup.N_INDEX;
                             settings.gridSettings.datagrid('getData').rows[index] = todown;
                             settings.gridSettings.datagrid('getData').rows[index - 1] = toup;
                             settings.gridSettings.datagrid('refreshRow', index);
                             settings.gridSettings.datagrid('refreshRow', index - 1);
                             settings.gridSettings.datagrid('selectRow', index - 1);
                             var d = [{'SID':toup.SID,'N_INDEX':todown.N_INDEX},{'SID':todown.SID,'N_INDEX':toup.N_INDEX}];
-                            $.post("batchSave", {data:$.toJSON(d)}, function () {});
+                            $.post("batchSave", {data:$.toJSON(d)}, function () {
+                                todown.N_INDEX = index2;
+                                toup.N_INDEX = index1;
+                            });
                         }
                     } else if ("down" == type) {
                         var rows = settings.gridSettings.datagrid('getRows').length;
                         if (index != rows - 1) {
                             var todown = settings.gridSettings.datagrid('getData').rows[index];
                             var toup = settings.gridSettings.datagrid('getData').rows[index + 1];
+                            var index1 = todown.N_INDEX;
+                            var index2 = toup.N_INDEX;
                             settings.gridSettings.datagrid('getData').rows[index + 1] = todown;
                             settings.gridSettings.datagrid('getData').rows[index] = toup;
                             settings.gridSettings.datagrid('refreshRow', index);
                             settings.gridSettings.datagrid('refreshRow', index + 1);
-                            settings.gridSettings.datagrid('selectRow', index + 1);                            
+                            settings.gridSettings.datagrid('selectRow', index + 1);
                             var d = [{'SID':todown.SID,'N_INDEX':toup.N_INDEX},{'SID':toup.SID,'N_INDEX':todown.N_INDEX}];
-                            $.post("batchSave", {data:$.toJSON(d)}, function () {});
+                            $.post("batchSave", {data:$.toJSON(d)}, function () {
+                                todown.N_INDEX = index2;
+                                toup.N_INDEX = index1;
+                            });
                         }
                     }
                 }

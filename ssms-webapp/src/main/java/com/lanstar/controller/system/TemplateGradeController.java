@@ -41,4 +41,13 @@ public class TemplateGradeController extends SimplateController<TemplateGrade>{
         return builder;
     }
 
+    @Override
+    protected void afterSave( TemplateGrade model ) {
+        Integer index = model.getInt( "N_INDEX" );
+        if (index == null) {
+            model.set( "N_INDEX", model.getInt( "SID" ) );
+            model.update();
+        }
+    }
+    
 }

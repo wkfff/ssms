@@ -7,7 +7,9 @@
 </style>
 <script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">
-    ko.applyBindings(new ViewModel(${R_SID}));
+    $(function () {
+        ko.applyBindings(new ViewModel(${R_SID}));
+    });
 </script>
 </#assign>
 <@layout.doLayout script=script>

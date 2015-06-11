@@ -8,6 +8,7 @@
 package com.lanstar.controller.review;
 
 import com.lanstar.common.EasyUIControllerHelper;
+import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.Profession;
@@ -128,9 +129,9 @@ public class GradePlanController extends SimplateController<GradePlanR> {
     protected SqlBuilder buildWhere() {
         SqlBuilder builder = new SqlBuilder();
         builder.WHERE()
-        ._If( this.isParaExists( "P_PRO" ), "P_PROVINCE = ?", this.getPara( "P_PRO" ) )
-        ._If( this.isParaExists( "P_CITY" ), "P_CITY = ?", this.getPara( "P_CITY" ) )
-        ._If( this.isParaExists( "P_COUNTY" ), "P_COUNTY = ?", this.getPara( "P_COUNTY" ) )
+        ._If( this.isParaExists( "P_PRO" ) && !StrKit.isBlank( this.getPara( "P_PRO" ) ), "P_PROVINCE = ?", this.getPara( "P_PRO" ) )
+        ._If( this.isParaExists( "P_CITY" ) && !StrKit.isBlank( this.getPara( "P_CITY" ) ), "P_CITY = ?", this.getPara( "P_CITY" ) )
+        ._If( this.isParaExists( "P_COUNTY" )&& !StrKit.isBlank( this.getPara( "P_COUNTY" ) ) , "P_COUNTY = ?", this.getPara( "P_COUNTY" ) )
         ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
         ._If( this.isParaBlank( "C_NAME" ) == false, "C_NAME like ?", "%" + this.getPara( "C_NAME" ) + "%" );
         return builder;
@@ -209,5 +210,8 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         Enterprise enterprise = Enterprise.dao.findById(eid);
         Profession profession = Profession.dao.findById( pro );
         identityContext.initReviewService(enterprise, profession);
+        
+        //根据企业编号获取
+        String sql = "";
     }
 }
