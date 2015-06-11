@@ -27,7 +27,7 @@
 </head>
 <body>
 <div class="easyui-panel" border="false" fit="true">
-    <div class="z-toolbar">
+    <div id="toolbar" class="z-toolbar">
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
@@ -42,6 +42,7 @@
 
         self.viewSettings = {
             url: "/static/carts.json",
+            title: "证书管理",
             idField: 'SID',
             rownumbers: true,
             pagination: true,
@@ -50,13 +51,20 @@
             toolbar: '#toolbar',
             columns: [
                 [
-                    {field: 'C_ENTERPRISE', title: '单位名称', width: 150},
-                    {field: 'C_INDUSTRY', title: '行业', width: 150},
-                    {field: 'C_PROFESSION', title: '专业', width: 80},
-                    {field: 'C_CERTIFICATE_NUMBER', title: '证书编号', width: 80},
-                    {field: 'N_STATE', title: '证书状态', width: 80},
-                    {field: 'T_DATE_OF_ISSUE', title: '发证日期', width: 80},
-                    {field: 'T_VALIDITY', title: '有效期至', width: 80}
+                    {field: 'C_ENTERPRISE', title: '单位名称', width: 300},
+                    {field: 'C_INDUSTRY', align: 'center', title: '行业', width: 60},
+                    {field: 'C_PROFESSION', align: 'center', title: '专业', width: 60},
+                    {field: 'C_CERTIFICATE_NUMBER', align: 'center', title: '证书编号', width: 80},
+                    {
+                        field: 'N_STATE', align: 'center', title: '证书状态', width: 70, formatter: function (value) {
+                        if (value == '0') return '有效期内';
+                        if (value == '1') return '撤销';
+                        if (value == '2') return '吊销';
+                        if (value == '3') return '已过期';
+                    }
+                    },
+                    {field: 'T_DATE_OF_ISSUE', align: 'center', title: '发证日期', width: 80},
+                    {field: 'T_VALIDITY', align: 'center', title: '有效期至', width: 80}
                 ]
             ],
             onDblClickRow: function (index, row) {
