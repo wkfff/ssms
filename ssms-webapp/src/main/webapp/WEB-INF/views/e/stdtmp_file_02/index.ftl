@@ -39,12 +39,10 @@
                         {field: 'C_DEPT_02', title: '主送部门', width: 80},
                         {field: 'C_DEPT_03', title: '抄送部门', width: 80}
                     ]
-                ]
-                <#if @READONLY== 'false' >,
+                ],
                 onDblClickRow: function (index, row) {
                     events.editClick();
                 }
-                </#if>
             }
         };
         var events = {
@@ -60,7 +58,7 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
-                panelLoad('${BASE_PATH}/rec?sid=' + value.SID);
+                panelLoad('${BASE_PATH}/rec<#if @READONLY== 'true' >_view</#if>?sid=' + value.SID);
             },
             deleteClick: function () {
                 var value = model.selectItem();

@@ -42,43 +42,13 @@
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div title="评审" data-options="region:'north',collapsible:true" style="height:230px;overflow:hidden;">
+    <div data-options="region:'north',collapsible:true" style="overflow:hidden;">
           <div id="toolbar" class="toolbar">
                 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:gridEvents.refreshClick">刷新</a> -->
                 <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" data-bind="click: recEvents.saveClick">保存</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: recEvents.completeClick">完成评审</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-back" plain="true" data-bind="click: recEvents.backClick">返回</a>
           </div>
-
-         <div class="easyui-panel" style="border:0;margin:10px;">
-             <form id="formMain" method="post" data-bind="with:rec">
-                    <table class="table">
-                        <tr>
-                            <td class="span2">评审单位:</td>
-                            <td class="span10" colspan="3">
-                                <input data-bind="textboxValue: S_TENANT" data-options="disabled:true" />
-                             </td>
-                        </tr>
-                        <tr>
-                            <td class="span2">评审日期:</td>
-                            <td class="span4">
-                            <input data-bind="dateboxValue: T_START" data-options="required:true,width:90"/>
-                                                        至
-                            <input data-bind="dateboxValue: T_END" data-options="required:true,width:90"/>
-                            </td>
-                            <td class="span2">评审组组长:</td>
-                            <td class="span4">
-                            <input data-bind="textboxValue: C_LEADER" data-options="required:true"/>
-                        </tr>
-                        <tr>
-                            <td class="span2">评审组主要成员:
-                            <td class="span10" colspan="3">
-                            <input data-bind="textboxValue: C_MEMBERS" data-options="required:true"/>
-                            </td>
-                        </tr>
-                    </table>
-            </form>
-        </div>
     </div>
     
     <div data-options="region:'center'" >

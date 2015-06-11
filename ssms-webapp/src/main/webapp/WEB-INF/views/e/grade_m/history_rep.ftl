@@ -36,7 +36,7 @@
 </#assign>
 <@layout.doLayout script>
 <div class="easyui-layout" data-options="fit:true" >
-    <div class="easyui-panel" data-options="region:'center'" style="overflow:hidden;border:1;border-left:0;" title="自评报告">
+    <div class="easyui-panel" data-options="region:'center'" style="overflow:hidden;border:1;border-left:0;">
          <div class="toolbar ue-clear" style="border:0px;border-left:1px solid #c1d3de;">
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-download" onclick="doDownload();">下载</a>
                 <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-print" onclick="doPrint()">打印</a>

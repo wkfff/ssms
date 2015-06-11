@@ -8,7 +8,21 @@
 
 package com.lanstar.controller.review;
 
+import java.util.List;
+import java.util.Map;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.lanstar.common.TreeNode;
+import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
+import com.lanstar.identity.IdentityContext;
+import com.lanstar.model.system.Template;
+import com.lanstar.plugin.activerecord.DbPro;
+import com.lanstar.plugin.activerecord.Record;
+import com.lanstar.plugin.sqlinxml.SqlKit;
+import com.lanstar.service.enterprise.ProfessionService;
 
 public class TemplateController extends Controller {
     public void index() {
@@ -17,5 +31,39 @@ public class TemplateController extends Controller {
 
     public void rec() {
 
+    }
+    
+    /**
+     * 查看企业当前生效的达标体系
+     */
+    public void query(){
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        ProfessionService professionService = identityContext.getReviewService().getEnterpriseContext().getEnterpriseService().getProfessionService();
+        Template template = professionService.getSystemTemplate();
+        int eid = identityContext.getReviewService().getEnterpriseContext().getTenantId();
+        String type = identityContext.getReviewService().getEnterpriseContext().getTenantType().getName();
+        DbPro tenantDb = identityContext.getReviewService().getEnterpriseContext().getTenantDb();
+        List<Record> folder = tenantDb.find(
+                SqlKit.sql( "tenant.templateFolder.seeFolderByTemplateId" ),
+                template.getId(), eid, type,
+                template.getId(), eid, type );
+        
+        List<Map<String, Object>> list = Lists.transform( folder, new Function<Record, Map<String, Object>>() {
+            @Override
+            public Map<String, Object> apply( Record input ) {
+                Map<String, Object> columns = input.getColumns();
+                columns = Maps.newHashMap( columns );
+                String url = input.getStr( "C_URL" );
+                if ( StrKit.isEmpty( url ) == false )
+                    columns.put( "C_URL", "/e/" + url );
+                return columns;
+            }
+        } );
+        List<TreeNode> value = TreeNode.build( "D-0", list, "SID", "R_SID", "C_NAME" );
+        setAttr("tree",value);
+    }
+    
+    public void see(){
+        
     }
 }
