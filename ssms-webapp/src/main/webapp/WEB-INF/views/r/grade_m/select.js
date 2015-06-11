@@ -1,16 +1,17 @@
-function ViewModel(templateId) {
+function ViewModel(p_city,p_county,c_name) {
     var self = this;
 
     var model = {
-        comboPro: ko.observable(),
+        //comboPro: ko.observable(),
         comboCity: ko.observable(),
         comboCounty: ko.observable(),
-        comboCountyText: ko.observable(),
-        txtName: ko.observable(),
+        //comboCountyText: ko.observable(),
+        txtName: ko.observable(c_name),
         chkNoComplete: ko.observable(1),
         selectItem: ko.observable(),
         sid: ko.observable()
     };
+    /*
     model.comboPro.subscribe(function (newValue) {
         if (!newValue) return;
         if (settings.comboCountySettings.combobox){
@@ -22,31 +23,50 @@ function ViewModel(templateId) {
                 url: "/sys/para_area/list",
                 queryParams: {R_CODE: newValue}
             })
-    });
+    });*/
     model.comboCity.subscribe(function (newValue) {
         if (!newValue) return;
         if (settings.comboCountySettings.combobox)
+           // model.comboCounty(null)
             settings.comboCountySettings.combobox({
                 url: "/sys/para_area/list",
-                queryParams: {R_CODE: newValue}
+                queryParams: {R_CODE: newValue},
+                valueField:'C_CODE',
+                textField:'C_VALUE',
+                onLoadSuccess: function(){
+                    //var b = false;
+                    var data = settings.comboCountySettings.combobox('getData');
+                    for(var i=0;i<data.length;i++){
+                        //alert(data[i].C_CODE);
+                        if (data[i].C_CODE==p_county){
+                            model.comboCounty(p_county);
+                            break;
+                        }
+                    };
+                    //if (b)
+                        //model.comboCounty(p_county);
+                }
             })
     });
     model.comboCounty.subscribe(function (newValue) {
         if (!newValue) return;
-        if (settings.gridSettings.datagrid)
-            events.gridEvents.refreshClick();
+        //if (settings.gridSettings.datagrid)
+        //    events.gridEvents.refreshClick();
     });
     
     var settings = {
-        comboProSettings:{
-            /*url:'/sys/para_area/list?N_LEVEL=1',*/
+            /*comboProSettings:{
+            url:'/sys/para_area/list?N_LEVEL=1',
             valueField:'C_CODE',
             textField:'C_VALUE'
-        },
+        },*/
         comboCitySettings:{
             url:'/sys/para_area/list?R_CODE=350000',
             valueField:'C_CODE',
-            textField:'C_VALUE'
+            textField:'C_VALUE',
+            onLoadSuccess: function(){
+                model.comboCity(p_city);
+            }
         },
         comboCountySettings:{
             valueField:'C_CODE',

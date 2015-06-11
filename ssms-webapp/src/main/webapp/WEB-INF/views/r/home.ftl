@@ -2,37 +2,32 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <title>安全生产标准化管理系统</title>
     <link rel="stylesheet" href="/resource/css/base.css" />
     <link rel="stylesheet" href="/resource/css/home.css" />
-    <title>安全生产标准化管理系统</title>
+    <script type="text/javascript" src="home.js"></script>
+    <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
+    <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
+    <style>
+    </style>
 </head>
 
 <body>
-<div class="article toolbar">
-    <div class="title ue-clear">
-        <h2>快捷入口</h2>
-    </div>
-    <div class="content">
-        <ul class="toollist ue-clear">
-            <li>
-                <a href="javascript:doCreate();" class="img"><img src="/resource/images/icon01.png" /></a>
-                <p><a href="javascript:doCreate();" title="选择企业后开始评审">企业评审</a></p>
-            </li>
-            <li>
-                <a href="javascript:doChangePwd();" class="img"><img src="/resource/images/icon03.png" /></a>
-                <p><a href="javascript:doChangePwd();">密码修改</a></p>
-            </li>
-            <li>
-                <a href="javascript:doConfig();" class="img"><img src="/resource/images/icon09.png" /></a>
-                <p><a href="javascript:doConfig();">系统配置</a></p>
-            </li>
-        </ul>
-    </div>
+<div class="search">
+       <input class="easyui-combobox" id="cb_city" style="width:80px;" data-bind="comboboxValue:comboCity,easyuiOptions:comboCitySettings">&nbsp;市&nbsp;&nbsp;
+       <input class="easyui-combobox" id="cb_county" style="width:80px;" data-bind="comboboxValue:comboCounty,easyuiOptions:comboCountySettings">&nbsp;区/县&nbsp;&nbsp;
+                 企业名称：<input class="easyui-textbox" id="txt_name" style="width:280px;" data-bind="textboxValue:txtName" placeholder="请输入要查找的企业">
+       <a class="easyui-linkbutton" iconCls="icon-search" plain="true" data-bind="click:gridEvents.refreshClick">搜索企业</a>
 </div>
+
 <div class="article half notice">
     <div class="wrap-l">
         <div class="title ue-clear">
-            <h2>通知公告</h2>
+            <h2>接收公告</h2>
             <a href="/r/notice/index" class="more">更多</a>
         </div>
         <div class="content">
@@ -46,17 +41,18 @@
                     </#list>
                     <#else>
                         <li class="ue-clear">
-                        <span style="padding-left:5px;">暂时还没有通知公告。</span>
+                        <span style="padding-left:5px;">没有接收公告。</span>
                         </li>
                   </#if>
             </ul>
         </div>
     </div>
 </div>
+
 <div class="article half matter">
     <div class="wrap-r">
         <div class="title ue-clear">
-            <h2>待办</h2>
+            <h2>已发待办</h2>
             <a href="/r/grade_m/index" class="more">更多</a>
         </div>
         <div class="content">
@@ -70,7 +66,7 @@
                     </#list>
                     <#else>
                         <li class="ue-clear">
-                        <span style="padding-left:5px;">暂时还没有待办。</span>
+                        <span style="padding-left:5px;">没有已发待办。</span>
                         </li>
                     </#if>
                 </ul>
@@ -78,14 +74,53 @@
     </div>
 </div>
 
-<div class="article toolbar">
-    <div class="title ue-clear">
-        <h2>统计分析</h2>
-        <a href="/r/statistics/index" class="more">更多</a>
+<div class="article half notice">
+    <div class="wrap-l">
+        <div class="title ue-clear">
+            <h2>正在评审</h2>
+            <a href="/r/notice/index" class="more">更多</a>
+        </div>
+        <div class="content">
+            <ul class="notice-list">
+                  <#if rs_notice?exists && rs_notice?size!=0>
+                    <#list rs_notice as rs>
+                     <li class="ue-clear">
+                        <a href="javascript:nav('/r/notice/rec?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
+                        <div class="notice-time">${rs.T_PUBLISH}</div>
+                    </li>
+                    </#list>
+                    <#else>
+                        <li class="ue-clear">
+                        <span style="padding-left:5px;">没有正在评审的企业。</span>
+                        </li>
+                  </#if>
+            </ul>
+        </div>
     </div>
-    <div class="content" style="height:220px;">
-        
+</div>
 
+<div class="article half matter">
+    <div class="wrap-r">
+        <div class="title ue-clear">
+            <h2>评审完成</h2>
+            <a href="/r/grade_m/index" class="more">更多</a>
+        </div>
+        <div class="content">
+                <ul class="matter-list">
+                    <#if rs_todo?exists && rs_todo?size!=0>
+                    <#list rs_todo as rs>
+                     <li class="ue-clear">
+                        <span class="matter-time">${rs.T_BEGIN}</span>
+                        <a href="javascript:nav('${rs.C_URL!}');" class="matter-title">${rs.C_TITLE}</a>
+                    </li>
+                    </#list>
+                    <#else>
+                        <li class="ue-clear">
+                        <span style="padding-left:5px;">没有评审完成的企业。</span>
+                        </li>
+                    </#if>
+                </ul>
+        </div>
     </div>
 </div>
 
@@ -95,11 +130,7 @@
     
 </body>
 
-<script type="text/javascript" src="/resource/js/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
-<link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
-<script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+
 
 <script type="text/javascript">
     var aIndex = 0;
@@ -131,4 +162,9 @@
         
     }
 </script>
+
+<script type="text/javascript">
+    ko.applyBindings(new ViewModel());
+</script>
+
 </html>

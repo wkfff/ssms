@@ -58,7 +58,7 @@ function ViewModel(templateId) {
         gridSettings: {
             idField: 'SID',
             title:'评审办理',
-            url:'/r/grade_m/list_r',
+            url:'/r/grade_m/list_e',
             rownumbers: true,
             pagination: true,
             fit: true,
@@ -71,8 +71,33 @@ function ViewModel(templateId) {
                         width: 200
                     },
                     {
-                        field: 'C_TITLE',
-                        title: '标题',
+                        field: 'C_ADDR',
+                        title: '地址',
+                        width: 300
+                    },
+                    {
+                        field: 'C_CONTACT',
+                        title: '联系人',
+                        width: 300
+                    },
+                    {
+                        field: 'C_TEL',
+                        title: '联系电话',
+                        width: 300
+                    },
+                    {
+                        field: 'C_NAME_IND',
+                        title: '行业',
+                        width: 300
+                    },
+                    {
+                        field: 'C_NAME_PRO',
+                        title: '专业',
+                        width: 300
+                    },
+                    {
+                        field: 'N_STATE',
+                        title: '评审状态',
                         width: 300
                     },
                     {
@@ -81,9 +106,7 @@ function ViewModel(templateId) {
                         width: 260,
                         align:'center',
                         formatter:function(value,row){
-                            var html = "<a href='/r/grade_m/rec?sid="+value+"'>评审</a>&nbsp;&nbsp;<a href='/r/grade_m/report_rec?sid="+value+"'>编辑评审报告</a>&nbsp;&nbsp;<a href='/r/grade_m/upload_rec?sid="+value+"'>上传评审结果</a>";
-                            if (row.N_STATE==0)
-                            html +="&nbsp;&nbsp;<a href='javascript:undo("+value+");'>撤销误评审</a>";
+                            var html = "<a href='/e/stdtmp/list_version?R_TENANT="+value+"'>查看体系</a>&nbsp;&nbsp;<a href='/r/grade_m/rec?sid="+value+"'>进入评审</a>";
                             return  html;
                         }
                     }
