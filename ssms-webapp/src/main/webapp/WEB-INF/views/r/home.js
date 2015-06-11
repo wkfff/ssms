@@ -36,7 +36,7 @@ function ViewModel() {
         gridEvents: {
             refreshClick: function () {
                 var url = "/r/grade_m/index?";
-                url+="P_CITY="+model.comboCity()+"&P_COUNTY="+model.comboCounty()+"&C_NAME="+model.txtName();
+                url+="P_CITY="+model.comboCity()+"&P_COUNTY="+model.comboCounty()+"&C_NAME="+encodeURIComponent(model.txtName());
                 window.location.href = url;
             }
         }

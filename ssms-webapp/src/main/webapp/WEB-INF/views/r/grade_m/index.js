@@ -1,11 +1,11 @@
-function ViewModel(templateId) {
+function ViewModel(p_city,p_county,c_name) {
     var self = this;
 
     var model = {
-        comboPro: ko.observable(),
+        //comboPro: ko.observable(),
         comboCity: ko.observable(),
         comboCounty: ko.observable(),
-        txtName: ko.observable(),
+        txtName: ko.observable(c_name),
         selectItem: ko.observable(),
         /*
         selectIndex: ko.pureComputed(function () {
@@ -14,7 +14,7 @@ function ViewModel(templateId) {
         }),*/
         sid: ko.observable()
     };
-    model.comboPro.subscribe(function (newValue) {
+    /*model.comboPro.subscribe(function (newValue) {
         if (!newValue) return;
         if (settings.comboCountySettings.combobox){
             settings.comboCountySettings.combobox("clear");
@@ -26,30 +26,44 @@ function ViewModel(templateId) {
                 queryParams: {R_CODE: newValue}
             })
     });
+    */
     model.comboCity.subscribe(function (newValue) {
         if (!newValue) return;
         if (settings.comboCountySettings.combobox)
             settings.comboCountySettings.combobox({
                 url: "/sys/para_area/list",
-                queryParams: {R_CODE: newValue}
+                queryParams: {R_CODE: newValue},
+                valueField:'C_CODE',
+                textField:'C_VALUE',
+                onLoadSuccess: function(){
+                    var data = settings.comboCountySettings.combobox('getData');
+                    for(var i=0;i<data.length;i++){
+                        if (data[i].C_CODE==p_county){
+                            model.comboCounty(p_county);
+                            break;
+                        }
+                    };
+                }
             })
     });
+    /*
     model.comboCounty.subscribe(function (newValue) {
         if (!newValue) return;
-        if (settings.gridSettings.datagrid)
-            events.gridEvents.refreshClick();
     });
-    
+    */
     var settings = {
-        comboProSettings:{
-            /*url:'/sys/para_area/list?N_LEVEL=1',*/
+            /*comboProSettings:{
+            url:'/sys/para_area/list?N_LEVEL=1',
             valueField:'C_CODE',
             textField:'C_VALUE'
-        },
+        },*/
         comboCitySettings:{
             url:'/sys/para_area/list?R_CODE=350000',
             valueField:'C_CODE',
-            textField:'C_VALUE'
+            textField:'C_VALUE',
+            onLoadSuccess: function(){
+                model.comboCity(p_city);
+            }
         },
         comboCountySettings:{
             valueField:'C_CODE',
@@ -58,7 +72,7 @@ function ViewModel(templateId) {
         gridSettings: {
             idField: 'SID',
             title:'评审办理',
-            url:'/r/grade_m/list_e',
+            url:'/r/grade_m/list_e?P_CITY='+p_city+'&P_CONUTY='+p_county+'&C_NAME='+c_name,
             rownumbers: true,
             pagination: true,
             fit: true,
