@@ -11,7 +11,7 @@
     function doOpen(url,sid) {
         //window.location.href = '/e/grade_m/result.html?sid='+sid;
         //'rec_history.html?sid='+sid;
-        window.location.href = url+'.html?sid='+sid;
+        window.location.href = url+'?sid='+sid;
     }
     function doClear(id) {
         $(".easyui-datebox").datebox("setValue", "");

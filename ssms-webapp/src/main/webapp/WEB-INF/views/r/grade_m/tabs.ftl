@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
-   
+    </style>
     <script type="text/javascript">
     function doBack(){
        window.location.href='${referer!}';
@@ -24,14 +24,14 @@
             }
         });
         
-        $('#tab0').html('<iframe frameborder="0" width="100%" height="100%" src="/sys/tenant_e/view?sid=${sid!}" ></iframe>');
+        $("#tt").tabs("select",0);
     })
 </script>
 </head>
 <body>
 <div class="easyui-layout" data-options="fit:true,border:false" >
     <div id="tb">
-        <a href="#" onclick="doBack();" style="width:100px;">返回企业列表</a>
+        <a href="#" onclick="doBack();" style="width:90px;font-size:14px;text-decoration: none;">返回企业列表</a>
     </div>
     <div data-options="region:'center',tools:'#tb'" style="overflow:hidden;padding:0px;" title="企业详细信息" iconCls="icon-star" >
         <div id="tt" class="easyui-tabs" style="width:100%;height:auto" data-options="fit:true,border:false">

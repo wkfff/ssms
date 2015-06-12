@@ -69,7 +69,11 @@ h1.logo{ float:left; margin:14px 0 0 24px; width:296px; height:54px; background:
 .sidebar .nav>li.notice .nav-header a{ background:url(../images/nav/notice.png) no-repeat left center;}
 .sidebar .nav>li.knowledge .nav-header a{ background:url(../images/nav/knowledge.png) no-repeat left center;}
 .sidebar .nav>li.config .nav-header a{ background:url(../images/nav/config.png) no-repeat left center;}
-
+.sidebar .nav>li.user .nav-header a{ background:url(../images/nav/user.png) no-repeat left center;}
+.sidebar .nav>li.pwd .nav-header a{ background:url(../images/nav/lock.png) no-repeat left center;}
+.sidebar .nav>li.cert .nav-header a{ background:url(../images/nav/cert.png) no-repeat left center;}
+.sidebar .nav>li.read .nav-header a{ background:url(../images/nav/read.png) no-repeat left center;}
+.sidebar .nav>li.create .nav-header a{ background:url(../images/nav/create.png) no-repeat left center;}
 
 .content{ float:left; width:100%; overflow:auto;}
 
