@@ -25,6 +25,7 @@ final class Config {
     private static Logger log;
 
     public static void configRapidware( RapidwareConfig rapidwareConfig ) {
+        constants.setEncoding( "UTF-8" );
         rapidwareConfig.configConstant( constants );
         initLoggerFactory();
         rapidwareConfig.configRoute( routes );

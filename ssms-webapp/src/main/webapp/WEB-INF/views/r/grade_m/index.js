@@ -5,7 +5,7 @@ function ViewModel(p_city,p_county,c_name) {
         //comboPro: ko.observable(),
         comboCity: ko.observable(),
         comboCounty: ko.observable(),
-        txtName: ko.observable(c_name),
+        txtName: ko.observable(decodeURIComponent(c_name)),
         selectItem: ko.observable(),
         /*
         selectIndex: ko.pureComputed(function () {
@@ -122,7 +122,7 @@ function ViewModel(p_city,p_county,c_name) {
                         align:'center',
                         formatter:function(value,row){
                             var pid = row.P_PROFESSION;
-                            var html = "<a href='/e/stdtmp/list_version?R_TENANT="+value+"'>查看体系</a>&nbsp;&nbsp;<a href='/r/grade_m/tabs?sid="+value+"&pro="+pid+"'>进入评审</a>";
+                            var html = "<a href='/r/stdtmp/query?sid="+value+"&pro="+pid+"'>查看体系</a>&nbsp;&nbsp;<a href='/r/grade_m/tabs?sid="+value+"&pro="+pid+"'>进入评审</a>";
                             return  html;
                         }
                     }
@@ -138,8 +138,8 @@ function ViewModel(p_city,p_county,c_name) {
         gridEvents: {
             refreshClick: function () {
                 settings.gridSettings.datagrid({
-                    url: "/r/grade_m/list_r",
-                    queryParams: {P_COUNTY: model.comboCounty(),C_NAME:model.txtName()}
+                    url: "/r/grade_m/list_e",
+                    queryParams: {P_CITY:model.comboCity,P_COUNTY: model.comboCounty(),C_NAME:model.txtName()}
                 });
             }, editClick: function () {
                 var sid = self.sid();

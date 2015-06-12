@@ -34,7 +34,7 @@ function ViewModel(catalogId) {
                         editor: {type: 'textarea', options: {validType: ['length[0, 2000]']}}},
                     {field: 'C_CONTENT', title: '企业达标标准', width: 300,
                         editor: {type: 'textarea', options: {validType: ['length[0, 2000]']}}},
-                    {field: 'N_SCORE', title: '标准分值',align:'center',width: 60,
+                    {field: 'N_SCORE', title: '标准分值',align:'center',width: 80,
                         editor: {type: 'numberbox', options: {required: true}}},
                     {field: 'C_METHOD', title: '评分方式', width: 200,
                         editor: {type: 'textarea', options: {validType: ['length[0, 2000]']}}}
