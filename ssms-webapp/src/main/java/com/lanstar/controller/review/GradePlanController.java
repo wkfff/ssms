@@ -131,7 +131,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
     protected SqlBuilder buildWhere() {
         String name = this.getPara( "C_NAME" );
         try {
-            name = URLDecoder.decode( name, "UTF-8" );
+            if (!StrKit.isBlank( name )) name = URLDecoder.decode( name, "UTF-8" );
         } catch ( UnsupportedEncodingException e ) {
             
         }
@@ -144,7 +144,9 @@ public class GradePlanController extends SimplateController<GradePlanR> {
                 ._If( this.isParaExists( "P_COUNTY" ) && !StrKit.isBlank( this.getPara( "P_COUNTY" ) ), "P_COUNTY = ?",
                         this.getPara( "P_COUNTY" ) )
                 ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
-                ._If( this.isParaBlank( "C_NAME" ) == false, "C_NAME like ?", "%" + name + "%" );
+                ._If( this.isParaBlank( "C_NAME" ) == false, "C_NAME like ?", "%" + name + "%" )
+                ._If( isParaBlank( "T_START" ) == false, "T_START >= ?", getPara( "T_START" ) )
+                ._If( isParaBlank( "T_END" ) == false, "T_END <= ?", getPara( "T_END" ) );
         return builder;
     }
 

@@ -34,11 +34,7 @@ public class TemplateController extends Controller {
     public void rec() {
 
     }
-    
-    /**
-     * 查看企业当前生效的达标体系
-     */
-    public void query(){
+    public void query2(){
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         // 企业
         int eid = this.getParaToInt( "sid" );
@@ -48,9 +44,17 @@ public class TemplateController extends Controller {
         Profession profession = Profession.dao.findById( pro );
         identityContext.initReviewService( enterprise, profession );
         
+        query();
+        render( "query.ftl" );
+    }
+    /**
+     * 查看企业当前生效的达标体系
+     */
+    public void query(){
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         ProfessionService professionService = identityContext.getReviewService().getEnterpriseContext().getEnterpriseService().getProfessionService();
         Template template = professionService.getSystemTemplate();
-//        int eid = identityContext.getReviewService().getEnterpriseContext().getTenantId();
+        int eid = identityContext.getReviewService().getEnterpriseContext().getTenantId();
         String type = identityContext.getReviewService().getEnterpriseContext().getTenantType().getName();
         DbPro tenantDb = identityContext.getReviewService().getEnterpriseContext().getTenantDb();
         List<Record> folder = tenantDb.find(

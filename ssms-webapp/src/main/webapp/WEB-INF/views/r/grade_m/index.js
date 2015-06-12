@@ -113,7 +113,15 @@ function ViewModel(p_city,p_county,c_name) {
                     {
                         field: 'N_STATE',
                         title: '评审状态',
-                        width: 300
+                        width: 100,
+                        formatter:function(value,row){
+                            if(value==-1) return "未开始";
+                            else if(value==0) return "评审中";
+                            else if(value==1) return "已完成评审填报";
+                            else if(value==2) return "已完成评审报告";
+                            else if(value==3) return "已完成评审结果上传";
+                            else if(value==4) return "评审结束";
+                        }
                     },
                     {
                         field: 'SID',
@@ -122,7 +130,7 @@ function ViewModel(p_city,p_county,c_name) {
                         align:'center',
                         formatter:function(value,row){
                             var pid = row.P_PROFESSION;
-                            var html = "<a href='/r/stdtmp/query?sid="+value+"&pro="+pid+"'>查看体系</a>&nbsp;&nbsp;<a href='/r/grade_m/tabs?sid="+value+"&pro="+pid+"'>进入评审</a>";
+                            var html = "<a href='/r/stdtmp/query2?sid="+value+"&pro="+pid+"'>查看体系</a>&nbsp;&nbsp;<a href='/r/grade_m/tabs?sid="+value+"&pro="+pid+"'>进入评审</a>";
                             return  html;
                         }
                     }
@@ -139,7 +147,7 @@ function ViewModel(p_city,p_county,c_name) {
             refreshClick: function () {
                 settings.gridSettings.datagrid({
                     url: "/r/grade_m/list_e",
-                    queryParams: {P_CITY:model.comboCity,P_COUNTY: model.comboCounty(),C_NAME:model.txtName()}
+                    queryParams: {P_CITY:model.comboCity,P_COUNTY: model.comboCounty(),C_NAME:encodeURIComponent(model.txtName())}
                 });
             }, editClick: function () {
                 var sid = self.sid();

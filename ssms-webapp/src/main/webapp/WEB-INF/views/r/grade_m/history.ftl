@@ -20,7 +20,7 @@
         $('#dg_history').datagrid({
             title:'评审历史',
             //iconCls:'icon-star',
-            url: 'list.json?N_STATE=1',
+            url: '/r/grade_m/list?N_STATE=4',
             idField: 'SID',
             rownumbers: true,
             pagination: true,
