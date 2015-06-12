@@ -9,7 +9,11 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
+
+import com.lanstar.controller.government.GovernmentController;
+import com.lanstar.controller.government.GovernmentUserController;
 import com.lanstar.controller.government.HomeController;
+import com.lanstar.controller.government.PswChangeController;
 import com.lanstar.controller.system.KnowledgeFileController;
 import com.lanstar.controller.system.KnowledgeSortController;
 import com.lanstar.controller.system.NoticeController;
@@ -28,5 +32,11 @@ public class GovernmentRoutes extends Routes {
         this.add( "/g/notice", NoticeController.class );
         this.add( "/g/knowledge_sort", KnowledgeSortController.class );
         this.add( "/g/knowledge_file", KnowledgeFileController.class );
+        
+        this.add( "/g/tenant_g", GovernmentController.class );
+        this.add( "/g/tenant_gu", GovernmentUserController.class );
+        
+        this.add( "/g/psw_change", PswChangeController.class );
+        
     }
 }
