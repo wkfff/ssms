@@ -36,7 +36,7 @@
 </style>
 </#assign> 
 <@layout.doLayout script>
-<div class="easyui-panel" title="用户管理">
+<div class="easyui-panel" title="用户管理" fit="true">
     <div class="z-toolbar">
         <div class="layout">
         <a href="#" class="easyui-linkbutton" plain="true"
