@@ -61,8 +61,10 @@
                 </#if>
                 </td>
                 <td class="count">${map.attributes.N_COUNT!}</td>
-                <td class="count">${map.attributes.S_STATE!}</td>
-                <td></td>
+                <td class="count">
+                    <#if map.attributes.C_URL??>${map.attributes.S_STATE!}</#if>
+                </td>
+                <td class="count">${map.attributes.T_UPDATE!}</td>
                 <td class="operate">
                     <#if map.attributes.C_URL??>
                         <a href="javascript:nav('${map.attributes.C_URL!}')">查看</a>&nbsp;&nbsp;
