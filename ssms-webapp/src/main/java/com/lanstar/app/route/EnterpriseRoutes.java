@@ -11,8 +11,6 @@ package com.lanstar.app.route;
 import com.lanstar.config.Routes;
 import com.lanstar.controller.enterprise.*;
 import com.lanstar.controller.system.DoneController;
-import com.lanstar.controller.system.KnowledgeFileController;
-import com.lanstar.controller.system.KnowledgeSortController;
 import com.lanstar.controller.system.NoticeController;
 import com.lanstar.controller.system.TodoController;
 
@@ -44,8 +42,6 @@ public class EnterpriseRoutes extends Routes {
         add( "/e/notice", NoticeController.class );
         add( "/e/todo", TodoController.class );
         add( "/e/done", DoneController.class );
-        add( "/e/knowledge", KnowledgeSortController.class );
-        add( "/e/knowledge_file", KnowledgeFileController.class );
         
         add( "/e/psw_change", PswChangeController.class);
         add( "/e/tenant_e", EnterpriseController.class);

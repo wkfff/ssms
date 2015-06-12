@@ -9,13 +9,12 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
-
 import com.lanstar.controller.review.*;
-import com.lanstar.controller.system.DoneController;
-import com.lanstar.controller.system.KnowledgeFileController;
-import com.lanstar.controller.system.KnowledgeSortController;
-import com.lanstar.controller.system.NoticeController;
-import com.lanstar.controller.system.TodoController;
+import com.lanstar.controller.review.HomeController;
+import com.lanstar.controller.review.ReviewController;
+import com.lanstar.controller.review.ReviewUserController;
+import com.lanstar.controller.review.TemplateController;
+import com.lanstar.controller.system.*;
 
 public class ReviewRoutes extends Routes {
     private static Routes me = new ReviewRoutes();
@@ -32,16 +31,15 @@ public class ReviewRoutes extends Routes {
 
         add( "/r/stdtmp", TemplateController.class );
         add( "/r/review", ReviewController.class );
+        add( "/r/e/stdtmp", TemplateController.class );
+
+        add( "/r/tenant_r", ReviewController.class );
+        add( "/r/tenant_ru", ReviewUserController.class );
         add( "/r/reviewer", ReviewerController.class );
-        
-        add( "/r/tenant_r" , ReviewController.class );
-        add( "/r/tenant_ru" , ReviewUserController.class );
         add( "/r/notice", NoticeController.class );
         add( "/r/todo", TodoController.class );
         add( "/r/done", DoneController.class );
-        add( "/r/knowledge_sort", KnowledgeSortController.class );
-        add( "/r/knowledge_file", KnowledgeFileController.class );
-        
-        add( "/r/psw_change", PswChangeController.class);
+
+        add( "/r/psw_change", PswChangeController.class );
     }
 }
