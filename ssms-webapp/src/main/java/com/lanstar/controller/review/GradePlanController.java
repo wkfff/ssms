@@ -7,11 +7,19 @@
  */
 package com.lanstar.controller.review;
 
+import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
+import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.List;
+
 import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.Profession;
+import com.lanstar.model.tenant.GradePlan;
 import com.lanstar.model.tenant.GradePlanR;
 import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.Page;
@@ -19,13 +27,7 @@ import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
-import com.lanstar.service.enterprise.ProfessionService;
 import com.lanstar.service.review.ReviewService;
-
-import java.util.List;
-
-import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
-import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
 
 /**
  * 评审
@@ -90,14 +92,14 @@ public class GradePlanController extends SimplateController<GradePlanR> {
 
         if ( this.isNew && eid != null ) {
             // 设置企业的评审状态与评审机构
-            Enterprise enterprise = Enterprise.dao.findById(eid);
+            Enterprise enterprise = Enterprise.dao.findById( eid );
             enterprise.setReview( enterprise );
             enterprise.setGradeState( ReviewState.START.getValue() );
 
             // 获取评审服务
-            ReviewService service  = this.identityContext.getReviewService();
+            ReviewService service = this.identityContext.getReviewService();
             // 同步企业的自评数据
-            service.sync(sid);
+            service.sync( sid );
         }
     }
 
@@ -127,13 +129,22 @@ public class GradePlanController extends SimplateController<GradePlanR> {
 
     @Override
     protected SqlBuilder buildWhere() {
+        String name = this.getPara( "C_NAME" );
+        try {
+            name = URLDecoder.decode( name, "UTF-8" );
+        } catch ( UnsupportedEncodingException e ) {
+            
+        }
         SqlBuilder builder = new SqlBuilder();
         builder.WHERE()
-        ._If( this.isParaExists( "P_PRO" ) && !StrKit.isBlank( this.getPara( "P_PRO" ) ), "P_PROVINCE = ?", this.getPara( "P_PRO" ) )
-        ._If( this.isParaExists( "P_CITY" ) && !StrKit.isBlank( this.getPara( "P_CITY" ) ), "P_CITY = ?", this.getPara( "P_CITY" ) )
-        ._If( this.isParaExists( "P_COUNTY" )&& !StrKit.isBlank( this.getPara( "P_COUNTY" ) ) , "P_COUNTY = ?", this.getPara( "P_COUNTY" ) )
-        ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
-        ._If( this.isParaBlank( "C_NAME" ) == false, "C_NAME like ?", "%" + this.getPara( "C_NAME" ) + "%" );
+                ._If( this.isParaExists( "P_PRO" ) && !StrKit.isBlank( this.getPara( "P_PRO" ) ), "P_PROVINCE = ?",
+                        this.getPara( "P_PRO" ) )
+                ._If( this.isParaExists( "P_CITY" ) && !StrKit.isBlank( this.getPara( "P_CITY" ) ), "P_CITY = ?",
+                        this.getPara( "P_CITY" ) )
+                ._If( this.isParaExists( "P_COUNTY" ) && !StrKit.isBlank( this.getPara( "P_COUNTY" ) ), "P_COUNTY = ?",
+                        this.getPara( "P_COUNTY" ) )
+                ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
+                ._If( this.isParaBlank( "C_NAME" ) == false, "C_NAME like ?", "%" + name + "%" );
         return builder;
     }
 
@@ -159,7 +170,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
      * 评审完成
      */
     public void complete() {
-        this.tenantDb.callProcedure( "P_GRADE_COMPLETE_R", this.getModel().getId(),ReviewState.END.getValue() );
+        this.tenantDb.callProcedure( "P_GRADE_COMPLETE_R", this.getModel().getId(), ReviewState.END.getValue() );
         this.setAttr( "result", "OK" );
         this.renderJson();
     }
@@ -176,22 +187,25 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         }
         this.renderJson();
     }
+
     /**
      * 评审报告
      */
-    public void report_rec(){
-        rec();
+    public void report_rec() {
+        this.rec();
     }
+
     /**
      * 上传评审结果
      */
-    public void upload_rec(){
-        rec();
+    public void upload_rec() {
+        this.rec();
     }
+
     /**
      * 评审历史
      */
-    public void history(){
+    public void history() {
 
     }
 
@@ -202,16 +216,24 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         return builder;
     }
 
-    public void tabs(){
-        //企业
+    public void tabs() {
+        // 企业
         int eid = this.getParaToInt( "sid" );
-        //专业
+        // 专业
         int pro = this.getParaToInt( "pro" );
-        Enterprise enterprise = Enterprise.dao.findById(eid);
+        Enterprise enterprise = Enterprise.dao.findById( eid );
         Profession profession = Profession.dao.findById( pro );
-        identityContext.initReviewService(enterprise, profession);
-        
-        //根据企业编号获取
-        String sql = "";
+        this.identityContext.initReviewService( enterprise, profession );
+
+        // 根据企业编号获取最后一次完成的自评编号
+        String sql = "SELECT SID FROM SSM_GRADE_E_M WHERE N_STATE=1  ORDER BY T_UPDATE DESC  LIMIT 1";
+        this.setAttr( "gradeid", GradePlan.dao.findFirst( sql ).getId() );
+        // 获取对选择企业的评审
+        sql = "SELECT SID FROM SSM_GRADE_R_M WHERE N_STATE=0  ORDER BY T_UPDATE DESC  LIMIT 1";
+        GradePlanR gpr = GradePlanR.dao.findFirst( sql );
+        if (gpr!=null) {
+            this.setAttr( "graderid",gpr.getId());
+        }
     }
+
 }

@@ -2,8 +2,8 @@ function ViewModel() {
     var self = this;
 
     var model = {
-        comboCity: ko.observable(),
-        comboCounty: ko.observable(),
+        comboCity: ko.observable(''),
+        comboCounty: ko.observable(''),
         txtName: ko.observable(''),
         selectItem: ko.observable()
     };
@@ -36,7 +36,7 @@ function ViewModel() {
         gridEvents: {
             refreshClick: function () {
                 var url = "/r/grade_m/index?";
-                url+="P_CITY="+model.comboCity()+"&P_COUNTY="+model.comboCounty()+"&C_NAME="+encodeURIComponent(model.txtName());
+                url+="P_CITY="+model.comboCity()+"&P_COUNTY="+model.comboCounty()+"&C_NAME="+encodeURIComponent(encodeURIComponent(model.txtName()));
                 window.location.href = url;
             }
         }

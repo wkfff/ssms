@@ -107,10 +107,6 @@
 </#assign>
 <@layout.doLayout script>
 <div>
-    <div class="toolbar">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-new" onclick="doNew();">开始新的自评</a>
-    </div>
-    
     <div class="easyui-panel" style="padding-top:5px;padding-right:20px;border:0;">
         <table id="dg_draft"></table>
         <div id="dg_draft_tb" style="padding:5px;height:auto">
@@ -118,6 +114,7 @@
                 至: <input class="easyui-datebox" style="width:90px" name="T_END">
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_draft')">查询</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_draft')" title="清空查询条件">重置</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-new" onclick="doNew();">开始新的自评</a>
         </div>
     </div>
     

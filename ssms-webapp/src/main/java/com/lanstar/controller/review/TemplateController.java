@@ -18,6 +18,8 @@ import com.lanstar.common.TreeNode;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.model.system.Enterprise;
+import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
 import com.lanstar.plugin.activerecord.DbPro;
 import com.lanstar.plugin.activerecord.Record;
@@ -38,9 +40,17 @@ public class TemplateController extends Controller {
      */
     public void query(){
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        // 企业
+        int eid = this.getParaToInt( "sid" );
+        // 专业
+        int pro = this.getParaToInt( "pro" );
+        Enterprise enterprise = Enterprise.dao.findById( eid );
+        Profession profession = Profession.dao.findById( pro );
+        identityContext.initReviewService( enterprise, profession );
+        
         ProfessionService professionService = identityContext.getReviewService().getEnterpriseContext().getEnterpriseService().getProfessionService();
         Template template = professionService.getSystemTemplate();
-        int eid = identityContext.getReviewService().getEnterpriseContext().getTenantId();
+//        int eid = identityContext.getReviewService().getEnterpriseContext().getTenantId();
         String type = identityContext.getReviewService().getEnterpriseContext().getTenantType().getName();
         DbPro tenantDb = identityContext.getReviewService().getEnterpriseContext().getTenantDb();
         List<Record> folder = tenantDb.find(
