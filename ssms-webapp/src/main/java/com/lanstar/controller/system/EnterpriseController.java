@@ -35,6 +35,11 @@ public class EnterpriseController extends SimplateController<Enterprise> {
         super.rec();
     }
 
+    public void view(){
+        super.rec();
+        setAttr( "@READONLY", "true" );
+    }
+    
     public void reg() {
 
     }

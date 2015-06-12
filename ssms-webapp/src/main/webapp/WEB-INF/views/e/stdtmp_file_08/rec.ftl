@@ -8,18 +8,17 @@
     .form table tr {
         height: 40px;
     }
-    
+
     .form table td {
-        padding-right:10px;
+        padding-right: 10px;
     }
-    
 
     .form table .label {
         width: 90px;
     }
 </style>
 <div id="kocontainer">
-    <div class="z-toolbar">
+    <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回</a>
     </div>
@@ -32,64 +31,64 @@
                 <col class="label"/>
                 <col/>
             </colgroup>
-            
+
             <tr>
                 <td>设备名称:</td>
                 <td>
-                    <input data-bind="textboxValue: C_NAME" required/>
+                    <input data-bind="disable: readonly,textboxValue: C_NAME" required/>
                 </td>
-                 <td>登记证号:</td>
+                <td>登记证号:</td>
                 <td>
-                    <input data-bind="textboxValue: C_NO_REG"/>
+                    <input data-bind="disable: readonly,textboxValue: C_NO_REG"/>
                 </td>
             </tr>
 
             <tr>
                 <td>规格/型号:</td>
                 <td>
-                    <input data-bind="textboxValue: C_SPEC"/>
+                    <input data-bind="disable: readonly,textboxValue: C_SPEC"/>
                 </td>
                 <td>制造单位:</td>
                 <td>
-                    <input data-bind="textboxValue: C_MAKE_UNIT"/>
+                    <input data-bind="disable: readonly,textboxValue: C_MAKE_UNIT"/>
                 </td>
             </tr>
-           
+
             <tr>
                 <td>出厂编号:</td>
                 <td>
-                    <input data-bind="textboxValue: C_NO_FACTORY"/>
+                    <input data-bind="disable: readonly,textboxValue: C_NO_FACTORY"/>
                 </td>
                 <td>使用部门:</td>
                 <td>
-                    <input data-bind="textboxValue: C_DEPT"/>
+                    <input data-bind="disable: readonly,textboxValue: C_DEPT"/>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>检验报告编号:</td>
                 <td>
-                    <input data-bind="textboxValue: C_NO_REP"/>
+                    <input data-bind="disable: readonly,textboxValue: C_NO_REP"/>
                 </td>
                 <td>检验单位:</td>
                 <td>
-                    <input data-bind="textboxValue: C_TEST_UNIT"/>
+                    <input data-bind="disable: readonly,textboxValue: C_TEST_UNIT"/>
                 </td>
             </tr>
-            
+
             <tr>
                 <td>最新检验日期:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_TEST_LAST"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_TEST_LAST"/>
                 </td>
                 <td>下次检验日期:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_TEST_NEXT"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_TEST_NEXT"/>
                 </td>
             </tr>
             <tr>
                 <td>检验结论</td>
-                <td colspan=3><input data-bind="textboxValue: C_TEST_CON"/></td>
+                <td colspan=3><input data-bind="disable: readonly,textboxValue: C_TEST_CON"/></td>
             </tr>
         </table>
     </form>
@@ -111,11 +110,9 @@
         R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
-        
+        readonly: ${@READONLY!'false'}
     };
-    var settings = {
-        
-    };
+    var settings = {};
     var events = {
         saveClick: function () {
             if ($form.validate('.form') != true) return;
@@ -123,7 +120,7 @@
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
                     utils.messager.closeProgress();
-                        $.messager.alert("提示", "保存成功", "info");
+                    $.messager.alert("提示", "保存成功", "info");
                 } else {
                     $.messager.alert("提示", "保存失败", "warning", function () {
                         utils.messager.closeProgress();

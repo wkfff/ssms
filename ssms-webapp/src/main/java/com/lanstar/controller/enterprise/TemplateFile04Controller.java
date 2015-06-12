@@ -19,11 +19,15 @@ public class TemplateFile04Controller extends SimplateController<TemplateFile04>
     @Override
     public void rec() {
         super.rec();
-        TemplateFile file = TemplateFile.dao.findById( getAttrForInt( Const.TEMPLATE_FILE_PARENT_FIELD ) );
+        Integer pid = getAttrForInt( Const.TEMPLATE_FILE_PARENT_FIELD );
+        if (pid == null) pid = getParaToInt("pid");
+        TemplateFile file = TemplateFile.dao.findById( pid );
         com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
 
-        setAttr( "TEMPLATE_ID", com.lanstar.model.system.TemplateFile04.dao.findFirstByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFile
-            .getId() ).getId() );
+        com.lanstar.model.system.TemplateFile04 sysFile = com.lanstar.model.system.TemplateFile04.dao.findFirstByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFile
+                .getId() );
+        if (sysFile == null) return;
+        setAttr( "TEMPLATE_ID", sysFile.getId() );
     }
     
     @Override
@@ -40,5 +44,11 @@ public class TemplateFile04Controller extends SimplateController<TemplateFile04>
         super.index();
         setAttr( "@READONLY", "true" );
         render( "index.ftl" );
+    }
+    
+    public void rec_view() {
+        super.rec();
+        setAttr( "@READONLY", "true" );
+        render( "rec.ftl" );
     }
 }

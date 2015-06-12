@@ -19,13 +19,15 @@
     }
 </style>
 <div id="kocontainer">
-    <div class="z-toolbar">
+    <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf"
            data-bind="click: function(){}">导出</a>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-back"
            onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回列表</a>
+        <#if TEMPLATE_ID??>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_04/view?sid=${TEMPLATE_ID}')}">查看模板</a>
+        </#if>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
         <table>
@@ -38,43 +40,43 @@
             <tr>
                 <td>主题:</td>
                 <td colspan="3">
-                    <input data-bind="textboxValue: C_NAME" required/>
+                    <input data-bind="disable: readonly,textboxValue: C_NAME" required/>
                 </td>
             </tr>
 
             <tr>
                 <td>培训日期:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_TIME"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_TIME"/>
                 </td>
 
                 <td>培训地址:</td>
                 <td>
-                    <input data-bind="textboxValue: C_ADDR"/>
+                    <input data-bind="disable: readonly,textboxValue: C_ADDR"/>
                 </td>
             </tr>
 
             <tr>
                 <td>讲师:</td>
                 <td>
-                    <input data-bind="textboxValue: C_USER_01"/>
+                    <input data-bind="disable: readonly,textboxValue: C_USER_01"/>
                 </td>
 
                 <td>培训类型:</td>
                 <td>
-                    <input data-bind="textboxValue: S_TYPE"/>
+                    <input data-bind="disable: readonly,textboxValue: S_TYPE"/>
                 </td>
             </tr>
 
             <tr>
                 <td>学时:</td>
                 <td>
-                    <input data-bind="textboxValue: N_TIME"/>
+                    <input data-bind="disable: readonly,textboxValue: N_TIME"/>
                 </td>
 
                 <td>记录人:</td>
                 <td>
-                    <input data-bind="textboxValue: C_USER_02"/>
+                    <input data-bind="disable: readonly,textboxValue: C_USER_02"/>
                 </td>
             </tr>
             <tr>
@@ -84,8 +86,8 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" data-bind="visible: SID">
-                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_04', sid: '${SID!}'}">[选择文件]</a>
+                <td colspan="4" data-bind="disable: readonly,visible: SID">
+                    <a href="javascript:void(0);" data-bind="disable: readonly,uploadOptions: {module: 'STDTMP_FILE_04', sid: '${SID!}'}">[选择文件]</a>
                 </td>
             </tr>
             <tr>
@@ -109,13 +111,15 @@
         R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
-        htmlContent: ko.observable()
+        htmlContent: ko.observable(),
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         htmleditSettings: {
             table: "STDTMP_FILE_04",
             field: 'C_CONTENT',
-            sid: '${SID!}'
+            sid: '${SID!}',
+            readonly: extModel.readonly
         }
     };
     var events = {

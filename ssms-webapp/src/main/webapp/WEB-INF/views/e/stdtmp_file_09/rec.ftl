@@ -19,7 +19,7 @@
     }
 </style>
 <div id="kocontainer">
-    <div class="z-toolbar">
+    <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回</a>
     </div>
@@ -36,49 +36,49 @@
             <tr>
                 <td>安全附件名称:</td>
                 <td>
-                    <input data-bind="textboxValue: C_NAME" required/>
+                    <input data-bind="disable: readonly,textboxValue: C_NAME" required/>
                 </td>
                  <td>型号:</td>
                 <td>
-                    <input data-bind="textboxValue: C_SPEC"/>
+                    <input data-bind="disable: readonly,textboxValue: C_SPEC"/>
                 </td>
             </tr>
 
             <tr>
                 <td>出厂编号:</td>
                 <td>
-                    <input data-bind="textboxValue: C_NO_FACTORY"/>
+                    <input data-bind="disable: readonly,textboxValue: C_NO_FACTORY"/>
                 </td>
                 <td>所属特种设备安装位置:</td>
                 <td>
-                    <input data-bind="textboxValue: C_POSITION"/>
+                    <input data-bind="disable: readonly,textboxValue: C_POSITION"/>
                 </td>
             </tr>
            
             <tr>
                 <td>检验日期:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_TEST_LAST"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_TEST_LAST"/>
                 </td>
                 <td>下次检验日期:</td>
                 <td>
-                    <input data-bind="dateboxValue: T_TEST_NEXT"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_TEST_NEXT"/>
                 </td>
             </tr>
             
             <tr>
                 <td>检验报告编号:</td>
                 <td>
-                    <input data-bind="textboxValue: C_NO_REP"/>
+                    <input data-bind="disable: readonly,textboxValue: C_NO_REP"/>
                 </td>
                 <td>检验单位</td>
                 <td>
-                    <input data-bind="textboxValue: C_TEST_UNIT"/>
+                    <input data-bind="disable: readonly,textboxValue: C_TEST_UNIT"/>
                 </td>
             </tr>
              <tr>
                 <td>检验结论</td>
-                <td colspan=3><input data-bind="textboxValue: C_TEST_CON"/></td>
+                <td colspan=3><input data-bind="disable: readonly,textboxValue: C_TEST_CON"/></td>
             </tr>
         </table>
     </form>
@@ -98,7 +98,7 @@
         R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
-        
+        readonly: ${@READONLY!'false'}
     };
     var settings = {
         

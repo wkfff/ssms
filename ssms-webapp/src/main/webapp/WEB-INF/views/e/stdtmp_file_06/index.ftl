@@ -67,7 +67,7 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
-                panelLoad('${BASE_PATH}/rec?sid=' + value.SID);
+                panelLoad('${BASE_PATH}/rec<#if @READONLY== 'true' >_view</#if>?sid=' + value.SID);
             },
             deleteClick: function () {
                 var value = model.selectItem();

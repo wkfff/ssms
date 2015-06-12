@@ -6,6 +6,7 @@ INSERT INTO `sys_nav` VALUES ('14', '3', '评审端导航', '', '', '', '0', 'ad
 INSERT INTO `sys_nav` VALUES ('15', '3', '政府端导航', '', '', '', '0', 'admin', '2015-04-26 10:57:33', '0', 'admin', '2015-05-22 14:55:27', '0', 'admin', 'S', '0', '', '0', '0');
 INSERT INTO `sys_nav` VALUES ('16', '3', '系统运维端导航', '', '', '', '0', 'admin', '2015-04-26 10:57:46', '0', 'admin', '2015-05-22 14:55:28', '0', 'admin', 'S', '0', '', '0', '0');
 INSERT INTO `sys_nav` VALUES ('18', '13', '13要素自主创建', '/e/stdtmp/', null, 'nav-info', '0', 'admin', '2015-04-26 10:58:42', '-1', 'admin', '2015-06-08 20:29:26', '0', 'admin', 'S', '0', null, '1', '0');
+INSERT INTO `sys_nav` VALUES ('22', '13', '13要素查看', '/e/stdtmp/list_version', null, 'nav-info', '0', 'admin', '2015-04-26 10:58:42', '-1', 'admin', '2015-06-08 20:29:26', '0', 'admin', 'S', '0', null, '1', '0');
 INSERT INTO `sys_nav` VALUES ('19', '13', '在线自评', '/e/grade_m/', null, 'gongwen', '0', 'admin', '2015-04-26 10:58:58', '1', 'admin', '2015-06-09 21:34:18', '0', 'admin', 'S', '0', null, '3', '0');
 INSERT INTO `sys_nav` VALUES ('20', '16', '系统配置', '', '', 'nav-info', '0', 'admin', '2015-04-27 11:33:24', '0', 'admin', '2015-05-22 14:55:29', '0', 'admin', 'S', '0', '', '3', '0');
 INSERT INTO `sys_nav` VALUES ('21', '20', '系统导航配置', '/sys/nav/', '', '', '0', 'admin', '2015-04-27 11:33:44', '0', 'admin', '2015-05-22 14:55:02', '0', 'admin', 'S', '0', '', '99', '0');
