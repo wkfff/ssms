@@ -24,7 +24,7 @@
             }
         });
         
-        $("#tt").tabs("select",0);
+        //$("#tt").tabs("select",0);
     })
 </script>
 </head>
@@ -35,7 +35,9 @@
     </div>
     <div data-options="region:'center',tools:'#tb'" style="overflow:hidden;padding:0px;" title="企业详细信息" iconCls="icon-star" >
         <div id="tt" class="easyui-tabs" style="width:100%;height:auto" data-options="fit:true,border:false">
-            <div id="tab0" title="基本信息" style="overflow:hidden;" url="/sys/tenant_e/view?sid=${sid!}"></div>
+            <div id="tab0" title="基本信息" style="overflow:hidden;" url="/sys/tenant_e/view?sid=${sid!}">
+                <iframe frameborder="0" width="100%" height="100%" src="/sys/tenant_e/view?sid=${sid!}" ></iframe>
+            </div>
             <div id="tab1" title="体系查看" style="overflow:hidden;" url="/r/stdtmp/query"></div>
             <div id="tab2" title="自评报告" style="overflow:hidden;" url="/e/grade_m/history_rep?sid=${gradeid!}"></div>
             <div id="tab3" title="评审方案" style="overflow:hidden;" url="/static/reviewplan.html"></div>
