@@ -1,5 +1,4 @@
-<#import "../../layout/_rec.ftl" as layout/>
-<#assign script>
+<#import "../../layout/_rec.ftl" as layout/> <#assign script>
 <script type="text/javascript">
     var model = {
         C_NAME: ko.observable('杨建'),
@@ -26,10 +25,14 @@
         SID: ko.observable('1')
     };
     var settings={
-         selectOptions :[
-                     {name:"专家",id:"01"},
-                     {name:"评审员",id:"02"}
-             ]
+        cycleSource:ko.observableArray([
+    		                     {name:"专家",key:"01"},
+    		                     {name:"评审员",key:"02"}
+    		         ]),
+     selectOptions : {
+    		                 valueField: 'key',
+    		                 textField: 'name'
+    		             }
     };
 
     var events = {
@@ -55,165 +58,150 @@
     ko.applyBindings($.extend({}, model, events,settings));
 </script>
 <style type="text/css">
-    .form table {
-        width: 100%;
-        margin: 5px auto;
-        table-layout: fixed;
-    }
+.form table {
+    width: 100%;
+    margin: 5px auto;
+    table-layout: fixed;
+}
 
-    .form table tr {
-        height: 40px;
-    }
-    
-    .form table td {
-        text-align:right;
-        padding: 5px;
-    }
-    
-    .form table .label {
-        width: 110px;
-    }
-    .layout{
-    width : 900px;
-    margin : 0 auto;
-    }
+.form table tr {
+    height: 40px;
+}
+
+.form table td {
+    text-align: right;
+    padding: 5px;
+}
+
+.form table .label {
+    width: 110px;
+}
+
+.layout {
+    width: 900px;
+    margin: 0 auto;
+}
 </style>
-</#assign>
-<@layout.doLayout script>
+</#assign> <@layout.doLayout script>
 <div class="easyui-panel" title="评审人员管理" fit="true">
-  <div class="z-toolbar">
-    <div class="layout">
-    <a class="easyui-linkbutton" plain="true" iconCls="icon-save" >修改</a>
-    <a class="easyui-linkbutton" plain="true" iconCls="icon-cancel" >删除</a>
-    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = 'index'">返回列表</a>
+    <div class="z-toolbar">
+        <div class="layout">
+            <a class="easyui-linkbutton" plain="true"
+                iconCls="icon-save">修改</a> <a class="easyui-linkbutton"
+                plain="true" iconCls="icon-cancel">删除</a> <a href="#"
+                class="easyui-linkbutton" plain="true"
+                iconCls="icon-undo"
+                onclick="window.location.href = 'index'">返回列表</a>
+        </div>
     </div>
-  </div>
-<div class="layout">
- <form class="form">
-    <table >
-        <colgroup>
-            <col class="label"/>
-            <col/>
-            <col class="label"/>
-            <col/>
-            <col class="label"/>
-            <col/>
-            <col/>
-        </colgroup>
-        <tr>
-            <td>姓名:</td>
-            <td >
-                <input data-bind="textboxValue: C_NAME" required/>
-            </td>
-            <td>性别:</td>
-            <td >
-                <input type="radio" name="S_SEX" data-bind="checked: S_SEX" value="男" />男
-                <input type="radio" name="S_SEX" data-bind="checked: S_SEX" value="女" />女
-            </td>
-            <td>出生日期:</td>
-            <td >
-                <input data-bind="dateboxValue: T_BIRTH" />
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>工作单位及部门:</td>
-            <td colspan="5">
-                <input data-bind="textboxValue: C_DEPT" />
-            </td>
-            <td rowspan="3" align="center"> <img alt="无法加载" src="/resource/images/photo.png">
-            </td>
-        </tr>
-        <tr>
-            <td>职务:</td>
-            <td>
-                 <input data-bind="textboxValue: C_POSITION" />
-            </td>
-            <td>人员类别:</td>
-            <td >
-                 <select data-bind ="options:selectOptions, optionsText: 'name', optionsValue: 'id', value:C_CLASSWORKER"></select>
-            </td>
-            <td>专业技术职务:</td>
-            <td>
-                 <input data-bind="textboxValue: C_TECHNOLOGY" />
-            </td>
-        </tr>
-        <tr>
-            <td>通讯地址:</td>
-            <td colspan="3">
-                 <input data-bind="textboxValue: C_ADDR" />
-            </td>
-            <td>邮编:</td>
-            <td>
-                 <input data-bind="textboxValue: C_ZIP" />
-            </td>
-        </tr>
-        <tr>
-            <td>移动电话:</td>
-            <td>
-                 <input data-bind="textboxValue: C_MOBILE" />
-            </td>
-            <td>E-mail:</td>
-            <td>
-                 <input data-bind="textboxValue: C_EMAIL" />
-            </td>
-            <td>身份证号:</td>
-            <td colspan="2">
-                 <input data-bind="textboxValue: C_CARD" />
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>聘请证书编号:</td>
-            <td>
-                 <input data-bind="textboxValue: C_CertificateNo" />
-            </td>
-            <td>行业:</td>
-            <td>
-                 <input data-bind="textboxValue: C_INDUSTRY" />
-            </td>
-            <td>专业:</td>
-            <td colspan="2">
-                 <input data-bind="textboxValue: C_PROFESSION" />
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>毕业学校:</td>
-            <td>
-                 <input data-bind="textboxValue: C_SCHOOL" />
-            </td>
-            <td>学历:</td>
-            <td>
-                 <input data-bind="textboxValue: S_EDUCATION" />
-            </td>
-            <td >学位:</td>
-            <td colspan="2">
-                 <input data-bind="textboxValue: S_DEGREE" />
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>所学专业:</td>
-            <td colspan="3">
-                 <input data-bind="textboxValue: S_MAJOR" />
-            </td>
-            <td >现从事专业及年限:</td>
-            <td colspan="2">
-                 <input data-bind="textboxValue: C_ENGPROANDAGE" />
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-        	<td colspan="7" style="text-align: left">工作简历及主要成绩:</td>
-        </tr>
-        <tr>
-            <td colspan="7">
-                <input data-bind="textareaValue: C_SUMMARY" style="width: 100%; height: 150px"/>
-            </td>
-        </tr>
-    </table>
- </form>
-</div>
+    <div class="layout">
+        <form class="form">
+            <table>
+                <colgroup>
+                    <col class="label" />
+                    <col />
+                    <col class="label" />
+                    <col />
+                    <col class="label" />
+                    <col />
+                    <col />
+                </colgroup>
+                <tr>
+                    <td>姓名:</td>
+                    <td><input data-bind="textboxValue: C_NAME"
+                        required /></td>
+                    <td>性别:</td>
+                    <td><input type="radio" name="S_SEX"
+                        data-bind="checked: S_SEX" value="男" />男 <input
+                        type="radio" name="S_SEX"
+                        data-bind="checked: S_SEX" value="女" />女</td>
+                    <td>出生日期:</td>
+                    <td><input data-bind="dateboxValue: T_BIRTH" />
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>工作单位及部门:</td>
+                    <td colspan="5"><input
+                        data-bind="textboxValue: C_DEPT" /></td>
+                    <td rowspan="3" align="center"><img alt="无法加载"
+                        src="/resource/images/photo.png"></td>
+                </tr>
+                <tr>
+                    <td>职务:</td>
+                    <td><input data-bind="textboxValue: C_POSITION" />
+                    </td>
+                    <td>人员类别:</td>
+                    <td><input
+                        data-bind="comboboxSource:cycleSource,comboboxValue:C_CLASSWORKER,easyuiOptions:selectOptions" />
+                    </td>
+                    <td>专业技术职务:</td>
+                    <td><input
+                        data-bind="textboxValue: C_TECHNOLOGY" /></td>
+                </tr>
+                <tr>
+                    <td>通讯地址:</td>
+                    <td colspan="3"><input
+                        data-bind="textboxValue: C_ADDR" /></td>
+                    <td>邮编:</td>
+                    <td><input data-bind="textboxValue: C_ZIP" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>移动电话:</td>
+                    <td><input data-bind="textboxValue: C_MOBILE" />
+                    </td>
+                    <td>E-mail:</td>
+                    <td><input data-bind="textboxValue: C_EMAIL" />
+                    </td>
+                    <td>身份证号:</td>
+                    <td colspan="2"><input
+                        data-bind="textboxValue: C_CARD" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>聘请证书编号:</td>
+                    <td><input
+                        data-bind="textboxValue: C_CertificateNo" /></td>
+                    <td>行业:</td>
+                    <td><input data-bind="textboxValue: C_INDUSTRY" />
+                    </td>
+                    <td>专业:</td>
+                    <td colspan="2"><input
+                        data-bind="textboxValue: C_PROFESSION" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>毕业学校:</td>
+                    <td><input data-bind="textboxValue: C_SCHOOL" />
+                    </td>
+                    <td>学历:</td>
+                    <td><input
+                        data-bind="textboxValue: S_EDUCATION" /></td>
+                    <td>学位:</td>
+                    <td colspan="2"><input
+                        data-bind="textboxValue: S_DEGREE" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>所学专业:</td>
+                    <td colspan="3"><input
+                        data-bind="textboxValue: S_MAJOR" /></td>
+                    <td>现从事专业及年限:</td>
+                    <td colspan="2"><input
+                        data-bind="textboxValue: C_ENGPROANDAGE" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="7" style="text-align: left">工作简历及主要成绩:</td>
+                </tr>
+                <tr>
+                    <td colspan="7"><input
+                        data-bind="textareaValue: C_SUMMARY"
+                        style="width: 100%; height: 150px" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </div>
 </@>
