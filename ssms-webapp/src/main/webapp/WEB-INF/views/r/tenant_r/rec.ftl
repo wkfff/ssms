@@ -10,12 +10,6 @@
         S_CITY: ko.observable('${S_CITY!}'),
         P_COUNTY: ko.observable('${P_COUNTY!}'),
         S_COUNTY: ko.observable('${S_COUNTY!}'),
-        P_AT_PROVINCE: ko.observable('${P_AT_PROVINCE!}'),
-        S_AT_PROVINCE: ko.observable('${P_AT_PROVINCE!}'),
-        P_AT_CITY: ko.observable('${P_AT_CITY!}'),
-        S_AT_CITY: ko.observable('${S_AT_CITY!}'),
-        P_AT_COUNTY: ko.observable('${P_AT_COUNTY!}'),
-        S_AT_COUNTY: ko.observable('${S_AT_COUNTY!}'),
         C_ADDR: ko.observable('${C_ADDR!}'),
         C_TEL: ko.observable('${C_TEL!}'),
         C_FAX: ko.observable('${C_FAX!}'),
@@ -42,18 +36,6 @@
         });
     });
     
-    model.P_AT_PROVINCE.subscribe(function (newValue) {
-        settings.at_citySetting.combobox({
-            url: '/sys/para_area/list',
-            queryParams: {R_CODE: newValue}
-        });
-    });
-    model.P_AT_CITY.subscribe(function (newValue) {
-        settings.at_countySetting.combobox({
-            url: '/sys/para_area/list',
-            queryParams: {R_CODE: newValue}
-        });
-    });
 
     var settings = {
         cycleSource: ko.observableArray(${json(_SYS_LEVEL_)}),
@@ -82,29 +64,8 @@
             </#if>
             valueField: 'C_CODE',
             textField: 'C_VALUE'
-        },
-        at_provinceSetting: {
-            url: '/sys/para_area/list',
-            queryParams: {N_LEVEL: 1},
-            valueField: 'C_CODE',
-            textField: 'C_VALUE'
-        },
-        at_citySetting: {
-        	<#if P_AT_PROVINCE!="">
-            url: '/sys/para_area/list',
-            queryParams: {R_CODE: '${P_AT_PROVINCE}'},
-            </#if>
-            valueField: 'C_CODE',
-            textField: 'C_VALUE'
-        },
-        at_countySetting: {
-        	 <#if P_AT_CITY!="">
-            url: '/sys/para_area/list',
-            queryParams: {R_CODE: '${P_AT_CITY}'},
-            </#if>
-            valueField: 'C_CODE',
-            textField: 'C_VALUE'
         }
+        
     };
 
     var events = {
@@ -174,9 +135,9 @@
             <p class="ue-clear">
                 <label>所属辖区</label>
                 <span class="control">
-                    <input style="width: 60px" data-bind="comboboxValue:P_AT_PROVINCE,comboboxText:S_AT_PROVINCE,easyuiOptions:at_provinceSetting" readonly/>省
-                    <input style="width: 60px" data-bind="comboboxValue:P_AT_CITY,comboboxText:S_AT_CITY,easyuiOptions:at_citySetting" readonly/>市
-                    <input style="width: 60px" data-bind="comboboxValue:P_AT_COUNTY,comboboxText:S_AT_COUNTY,easyuiOptions:at_countySetting" readonly/>区(县)
+                    <input style="width: 60px; text-align: center" class="readonly" type="text" value="${S_AT_PROVINCE}" readonly/>省
+                    <input style="width: 60px; text-align: center" class="readonly" type="text" value="${S_AT_CITY}" readonly/>市
+                    <input style="width: 60px; text-align: center" class="readonly" type="text" value="${S_AT_COUNTY}" readonly/>区(县)
                 </span>
             </p>
             
