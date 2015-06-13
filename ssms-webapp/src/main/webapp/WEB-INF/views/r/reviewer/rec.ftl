@@ -12,7 +12,7 @@
         C_MOBILE: ko.observable('15064447154'),
         C_EMAIL: ko.observable('vip@qq.com'),
         C_CARD: ko.observable('350684185410124566'),
-        C_CertificateNo: ko.observable('ABC闽3838438'),
+        C_CERTIFICATENO: ko.observable('ABC闽3838438'),
         C_INDUSTRY: ko.observable('轻工'),
         C_PROFESSION: ko.observable('基本规范评分细则'),
         C_SCHOOL: ko.observable('福州大学'),
@@ -162,7 +162,7 @@
                 <tr>
                     <td>聘请证书编号:</td>
                     <td><input
-                        data-bind="textboxValue: C_CertificateNo" /></td>
+                        data-bind="textboxValue: C_CERTIFICATENO" /></td>
                     <td>行业:</td>
                     <td><input data-bind="textboxValue: C_INDUSTRY" />
                     </td>
