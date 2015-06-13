@@ -10,8 +10,14 @@ package com.lanstar.model.system;
 
 import com.lanstar.plugin.activerecord.Model;
 
+import java.util.List;
+
 public class Industry extends Model<Industry> {
     public static final Industry dao = new Industry();
+
+    public List<Profession> listProfessions() {
+        return Profession.dao.find( "select * from sys_profession where R_INDUSTRY=? order by n_index, sid", getId() );
+    }
 
     public String getName() {
         return getStr( "C_NAME" );

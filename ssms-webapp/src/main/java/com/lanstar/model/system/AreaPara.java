@@ -8,8 +8,28 @@
 
 package com.lanstar.model.system;
 
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
+import com.lanstar.plugin.activerecord.Parent;
 
-public class AreaPara  extends Model<AreaPara>{
+import java.util.List;
+
+@Parent(model = AreaPara.class, foreignKey = "R_PARENT")
+public class AreaPara extends ModelExt<AreaPara> {
     public static final AreaPara dao = new AreaPara();
+
+    public List<AreaPara> children() {
+        return find( "select * from sys_para_area where R_PARENT=? order by N_INDEX,C_CODE", getId() );
+    }
+
+    public String getCode() {
+        return getStr( "C_CODE" );
+    }
+
+    public String getName() {
+        return getStr( "C_VALUE" );
+    }
+
+    private Integer getId() {
+        return getInt( "SID" );
+    }
 }
