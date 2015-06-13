@@ -10,6 +10,8 @@ package com.lanstar.controller.system;
 
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
+import com.lanstar.core.aop.Before;
 import com.lanstar.model.system.TemplateFile01;
 import com.lanstar.plugin.activerecord.ModelKit;
 
@@ -36,6 +38,7 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
             setAttrs(ModelKit.toMap(model));
     }
 
+    @Before( AttachTokenGenerator.class )
     public void view() {
         this.index();
         setAttr( "@READONLY", "true" );

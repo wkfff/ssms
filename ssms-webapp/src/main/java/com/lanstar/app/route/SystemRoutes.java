@@ -10,6 +10,7 @@ package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
 import com.lanstar.controller.system.*;
+import com.lanstar.controller.system.attachtext.AttachTextController;
 
 public class SystemRoutes extends Routes {
     private static Routes me = new SystemRoutes();
@@ -22,7 +23,7 @@ public class SystemRoutes extends Routes {
     public void config() {
         add( "/s", com.lanstar.controller.system.HomeController.class );
 
-        add( "/sys/attachtext", com.lanstar.controller.system.AttachTextController.class );
+        add( "/sys/attachtext", AttachTextController.class );
         add( "/sys/attachfile", com.lanstar.controller.system.AttachFileController.class );
 
         add( "/sys/nav", com.lanstar.controller.system.NavgateController.class );

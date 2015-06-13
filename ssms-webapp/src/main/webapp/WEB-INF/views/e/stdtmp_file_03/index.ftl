@@ -67,7 +67,7 @@ function ViewModel(catalogId){
     };
     var settings = {
         htmleditSettings: {
-            table: "STDTMP_FILE_03",
+            table: "SSM_STDTMP_FILE_03",
             field: 'C_CONTENT',
             sid: '${SID!}',
             readonly: extModel.readonly

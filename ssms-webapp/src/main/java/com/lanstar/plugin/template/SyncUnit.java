@@ -119,9 +119,9 @@ public class SyncUnit {
 
     protected final void copyAttachText( String src, int srcId, String dest, int destId ) {
         log.debug( "================>拷贝文件内容->富文本数据..." );
-        String content = AttachTextService.SYSTEM.getContent( src.substring( 4 ), "C_CONTENT", srcId );
+        String content = AttachTextService.SYSTEM.getContent( src, "C_CONTENT", srcId );
 
         AttachTextService service = targetContext.getAttachTextService();
-        service.save( dest.substring( 4 ), "C_CONTENT", destId, content, targetContext );
+        service.save( dest, "C_CONTENT", destId, content, targetContext );
     }
 }

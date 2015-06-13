@@ -28,7 +28,7 @@
     };
     var settings = {
         htmleditSettings: {
-            table: "STDTMP_FILE_05",
+            table: "SSM_STDTMP_FILE_05",
             field: 'C_CONTENT',
             sid: '${SID!}',
             readonly: extModel.readonly

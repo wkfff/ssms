@@ -6,14 +6,19 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.controller.system;
+package com.lanstar.controller.system.attachtext;
 
+import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
+import com.lanstar.core.aop.Before;
 import com.lanstar.core.render.JsonRender;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.TenantContext;
 import com.lanstar.service.AttachTextService;
 
 public class AttachTextController extends Controller {
+
+    @Before(AttachTokenValidator.class)
     public void get() {
         String field = getPara( "field" );
         String table = getPara( "table" );
@@ -23,7 +28,7 @@ public class AttachTextController extends Controller {
             return;
         }
 
-        IdentityContext context = IdentityContext.getIdentityContext( this );
+        TenantContext context = this.getAttr( Const.IDENTITY_KEY );
         AttachTextService service = context.getAttachTextService();
         String content = service.getContent( table, field, sid );
         renderText( content == null ? "" : content );
@@ -42,3 +47,4 @@ public class AttachTextController extends Controller {
         render( new JsonRender( id ).forIE() );
     }
 }
+

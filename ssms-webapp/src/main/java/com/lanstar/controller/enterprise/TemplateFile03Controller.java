@@ -24,7 +24,10 @@ public class TemplateFile03Controller extends SimplateController<TemplateFile03>
         com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
         if ( sourceFile == null ) return;
         int sourceId = sourceFile.getId();
-        setAttr( "TEMPLATE_ID", sourceId );
+        com.lanstar.model.system.TemplateFile03 m = com.lanstar.model.system.TemplateFile03.dao.findFirstByColumn( "R_TMPFILE", sourceId );
+        if ( m == null ) return;
+        int id = m.getId();
+        setAttr( "TEMPLATE_ID", id );
     }
 
     @Override
