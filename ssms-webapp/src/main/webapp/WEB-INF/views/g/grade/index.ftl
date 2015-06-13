@@ -63,8 +63,7 @@
             </table>
         </div>
         <div class="cardbar">
-            <a data-bind="attr: {'href': viewUrl}" class="searchIcon">查看体系</a>&nbsp;&nbsp;
-            <a data-bind="attr: {'href': reviewUrl}" class="searchIcon">进入评审</a>
+            <a data-bind="attr: {'href': reviewUrl}" class="searchIcon">详细信息</a>
         </div>
     </div>
 </script>
