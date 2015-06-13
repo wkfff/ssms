@@ -14,7 +14,6 @@ import java.util.List;
 
 import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.controller.SimplateController;
-import com.lanstar.model.tenant.GradeContent;
 import com.lanstar.model.tenant.GradeContentR;
 import com.lanstar.plugin.activerecord.Page;
 import com.lanstar.plugin.activerecord.Record;
@@ -58,26 +57,29 @@ public class GradeContentController extends SimplateController<GradeContentR> {
     @Override
     protected SqlBuilder buildWhere() {
         SqlBuilder builder = new SqlBuilder();
-//        builder.WHERE( "R_TENANT = ?", this.identityContext.getTenantId() )
-//                .WHERE( "P_TENANT = ?", this.identityContext.getTenantType().getName() )
-//                .WHERE( "R_SID = ?", this.getPara( "R_SID" ) )
-//                ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
-//                ._If( this.isParaBlank( "NOCOMPLETE" ) == false, " IFNULL(N_SCORE_REAL,0) = ?", 0 );
+        // builder.WHERE( "R_TENANT = ?", this.identityContext.getTenantId() )
+        // .WHERE( "P_TENANT = ?",
+        // this.identityContext.getTenantType().getName() )
+        // .WHERE( "R_SID = ?", this.getPara( "R_SID" ) )
+        // ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara(
+        // "N_STATE" ) )
+        // ._If( this.isParaBlank( "NOCOMPLETE" ) == false,
+        // " IFNULL(N_SCORE_REAL,0) = ?", 0 );
         builder.WHERE( "R_SID = ?", this.getPara( "R_SID" ) )
-        ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
-        ._If( this.isParaBlank( "NOCOMPLETE" ) == false, " IFNULL(N_SCORE_REVIEW,0) = ?", 0 );
+                ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
+                ._If( this.isParaBlank( "NOCOMPLETE" ) == false, " IFNULL(N_SCORE_REVIEW,0) = ?", 0 );
         return builder;
     }
 
     @Override
     protected SqlBuilder buildOrder() {
-      SqlBuilder builder = new SqlBuilder();
-      builder.ORDER_BY( "N_INDEX" );
-      return builder;
+        SqlBuilder builder = new SqlBuilder();
+        builder.ORDER_BY( "N_INDEX" );
+        return builder;
     }
 
     @Override
     protected void afterSave( GradeContentR model ) {
-        tenantDb.callProcedure( "P_GRADE_SUM_R", model.getInt( "R_SID" ));
+        this.tenantDb.callProcedure( "P_GRADE_SUM_R", model.getInt( "R_SID" ) );
     }
 }

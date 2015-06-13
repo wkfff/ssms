@@ -137,8 +137,8 @@ public class TenantContext {
     public synchronized void initReviewService( Enterprise tenant, Profession profession  ) {
         Asserts.notNull( tenant, "tenant can not be null" );
         Asserts.notNull( profession, "profession can not be null" );
-        if ( TenantType.REVIEW.equals( getTenantType() ) == false )
-            throw new RuntimeException( "tenant type must equals 'REVIEW'" );
+//        if ( TenantType.REVIEW.equals( getTenantType() ) == false )
+//            throw new RuntimeException( "tenant type must equals 'REVIEW'" );
         
         ReviewService service = getValue( ReviewService.class );
         if ( service == null ) {

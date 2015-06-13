@@ -4,7 +4,7 @@ function ViewModel(p_city,p_county,c_name) {
     self.bindData = function(){
         $.ajax({
             type: 'get',
-            url:'/r/grade_m/list_e',
+            url:'/g/grade/list_e',
             dataType: "json",
             data: {P_CITY:model.comboCity,P_CONUTY:model.comboCounty,C_NAME:model.txtName},
             success: function (data) {
@@ -19,8 +19,8 @@ function ViewModel(p_city,p_county,c_name) {
                         C_NAME_IND: product.C_NAME_IND,
                         C_NAME_PRO: product.C_NAME_PRO,
                         N_STATE: product.N_STATE,
-                        viewUrl: '/r/stdtmp/query2?showback=1&sid='+product.SID+'&pro='+product.P_PROFESSION,
-                        reviewUrl: '/r/grade_m/tabs?sid='+product.SID+'&pro='+product.P_PROFESSION
+                        viewUrl: '/g/stdtmp/query2?showback=1&sid='+product.SID+'&pro='+product.P_PROFESSION,
+                        reviewUrl: '/g/grade/tabs?sid='+product.SID+'&pro='+product.P_PROFESSION
                     });
                 });
                 self.items(details);
@@ -64,7 +64,7 @@ function ViewModel(p_city,p_county,c_name) {
                             model.comboCounty(p_county);
                             break;
                         }
-                    }
+                    };
                 }
             })
     });
