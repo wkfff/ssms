@@ -3,7 +3,7 @@
 <script type="text/javascript">
     var model = {
         C_NAME: ko.observable(),
-        S_SEX: ko.observable(),
+        C_SEX: ko.observable(),
         T_BIRTH: ko.observable(),
         C_DEPT: ko.observable(),
         C_POSITION: ko.observable(),
@@ -17,12 +17,13 @@
         C_INDUSTRY: ko.observable(),
         C_PROFESSION: ko.observable(),
         C_SCHOOL: ko.observable(),
-        S_EDUCATION: ko.observable(),
-        S_DEGREE: ko.observable(),
-        S_MAJOR: ko.observable(),
+        C_EDUCATION: ko.observable(),
+        C_DEGREE: ko.observable(),
+        C_MAJOR: ko.observable(),
         C_ENGPROANDAGE: ko.observable(),
         C_SUMMARY: ko.observable(),
-        C_CLASSWORKER : ko.observable('01'),
+        P_CLASSWORKER : ko.observable('01'),
+        S_CLASSWORKER : ko.observable('专家'),
         SID: ko.observable()
     };
     var settings={
@@ -109,8 +110,8 @@
             </td>
             <td>性别:</td>
             <td >
-                <input type="radio" name="S_SEX" data-bind="checked: S_SEX" value="男" />男
-                <input type="radio" name="S_SEX" data-bind="checked: S_SEX" value="女" />女
+                <input type="radio" name="C_SEX" data-bind="checked: C_SEX" value="男" />男
+                <input type="radio" name="C_SEX" data-bind="checked: C_SEX" value="女" />女
             </td>
             <td>出生日期:</td>
             <td >
@@ -134,7 +135,7 @@
             <td>人员类别:</td>
             <td >
                  <input
-                        data-bind="comboboxSource:cycleSource,comboboxValue:C_CLASSWORKER,easyuiOptions:selectOptions" />
+                        data-bind="comboboxSource:cycleSource,comboboxValue:P_CLASSWORKER,easyuiOptions:selectOptions" />
             </td>
             <td>专业技术职务:</td>
             <td>
@@ -188,18 +189,18 @@
             </td>
             <td>学历:</td>
             <td>
-                 <input data-bind="textboxValue: S_EDUCATION" />
+                 <input data-bind="textboxValue: C_EDUCATION" />
             </td>
             <td >学位:</td>
             <td colspan="2">
-                 <input data-bind="textboxValue: S_DEGREE" />
+                 <input data-bind="textboxValue: C_DEGREE" />
             </td>
             <td></td>
         </tr>
         <tr>
             <td>所学专业:</td>
             <td colspan="3">
-                 <input data-bind="textboxValue: S_MAJOR" />
+                 <input data-bind="textboxValue: C_MAJOR" />
             </td>
             <td >现从事专业及年限:</td>
             <td colspan="2">
