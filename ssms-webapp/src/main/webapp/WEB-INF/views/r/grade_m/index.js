@@ -18,7 +18,9 @@ function ViewModel(p_city,p_county,c_name) {
                         C_TEL: product.C_TEL,
                         C_NAME_IND: product.C_NAME_IND,
                         C_NAME_PRO: product.C_NAME_PRO,
-                        N_STATE: product.N_STATE
+                        N_STATE: product.N_STATE,
+                        viewUrl: '/r/stdtmp/query2?showback=1&sid='+product.SID+'&pro='+product.P_PROFESSION,
+                        reviewUrl: '/r/grade_m/tabs?sid='+product.SID+'&pro='+product.P_PROFESSION
                     });
                 });
                 self.items(details);
@@ -62,7 +64,7 @@ function ViewModel(p_city,p_county,c_name) {
                             model.comboCounty(p_county);
                             break;
                         }
-                    };
+                    }
                 }
             })
     });

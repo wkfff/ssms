@@ -3,9 +3,15 @@
 <style>
      li{ float:left; margin:10px;}
      .card{width:300px;border:1px solid #EEE;background-color:#FAFAFA;}
-     .cardbar{background-color:#F6F6F6;padding:5px;text-align:center;}
-     .cardcontent{padding:5px;}
+     .cardbar{background-color:#F6F6F6;padding:5px 0;text-align:center;}
+     .cardcontent{padding:5px 0;}
      .nofound{padding:10px;}
+    .t_title {font-weight: bold; color: #c9302c; text-align: right}
+    .table { table-layout: fixed;width: 100%; }
+    .table td { white-space: nowrap;overflow: hidden; }
+    a.searchIcon{ background: url('/resource/css/easyui/themes/icons/search.png') no-repeat 0 center; padding-left: 20px; color: #0066cc
+    }
+    a.searchIcon:visited {color: #0066cc}
 </style>
 <script type="text/javascript" src="index.js"></script>
 <script type="text/javascript">
@@ -26,24 +32,40 @@
 <!-- <table data-bind="datagridValue:selectItem,easyuiOptions: gridSettings"></table> -->
 <div>
     <ul data-bind="foreach: items">
-        <li>
-            <div class="card">
-                <div class="cardcontent">
-                                    企业名称:<span data-bind="text:C_NAME"></span><br>
-                                    地址:<span data-bind="text:C_ADDR"></span><br>
-                                    联系人:<span data-bind="text:C_CONTACT"></span>
-                                    <div style="float:right;">联系电话:<span data-bind="text:C_TEL"></span></div><br>
-                                    行业:<span data-bind="text:C_NAME_IND"></span>
-                                    专业:<span data-bind="text:C_NAME_PRO"></span>
-                                    评审状态:<span data-bind="text:N_STATE"></span>
-                </div>
-                <div class="cardbar">
-                    <a href="/r/stdtmp/query2?showback=1&sid=&pro=" class="easyui-linkbutton" iconCls="icon-search" plain="true">查看体系</a>&nbsp;&nbsp;
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true">进入评审</a>
-                </div>
-            </div>
-        </li>
+        <li data-bind="template: { name: 'card-template', data: $data }"></li>
     </ul>
     <div class="nofound" data-bind="visible:items().length==0">没有查询到符合条件的企业！</div>
 </div>
+<script type="text/html" id="card-template">
+    <div class="card">
+        <div class="cardcontent">
+            <table class="table">
+                <tr>
+                    <td class="t_title">企业名称：</td>
+                    <td colspan="3" data-bind="text: C_NAME"></td>
+                </tr>
+                <tr>
+                    <td class="t_title">地址：</td>
+                    <td colspan="3" data-bind="text: C_ADDR"></td>
+                </tr>
+                <tr>
+                    <td class="t_title">联系人：</td>
+                    <td data-bind="text: C_CONTACT"></td>
+                    <td class="t_title">联系电话：</td>
+                    <td data-bind="text: C_TEL"></td>
+                </tr>
+                <tr>
+                    <td class="t_title">行业(专业)：</td>
+                    <td><span data-bind="text: C_NAME_IND"></span>(<span data-bind="text: C_NAME_PRO"></span>)</td>
+                    <td class="t_title">评审状态：</td>
+                    <td data-bind="text:N_STATE"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="cardbar">
+            <a data-bind="attr: {'href': viewUrl}" class="searchIcon">查看体系</a>&nbsp;&nbsp;
+            <a data-bind="attr: {'href': reviewUrl}" class="searchIcon">进入评审</a>
+        </div>
+    </div>
+</script>
 </@>
