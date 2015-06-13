@@ -119,17 +119,20 @@
     </tr>
     </thead>
     <tbody data-bind="foreach: datas">
-    <tr data-bind="css: {diversification: $index()%2==1}">
-        <td data-bind="text: $index()+1"></td>
-        <td style="text-align: left" data-bind="text: C_ENTERPRISE"></td>
-        <td data-bind="text: C_PROFESSION"></td>
-        <td data-bind="text: C_REVIEW_PROP"></td>
-        <td data-bind="text: C_REVIEW_STATUS"></td>
-        <td data-bind="text: T_CERT_END"></td>
-        <td data-bind="text: S_CERT_STATUS"></td>
+    <tr data-bind="template: { name: 'row-template', data: $data },css: {diversification: $index()%2==1}">
+
     </tr>
     </tbody>
 </table>
+<script type="text/html" id="row-template">
+    <td data-bind="text: $index()+1"></td>
+    <td style="text-align: left" data-bind="text: C_ENTERPRISE"></td>
+    <td data-bind="text: C_PROFESSION"></td>
+    <td data-bind="text: C_REVIEW_PROP"></td>
+    <td data-bind="text: C_REVIEW_STATUS"></td>
+    <td data-bind="text: T_CERT_END"></td>
+    <td data-bind="text: S_CERT_STATUS"></td>
+</script>
 </body>
 <script type="text/javascript" src="/resource/js/costants.js"></script>
 <script type="text/javascript">
