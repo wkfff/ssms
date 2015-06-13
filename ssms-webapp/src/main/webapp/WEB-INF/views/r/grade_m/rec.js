@@ -63,7 +63,7 @@ function ViewModel(recId) {
                                     $.getJSON("complete", {sid:recId}, function (data) {
                                         if (data.result == "OK") {
                                             $.messager.alert("提示", "评审完成");
-                                            window.location.href='/e/grade_m/report_rec?sid='+recId;
+                                            //window.location.href='/r/grade_m/report_rec?sid='+recId;
                                         }
                                         else {
                                             $.messager.alert("提示", data);
@@ -120,10 +120,10 @@ function ViewModel(recId) {
                     if (settings.gridSettings.datagrid('validateRow', editIndex)){
                         var row = settings.gridSettings.datagrid('getRows')[editIndex];
                         var v1 = row['N_SCORE'];
-                        var ed = settings.gridSettings.datagrid('getEditor', {index:editIndex,field:'N_SCORE_REAL'});
+                        var ed = settings.gridSettings.datagrid('getEditor', {index:editIndex,field:'N_SCORE_REVIEW'});
                         var v2 = ed?ed.target.val():0;
                         if (v1<v2){
-                            alert('实际得分不能大于标准分值！');
+                            alert('评审分不能大于标准分值！');
                             return false;
                         }
                         

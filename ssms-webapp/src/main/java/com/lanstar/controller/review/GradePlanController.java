@@ -98,7 +98,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
 
             // 获取评审服务
             ReviewService service = this.identityContext.getReviewService();
-            // 同步企业的自评数据
+            // 同步企业的评审数据
             service.sync( sid );
         }
     }
@@ -227,7 +227,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         Profession profession = Profession.dao.findById( pro );
         this.identityContext.initReviewService( enterprise, profession );
 
-        // 根据企业编号获取最后一次完成的自评编号
+        // 根据企业编号获取最后一次完成的评审编号
         String sql = "SELECT SID FROM SSM_GRADE_E_M WHERE N_STATE=1  ORDER BY T_UPDATE DESC  LIMIT 1";
         this.setAttr( "gradeid", GradePlan.dao.findFirst( sql ).getId() );
         // 获取对选择企业的评审
@@ -237,5 +237,35 @@ public class GradePlanController extends SimplateController<GradePlanR> {
             this.setAttr( "graderid",gpr.getId());
         }
     }
-
+    
+    public void result(){
+        
+    }
+    
+    /**
+     * 评审历史查看.评分汇总表
+     */
+    public void sum(){
+        int sid = this.getModel().getId();
+        List<Record> list = tenantDb.find( "select * from V_GRADE_SUM_R where R_SID=?", new Object[]{sid} );
+        this.setAttr( "list", list );
+        this.setAttr( "S_TENANT", this.identityContext.getTenantName() );
+    }
+    
+    /**
+     *  评审历史查看.扣分项汇总表
+     */
+    public void sum_ded(){
+        int sid = this.getModel().getId();
+        List<Record> list = tenantDb.find( "select * from V_GRADE_SUM_DED_R where R_SID=?", new Object[]{sid} );
+        this.setAttr( "list", list );
+        this.setAttr( "S_TENANT", this.identityContext.getTenantName() );
+    }
+    
+    /**
+     * 评审历史查看.评审报告
+     */
+    public void history_rep(){
+        
+    }
 }

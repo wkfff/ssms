@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.model.tenant.GradeContent;
 import com.lanstar.model.tenant.GradeContentR;
 import com.lanstar.plugin.activerecord.Page;
 import com.lanstar.plugin.activerecord.Record;
@@ -75,4 +76,8 @@ public class GradeContentController extends SimplateController<GradeContentR> {
       return builder;
     }
 
+    @Override
+    protected void afterSave( GradeContentR model ) {
+        tenantDb.callProcedure( "P_GRADE_SUM_R", model.getInt( "R_SID" ));
+    }
 }

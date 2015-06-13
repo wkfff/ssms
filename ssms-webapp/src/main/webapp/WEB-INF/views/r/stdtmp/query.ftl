@@ -1,7 +1,7 @@
 <#import "../../layout/_list.ftl" as layout/>
 <#assign script>
 <style>
-    .titlebar{background-color:#daeef5;border:1px solid #c1d3de;padding:5px;font-weight:bold;font-size:13px;}
+    .titlebar{background-color:#daeef5;border:1px solid #c1d3de;padding:5px;font-weight:bold;font-size:14px;}
     .titlebar img{vertical-align:middle;width:16px;height:16px;} 
     .table{ width:100%;  border:1px solid #c1d3de; border-top:none;}
     .table thead tr th{ height:35px; line-height:35px; border:1px solid #c1d3de; background:url(/resource/images/tablelistbg.png) repeat-x; font-weight:bold;padding-left:2px;}
@@ -25,6 +25,11 @@
 <div style="padding:10px;">
     <div class="titlebar">
         <img src="/resource/images/blue/flag.png"/>&nbsp;13要素列表
+        <#if showback??>
+            <div id="tb" style="float:right;padding-right:5px;">
+            <a href="#" onclick="window.location.href='${referer!}';" style="width:90px;font-size:14px;text-decoration: none;">返回列表</a>
+            </div>
+        </#if>
     </div>
     <table class="table">
     <thead>

@@ -47,7 +47,9 @@
                 <!-- <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:gridEvents.refreshClick">刷新</a> -->
                 <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" data-bind="click: recEvents.saveClick">保存</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: recEvents.completeClick">完成评审</a>
+                <#if showback??>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-back" plain="true" data-bind="click: recEvents.backClick">返回</a>
+                </#if>
           </div>
     </div>
     

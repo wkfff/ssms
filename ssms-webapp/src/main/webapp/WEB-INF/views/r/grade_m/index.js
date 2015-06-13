@@ -130,7 +130,7 @@ function ViewModel(p_city,p_county,c_name) {
                         align:'center',
                         formatter:function(value,row){
                             var pid = row.P_PROFESSION;
-                            var html = "<a href='/r/stdtmp/query2?sid="+value+"&pro="+pid+"'>查看体系</a>&nbsp;&nbsp;<a href='/r/grade_m/tabs?sid="+value+"&pro="+pid+"'>进入评审</a>";
+                            var html = "<a href='/r/stdtmp/query2?showback=1&sid="+value+"&pro="+pid+"'>查看体系</a>&nbsp;&nbsp;<a href='/r/grade_m/tabs?sid="+value+"&pro="+pid+"'>进入评审</a>";
                             return  html;
                         }
                     }
