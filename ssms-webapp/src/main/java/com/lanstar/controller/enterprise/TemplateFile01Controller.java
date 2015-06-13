@@ -33,10 +33,7 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
         com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
         if ( sourceFile == null ) return;
         int sourceId = sourceFile.getId();
-        com.lanstar.model.system.TemplateFile01 m = com.lanstar.model.system.TemplateFile01.dao.findFirstByColumn( "R_TMPFILE", sourceId );
-        if ( m == null ) return;
-        int id = m.getId();
-        setAttr( "TEMPLATE_ID", id );
+        setAttr( "TEMPLATE_ID", sourceId );
 
         String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ?";
 

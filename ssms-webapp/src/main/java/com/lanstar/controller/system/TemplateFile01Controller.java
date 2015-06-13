@@ -21,7 +21,7 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
 
     public void index() {
         //先判断sid 是否有值，如果有值根据模板获R_TMPFILE取到对应的模板，如果没值根据SID获取到模板。。。
-        TemplateFile01 model = null;
+        TemplateFile01 model;
         String sid = getPara("sid");
         if (StrKit.isEmpty(sid)) {
             sid = getPara("SID");
