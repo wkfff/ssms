@@ -1,17 +1,37 @@
 function ViewModel(p_city,p_county,c_name) {
     var self = this;
-
+    self.items = ko.observableArray();
+    self.bindData = function(){
+        $.ajax({
+            type: 'get',
+            url:'/r/grade_m/list_e',
+            dataType: "json",
+            data: {P_CITY:model.comboCity,P_CONUTY:model.comboCounty,C_NAME:model.txtName},
+            success: function (data) {
+                var details = [];
+                $.each(data, function (idx, product) {
+                    details.push({
+                        SID: product.SID,
+                        C_NAME: product.SKU,
+                        C_ADDR: product.C_ADDR,
+                        C_CONTACT: product.C_CONTACT,
+                        C_TEL: product.C_TEL,
+                        C_NAME_IND: product.C_NAME_IND,
+                        C_NAME_PRO: product.C_NAME_PRO,
+                        N_STATE: product.N_STATE
+                    });
+                });
+                self.items(details);
+            }
+        });
+    };
+    
     var model = {
         //comboPro: ko.observable(),
         comboCity: ko.observable(),
         comboCounty: ko.observable(),
         txtName: ko.observable(decodeURIComponent(c_name)),
         selectItem: ko.observable(),
-        /*
-        selectIndex: ko.pureComputed(function () {
-            var row = model.selectItem();
-            if (row) return settings.gridSettings.datagrid('getRowIndex', row);
-        }),*/
         sid: ko.observable()
     };
     /*model.comboPro.subscribe(function (newValue) {
@@ -68,7 +88,7 @@ function ViewModel(p_city,p_county,c_name) {
         comboCountySettings:{
             valueField:'C_CODE',
             textField:'C_VALUE'
-        },
+        }/*,
         gridSettings: {
             idField: 'SID',
             title:'评审办理',
@@ -139,9 +159,9 @@ function ViewModel(p_city,p_county,c_name) {
             onDblClickRow: function () {
                 events.gridEvents.editClick();
             }
-        }
+        }*/
     };
-
+    
     var events = {
         gridEvents: {
             refreshClick: function () {
