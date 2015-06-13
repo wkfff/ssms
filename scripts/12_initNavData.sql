@@ -33,14 +33,14 @@ INSERT INTO `sys_nav` VALUES ('51', '13', '评审结果', '/development/', null,
 INSERT INTO `sys_nav` VALUES ('63', '45', '用户管理', '/e/tenant_eu/rec', '123', 'user', null, null, null, '1', 'admin', '2015-06-09 17:20:57', null, null, null, null, null, '2', null);
 INSERT INTO `sys_nav` VALUES ('54', '13', '密码修改', '/e/psw_change/psw', '123', 'pwd', null, null, null, '1', 'admin', '2015-06-09 21:34:18', null, null, null, null, null, '8', null);
 INSERT INTO `sys_nav` VALUES ('62', '45', '企业信息维护', '/e/tenant_e/rec', '123', 'agency', null, null, null, '1', 'admin', '2015-06-09 14:59:31', null, null, null, null, null, '1', null);
-INSERT INTO `sys_nav` VALUES ('64', '13', '13要素查看', '/e/stdtmp/query', null, 'read', null, null, null, null, null, '2015-06-09 21:32:47', null, null, null, null, null, '2', null);
+INSERT INTO `sys_nav` VALUES ('64', '13', '13要素查看', '/e/stdtmp/list_version', null, 'read', null, null, null, '1', 'admin', '2015-06-13 17:39:46', null, null, null, null, null, '2', null);
 INSERT INTO `sys_nav` VALUES ('65', '14', '评审员管理', '/r/reviewer/', null, 'user', null, null, null, null, null, '2015-06-10 20:22:33', null, null, null, null, null, '6', null);
 INSERT INTO `sys_nav` VALUES ('66', '14', '密码修改', '/r/psw_change/psw', null, 'pwd', null, null, null, '1', 'admin', '2015-06-10 16:49:18', null, null, null, null, null, '9', null);
 INSERT INTO `sys_nav` VALUES ('67', '48', '收到的公告', null, null, null, null, null, null, null, null, '2015-06-10 16:49:45', null, null, null, null, null, '1', null);
 INSERT INTO `sys_nav` VALUES ('68', '48', '发布公告', '/r/notice/', null, null, null, null, null, '1', 'admin', '2015-06-10 16:50:12', null, null, null, null, null, '2', null);
 INSERT INTO `sys_nav` VALUES ('69', '50', '评审信息维护', '/r/tenant_r/rec', '维护评审信息', 'agency', '1', 'admin', '2015-05-15 09:47:25', '1', 'admin', '2015-06-10 18:00:10', '1', 'admin', 'S', '0', null, '1', '0');
 INSERT INTO `sys_nav` VALUES ('70', '50', '用户管理', '/r/tenant_ru/rec', '用户信息管理', 'agency', null, null, null, null, null, '2015-06-10 18:00:34', null, null, null, null, null, '2', null);
-INSERT INTO `sys_nav` VALUES ('71', '15', '企业监管', '/g/grade/', null, null, null, null, null, null, null, '2015-06-12 10:04:47', null, null, null, null, null, '1', null);
+INSERT INTO `sys_nav` VALUES ('71', '15', '企业监管', '/g/grade/', null, null, null, null, null, '1', 'admin', '2015-06-13 17:58:45', null, null, null, null, null, '1', null);
 INSERT INTO `sys_nav` VALUES ('72', '15', '监督统计', '/g/statistics/', null, null, null, null, null, '1', 'admin', '2015-06-13 14:30:03', null, null, null, null, null, '2', null);
 INSERT INTO `sys_nav` VALUES ('73', '15', '证书管理', '/static/carts.html', null, 'cert', null, null, null, '1', 'admin', '2015-06-12 10:38:33', null, null, null, null, null, '3', null);
 INSERT INTO `sys_nav` VALUES ('74', '15', '知识库', '/knowledge/', null, 'knowledge', null, null, null, '1', 'admin', '2015-06-13 15:56:04', null, null, null, null, null, '4', null);
