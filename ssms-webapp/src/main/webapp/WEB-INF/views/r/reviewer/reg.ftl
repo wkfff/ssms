@@ -13,7 +13,7 @@
         C_MOBILE: ko.observable(),
         C_EMAIL: ko.observable(),
         C_CARD: ko.observable(),
-        C_CertificateNo: ko.observable(),
+        C_CERTIFICATENO: ko.observable(),
         C_INDUSTRY: ko.observable(),
         C_PROFESSION: ko.observable(),
         C_SCHOOL: ko.observable(),
@@ -169,7 +169,7 @@
         <tr>
             <td>聘请证书编号:</td>
             <td>
-                 <input data-bind="textboxValue: C_CertificateNo" required/>
+                 <input data-bind="textboxValue: C_CERTIFICATENO" required/>
             </td>
             <td>行业:</td>
             <td>
