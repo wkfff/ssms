@@ -101,7 +101,7 @@ public class TemplateController extends Controller {
      * 显示版本
      */
     public void list_version(){
-        String sql = "select distinct N_VERSION from ssm_stdtmp_folder where r_tenant=? and N_VERSION is not null";
+        String sql = "select distinct IFNULL(N_VERSION,0) from ssm_stdtmp_folder where r_tenant=? ";
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         DbPro tenantDb = identityContext.getTenantDb();
         int tenantId = this.getParaToInt( "R_TENANT",identityContext.getTenantId() );

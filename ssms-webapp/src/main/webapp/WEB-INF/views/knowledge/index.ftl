@@ -49,7 +49,7 @@
 <td valign="top" >
     <div style="margin-top:-15px;display:">
         <a name="index_banner_two">
-        </a><a href="#" target="_blank" title="插入广告">
+        </a><a href="#" target="_blank" >
             <img src="index_banner_two_708_50_PPVNz.gif" width="708.0" height="50.0" style="display:  !important;">
         </a>
     </div>

@@ -16,12 +16,12 @@
     }
     
      function doSelect(title,index){
-            var e = $('#tab'+index);
-            e.html('<iframe frameborder="0" width="100%" height="100%" src="'+e.attr("url")+'" ></iframe>');
-        }
-        $.parser.onComplete = function(){
-            $("#tt").tabs("select",0);
-        }
+        var e = $('#tab'+index);
+        e.html('<iframe frameborder="0" width="100%" height="100%" src="'+e.attr("url")+'" ></iframe>');
+    }
+    $.parser.onComplete = function(){
+        $("#tt").tabs("select",0);
+    }
 </script>
 </head>
 <body>

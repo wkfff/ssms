@@ -28,8 +28,10 @@
 
     <#list list as r>
     <tr>
-        <td><a href="query?N_VERSION=${r.N_VERSION!}">版本 ${r.N_VERSION!}</a></td>
-        <td class="operate"><a href="query?N_VERSION=${r.N_VERSION!}&R_TENANT=${R_TENANT!}">查看</a></td>
+        <td><a href="query?N_VERSION=${r.N_VERSION!0}"> 
+        <#if r.N_VERSION?? && r.N_VERSION=='0'>当前版本<#else>版本 ${r.N_VERSION!}</#if>
+        </a></td>
+        <td class="operate"><a href="query?N_VERSION=${r.N_VERSION!0}&R_TENANT=${R_TENANT!}">查看</a></td>
     </tr> 
     </#list>
     

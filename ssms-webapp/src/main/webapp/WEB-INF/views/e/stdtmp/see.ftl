@@ -32,7 +32,7 @@
 </head>
 <body>
 <div id="db_tb" style="padding:5px;">
-    <a href="#" class="easyui-linkbutton" iconCls="icon-back" plain="true" onclick="window.location.href='${referer!}';">返回</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-back" plain="true" onclick="window.location.href='query?N_VERSION=${N_VERSION}&sid=${sid!}';">返回</a>
 </div>
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'center', border:false,tools:'#db_tb'">

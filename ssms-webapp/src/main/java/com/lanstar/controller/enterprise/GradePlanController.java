@@ -150,4 +150,22 @@ public class GradePlanController extends SimplateController<GradePlan> {
         this.setAttr( "result", "OK" );
         renderJson();
     }
+    /**
+     * 评审结果列表
+     */
+    public void review_result(){
+        
+    }
+    /**
+     * 评审结果查看
+     */
+    public void review_tabs(){
+        
+    }
+    /**
+     * 自评历史
+     */
+    public void history(){
+        
+    }
 }
