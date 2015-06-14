@@ -9,9 +9,11 @@
 package com.lanstar.plugin.jsconstants;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.io.Closeables;
+import com.google.common.io.Files;
 import com.lanstar.common.log.Logger;
 import com.lanstar.plugin.IPlugin;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
@@ -48,7 +50,7 @@ public class JsConstantBuilder implements IPlugin {
             list.add( "var " + key + " = " + JSON.toJSONString( map.get( key ) ) );
         }
         try {
-            compress( list, new FileWriter( filePath ) );
+            compress( list, Files.newWriter( new File( filePath ),  Charsets.UTF_8 ));
             return true;
         } catch ( IOException e ) {
             log.error( "生成js文件的时候发生了错误...", e );
