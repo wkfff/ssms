@@ -12,6 +12,8 @@ import com.lanstar.common.ModelInjector;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.model.system.AttachFile;
+import com.lanstar.model.system.AttachText;
 import com.lanstar.model.system.Notice;
 import com.lanstar.model.system.TemplateFile01;
 import com.lanstar.plugin.activerecord.ModelKit;
@@ -71,8 +73,8 @@ public class NoticeController extends SimplateController<Notice> {
             model.set( "T_PUBLISH",  new Date());
         }
 
-        model.set("C_TITLE",getPara("C_TITLE"));
-        model.set("C_CONTENT",getPara("C_CONTENT"));
+        model.set("C_TITLE", getPara("C_TITLE"));
+        model.set("C_CONTENT", getPara("C_CONTENT"));
         model.set("SID",getParaToInt("SID"));
 
         Integer sid = model.getInt("SID");
@@ -103,6 +105,12 @@ public class NoticeController extends SimplateController<Notice> {
         Notice model = getDao().findById(sid);
         if (model != null)
             setAttrs(ModelKit.toMap(model));
+
+        String textSql = "SELECT * FROM sys_attach_text WHERE r_table = 'ssm_notice' AND r_sid = ?";
+        setAttr("noticeText", AttachText.dao.findFirst(textSql, sid));
+
+        String fileSql = "SELECT * FROM sys_attach_file WHERE r_table = 'ssm_notice' AND r_sid = ?";
+        setAttr("noticeFile", AttachFile.dao.find(fileSql,sid));
     }
 
     public void publics() {
