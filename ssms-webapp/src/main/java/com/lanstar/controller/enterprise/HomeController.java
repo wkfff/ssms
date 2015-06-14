@@ -11,10 +11,12 @@ package com.lanstar.controller.enterprise;
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.model.system.Notice;
 import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
+import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.enterprise.ProfessionService;
 
@@ -73,5 +75,8 @@ public class HomeController extends Controller {
                 + "and N_COUNT = 0 limit 0, 15", professionService.getSystemTemplate()
                                         .getId(), identityContext.getTenantId(), TenantType.ENTERPRISE.getName() );
         setAttr( "rs_todo", files );
+
+        List<Notice> rs_notice = Notice.dao.find("select * from ssm_notice");
+        setAttr("rs_notice", rs_notice );
     }
 }

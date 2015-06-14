@@ -32,14 +32,14 @@
     <div class="wrap-l">
         <div class="title ue-clear">
             <h2>接收公告</h2>
-            <a href="/r/notice/index" class="more">更多</a>
+            <a href="/r/notice/publics" class="more">更多</a>
         </div>
         <div class="content">
             <ul class="notice-list">
                   <#if rs_notice?exists && rs_notice?size!=0>
                     <#list rs_notice as rs>
                      <li class="ue-clear">
-                        <a href="javascript:nav('/r/notice/rec?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
+                        <a href="javascript:nav('/r/notice/view?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
                         <div class="notice-time">${rs.T_PUBLISH}</div>
                     </li>
                     </#list>
