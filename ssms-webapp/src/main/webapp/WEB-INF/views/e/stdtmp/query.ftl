@@ -12,11 +12,15 @@
     .operate{text-align:center;}
     .nofile{color:#CCC;}
     .back{float:right;padding-right:5px;}
+    .activeRow{background-color:#ADBDFF;}
 </style>
 <script type="text/javascript">
     $("tbody").find("tr:odd").css("backgroundColor","#eff6fa");
-    function nav(_url){
-        var url = "/e/stdtmp/see?URL="+ encodeURIComponent(_url);
+    <#if sid??>location.href = "#tr_${sid!}";</#if>
+    $("tr[id='tr_${sid!}']").css("backgroundColor","#ADBDFF");
+    
+    function nav(_url,sid){
+        var url = "/e/stdtmp/see?sid="+sid+"&N_VERSION=${N_VERSION!}&URL="+ encodeURIComponent(_url);
         window.location.href = url;
     }
 </script>
@@ -24,7 +28,7 @@
 <@layout.doLayout script>
 <div style="padding:10px;">
     <div class="titlebar">
-        <img src="/resource/images/blue/star.png"/>&nbsp;企业安全标准化体系创建13要素表 --- 版本(${N_VERSION!})
+        <img src="/resource/images/blue/star.png"/>&nbsp;企业安全标准化体系创建13要素表 --- <#if N_VERSION=='0'>当前版本<#else>版本(${N_VERSION!})</#if>
         <span class="back"><a href="list_version">返回列表</a></span>
     </div>
     <table class="table">
@@ -49,7 +53,7 @@
 <#macro buildTree list root=false>
     <#if (list?size>0)>
         <#list list as map>
-            <tr>
+            <tr id="tr_${map.attributes.SID!}" >
                 <td>
                 <#if map.attributes.C_URL??>
                     <a href="/e/stdtmp/see?URL=${map.attributes.C_URL!}">
@@ -67,8 +71,7 @@
                 <td></td>
                 <td class="operate">
                     <#if map.attributes.C_URL??>
-                        <a href="javascript:nav('${map.attributes.C_URL!}')">查看</a>&nbsp;&nbsp;
-                        <!-- <a href="javascript:nav('${map.attributes.C_URL!}&_R_=0')">修改</a>&nbsp;&nbsp; -->
+                        <a href="javascript:nav('${map.attributes.C_URL!}','${map.attributes.SID!}')">查看</a>&nbsp;&nbsp;
                     </#if>
                 </td>
             </tr>

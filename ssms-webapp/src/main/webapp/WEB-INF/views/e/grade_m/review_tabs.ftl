@@ -31,11 +31,11 @@
     </div>
     <div data-options="region:'center'" style="overflow:hidden;padding:0px;">
         <div id="tt" class="easyui-tabs" style="width:100%;height:auto" data-options="fit:true,border:false,onSelect: doSelect">
-            <div id="tab0" title="评分汇总" style="overflow:hidden;" url="/e/grade_m/sum?sid=${sid!}">
-                <iframe frameborder="0" width="100%" height="100%" src="/e/grade_m/sum?sid=${sid!}" ></iframe>
+            <div id="tab0" title="评分汇总" style="overflow:hidden;" url="/r/grade_m/sum?sid=${sid!}">
+                <iframe frameborder="0" width="100%" height="100%" src="/r/grade_m/sum?sid=${sid!}" ></iframe>
             </div>
-            <div id="tab1" title="扣分汇总" style="overflow:hidden;" url="/e/grade_m/sum_ded?sid=${sid!}"></div>
-            <div id="tab2" title="自评报告" style="overflow:hidden;" url="/e/grade_m/history_rep?sid=${sid!}"></div>
+            <div id="tab1" title="扣分汇总" style="overflow:hidden;" url="/r/grade_m/sum_ded?sid=${sid!}"></div>
+            <div id="tab2" title="评审报告" style="overflow:hidden;" url="/r/grade_m/history_rep?sid=${sid!}"></div>
         </div>
     </div>
 </div>

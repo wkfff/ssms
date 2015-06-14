@@ -145,8 +145,11 @@ public class GradePlanController extends SimplateController<GradePlanR> {
                         this.getPara( "P_COUNTY" ) )
                 ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
                 ._If( this.isParaBlank( "C_NAME" ) == false, "C_NAME like ?", "%" + name + "%" )
+                ._If( isParaBlank( "R_TENANT_E" ) == false, "R_TENANT_E = ?", getPara( "R_TENANT_E" ) )
                 ._If( isParaBlank( "T_START" ) == false, "T_START >= ?", getPara( "T_START" ) )
                 ._If( isParaBlank( "T_END" ) == false, "T_END <= ?", getPara( "T_END" ) );
+        
+        
         return builder;
     }
 
