@@ -10,7 +10,6 @@ package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
 import com.lanstar.controller.government.*;
-import com.lanstar.controller.system.NoticeController;
 
 public class GovernmentRoutes extends Routes {
     private static Routes me = new GovernmentRoutes();
@@ -21,17 +20,17 @@ public class GovernmentRoutes extends Routes {
 
     @Override
     public void config() {
-        this.add( "/g", HomeController.class );
+        this.add("/g", HomeController.class);
 
-        this.add( "/g/notice", NoticeController.class );
-        
-        this.add( "/g/tenant_g", GovernmentController.class );
-        this.add( "/g/tenant_gu", GovernmentUserController.class );
-        
-        this.add( "/g/psw_change", PswChangeController.class );
-        this.add( "/g/statistics", StatisticsController.class );
-        
-        this.add( "/g/grade", GradePlanController.class );
-        this.add( "/g/stdtmp", TemplateController.class );
+        this.add("/g/notice", NoticeController.class);
+
+        this.add("/g/tenant_g", GovernmentController.class);
+        this.add("/g/tenant_gu", GovernmentUserController.class);
+
+        this.add("/g/psw_change", PswChangeController.class);
+        this.add("/g/statistics", StatisticsController.class);
+
+        this.add("/g/grade", GradePlanController.class);
+        this.add("/g/stdtmp", TemplateController.class);
     }
 }
