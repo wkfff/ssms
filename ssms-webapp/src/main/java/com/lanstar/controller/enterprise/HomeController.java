@@ -11,9 +11,13 @@ package com.lanstar.controller.enterprise;
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.TenantType;
+import com.lanstar.model.system.Notice;
 import com.lanstar.model.system.Profession;
+import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.service.enterprise.EnterpriseService;
+import com.lanstar.service.enterprise.ProfessionService;
 
 import java.util.List;
 
@@ -53,11 +57,26 @@ public class HomeController extends Controller {
 
     public void home() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
-        TemplateFolder folder = identityContext.getEnterpriseService()
-                                                             .getProfessionService()
-                                                             .getTenantTemplateFolder();
+        EnterpriseService enterpriseService = identityContext.getEnterpriseService();
+        ProfessionService professionService = enterpriseService.getProfessionService();
+        TemplateFolder folder = professionService.getTenantTemplateFolder();
         setAttr( "FILE_COUNT", folder.getFileCount() );
 
-        setAttr( "FILE_NO_CREATE", identityContext.getTenantDb().queryLong( "select COUNT(*) from ssm_stdtmp_file where N_COUNT = 0" ) );
+        setAttr( "FILE_NO_CREATE", identityContext.getTenantDb()
+                                                  .queryLong( "select COUNT(*) from ssm_stdtmp_file where N_COUNT = 0" ) );
+
+        List<TemplateFile> files = TemplateFile.dao.find( "SELECT *\n"
+                + "FROM SSM_STDTMP_FILE\n"
+                + "WHERE R_SID IN (\n"
+                + "    SELECT SID FROM SSM_STDTMP_FOLDER\n"
+                + "    WHERE R_TEMPLATE = ? AND R_TENANT=? AND P_TENANT=?\n"
+                + ")\n"
+                + "and N_COUNT = 0 limit 0, 15", professionService.getSystemTemplate()
+                                                                  .getId(), identityContext.getTenantId(), TenantType.ENTERPRISE
+                .getName() );
+        setAttr( "rs_todo", files );
+
+        List<Notice> rs_notice = Notice.dao.find( "select * from ssm_notice" );
+        setAttr( "rs_notice", rs_notice );
     }
 }

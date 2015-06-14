@@ -9,6 +9,22 @@
         a:visited{
             color: black;
         }
+        ul.matter-list {
+            padding: 0 11px;
+        }
+
+        ul.matter-list li {
+            padding: 1px 0;
+        }
+
+        ul.matter-list li span.matter-time {
+            float: right;
+        }
+
+        ul.matter-list li a.matter-title {
+            background: url('/resource/images/leftjt04.png') no-repeat 0 center;
+            padding-left: 10px;
+        }
     </style>
 </head>
 
@@ -45,14 +61,14 @@
     <div class="wrap-l">
         <div class="title ue-clear">
             <h2>通知公告</h2>
-            <a href="/e/notice/index" class="more">更多</a>
+            <a href="/e/notice/publics" class="more">更多</a>
         </div>
         <div class="content" >
             <ul class="notice-list">
                   <#if rs_notice?exists && rs_notice?size!=0>
                     <#list rs_notice as rs>
                      <li class="ue-clear">
-                        <a href="javascript:nav('/e/notice/rec?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
+                        <a href="javascript:nav('/e/notice/view?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
                         <div class="notice-time">${rs.T_PUBLISH}</div>
                     </li>
                     </#list>
@@ -67,30 +83,47 @@
     <div class="wrap-l" style="margin-top:6px;">
         <div class="title ue-clear">
             <h2 style="margin-right:10px;width:200px;">工作提醒</h2>
-			<ul class="tabs">
-				<li id="t1" class="current">未完成要素</li>
-            	<li id="tabz1">隐患排查</li>
-            	<li id="tabz2">特种设备</li>
-            	<li id="tabz3">特种人员</li>
-            	<li id="tabz4">安全附件</li>
-        	</ul>
+            <div style="float: right">
+                <ul class="tabs">
+                    <li id="t1" target="#tc1" class="current">未完成要素</li>
+                    <li id="tabz1" target="#tc2">隐患排查</li>
+                    <li id="tabz2" target="#tc3">特种设备</li>
+                    <li id="tabz3" target="#tc4">特种人员</li>
+                    <li id="tabz4" target="#tc5">安全附件</li>
+                </ul>
+            </div>
             <#-- <a href="/e/grade_m/index" class="more">更多</a> -->
         </div>
-        <div class="content" style="height:300px">
+        <div id="tbc" class="content" style="height:330px">
+            <div id="tc1">
                 <ul class="matter-list">
-                    <#if rs_todo?exists && rs_todo?size!=0>
+                <#if rs_todo?? && rs_todo?size!=0>
                     <#list rs_todo as rs>
-                     <li class="ue-clear">
-                        <span class="matter-time">${rs.T_BEGIN}</span>
-                        <a href="javascript:nav('${rs.C_URL!}');" class="matter-title">${rs.C_TITLE}</a>
-                    </li>
-                    </#list>
-                    <#else>
                         <li class="ue-clear">
-                        <span style="padding-left:5px;">暂时还没有待办。</span>
+                            <span class="matter-time">${rs.T_CREATE?date}</span>
+                            <a href="javascript:nav2('${rs.C_URL!"/e/stdtmp/"}');" class="matter-title">${rs.C_NAME}</a>
                         </li>
-                    </#if>
+                    </#list>
+                    <li class="ue-clear"><a href="/e/stdtmp/" style="float: right; color: #ff0000">>>更多</a></li>
+                <#else>
+                    <li class="ue-clear">
+                        <span style="padding-left:5px;">暂时还没有待办。</span>
+                    </li>
+                </#if>
                 </ul>
+            </div>
+            <div id="tc2" style="display: none">
+
+            </div>
+            <div id="tc3" style="display: none">
+
+            </div>
+            <div id="tc4" style="display: none">
+
+            </div>
+            <div id="tc5" style="display: none">
+
+            </div>
         </div>
     </div>
 </div>
@@ -125,21 +158,26 @@
 <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
 
 <script type="text/javascript">
-    var aIndex = 0;
-    $(".title-list ul").on("click","li",function(){
-        aIndex = $(this).index();
-        $(this).addClass("current").siblings().removeClass("current");
-        $(".matter-content").removeClass("current").eq(aIndex).addClass("current");
-    });
-
     $(".duty").find("tbody").find("tr:even").css("backgroundColor","#eff6fa");
 
     $("#more").on("click",function(){
         window.location.href = "/e/"+(aIndex==0?"todo":"done")+"/index";
     });
 
+    $(function () {
+        $('.title .tabs>li').click(function(){
+            $('#tbc>div').hide();
+            $('.title .tabs>li').removeClass('current');
+            $($(this).addClass('current').attr('target')).show();
+        });
+    });
+
     function nav(url){
         window.location.href = url;
+    }
+
+    function nav2(url){
+        window.top.location.href = url;
     }
 
     function doCreate(){

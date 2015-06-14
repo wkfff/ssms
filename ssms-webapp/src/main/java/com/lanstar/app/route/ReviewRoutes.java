@@ -11,6 +11,7 @@ package com.lanstar.app.route;
 import com.lanstar.config.Routes;
 import com.lanstar.controller.review.*;
 import com.lanstar.controller.review.HomeController;
+import com.lanstar.controller.review.NoticeController;
 import com.lanstar.controller.review.ReviewController;
 import com.lanstar.controller.review.ReviewUserController;
 import com.lanstar.controller.review.TemplateController;

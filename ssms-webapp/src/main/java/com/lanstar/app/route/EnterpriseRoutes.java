@@ -11,7 +11,6 @@ package com.lanstar.app.route;
 import com.lanstar.config.Routes;
 import com.lanstar.controller.enterprise.*;
 import com.lanstar.controller.system.DoneController;
-import com.lanstar.controller.system.NoticeController;
 import com.lanstar.controller.system.TodoController;
 
 public class EnterpriseRoutes extends Routes {

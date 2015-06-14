@@ -22,9 +22,9 @@
         C_MAJOR: ko.observable(),
         C_ENGPROANDAGE: ko.observable(),
         C_SUMMARY: ko.observable(),
-        P_CLASSWORKER : ko.observable('01'),
-        S_CLASSWORKER : ko.observable('专家'),
-        SID: ko.observable()
+        P_CLASSWORKER : ko.observable(),
+        S_CLASSWORKER : ko.observable(),
+        SID: '${SID!}'
     };
     var settings={
     		cycleSource:ko.observableArray([
@@ -38,22 +38,17 @@
        };
     var events = {
         saveClick: function () {
-            utils.messager.showProgress();
-            $.post('save', model, function (result) {
-                if (result.SID) {
-                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                    settings.htmleditSettings.save(function (editorResult) {
-                        utils.messager.closeProgress();
-                        $.messager.alert("提示", "保存成功", "info", function () {
-                            window.location.href = window.location.href;
-                        });
-                    });
-                } else {
-                    $.messager.alert("提示", "保存失败", "warning", function () {
-                        utils.messager.closeProgress();
-                    });
-                }
-            }, "json");
+        	 if ($form.validate($('.form'))) {
+                 $.post('save', model, function (result) {
+                     if (result.SID)
+                         $.messager.alert("提示", "保存成功", "info", function () {
+                             window.location.href = 'rec?sid=' + result.SID;
+                         });
+                     else {
+                         $.messager.alert("提示", "保存失败", "warning");
+                     }
+                 }, 'json');
+             }
         }
     };
     ko.applyBindings($.extend({}, model, events,settings));
@@ -87,7 +82,7 @@
 <div class="easyui-panel" title="评审人员管理" fit="true">
   <div class="z-toolbar">
     <div class="layout">
-    <a class="easyui-linkbutton" plain="true" iconCls="icon-save" >保存</a>
+    <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
     <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = 'index'">返回列表</a>
     </div>
   </div>
@@ -135,7 +130,7 @@
             <td>人员类别:</td>
             <td >
                  <input
-                        data-bind="comboboxSource:cycleSource,comboboxValue:P_CLASSWORKER,easyuiOptions:selectOptions" />
+                        data-bind="comboboxSource:cycleSource,comboboxValue:P_CLASSWORKER,comboboxText:S_CLASSWORKER,easyuiOptions:selectOptions" />
             </td>
             <td>专业技术职务:</td>
             <td>

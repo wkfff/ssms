@@ -17,4 +17,5 @@ public interface Const {
     String TEMPLATE_FILE_PARENT_FIELD = "R_TMPFILE";
     
     String READONLY_KEY = "@READONLY";
+    java.lang.String ATTACH_TEXT_TOKEN_KEY = "ATTACH_TEXT_TOKEN";
 }

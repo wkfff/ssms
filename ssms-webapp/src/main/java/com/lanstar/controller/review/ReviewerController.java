@@ -7,22 +7,26 @@
  */
 package com.lanstar.controller.review;
 
-import com.lanstar.core.Controller;
+import com.lanstar.controller.SimplateController;
+import com.lanstar.model.tenant.Reviewer;
 
 /**
  * @author Administrator
  *
  */
-public class ReviewerController extends Controller{
+public class ReviewerController extends SimplateController<Reviewer>{
     public void index(){
         
     }
     
-    public void rec(){
-        
-    }
     
     public void reg(){
         
+    }
+
+    @Override
+    protected Reviewer getDao() {
+        // TODO Auto-generated method stub
+        return Reviewer.dao;
     }
 }

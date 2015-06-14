@@ -1,29 +1,29 @@
 <#import "../../layout/_rec.ftl" as layout/> <#assign script>
 <script type="text/javascript">
     var model = {
-        C_NAME: ko.observable('杨建'),
-        C_SEX: ko.observable('男'),
-        T_BIRTH: ko.observable('1985-11-11'),
-        C_DEPT: ko.observable('泉州市安全科学研究会'),
-        C_POSITION: ko.observable('工程师'),
-        C_TECHNOLOGY: ko.observable('工程师'),
-        C_ADDR: ko.observable('泉州市惠安县'),
-        C_ZIP: ko.observable('36200'),
-        C_MOBILE: ko.observable('15064447154'),
-        C_EMAIL: ko.observable('vip@qq.com'),
-        C_CARD: ko.observable('350684185410124566'),
-        C_CERTIFICATENO: ko.observable('ABC闽3838438'),
-        C_INDUSTRY: ko.observable('轻工'),
-        C_PROFESSION: ko.observable('基本规范评分细则'),
-        C_SCHOOL: ko.observable('福州大学'),
-        C_EDUCATION: ko.observable('研究生'),
-        C_DEGREE: ko.observable('硕士'),
-        C_MAJOR: ko.observable('环境工程'),
-        C_ENGPROANDAGE: ko.observable('三年安全技术'),
-        C_SUMMARY: ko.observable(),
-        P_CLASSWORKER : ko.observable('01'),
-        S_CLASSWORKER : ko.observable('专家'),
-        SID: ko.observable('1')
+        C_NAME: ko.observable('${C_NAME!}'),
+        C_SEX: ko.observable('${C_SEX!}'),
+        T_BIRTH: ko.observable('${T_BIRTH!}'),
+        C_DEPT: ko.observable('${C_DEPT!}'),
+        C_POSITION: ko.observable('${C_POSITION!}'),
+        C_TECHNOLOGY: ko.observable('${C_TECHNOLOGY!}'),
+        C_ADDR: ko.observable('${C_ADDR!}'),
+        C_ZIP: ko.observable('${C_ZIP!}'),
+        C_MOBILE: ko.observable('${C_MOBILE!}'),
+        C_EMAIL: ko.observable('${C_EMAIL!}'),
+        C_CARD: ko.observable('${C_CARD!}'),
+        C_CERTIFICATENO: ko.observable('${C_CERTIFICATENO!}'),
+        C_INDUSTRY: ko.observable('${C_INDUSTRY!}'),
+        C_PROFESSION: ko.observable('${C_PROFESSION!}'),
+        C_SCHOOL: ko.observable('${C_SCHOOL!}'),
+        C_EDUCATION: ko.observable('${C_EDUCATION!}'),
+        C_DEGREE: ko.observable('${C_DEGREE!}'),
+        C_MAJOR: ko.observable('${C_MAJOR!}'),
+        C_ENGPROANDAGE: ko.observable('${C_ENGPROANDAGE!}'),
+        C_SUMMARY: ko.observable('${C_SUMMARY!}'),
+        P_CLASSWORKER : ko.observable('${P_CLASSWORKER!}'),
+        S_CLASSWORKER : ko.observable('${S_CLASSWORKER!}'),
+        SID: ko.observable('${sid!}')
     };
     var settings={
         cycleSource:ko.observableArray([
@@ -38,24 +38,31 @@
 
     var events = {
         saveClick: function () {
-            utils.messager.showProgress();
-            $.post('save', model, function (result) {
-                if (result.SID) {
-                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                    settings.htmleditSettings.save(function (editorResult) {
-                        utils.messager.closeProgress();
+        	if ($form.validate($('.form'))) {
+                $.post('save', model, function (result) {
+                    if (result.SID)
                         $.messager.alert("提示", "保存成功", "info", function () {
-                            window.location.href = window.location.href;
+                            window.location.href = 'rec?sid=' + result.SID;
                         });
-                    });
-                } else {
-                    $.messager.alert("提示", "保存失败", "warning", function () {
-                        utils.messager.closeProgress();
-                    });
-                }
-            }, "json");
-        }
+                    else {
+                        $.messager.alert("提示", "保存失败", "warning");
+                    }
+                }, 'json');
+            }
+        },
+        delClick : function(){
+        	$.messager.confirm("删除确认","您确认删除选定的记录吗？",function(deleteAction){
+        		if(deleteAction){
+        			$.post('del',{sid:'${sid!}'},function(){
+        				$.messager.alert('消息', '成功删除记录！', "info", function (){
+        					 window.location.href='index';
+        				})
+        			})
+        		}
+        	})
+       }
     };
+    
     ko.applyBindings($.extend({}, model, events,settings));
 </script>
 <style type="text/css">
@@ -88,8 +95,8 @@
     <div class="z-toolbar">
         <div class="layout">
             <a class="easyui-linkbutton" plain="true"
-                iconCls="icon-save">修改</a> <a class="easyui-linkbutton"
-                plain="true" iconCls="icon-cancel">删除</a> <a href="#"
+                iconCls="icon-save" data-bind="click : saveClick">修改</a> <a class="easyui-linkbutton"
+                plain="true" iconCls="icon-cancel" data-bind="click : delClick">删除</a> <a href="#"
                 class="easyui-linkbutton" plain="true"
                 iconCls="icon-undo"
                 onclick="window.location.href = 'index'">返回列表</a>
@@ -134,7 +141,7 @@
                     </td>
                     <td>人员类别:</td>
                     <td><input
-                        data-bind="comboboxSource:cycleSource,comboboxValue:P_CLASSWORKER,easyuiOptions:selectOptions" />
+                        data-bind="comboboxSource:cycleSource,comboboxValue:P_CLASSWORKER,comboboxValue:S_CLASSWORKER,easyuiOptions:selectOptions" />
                     </td>
                     <td>专业技术职务:</td>
                     <td><input

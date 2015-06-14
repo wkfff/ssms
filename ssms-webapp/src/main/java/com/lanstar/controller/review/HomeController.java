@@ -10,6 +10,9 @@ package com.lanstar.controller.review;
 
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
+import com.lanstar.model.system.Notice;
+
+import java.util.List;
 
 public class HomeController extends Controller {
     public void index(){
@@ -17,6 +20,7 @@ public class HomeController extends Controller {
     }
 
     public void home(){
-
+        List<Notice> rs_notice = Notice.dao.find("select * from ssm_notice");
+        setAttr("rs_notice", rs_notice );
     }
 }

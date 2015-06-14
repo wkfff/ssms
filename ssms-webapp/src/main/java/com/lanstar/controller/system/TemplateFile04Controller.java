@@ -9,12 +9,14 @@
 package com.lanstar.controller.system;
 
 import com.lanstar.controller.SimplateController;
-import com.lanstar.model.system.TemplateFile02;
+import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
+import com.lanstar.core.aop.Before;
 import com.lanstar.model.system.TemplateFile04;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile04Controller extends SimplateController<TemplateFile04> {
 
+    @Before( AttachTokenGenerator.class )
     public void view() {
         super.rec();
         setAttr( "@READONLY", "true" );

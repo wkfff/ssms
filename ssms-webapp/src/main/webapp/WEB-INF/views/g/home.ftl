@@ -9,7 +9,7 @@
 
 <body>
 <div class="article toolbar">
-    <div class="title ue-clear">
+    <#--<div class="title ue-clear">
         <h2>快捷入口</h2>
     </div>
     <div class="content">
@@ -27,20 +27,20 @@
                 <p><a href="javascript:doConfig();">系统配置</a></p>
             </li>
         </ul>
-    </div>
+    </div>-->
 </div>
 <div class="article half notice">
     <div class="wrap-l">
         <div class="title ue-clear">
-            <h2>通知公告</h2>
-            <a href="/r/notice/index" class="more">更多</a>
+            <h2>收到的公告</h2>
+            <a href="/r/notice/publics" class="more">更多</a>
         </div>
         <div class="content">
             <ul class="notice-list">
                   <#if rs_notice?exists && rs_notice?size!=0>
                     <#list rs_notice as rs>
                      <li class="ue-clear">
-                        <a href="javascript:nav('/r/notice/rec?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
+                        <a href="javascript:nav('/g/notice/view?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
                         <div class="notice-time">${rs.T_PUBLISH}</div>
                     </li>
                     </#list>
@@ -53,27 +53,27 @@
         </div>
     </div>
 </div>
-<div class="article half matter">
+<div class="article half notice">
     <div class="wrap-r">
         <div class="title ue-clear">
-            <h2>待办</h2>
-            <a href="/r/grade_m/index" class="more">更多</a>
+            <h2>发布的公告</h2>
+            <a href="/r/notice/publics" class="more">更多</a>
         </div>
         <div class="content">
-                <ul class="matter-list">
-                    <#if rs_todo?exists && rs_todo?size!=0>
-                    <#list rs_todo as rs>
-                     <li class="ue-clear">
-                        <span class="matter-time">${rs.T_BEGIN}</span>
-                        <a href="javascript:nav('${rs.C_URL!}');" class="matter-title">${rs.C_TITLE}</a>
+            <ul class="notice-list">
+            <#if rs_notice?? && rs_notice?size!=0>
+                <#list rs_notice as rs>
+                    <li class="ue-clear">
+                        <a href="javascript:nav('/g/notice/view?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
+                        <div class="notice-time">${rs.T_PUBLISH}</div>
                     </li>
-                    </#list>
-                    <#else>
-                        <li class="ue-clear">
-                        <span style="padding-left:5px;">暂时还没有待办。</span>
-                        </li>
-                    </#if>
-                </ul>
+                </#list>
+            <#else>
+                <li class="ue-clear">
+                    <span style="padding-left:5px;">暂时还没有通知公告。</span>
+                </li>
+            </#if>
+            </ul>
         </div>
     </div>
 </div>
@@ -83,9 +83,10 @@
         <h2>统计分析</h2>
         <a href="/r/statistics/index" class="more">更多</a>
     </div>
-    <div class="content" style="height:220px;">
-        
-
+    <div class="content" style="height:300px;">
+        <img src="/resource/1.png" alt=""/>
+        <img src="/resource/2.png" alt=""/>
+        <img src="/resource/3.png" alt=""/>
     </div>
 </div>
 
