@@ -20,6 +20,14 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends ModelExt<
         return TemplateFile.dao.findById( getTemplateFileId() );
     }
 
+    public FileContentState getStatus() {
+        return FileContentState.valueOf( getInt( "N_STATE" ) );
+    }
+
+    public void setStatus( FileContentState status ) {
+        set( "N_STATE", status.getValue() );
+    }
+
     public int getVersion() {
         Integer version = getInt( "N_VERSION" );
         return version == null ? 0 : version;

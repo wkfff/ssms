@@ -8,6 +8,7 @@
 
 package com.lanstar.app.template;
 
+import com.lanstar.model.tenant.FileContentState;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFileModel;
 import com.lanstar.model.tenant.TemplateFolder;
@@ -30,11 +31,18 @@ public class TenantTemplateFileLinstener extends FilterCallbackLinstener<Templat
 
     @Override
     public void innerBeforeUpdate( TemplateFileModel<?> m ) {
+        if ( FileContentState.CLONED.equals( m.getStatus() ) || FileContentState.UNKNOWN.equals( m.getStatus() ) ) {
+            TemplateFile file = m.getTemplateFile();
+            int count = file.getFileCount();
+            file.setFileCount( count + 1 );
+            file.update();
+            m.setStatus( FileContentState.CHANGED );
+        }
+        m.setVersion( m.getVersion() + 1 );
     }
 
     @Override
     public void innerAfterUpdate( TemplateFileModel<?> m ) {
-
     }
 
     @Override

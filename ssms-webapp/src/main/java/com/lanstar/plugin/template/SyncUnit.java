@@ -14,6 +14,7 @@ import com.lanstar.common.log.Logger;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
+import com.lanstar.model.tenant.FileContentState;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.activerecord.ModelKit;
@@ -75,20 +76,24 @@ public class SyncUnit {
 
         // 复制文件内容
         copyFileContent();
+        // 同步来的文件，一开始一定为数量一定为0！！！
+        targetFile.setFileCount( 0 );
+        targetFile.update();
 
         log.debug( "========>创建文件完成..." );
     }
 
     protected void copyFileContent() {
         log.debug( "================>拷贝文件内容->表单数据..." );
-        // 获取系统文件内容
+        // 获取源文件ID
         Integer sourceFileId = sourceFile.getId();
-        ModelExt systemFileDao = templateProp.getSystemModelWrap().getDao();
-        List<ModelExt> systemFileContents = systemFileDao.findByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFileId );
-        if ( systemFileContents.size() == 0 ) return;
-        for ( ModelExt systemFileContent : systemFileContents ) {
-            Model tenantFileContent = copyFileContent( systemFileContent );
-            copyAttachText(systemFileContent, tenantFileContent);
+        // 获取源文件DAO，并通过DAO获取文件内容。
+        ModelExt sfcDao = templateProp.getSystemModelWrap().getDao();
+        List<ModelExt> sourceContents = sfcDao.findByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFileId );
+        if ( sourceContents.size() == 0 ) return;
+        for ( ModelExt sourceContent : sourceContents ) {
+            Model targetContent = copyFileContent( sourceContent );
+            copyAttachText( sourceContent, targetContent );
         }
     }
 
@@ -101,6 +106,7 @@ public class SyncUnit {
         tenantFileContent.set( "R_TENANT", targetFile.get( "R_TENANT" ) );
         tenantFileContent.set( "S_TENANT", targetFile.get( "S_TENANT" ) );
         tenantFileContent.set( "P_TENANT", targetFile.get( "P_TENANT" ) );
+        tenantFileContent.set( "N_STATE", FileContentState.CLONED.getValue() );
         tenantFileContent.save();
         return tenantFileContent;
     }
