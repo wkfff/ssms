@@ -87,8 +87,10 @@ public class GradePlanController extends SimplateController<GradePlanR> {
 
     @Override
     protected void afterSave( GradePlanR model ) {
-        Integer sid = model.getInt( "SID" );
-        String eid = this.getPara( "R_EID" );// 企业的SID
+        int sid = model.getInt( "SID" );
+        int mid =  model.getInt("R_EID");      // 自评编号
+        Integer eid = model.getInt( "R_TENANT_E" ); // 企业编号
+        //String eid = this.getPara( "R_EID" ); // 企业的SID
 
         if ( this.isNew && eid != null ) {
             // 设置企业的评审状态与评审机构
@@ -99,7 +101,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
             // 获取评审服务
             ReviewService service = this.identityContext.getReviewService();
             // 同步企业的评审数据
-            service.sync( sid );
+            service.sync( mid,sid );
         }
     }
 
@@ -230,13 +232,25 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         Profession profession = Profession.dao.findById( pro );
         this.identityContext.initReviewService( enterprise, profession );
 
-        // 根据企业编号获取最后一次完成的评审编号
-        String sql = "SELECT SID FROM SSM_GRADE_E_M WHERE N_STATE=1  ORDER BY T_UPDATE DESC  LIMIT 1";
-        this.setAttr( "gradeid", GradePlan.dao.findFirst( sql ).getId() );
-        // 获取对选择企业的评审
-        sql = "SELECT SID FROM SSM_GRADE_R_M WHERE N_STATE=0  ORDER BY T_UPDATE DESC  LIMIT 1";
-        GradePlanR gpr = GradePlanR.dao.findFirst( sql );
-        if (gpr!=null) {
+        // 根据企业编号获取企业最后一次完成的自评编号
+        String sql = "SELECT SID FROM SSM_GRADE_E_M WHERE R_TENANT=? AND N_STATE=3  ORDER BY T_UPDATE DESC LIMIT 1";
+        GradePlan gp = GradePlan.dao.findFirst( sql,eid );
+        if (gp!=null){
+            this.setAttr( "gradeid", gp.getId() );
+        
+            // 判断是否已经开始评审了
+            sql = "SELECT SID FROM SSM_GRADE_R_M WHERE R_TENANT_E=? AND R_EID=? ORDER BY T_UPDATE DESC LIMIT 1";
+            GradePlanR gpr = GradePlanR.dao.findFirst( sql,eid,gp.getId() );
+            if (gpr==null) {
+                gpr = new GradePlanR();
+                gpr.setTitle( enterprise==null?"":enterprise.getName() );
+                gpr.set( "R_TENANT_E", eid);
+                gpr.set( "S_TENANT_E",enterprise==null?"":enterprise.getName() );
+                gpr.set( "R_EID",gp.getId());
+                gpr.save();
+                this.isNew = true;
+                afterSave(gpr);
+            }
             this.setAttr( "graderid",gpr.getId());
         }
     }

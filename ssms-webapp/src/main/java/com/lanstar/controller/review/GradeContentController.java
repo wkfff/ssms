@@ -67,7 +67,7 @@ public class GradeContentController extends SimplateController<GradeContentR> {
         // " IFNULL(N_SCORE_REAL,0) = ?", 0 );
         builder.WHERE( "R_SID = ?", this.getPara( "R_SID" ) )
                 ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
-                ._If( this.isParaBlank( "NOCOMPLETE" ) == false, " IFNULL(N_SCORE_REVIEW,0) = ?", 0 );
+                ._If( this.isParaBlank( "NOCOMPLETE" ) == false, " IFNULL(N_SCORE_REVIEW,0) = ? AND IFNULL(B_BLANK,'0')<>'1'", 0 );
         return builder;
     }
 

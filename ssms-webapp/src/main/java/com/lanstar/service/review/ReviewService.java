@@ -31,7 +31,7 @@ public class ReviewService {
         this.enterpriseContext = enterpriseContext;
     }
 
-    public boolean sync(int sid){
-        return ReviewSyncService.sync( enterpriseContext, reviewContext,sid );
+    public boolean sync(int r_sid,int sid){
+        return ReviewSyncService.sync( enterpriseContext, reviewContext,r_sid,sid );
     }
 }
