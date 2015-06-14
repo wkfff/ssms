@@ -89,7 +89,6 @@
                     <li id="tabz1" target="#tc2">隐患排查</li>
                     <li id="tabz2" target="#tc3">特种设备</li>
                     <li id="tabz3" target="#tc4">特种人员</li>
-                    <li id="tabz4" target="#tc5">安全附件</li>
                 </ul>
             </div>
             <#-- <a href="/e/grade_m/index" class="more">更多</a> -->
@@ -113,15 +112,40 @@
                 </ul>
             </div>
             <div id="tc2" style="display: none">
-
+                <ul class="matter-list">
+                <#if rs_todo?? && rs_todo?size!=0>
+                    <#list rs_yh as rs>
+                        <li class="ue-clear">
+                            <span class="matter-time">${rs.T_CREATE?date}</span>
+                            <a href="javascript:nav2('${rs.C_URL!"/e/stdtmp/"}');" class="matter-title">“${rs.C_NAME}”</a>（要求整改时间：${rs.T_RECTIFICATION}）
+                        </li>
+                    </#list>
+                    <li class="ue-clear"><a href="/e/stdtmp/" style="float: right; color: #ff0000">>>更多</a></li>
+                <#else>
+                    <li class="ue-clear">
+                        <span style="padding-left:5px;">暂时还没有待办。</span>
+                    </li>
+                </#if>
+                </ul>
             </div>
             <div id="tc3" style="display: none">
-
+                <ul class="matter-list">
+            <#if rs_todo?? && rs_todo?size!=0>
+                <#list rs_dev as rs>
+                    <li class="ue-clear">
+                        <span class="matter-time">${rs.T_CREATE?date}</span>
+                        <a href="javascript:nav2('${rs.C_URL!"/e/stdtmp/"}');" class="matter-title">“${rs.C_NAME}(${rs.C_SPEC})”</a>临近下次检验(${rs.T_TEST_NEXT}）
+                    </li>
+                </#list>
+                <li class="ue-clear"><a href="/e/stdtmp/" style="float: right; color: #ff0000">>>更多</a></li>
+            <#else>
+                <li class="ue-clear">
+                    <span style="padding-left:5px;">暂时还没有待办。</span>
+                </li>
+            </#if>
+                </ul>
             </div>
             <div id="tc4" style="display: none">
-
-            </div>
-            <div id="tc5" style="display: none">
 
             </div>
         </div>

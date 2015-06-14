@@ -15,6 +15,8 @@ import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Notice;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.tenant.TemplateFile;
+import com.lanstar.model.tenant.TemplateFile06;
+import com.lanstar.model.tenant.TemplateFile08;
 import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.enterprise.ProfessionService;
@@ -78,5 +80,8 @@ public class HomeController extends Controller {
 
         List<Notice> rs_notice = Notice.dao.find( "select * from ssm_notice" );
         setAttr( "rs_notice", rs_notice );
+
+        setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 15") );
+        setAttr( "rs_yh", TemplateFile06.dao.find( "select * from ssm_stdtmp_file_06 limit 15") );
     }
 }

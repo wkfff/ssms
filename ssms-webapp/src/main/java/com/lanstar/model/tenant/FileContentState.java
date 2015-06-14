@@ -19,7 +19,8 @@ public enum FileContentState {
         this.value = value;
     }
 
-    public static FileContentState valueOf( int value ) {
+    public static FileContentState valueOf( Integer value ) {
+        if (value == null) return UNKNOWN;
         for ( FileContentState status : values() ) {
             if ( status.value == value ) return status;
         }

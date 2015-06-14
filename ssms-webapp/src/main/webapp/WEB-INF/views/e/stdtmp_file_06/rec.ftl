@@ -25,11 +25,11 @@
     }
 </style>
 
-<div id="kocontainer" data-bind="visible:!readonly">
+<div id="kocontainer">
     <div class="z-toolbar">
         <a class="easyui-linkbutton" plain="true" iconCls="icon-add" data-bind="click: addItem">新建隐患项目</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:!isReadonly, click: saveClick">保存</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-remove" data-bind="visible:!isReadonly, click: remove">删除</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isReadonly()==false, click: saveClick">保存</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-remove" data-bind="visible:isReadonly()==false, click: remove">删除</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}')">返回列表</a>
         <#if TEMPLATE_ID??>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_06/view?sid=${TEMPLATE_ID}')}">查看模板</a>
@@ -143,7 +143,7 @@
             return !hasEmpty;
         }),
         isReadonly: ko.computed(function () {
-            return model.B_FINISH() == '1' || ${@READONLY!'false'};
+            return model.B_FINISH() == '1';
         })
     };
     var events = {
