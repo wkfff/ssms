@@ -99,7 +99,7 @@
             </tr>
             <tr data-bind="visible: SID">
                 <td colspan="6" style="padding: 10px;">
-                    <a href="javascript:void(0);" data-bind="visible:!isReadonly,uploadOptions: {module: 'STDTMP_FILE_06', sid: $data.SID}">[选择文件]</a>
+                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_06', sid: SID}">[选择文件]</a>
                 </td>
             </tr>
         </table>
@@ -178,5 +178,7 @@
     var onPanelLoad = function () {
         var vm = $.extend({}, model, extModel, settings, events);
         ko.applyBindings(vm, document.getElementById('kocontainer'));
-    }
+    };
+
+    //@ sourceURL=filename.js
 </script>
