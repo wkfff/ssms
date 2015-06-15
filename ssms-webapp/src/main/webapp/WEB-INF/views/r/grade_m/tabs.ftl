@@ -35,7 +35,7 @@
             <div id="tab1" title="体系查看" style="overflow:hidden;" url="/r/stdtmp/query"></div>
             <div id="tab2" title="自评报告" style="overflow:hidden;" url="/e/grade_m/history_rep?sid=${gradeid!}"></div>
             <div id="tab3" title="评审方案" style="overflow:hidden;" url="/static/reviewplan.html"></div>
-            <div id="tab4" title="在线评审" style="overflow:hidden;" url="/r/grade_m/rec?sid=${graderid!}"></div>
+            <div id="tab4" title="在线评审" style="overflow:hidden;" url="/r/grade_m/rec?sid=${graderid!}" ></div>
             <div id="tab5" title="评审报告" style="overflow:hidden;" url="/r/grade_m/report_rec?sid=${graderid!}"></div>
             <div id="tab6" title="证书管理" style="overflow:hidden;" url="/static/cart.html"></div>
         </div>

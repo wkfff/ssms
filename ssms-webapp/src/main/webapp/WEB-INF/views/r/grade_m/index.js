@@ -12,7 +12,7 @@ function ViewModel(p_city,p_county,c_name) {
                 $.each(data, function (idx, product) {
                     details.push({
                         SID: product.SID,
-                        C_NAME: product.SKU,
+                        C_NAME: product.C_NAME,
                         C_ADDR: product.C_ADDR,
                         C_CONTACT: product.C_CONTACT,
                         C_TEL: product.C_TEL,
@@ -20,7 +20,7 @@ function ViewModel(p_city,p_county,c_name) {
                         C_NAME_PRO: product.C_NAME_PRO,
                         N_STATE: product.N_STATE,
                         viewUrl: '/r/stdtmp/query2?showback=1&sid='+product.SID+'&pro='+product.P_PROFESSION,
-                        reviewUrl: '/r/grade_m/tabs?sid='+product.SID+'&pro='+product.P_PROFESSION
+                        reviewUrl: '/r/grade_m/tabs?R_EID='+product.SID+'&sid='+product.SID+'&pro='+product.P_PROFESSION
                     });
                 });
                 self.items(details);
