@@ -101,11 +101,11 @@
     <colgroup>
         <col width="30"/>
         <col>
-        <col width="90"/>
-        <col width="90"/>
-        <col width="90"/>
-        <col width="90"/>
-        <col width="90"/>
+        <col width="110"/>
+        <col width="110"/>
+        <col width="110"/>
+        <col width="110"/>
+        <col width="110"/>
     </colgroup>
     <thead>
     <tr>

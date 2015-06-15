@@ -56,7 +56,7 @@
 <div class="article half matter">
     <div class="wrap-r">
         <div class="title ue-clear">
-            <h2>已发待办</h2>
+            <h2>已发公告</h2>
             <a href="/r/grade_m/index" class="more">更多</a>
         </div>
         <div class="content">
@@ -70,7 +70,7 @@
                     </#list>
                     <#else>
                         <li class="ue-clear">
-                        <span style="padding-left:5px;">没有已发待办。</span>
+                        <span style="padding-left:5px;">没有已发公告。</span>
                         </li>
                     </#if>
                 </ul>
