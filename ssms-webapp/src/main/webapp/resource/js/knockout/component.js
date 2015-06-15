@@ -995,13 +995,14 @@ ko.bindingHandlers.formValue = {
                     value(curValue);
                 }
             }
+            var comboOpts = $(element).combo('options');
             refreshValueFun = function (oriFun) {
                 return function () {
                     value($(element).datebox('getValue'));
                     return oriFun != null ? oriFun.apply($(element), arguments) : void 0;
                 };
             };
-            options.onSelect = refreshValueFun(options.onSelect);
+            comboOpts.onHidePanel = refreshValueFun(comboOpts.onHidePanel);
             return utils.component.bindDisposeEvent(element, "datebox");
         },
         update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -1025,6 +1026,7 @@ ko.bindingHandlers.formValue = {
                     value(curValue);
                 }
             }
+            $.data(element, 'datebox')
             refreshValueFun = function (oriFun) {
                 return function () {
                     value($(element).datetimebox('getValue'));
