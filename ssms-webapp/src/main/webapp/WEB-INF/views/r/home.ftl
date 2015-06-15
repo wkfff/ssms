@@ -56,16 +56,16 @@
 <div class="article half matter">
     <div class="wrap-r">
         <div class="title ue-clear">
-            <h2>已发待办</h2>
+            <h2>已发公告</h2>
             <a href="/r/grade_m/index" class="more">更多</a>
         </div>
         <div class="content">
                 <ul class="matter-list">
-                    <#if rs_todo?exists && rs_todo?size!=0>
-                    <#list rs_todo as rs>
+                    <#if rs_notice2?exists && rs_notice2?size!=100>
+                    <#list rs_notice2 as rs>
                      <li class="ue-clear">
-                        <span class="matter-time">${rs.T_BEGIN}</span>
-                        <a href="javascript:nav('${rs.C_URL!}');" class="matter-title">${rs.C_TITLE}</a>
+                        <span class="matter-time">${rs.T_PUBLISH!}</span>
+                        <a href="javascript:nav('${rs.C_URL!}');" class="matter-title">${rs.C_TITLE!}</a>
                     </li>
                     </#list>
                     <#else>
@@ -86,11 +86,11 @@
         </div>
         <div class="content">
             <ul class="notice-list">
-                  <#if rs_notice?exists && rs_notice?size!=0>
-                    <#list rs_notice as rs>
+                  <#if rs_todo?exists && rs_todo?size!=0>
+                    <#list rs_todo as rs>
                      <li class="ue-clear">
-                        <a href="javascript:nav('/r/notice/rec?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
-                        <div class="notice-time">${rs.T_PUBLISH}</div>
+                        <a href="javascript:nav('${rs.C_URL!}');" class="notice-title">${rs.C_TITLE}</a>
+                        <div class="notice-time">${rs.T_BEGIN!}</div>
                     </li>
                     </#list>
                     <#else>
@@ -111,10 +111,10 @@
         </div>
         <div class="content">
                 <ul class="matter-list">
-                    <#if rs_todo?exists && rs_todo?size!=0>
-                    <#list rs_todo as rs>
+                    <#if rs_done?exists && rs_done?size!=0>
+                    <#list rs_done as rs>
                      <li class="ue-clear">
-                        <span class="matter-time">${rs.T_BEGIN}</span>
+                        <span class="matter-time">${rs.T_END}</span>
                         <a href="javascript:nav('${rs.C_URL!}');" class="matter-title">${rs.C_TITLE}</a>
                     </li>
                     </#list>

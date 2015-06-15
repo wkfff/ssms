@@ -10,8 +10,11 @@ package com.lanstar.controller.review;
 
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
+import com.lanstar.model.system.Done;
 import com.lanstar.model.system.Notice;
+import com.lanstar.model.system.Todo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeController extends Controller {
@@ -22,5 +25,14 @@ public class HomeController extends Controller {
     public void home(){
         List<Notice> rs_notice = Notice.dao.find("select * from ssm_notice");
         setAttr("rs_notice", rs_notice );
+        
+        List<Notice> rs_notice2 = new ArrayList<Notice>();
+        setAttr("rs_notice2", rs_notice2 );
+        
+        List<Todo> rs_todo = Todo.dao.find("select * from sys_todo where c_control='REVIEW'");
+        setAttr("rs_todo", rs_todo );
+        
+        List<Done> rs_done = Done.dao.find("select * from sys_done where c_control='REVIEW'");
+        setAttr("rs_done", rs_done );
     }
 }
