@@ -120,16 +120,16 @@
     function ViewModel() {
         var self = this;
 
-        self.C_ENTERPRISE = ko.observable();
-        self.C_LEVEL = ko.observable();
-        self.C_INDUSTRY = ko.observable();
-        self.C_PROFESSION = ko.observable();
+        self.C_ENTERPRISE = ko.observable('南安市环亚泡塑企业有限公司');
+        self.C_LEVEL = ko.observable('三级');
+        self.C_INDUSTRY = ko.observable('工贸');
+        self.C_PROFESSION = ko.observable('工贸通用');
         self.N_STATE = ko.observable(0);
-        self.C_CERTIFICATE_NUMBER = ko.observable();
-        self.C_ISSUING_AUTHORITY = ko.observable();
-        self.C_PRINTED_NUMBER = ko.observable();
-        self.T_DATE_OF_ISSUE = ko.observable();
-        self.T_VALIDITY = ko.observable();
+        self.C_CERTIFICATE_NUMBER = ko.observable('123456789');
+        self.C_ISSUING_AUTHORITY = ko.observable('福州市安监局');
+        self.C_PRINTED_NUMBER = ko.observable('1234567890');
+        self.T_DATE_OF_ISSUE = ko.observable('2015-6-11');
+        self.T_VALIDITY = ko.observable('2017-6-11');
 
         self.comboState = ko.observableArray([
             {code: '0', name: '有效期内'},

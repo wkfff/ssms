@@ -113,7 +113,7 @@
             </div>
             <div id="tc2" style="display: none">
                 <ul class="matter-list">
-                <#if rs_todo?? && rs_todo?size!=0>
+                <#if rs_yh?? && rs_yh?size!=0>
                     <#list rs_yh as rs>
                         <li class="ue-clear">
                             <span class="matter-time">${rs.T_CREATE?date}</span>
@@ -130,7 +130,7 @@
             </div>
             <div id="tc3" style="display: none">
                 <ul class="matter-list">
-            <#if rs_todo?? && rs_todo?size!=0>
+            <#if rs_dev?? && rs_dev?size!=0>
                 <#list rs_dev as rs>
                     <li class="ue-clear">
                         <span class="matter-time">${rs.T_CREATE?date}</span>
@@ -146,7 +146,21 @@
                 </ul>
             </div>
             <div id="tc4" style="display: none">
-
+                <ul class="matter-list">
+                <#if rs_ry?? && rs_ry?size!=0>
+                    <#list rs_ry as rs>
+                        <li class="ue-clear">
+                            <span class="matter-time">${rs.T_CREATE?date}</span>
+                            <a href="javascript:nav2('${rs.C_URL!"/e/stdtmp/"}');" class="matter-title">“${rs.C_DEPT}-${rs.C_NAME}(${rs.C_WORKTYPE})”</a>特种作业人员证书即将到期（复审时间${rs.T_CERT_REVIEW}）
+                        </li>
+                    </#list>
+                    <li class="ue-clear"><a href="/e/stdtmp/" style="float: right; color: #ff0000">>>更多</a></li>
+                <#else>
+                    <li class="ue-clear">
+                        <span style="padding-left:5px;">暂时还没有待办。</span>
+                    </li>
+                </#if>
+                </ul>
             </div>
         </div>
     </div>

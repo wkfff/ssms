@@ -70,7 +70,7 @@
                     </#list>
                     <#else>
                         <li class="ue-clear">
-                        <span style="padding-left:5px;">没有已发待办。</span>
+                        <span style="padding-left:5px;">没有已发公告。</span>
                         </li>
                     </#if>
                 </ul>
