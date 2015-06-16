@@ -53,6 +53,6 @@ public class TemplateFileController extends SimplateController<TemplateFile> {
     @Override
     protected SqlBuilder buildWhere() {
         return new SqlBuilder().WHERE()._If( isParaBlank( "R_SID" ) == false,
-                "R_SID=?", getPara( "R_SID" ) );
+                "R_SID=?", getPara( "R_SID" ) ).ORDER_BY( "N_INDEX, SID" );
     }
 }

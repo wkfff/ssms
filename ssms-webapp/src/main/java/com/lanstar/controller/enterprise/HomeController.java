@@ -59,7 +59,7 @@ public class HomeController extends Controller {
         EnterpriseService enterpriseService = identityContext.getEnterpriseService();
         ProfessionService professionService = enterpriseService.getProfessionService();
         TemplateFolder folder = professionService.getTenantTemplateFolder();
-        setAttr( "FILE_COUNT", folder.getFileCount() );
+        setAttr( "FILE_COUNT", folder == null ? 0 : folder.getFileCount() );
 
         setAttr( "FILE_NO_CREATE", identityContext.getTenantDb()
                                                   .queryLong( "select COUNT(*) from ssm_stdtmp_file where N_COUNT = 0" ) );
@@ -78,8 +78,8 @@ public class HomeController extends Controller {
         List<Notice> rs_notice = Notice.dao.find( "select * from ssm_notice" );
         setAttr( "rs_notice", rs_notice );
 
-        setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 15") );
-        setAttr( "rs_yh", TemplateFile06.dao.find( "select * from ssm_stdtmp_file_06 limit 15") );
-        setAttr( "rs_ry", TemplateFile07.dao.find( "select * from SSM_STDTMP_FILE_07 limit 15") );
+        setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 15" ) );
+        setAttr( "rs_yh", TemplateFile06.dao.find( "select * from ssm_stdtmp_file_06 limit 15" ) );
+        setAttr( "rs_ry", TemplateFile07.dao.find( "select * from SSM_STDTMP_FILE_07 limit 15" ) );
     }
 }
