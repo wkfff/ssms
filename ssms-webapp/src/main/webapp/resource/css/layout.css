@@ -1,0 +1,22 @@
+/*标题栏*/
+.titlebar{background-color:#daeef5;border:1px solid #c1d3de;border-bottom:0px;font-weight:bold;font-size:13px;padding:8px;background:url(/resource/images/righttitlebig.png) repeat-x;}
+.titlebar_border{background-color:#daeef5;border:1px solid #c1d3de;font-weight:bold;font-size:13px;padding:8px;background:url(/resource/images/righttitlebig.png) repeat-x;}
+.titlebar img,.titlebar_border img{vertical-align:middle;width:16px;height:16px;}
+/*列表*/
+.table{width:100%;font-family:verdana,arial,sans-serif;font-size:12px;color:#333333;border-width:1px;border-color:#c1d3de;border-collapse:collapse;}
+.table thead{background-color:#daeef5;}
+.table th{border-width:1px;padding:8px;border-style:solid;border-color:#c1d3de;}
+.table td{border-width:1px;padding:8px;border-style:solid;border-color:#c1d3de;}
+.table .th_left{text-align:left;}
+.table .td_center{text-align:center;}
+
+/*奇数行*/
+.oddrow{background-color:#eff6fa;}
+/*选择行*/
+.activerow{background-color:#ADBDFF;}
+
+/*链接样式*/
+a {text-decoration: none;color:dackblue;}
+
+/*返回*/
+.backing{float:right;padding-right:5px;}

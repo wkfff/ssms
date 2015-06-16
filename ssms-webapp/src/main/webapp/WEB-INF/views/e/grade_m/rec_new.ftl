@@ -69,12 +69,15 @@
                             <input data-bind="textboxValue: C_LEADER" data-options="required:true"/>
                         </tr>
                         <tr>
-                            <td class="span2">自评组主要成员:
+                            <td class="span2">自评组主要成员:</td>
                             <td class="span10" colspan="3">
                             <input data-bind="textboxValue: C_MEMBERS" data-options="required:true"/>
                             </td>
                         </tr>
                     </table>
+                    <div style="padding:20px 0px 0px 5px;color:darkblue;">
+                                            提示:请填写自评概要信息后点击保存来开始新的自评。
+                    </div>
             </form>
         </div>
     </div>
