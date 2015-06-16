@@ -33,43 +33,43 @@
             <tr>
                 <td>主题:</td>
                 <td colspan="3">
-                    <input type="text" style="width:860px"  class="readonly" value="${C_NAME!}" readonly/>
+                    <input type="text" style="width:100%"  class="readonly" value="${C_NAME!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>培训日期:</td>
                 <td>
-                    <input type="text" style="width:380px"  class="readonly" value="${T_TIME!}" readonly/>
+                    <input type="text" style="width:90%"  class="readonly" value="${T_TIME!}" readonly/>
                 </td>
 
                 <td>培训地址:</td>
                 <td>
-                    <input type="text" style="width:380px"  class="readonly" value="${C_ADDR!}" readonly/>
+                    <input type="text" style="width:100%"  class="readonly" value="${C_ADDR!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>讲师:</td>
                 <td>
-                    <input type="text" style="width:380px"  class="readonly" value="${C_USER_01!}" readonly/>
+                    <input type="text" style="width:90%"  class="readonly" value="${C_USER_01!}" readonly/>
                 </td>
 
                 <td>培训类型:</td>
                 <td>
-                    <input type="text" style="width:380px"  class="readonly" value="${S_TYPE!}" readonly/>
+                    <input type="text" style="width:100%"  class="readonly" value="${S_TYPE!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>学时:</td>
                 <td>
-                    <input type="text" style="width:380px"  class="readonly" value="${N_TIME!}" readonly/>
+                    <input type="text" style="width:90%"  class="readonly" value="${N_TIME!}" readonly/>
                 </td>
 
                 <td>记录人:</td>
                 <td>
-                    <input type="text" style="width:380px"  class="readonly" value="${C_USER_02!}" readonly/>
+                    <input type="text" style="width:100%"  class="readonly" value="${C_USER_02!}" readonly/>
                 </td>
             </tr>
             <tr>
@@ -80,7 +80,7 @@
             </tr>
             <tr>
                 <td colspan="4" data-bind="visible: '${SID!}'">
-                    <a href="javascript:void(0);" data-bind="disable: readonly,uploadOptions: {module: 'STDTMP_FILE_04', sid: '${SID!}'}">[选择文件]</a>
+                    <a href="javascript:void(0);" data-bind="disable: 'true',uploadOptions: {module: 'STDTMP_FILE_04', sid: '${SID!}'}">[选择文件]</a>
                 </td>
             </tr>
             <tr>

@@ -4,7 +4,7 @@
             <p class="long-input ue-clear">
                 <label>文件名称</label>
                  <span class="control">
-                 <input type="text" style="width:860px" class="readonly" value="${C_NAME}" readonly/>
+                 <input type="text" style="width:100%" class="readonly" value="${C_NAME}" readonly/>
                 </span>
             </p>
         </div>

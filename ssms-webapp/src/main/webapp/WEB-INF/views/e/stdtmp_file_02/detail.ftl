@@ -33,14 +33,14 @@
             <tr>
                 <td>通知标题:</td>
                 <td colspan="3">
-                    <input style="width:860px" type="text" class="readonly" value="${C_NAME!}" readonly/>
+                    <input style="width:100%" type="text" class="readonly" value="${C_NAME!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>通知编号:</td>
                 <td colspan="3">
-                    <input style="width:860px" type="text" class="readonly" value="${C_NUMBER!}" readonly/>
+                    <input style="width:100%" type="text" class="readonly" value="${C_NUMBER!}" readonly/>
                 </td>
             </tr>
 
@@ -53,23 +53,23 @@
             <tr>
                 <td>发布部门:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_DEPT_01!}" readonly/>
+                    <input style="width:90%" type="text" class="readonly" value="${C_DEPT_01!}" readonly/>
                 </td>
                 <td>发布日期:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${T_DATE_01!}" readonly/>
+                    <input style="width:100%" type="text" class="readonly" value="${T_DATE_01!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>主送部门:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_DEPT_02!}" readonly/>
+                    <input style="width:90%" type="text" class="readonly" value="${C_DEPT_02!}" readonly/>
                 </td>
 
                 <td>抄送部门:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_DEPT_03!}" readonly/>
+                    <input style="width:100%" type="text" class="readonly" value="${C_DEPT_03!}" readonly/>
                 </td>
             </tr>
             <tr>

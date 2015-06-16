@@ -36,7 +36,7 @@
             <tr>
                 <td class="label">存在问题</td>
                 <td colspan="5">
-                <input type="text" style="width:600px" class="readonly" value="${C_NAME!}" readonly/>
+                <input type="text" style="width:100%" class="readonly" value="${C_NAME!}" readonly/>
                 </td>
             </tr>
             <tr>
@@ -63,7 +63,7 @@
             <tr>
                 <td class="label">整改措施（包括<br/>工程技术措施、<br/>管理措施、<br/>教育措施、<br/>防护措施、<br/>应急措施）</td>
                 <td colspan="5">
-                    <textarea  style="height: 300px; width:583px" readonly>${C_MEASURE!}</textarea> 
+                    <textarea  style="height: 300px; width:99%" readonly>${C_MEASURE!}</textarea> 
                 </td>
             </tr>
             <tr>
@@ -75,7 +75,7 @@
             <tr>
                 <td class="label">治理方案</td>
                 <td colspan="5">
-                    <textarea style="height: 300px; width:583px" readonly>${C_PLANT!}</textarea> 
+                    <textarea style="height: 300px; width:99%" readonly>${C_PLANT!}</textarea> 
                 </td>
             </tr>
             <tr>

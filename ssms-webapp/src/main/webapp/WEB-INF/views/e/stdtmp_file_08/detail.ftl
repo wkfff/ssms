@@ -34,60 +34,60 @@
             <tr>
                 <td>设备名称:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_NAME!}" readonly/>
+                    <input style="width:90%" type="text" class="readonly" value="${C_NAME!}" readonly/>
                 </td>
                 <td>登记证号:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_NO_REG!}" readonly/>
+                    <input style="width:100%" type="text" class="readonly" value="${C_NO_REG!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>规格/型号:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_SPEC!}" readonly/>
+                    <input style="width:90%" type="text" class="readonly" value="${C_SPEC!}" readonly/>
                 </td>
                 <td>制造单位:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_MAKE_UNIT!}" readonly/>
+                    <input style="width:100%" type="text" class="readonly" value="${C_MAKE_UNIT!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>出厂编号:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_NO_FACTORY!}" readonly/>
+                    <input style="width:90%" type="text" class="readonly" value="${C_NO_FACTORY!}" readonly/>
                 </td>
                 <td>使用部门:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_DEPT!}" readonly/>
+                    <input style="width:100%" type="text" class="readonly" value="${C_DEPT!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>检验报告编号:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_NO_REP!}" readonly/>
+                    <input style="width:90%" type="text" class="readonly" value="${C_NO_REP!}" readonly/>
                 </td>
                 <td>检验单位:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${C_TEST_UNIT!}" readonly/>
+                    <input style="width:100%" type="text" class="readonly" value="${C_TEST_UNIT!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>最新检验日期:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${T_TEST_LAST!}" readonly/>
+                    <input style="width:90%" type="text" class="readonly" value="${T_TEST_LAST!}" readonly/>
                 </td>
                 <td>下次检验日期:</td>
                 <td>
-                    <input style="width:380px" type="text" class="readonly" value="${T_TEST_NEXT!}" readonly/>
+                    <input style="width:100%" type="text" class="readonly" value="${T_TEST_NEXT!}" readonly/>
                 </td>
             </tr>
             <tr>
-                <td>检验结论</td>
-                <td colspan=3><input style="width:970px" type="text" class="readonly" value="${C_TEST_CON!}" readonly/></td>
+                <td>检验结论:</td>
+                <td colspan=3><input style="width:100%" type="text" class="readonly" value="${C_TEST_CON!}" readonly/></td>
             </tr>
         </table>
     </form>

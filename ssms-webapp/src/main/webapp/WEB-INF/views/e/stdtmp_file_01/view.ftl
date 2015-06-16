@@ -30,30 +30,30 @@
             <tr>
                 <td>文件名称:</td>
                 <td colspan="3">
-                     <input style="width:860px" type="text"  class="readonly" value="${C_NAME!}" readonly/>
+                     <input style="width:100%" type="text"  class="readonly" value="${C_NAME!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>文件编号:</td>
                 <td>
-                    <input style="width:380px" type="text"  class="readonly" value="${C_NUMBER!}" readonly/>
+                    <input style="width:90%" type="text"  class="readonly" value="${C_NUMBER!}" readonly/>
                 </td>
 
                 <td>是否受控:</td>
                 <td>
-                    <input style="width:380px" type="text"  class="readonly" <#if B_CONTROL?? && B_CONTROL=="1">value="受控" <#elseif B_CONTROL?? && B_CONTROL=="0"> value="非受控" <#else> value=""</#if> readonly/>
+                    <input style="width:100%" type="text"  class="readonly" <#if B_CONTROL?? && B_CONTROL=="1">value="受控" <#elseif B_CONTROL?? && B_CONTROL=="0"> value="非受控" <#else> value=""</#if> readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>执行部门:</td>
                 <td>
-                    <input style="width:380px" type="text"  class="readonly" value="${C_DEPT_01!}" readonly/>
+                    <input style="width:90%" type="text"  class="readonly" value="${C_DEPT_01!}" readonly/>
                 </td>
                 <td>监督部门:</td>
                 <td>
-                    <input style="width:380px" type="text"  class="readonly" value="${C_DEPT_02!}" readonly/>
+                    <input style="width:100%" type="text"  class="readonly" value="${C_DEPT_02!}" readonly/>
                 </td>
             </tr>
 
@@ -67,22 +67,22 @@
             <tr>
                 <td>编制日期:</td>
                 <td>
-                    <input style="width:380px" type="text"  class="readonly" value="${T_DATE_01!}" readonly/>
+                    <input style="width:90%" type="text"  class="readonly" value="${T_DATE_01!}" readonly/>
                 </td>
                 <td>审核日期:</td>
                 <td>
-                    <input style="width:380px" type="text"  class="readonly" value="${T_DATE_02!}" readonly/>
+                    <input style="width:100%" type="text"  class="readonly" value="${T_DATE_02!}" readonly/>
                 </td>
             </tr>
 
             <tr>
                 <td>批准日期:</td>
                 <td>
-                    <input style="width:380px" type="text"  class="readonly" value="${T_DATE_03!}" readonly/>
+                    <input style="width:90%" type="text"  class="readonly" value="${T_DATE_03!}" readonly/>
                 </td>
                 <td>生效日期:</td>
                 <td>
-                    <input style="width:380px" type="text"  class="readonly" value="${T_DATE_04!}" readonly/>
+                    <input style="width:100%" type="text"  class="readonly" value="${T_DATE_04!}" readonly/>
                 </td>
             </tr>
             <tr data-bind="visible: '${SID!}'">

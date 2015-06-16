@@ -30,7 +30,7 @@
             <tr>
                 <td>文件名称</td>
             <td colspan="3">
-                <input type="text" style="width:860px" class="readonly" readonly value="${C_NAME!}"/>
+                <input type="text" style="width:100%" class="readonly" readonly value="${C_NAME!}"/>
             </td>
             </tr>
         
