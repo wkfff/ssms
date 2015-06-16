@@ -32,7 +32,7 @@ insert into `sys_nav`  values('51','13','评审结果','/e/grade_m/review_result
 insert into `sys_nav`  values('63','45','用户管理','/e/tenant_eu/rec','123','user',NULL,NULL,NULL,'1','admin','2015-06-09 17:20:57',NULL,NULL,NULL,NULL,NULL,'2',NULL);
 insert into `sys_nav`  values('54','13','密码修改','/e/psw_change/psw','123','pwd',NULL,NULL,NULL,'1','admin','2015-06-14 14:14:29',NULL,NULL,NULL,NULL,NULL,'9',NULL);
 insert into `sys_nav`  values('62','45','企业信息维护','/e/tenant_e/rec','123','agency',NULL,NULL,NULL,'1','admin','2015-06-09 14:59:31',NULL,NULL,NULL,NULL,NULL,'1',NULL);
-insert into `sys_nav`  values('64','13','13要素查看','/e/stdtmp/list_version',NULL,'read',NULL,NULL,NULL,'1','admin','2015-06-13 17:39:46',NULL,NULL,NULL,NULL,NULL,'2',NULL);
+insert into `sys_nav`  values('64','13','13要素查看','/e/stdtmp/versions',NULL,'read',NULL,NULL,NULL,'1','admin','2015-06-13 17:39:46',NULL,NULL,NULL,NULL,NULL,'2',NULL);
 insert into `sys_nav`  values('65','14','评审员管理','/r/reviewer/',NULL,'user',NULL,NULL,NULL,NULL,NULL,'2015-06-10 20:22:33',NULL,NULL,NULL,NULL,NULL,'6',NULL);
 insert into `sys_nav`  values('66','14','密码修改','/r/psw_change/psw',NULL,'pwd',NULL,NULL,NULL,'1','admin','2015-06-10 16:49:18',NULL,NULL,NULL,NULL,NULL,'9',NULL);
 insert into `sys_nav`  values('67','48','收到的公告','/r/notice/publics',NULL,NULL,NULL,NULL,NULL,'1','admin','2015-06-14 10:00:24',NULL,NULL,NULL,NULL,NULL,'2',NULL);
