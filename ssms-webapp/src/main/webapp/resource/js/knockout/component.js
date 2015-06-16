@@ -1026,7 +1026,6 @@ ko.bindingHandlers.formValue = {
                     value(curValue);
                 }
             }
-            $.data(element, 'datebox')
             refreshValueFun = function (oriFun) {
                 return function () {
                     value($(element).datetimebox('getValue'));
