@@ -26,14 +26,9 @@ public class TemplateFile07Controller extends SimplateController<TemplateFile07>
     }
 
     public void view() {
-        super.index();
-        setAttr( "@READONLY", "true" );
-        render( "index.ftl" );
     }
 
-    public void rec_view() {
+    public void detail() {
         super.rec();
-        setAttr( "@READONLY", "true" );
-        render( "rec.ftl" );
     }
 }

@@ -36,8 +36,6 @@ public class TemplateFile03Controller extends SimplateController<TemplateFile03>
     }
     
     public void view(){
-        super.index();
-        setAttr( "@READONLY", "true" );
-        render( "index.ftl" );
+        super.rec();
     }
 }

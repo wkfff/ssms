@@ -35,9 +35,11 @@ public class TemplateFile06Controller extends SimplateController<TemplateFile06>
     }
     
     public void view(){
-        super.index();
-        setAttr( "@READONLY", "true" );
-        render( "index.ftl" );
+        
+    }
+    
+    public void detail(){
+        super.rec();
     }
 
     @Override
