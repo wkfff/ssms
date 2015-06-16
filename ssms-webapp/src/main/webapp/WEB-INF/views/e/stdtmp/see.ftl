@@ -19,12 +19,15 @@
     <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
 </head>
 <body>
-<div class="titlebar">
-    <img src="/resource/images/blue/star.png"/>&nbsp;${title!'查看'}
-    <span class="backing"><a href="/e/stdtmp/view/${version!0}-${sid!}">返回列表</a></span>
-</div>
+
 
 <div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north'" style="overflow:hidden;">
+        <div class="titlebar_noborder">
+            <img src="/resource/images/blue/star.png"/>&nbsp;${title!'查看'}
+            <span class="backing"><a href="/e/stdtmp/view/${version!0}-${sid!}">返回列表</a></span>
+         </div>
+    </div>
     <div data-options="region:'center', border:false">
         <div id="content" class="easyui-panel" style="position: relative;" data-options="onLoad: onLoad" fit="true" title="" href=""></div>
     </div>

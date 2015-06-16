@@ -10,13 +10,47 @@ package com.lanstar.model.system;
 
 import com.lanstar.app.Const;
 import com.lanstar.plugin.activerecord.ModelExt;
+import com.lanstar.plugin.activerecord.TableMapping;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 public class TemplateFileModel<T extends TemplateFileModel<T>> extends ModelExt<T> {
-    public int getTemplateFileId() {
+    private final Class<? extends TemplateFileModel<T>> clazz;
+
+    @SuppressWarnings("unchecked")
+    public TemplateFileModel() {
+        Type genericSuperclass = getClass().getGenericSuperclass();
+        clazz = (Class<? extends TemplateFileModel<T>>) ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
+    }
+
+    @Override
+    public boolean save() {
+        boolean success = super.save();
+        if ( getIndex() == null ) {
+            setIndex( getId() );
+            success = update();
+        }
+        return success;
+    }
+
+    public final Integer getId() {
+        return getInt( TableMapping.me().getTable( clazz ).getPrimaryKey() );
+    }
+
+    public final int getTemplateFileId() {
         return getInt( Const.TEMPLATE_FILE_PARENT_FIELD );
     }
 
-    public TemplateFile getTemplateFile() {
+    public final TemplateFile getTemplateFile() {
         return TemplateFile.dao.findById( getTemplateFileId() );
+    }
+
+    public final Integer getIndex() {
+        return getInt( "N_INDEX" );
+    }
+
+    public final void setIndex( int index ) {
+        set( "N_INDEX", index );
     }
 }
