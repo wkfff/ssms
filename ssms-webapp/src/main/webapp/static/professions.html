@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
+    <style type="text/css">
+        .editor, .readonly {
+            width: 140px;
+            display: inline-block;
+            line-height: 22px;
+            height: 22px;
+        }
+
+        .readonly {
+            border: 0;
+            border-bottom: 1px solid #CCCCCC;
+            line-height: 24px;
+            height: 24px;
+        }
+
+        ul.profession, ul.profession li {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<a href="javascript:void(0);" data-bind="click: addIndustry">添加行业</a>
+<ul data-bind="template: { name: 'industry-template', foreach: industries }"></ul>
+
+<script type="text/html" id="industry-template">
+    <li>
+        <div>
+            <label>行业名称
+                <span class="readonly" data-bind="text: name, visible: editable() == false"></span>
+                <input class="editor" type="text" data-bind="value: name, visible: editable"/>
+            </label>
+
+            <a href="javascript:void(0);" data-bind="click: $root.saveIndustry, visible: editable">保存</a>
+            <a href="javascript:void(0);" data-bind="click: $root.editIndustry, visible: editable() == false">编辑</a>
+            <a href="javascript:void(0);" data-bind="visible: professions().length==0, click: $root.removeIndustry">删除</a>
+            <a href="javascript:void(0);" data-bind="click: $root.addProfession, visible: id">添加专业</a>
+        </div>
+        <ul class="profession" data-bind="template: { name: 'profession-template', foreach: professions }"></ul>
+    </li>
+</script>
+
+<script type="text/html" id="profession-template">
+    <li>
+        <label>专业名称
+            <span class="readonly" data-bind="text: name, visible: editable() == false"></span>
+            <input class="editor" type="text" data-bind="value: name, visible: editable"/>
+        </label>
+        <label>模板
+            <span class="readonly" data-bind="text: selectedTemplate()? selectedTemplate().name: '', visible: editable() == false"></span>
+            <select class="editor" data-bind="options:$root.templates,
+                               optionsText: 'name',
+                               optionsCaption: '请选择模板...',
+                               value: selectedTemplate,
+                               visible: editable()"></select>
+        </label>
+        <a href="javascript:void(0);" data-bind="click: $root.saveProfession, visible: editable">保存</a>
+        <a href="javascript:void(0);" data-bind="click: $root.editProfession, visible: editable() == false">编辑</a>
+        <a href="javascript:void(0);" data-bind="click: function(model, bindContext) { $root.removeProfession($parent, model, bindContext) }">删除</a>
+    </li>
+</script>
+</body>
+<script type="text/javascript">
+    function ViewModel() {
+        var self = this;
+
+        function industryModel() {
+            this.id = ko.observable();
+            this.name = ko.observable();
+
+            this.professions = ko.observableArray();
+            this.editable = ko.observable(true);
+        }
+
+        function professionModel() {
+            this.id = ko.observable();
+            this.name = ko.observable();
+            this.selectedTemplate = ko.observable();
+            this.editable = ko.observable(true);
+        }
+
+        self.industries = ko.observableArray([]);
+        self.templates = ko.observableArray([
+            {code: '01', name: '工贸通用模板1'},
+            {code: '02', name: '工贸通用模板2'}
+        ]);
+
+        self.addIndustry = function () {
+            self.industries.push(new industryModel());
+        };
+
+        self.saveIndustry = function (model) {
+            // TODO:保存记录行，保存成功应设置model的id，并设置可编辑方式为只读。
+            /*$.post('${BASE_PATH}/saveIndustry', {}, function (result) {
+             //
+             model.id(result.SID);
+             model.editable(false);
+             });*/
+            model.id(123);
+            model.editable(false);
+        };
+
+        self.editIndustry = function (model) {
+            model.editable(true);
+        };
+
+        self.removeIndustry = function (model, bindContext) {
+            // TODO:保存记录行，保存成功应设置model的id，并设置可编辑方式为只读。
+            if (ko.unwrap(model.id) != null) {
+                $.post('${BASE_CONTEXT}/del', {sid: model.id()}, function (result) {
+                    self.industries.remove(model);
+                })
+            }
+            else {
+                self.industries.remove(model);
+            }
+        };
+
+        self.addProfession = function (model) {
+            model.professions.push(new professionModel());
+        };
+
+        self.saveProfession = function (model) {
+            // TODO:保存记录行，保存成功应设置model的id，并设置可编辑方式为只读。
+            /*$.post('${BASE_PATH}/saveProfession', {}, function (result) {
+             //
+             model.id(result.SID);
+             model.editable(false);
+             });*/
+            model.editable(false);
+        };
+
+        self.editProfession = function (model) {
+            model.editable(true);
+        };
+
+        self.removeProfession = function (data, model, bindContext) {
+            if (ko.unwrap(model.id) != null) {
+                $.post('${BASE_CONTEXT}/delProfession', {sid: model.id()}, function (result) {
+                    data.professions.remove(model);
+                })
+            }
+            else {
+                data.professions.remove(model);
+            }
+        }
+    }
+
+    $(function () {
+        var vm = new ViewModel();
+        ko.applyBindings(vm);
+    });
+</script>
+</html>

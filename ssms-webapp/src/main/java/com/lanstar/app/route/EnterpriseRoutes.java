@@ -9,6 +9,7 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
+
 import com.lanstar.controller.enterprise.*;
 import com.lanstar.controller.system.DoneController;
 import com.lanstar.controller.system.TodoController;
@@ -41,8 +42,8 @@ public class EnterpriseRoutes extends Routes {
         add( "/e/todo", TodoController.class );
         add( "/e/done", DoneController.class );
         
-        add( "/e/psw_change", PswChangeController.class);
         add( "/e/tenant_e", EnterpriseController.class);
         add( "/e/tenant_eu", EnterpriseUserController.class);
+        add( "/common", EnterpriseUserController.class);
     }
 }

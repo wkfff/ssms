@@ -9,7 +9,13 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
-import com.lanstar.controller.government.*;
+import com.lanstar.controller.government.GovernmentController;
+import com.lanstar.controller.government.GovernmentUserController;
+import com.lanstar.controller.government.GradePlanController;
+import com.lanstar.controller.government.HomeController;
+import com.lanstar.controller.government.NoticeController;
+import com.lanstar.controller.government.StatisticsController;
+import com.lanstar.controller.government.TemplateController;
 
 public class GovernmentRoutes extends Routes {
     private static Routes me = new GovernmentRoutes();
@@ -26,8 +32,8 @@ public class GovernmentRoutes extends Routes {
 
         this.add("/g/tenant_g", GovernmentController.class);
         this.add("/g/tenant_gu", GovernmentUserController.class);
+        add("/common", GovernmentUserController.class);
 
-        this.add("/g/psw_change", PswChangeController.class);
         this.add("/g/statistics", StatisticsController.class);
 
         this.add("/g/grade", GradePlanController.class);

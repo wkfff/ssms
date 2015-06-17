@@ -14,6 +14,8 @@
         C_TEL: ko.observable('${C_TEL!}'),
         C_FAX: ko.observable('${C_FAX!}'),
         C_ZIP: ko.observable('${C_ZIP!}'),
+        P_LEVEL : ko.observable('${P_LEVEL!}'),
+        S_LEVEL : ko.observable('${S_LEVEL!}'),
         SID: '${SID!}'
     };
     var extModel = {
@@ -32,6 +34,13 @@
     });
 
     var settings = {
+    		cycleSource:ko.observableArray([{key:"1",value:"省级"},
+                                            {key:"2",value:"市级"},
+                                            {key:"3",value:"县级"}]),
+            selectOptions : {
+               valueField: 'key',
+               textField: 'value'
+           },
             professionSetting: {
             valueField: 'SID',
             textField: 'C_NAME'
@@ -116,6 +125,14 @@
                     <input data-bind="textboxValue: C_NAME" required/>
                 </span>
             </p>
+            
+            <p class="long-input ue-clear">
+                <label>行政等级</label>
+                <span class="control">
+                    <input data-bind="comboboxSource:cycleSource,comboboxValue:P_LEVEL,comboboxText:S_LEVEL,easyuiOptions:selectOptions" required/>
+                </span>
+            </p>
+            
         </div>
         <div class="easyui-panel form" style="padding:10px" title="联系方式">
             <p class="long-input ue-clear">

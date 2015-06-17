@@ -107,6 +107,12 @@
                     <input class="readonly" type="text" value="${C_NAME}" readonly/>
                 </span>
             </p>
+            <p class="ue-clear">
+                <label>行政等级</label>
+                <span class="control">
+                    <input class="readonly" type="text" value="${S_LEVEL!}" readonly/>
+                </span>
+            </p>
         </div>
         <div>
             <p class="long-input ue-clear">

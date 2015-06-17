@@ -46,4 +46,26 @@ public class EnterpriseUserController extends SimplateController<EnterpriseUser>
             renderJson();
         }
     }
+    //密码重置
+   public void repsw(){
+        
+    }
+    
+    public void password() {
+        render( "/WEB-INF/views/common/password.ftl" );
+    }
+
+    public void changePassword() {
+        int id=IdentityContext.getIdentityContext( this ).getId();
+        String oldPwd = getPara( "oldPwd" );
+        String newPwd = getPara( "newPwd" );
+        EnterpriseUser user = EnterpriseUser.getUser( String.valueOf( id ), oldPwd );
+        if ( user != null ) {
+            user.setPassword( newPwd );
+            user.update();
+            renderJson( true );
+        } else {
+            renderJson( false );
+        }
+    }
 }
