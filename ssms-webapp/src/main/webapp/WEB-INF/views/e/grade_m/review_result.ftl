@@ -31,9 +31,6 @@
                 {field: 'C_TITLE', title: '标题', width: 450},
                 {field: 'T_START', title: '评审开始日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
                 {field: 'T_END', title: '评审结束日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
-                {field: 'N_GET', title: '得分项', width: 60},
-                {field: 'N_DEDUCT', title: '扣分项', width: 60},
-                {field: 'N_LACK', title: '缺项', width: 60},
                 {field: 'SID', title: '查看', width: 80,align:'center',
                     formatter:function(value,row){
                             return "<a href='#' onclick='doOpen(\"review_tabs\","+value+")'>查看</a>";
