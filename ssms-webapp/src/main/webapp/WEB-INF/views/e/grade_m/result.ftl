@@ -28,7 +28,7 @@
 <body>
 <div class="titlebar_border">
             <img src="/resource/images/blue/star.png"/>&nbsp;查看
-            <span class="backing"><a href="/e/grade_m/result">返回列表</a></span>
+            <span class="backing"><a href="/e/grade_m/history">返回列表</a></span>
     </div>
     <div id="tt" class="easyui-tabs" style="width:100%;height:auto" data-options="fit:true,border:false,onSelect: doSelect">
             <div id="tab0" title="评分汇总" style="overflow:hidden;" url="/e/grade_m/sum?sid=${sid!}">
