@@ -9,6 +9,7 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
+import com.lanstar.controller.common.KnowledgeController;
 import com.lanstar.controller.system.*;
 import com.lanstar.controller.system.attachtext.AttachTextController;
 
@@ -21,41 +22,43 @@ public class SystemRoutes extends Routes {
 
     @Override
     public void config() {
-        add( "/s", com.lanstar.controller.system.HomeController.class );
+        add( "/s", HomeController.class );
 
         add( "/sys/attachtext", AttachTextController.class );
-        add( "/sys/attachfile", com.lanstar.controller.system.AttachFileController.class );
+        add( "/sys/attachfile", AttachFileController.class );
 
-        add( "/sys/nav", com.lanstar.controller.system.NavgateController.class );
-        add( "/sys/template", com.lanstar.controller.system.TemplateController.class );
-        add( "/sys/stdtmp", com.lanstar.controller.system.TemplateFolderController.class );
-        add( "/sys/stdtmp_file", com.lanstar.controller.system.TemplateFileController.class );
-        add( "/sys/stdtmp_grade", com.lanstar.controller.system.TemplateGradeController.class );
-        add( "/sys/stdtmp_rep", com.lanstar.controller.system.TemplateRepController.class );
+        add( "/sys/nav", NavgateController.class );
+        add( "/sys/template", TemplateController.class );
+        add( "/sys/stdtmp", TemplateFolderController.class );
+        add( "/sys/stdtmp_file", TemplateFileController.class );
+        add( "/sys/stdtmp_grade", TemplateGradeController.class );
+        add( "/sys/stdtmp_rep", TemplateRepController.class );
         add( "/sys/stdtmp_file_01", TemplateFile01Controller.class );
         add( "/sys/stdtmp_file_02", TemplateFile02Controller.class );
         add( "/sys/stdtmp_file_03", TemplateFile03Controller.class );
         add( "/sys/stdtmp_file_04", TemplateFile04Controller.class );
         add( "/sys/stdtmp_file_06", TemplateFile06Controller.class );
-        
+
         add( "/sys/stdtmp_file_07", TemplateFile07Controller.class );
         add( "/sys/stdtmp_file_08", TemplateFile08Controller.class );
         add( "/sys/stdtmp_file_09", TemplateFile09Controller.class );
 
-        add( "/sys/para_multi", com.lanstar.controller.system.MultiParaController.class );
-        add( "/sys/industry", com.lanstar.controller.system.IndustryController.class );
-        add( "/sys/profession", com.lanstar.controller.system.ProfessionController.class );
-        add( "/sys/para_area", com.lanstar.controller.system.AreaParaController.class );
+        add( "/sys/para_multi", MultiParaController.class );
+        add( "/sys/industry", IndustryController.class );
+        add( "/sys/profession", ProfessionController.class );
+        add( "/sys/para_area", AreaParaController.class );
 
-        add( "/sys/tenant_e", com.lanstar.controller.system.EnterpriseController.class );
-        add( "/sys/tenant_eu", com.lanstar.controller.system.EnterpriseUserController.class );
+        add( "/sys/tenant_e", EnterpriseController.class );
+        add( "/sys/tenant_eu", EnterpriseUserController.class );
 
-        add( "/sys/tenant_g", com.lanstar.controller.system.GovernmentController.class );
-        add( "/sys/tenant_gu", com.lanstar.controller.system.GovernmentUserController.class );
+        add( "/sys/tenant_g", GovernmentController.class );
+        add( "/sys/tenant_gu", GovernmentUserController.class );
 
-        add( "/sys/tenant_r", com.lanstar.controller.system.ReviewController.class );
-        add( "/sys/tenant_ru", com.lanstar.controller.system.ReviewUserController.class );
+        add( "/sys/tenant_r", ReviewController.class );
+        add( "/sys/tenant_ru", ReviewUserController.class );
 
-        add("/knowledge", com.lanstar.controller.common.KnowledgeController.class);
+        add( "/sys/professions", ProfessionsController.class );
+
+        add( "/knowledge", KnowledgeController.class );
     }
 }

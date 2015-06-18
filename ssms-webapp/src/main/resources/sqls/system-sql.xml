@@ -10,6 +10,7 @@
     </sqlGroup>
     <sqlGroup name="profession">
         <sql id="list">SELECT B.* FROM SYS_TENANT_E_PROFESSION A INNER JOIN SYS_PROFESSION B ON A.P_PROFESSION = B.SID WHERE A.R_TENANT = ?</sql>
+        <sql id="all">SELECT A.SID ID, A.C_NAME NAME, B.SID PROID, B.C_NAME PRONAME, B.R_TEMPLATE TMPID FROM SYS_INDUSTRY A LEFT JOIN SYS_PROFESSION B ON A.SID = B.R_INDUSTRY</sql>
     </sqlGroup>
     <sqlGroup name="template">
         <sql id="list">SELECT A.* FROM SYS_TEMPLATE A INNER JOIN SYS_PROFESSION B ON A.SID=B.R_TEMPLATE WHERE B.SID=?</sql>

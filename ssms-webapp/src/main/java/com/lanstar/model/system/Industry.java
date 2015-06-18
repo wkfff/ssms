@@ -23,6 +23,10 @@ public class Industry extends Model<Industry> {
         return getStr( "C_NAME" );
     }
 
+    public void setName( String name ) {
+        set( "C_NAME", name );
+    }
+
     public Integer getId() {
         return getInt( "SID" );
     }
