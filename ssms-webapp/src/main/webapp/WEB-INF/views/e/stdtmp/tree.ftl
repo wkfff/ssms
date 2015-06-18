@@ -23,7 +23,7 @@
                 title = '<span>' + $(parent.target).find('.title').text() + '</span>' + ' / ' + title;
                 parent = $(this).tree('getParent', parent.target);
             }
-            $('#content_title').html($('#accordion').accordion('getSelected').panel('header').find('.title').html() + ' / ' + title);
+            $('#content_title').html(title);
             $("#content").panel("refresh", node.url);
 
             if ($(node.target).find(".icon-new").length > 0) {
@@ -51,12 +51,12 @@
         if (isFunction(onPanelLoad)) onPanelLoad();
     }
     function showDev() {
-//        $.messager.alert('提示', '功能正在开发中...');
+        //        $.messager.alert('提示', '功能正在开发中...');
     }
     $(function () {
-        $('#accordion').parent().show();
+        $('#ttt').parent().show();
         setTimeout(function () {
-            var $tree = $($('#accordion').accordion('getSelected').children().get(0));
+            var $tree = $('#std_tree');
             var children = $tree.tree('getChildren');
             for (var i = 0; i < children.length; i++) {
                 if ($tree.tree('isLeaf', children[i].target)) {
@@ -95,17 +95,15 @@
     }
 </style>
 <div class="easyui-layout" data-options="fit:true">
-    <div data-options="region:'west', title:'达标体系', split:true, tools:[{ iconCls:'icon-reload', handler:function(){location.href = '${BASE_PATH}/tree';} }]" style="width: 250px;display:none;">
-        <div id="accordion" class="easyui-accordion" fit="true" border="false">
-            <#list tree as map>
-                <div style="overflow:auto;">
-                    <header>
-                        <span class="title">${map.text}</span><span class="fileCount">(${map.attributes.N_COUNT})</span>
-                    </header>
-                    <@buildTree map.children true/>
-                </div>
-            </#list>
-        </div>
+    <div data-options="region:'west', title:'达标体系', split:true, tools:[{ iconCls:'icon-reload', handler:function(){location.href = '${BASE_PATH}/';} }]" style="width: 250px; display: none">
+        <table id="ttt" style="height: 100%; width: 100%; table-layout: fixed;">
+            <tr><td>
+                <#-- TODO 放点工具 -->
+            </td></tr>
+            <tr style="height:100%;"><td><div style="height:100%; overflow: auto">
+                <@buildTree tree true/>
+            </div></td></tr>
+        </table>
     </div>
     <div data-options="region:'center', border:false">
         <div id="content" class="easyui-panel" style="position: relative;" data-options="onLoad: onLoad" fit="true">
@@ -119,7 +117,7 @@
 </@>
 <#macro buildTree list root=false>
     <#if (list?size>0)>
-    <ul <#if root>class="easyui-tree" data-options='onSelect: doSelect'</#if>>
+    <ul <#if root>class="easyui-tree" id="std_tree" data-options='onSelect: doSelect'</#if>>
         <#list list as map>
             <li data-options="id: '${map.id}', url: '${map.attributes.C_URL!}', <#if map.attributes.C_URL??==false>iconCls: 'icon-folder'</#if>">
                 <span>
@@ -127,14 +125,14 @@
                         <#if map.attributes.C_URL??>
                         <#--文件如果数量为0则表示'未创建'-->
                             <#if (map.attributes.N_COUNT == 0)>
-                                <a href="javascript:;" onclick="showDev()" class="icon-notCreated">[未创建]</a>
+                                <a href="javascript:;" onclick="showDev()">[未创建]</a>
                             <#else>
                                 <#if (map.attributes.N_STATE == 1)>
-                                    <a href="javascript:;" onclick="showDev()" class="icon-new">[新增]</a>
+                                    <a href="javascript:;" onclick="showDev()">[新增]</a>
                                 <#elseif (map.attributes.N_STATE == 2)>
-                                    <a href="javascript:;" onclick="showDev()" class="icon-del">[删除]</a>
+                                    <a href="javascript:;" onclick="showDev()">[删除]</a>
                                 <#elseif (map.attributes.N_STATE == 3)>
-                                    <a href="javascript:;" onclick="showDev()" class="icon-update">[更新]</a>
+                                    <a href="javascript:;" onclick="showDev()">[更新]</a>
                                 </#if>
                             </#if>
                         </#if>

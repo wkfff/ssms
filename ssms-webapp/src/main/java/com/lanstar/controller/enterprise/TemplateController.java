@@ -22,7 +22,8 @@ import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.enterprise.ProfessionService;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class TemplateController extends Controller {
     public void index() {
@@ -62,6 +63,10 @@ public class TemplateController extends Controller {
         }
 
         this.setAttr( "R_SID", template.getId() ).setAttr( "tree", value ).setAttr( "firstRec", firstRec );
+    }
+
+    public void tree() {
+        index();
     }
 
     /**
