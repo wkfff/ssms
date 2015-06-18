@@ -134,7 +134,7 @@
                 <#list rs_dev as rs>
                     <li class="ue-clear">
                         <span class="matter-time">${rs.T_CREATE?date}</span>
-                        <a href="javascript:nav2('${rs.C_URL!"/e/stdtmp/"}');" class="matter-title">“${rs.C_NAME}(${rs.C_SPEC})”</a>临近下次检验(${rs.T_TEST_NEXT}）
+                        <a href="javascript:nav2('${rs.C_URL!"/e/stdtmp/"}');" class="matter-title">“${rs.C_NAME}(${rs.C_SPEC!})”</a>临近下次检验(${rs.T_TEST_NEXT!}）
                     </li>
                 </#list>
                 <li class="ue-clear"><a href="/e/stdtmp/" style="float: right; color: #ff0000">>>更多</a></li>
