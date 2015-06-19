@@ -51,6 +51,8 @@ ${footer}</html>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/resource/js/core.js"></script>
     <script type="text/javascript" src="/resource/js/common.js"></script>
+    <script type="text/javascript" src="/resource/js/jquery-powerFloat.js"></script>
+    <link rel="stylesheet" href="/resource/css/powerFloat.css"/>
     <#--
     <script type="text/javascript" src="/resource/js/kefu.js"></script>
     -->
@@ -72,34 +74,6 @@ ${footer}</html>
         });
     </script>
     ${footer}
-    </#local>
-    <#local EnterpriseProcession>
-    <div id="dd" class="easyui-dialog" title="选择专业" style="width:400px;height:200px; display: none"
-         data-options="iconCls:'icon-save',resizable:true,modal:true, buttons:'#bb', closable:true<#if LANSTAR_IDENTITY.tenantType='E'&&needChooseProfessions=false>, closed:true</#if>">
-        <div style="position: absolute; top: 80px; left: 80px;">
-            选择专业
-            <input id="cc" class="easyui-combobox" name="dept" required data-options="valueField:'SID',textField:'C_NAME',url:'/e/getProfessions',width:160">
-        </div>
-    </div>
-    <div id="bb" style="display: none">
-        <a href="#" class="easyui-linkbutton" onclick="choose()">确定</a>
-        <a href="#" class="easyui-linkbutton" onclick="opClose()">取消</a>
-    </div>
-    <script type="text/javascript">
-        function choose() {
-            var value = $('#cc').combobox('getValue');
-            if (value == null || value.length == 0) return;
-            $.post("/e/setTemplate", {profession: value}, function () {
-                window.location.href = "/";
-            });
-        }
-        function opChoose() {
-            $('#dd').dialog('open');
-        }
-        function opClose(){
-            $('#dd').dialog('close');
-        }
-    </script>
     </#local>
     <@base header=_header footer=_footer>
     <div id="container">
@@ -124,7 +98,12 @@ ${footer}</html>
                         	<#-- 暂时先用工贸企业，以后再修改
                             <a href="#" onclick="opChoose()" title="点击切换专业">专业:${LANSTAR_IDENTITY.enterpriseService.professionService.name}  <b class="c-icon c-icon-triangle-down"></b></a>
                             -->
-                            <a href="#" >${LANSTAR_IDENTITY.enterpriseService.professionService.name}专业 <b class="c-icon c-icon-triangle-down"></b></a>
+                            <a href="#" id="chooseProfession" rel="professions">${LANSTAR_IDENTITY.enterpriseService.professionService.name}专业 <b class="c-icon c-icon-triangle-down"></b></a>
+                                <#--专业<select style="border:0; background: none; color: #FFF;font-family: 微软雅黑;font-weight: bold;">
+                                <#list LANSTAR_IDENTITY.enterpriseService.professions as map>
+                                    <option value="${map.id}" <#if LANSTAR_IDENTITY.enterpriseService.professionService.id == map.id>selected</#if>>${map.name}</option>
+                                </#list>
+                            </select>-->
                         </li>
                         </#if>
                         <li class="split">|</li>
@@ -151,12 +130,43 @@ ${footer}</html>
         <div id="bd">
             <#nested />
         </div>
+        <#if LANSTAR_IDENTITY.tenantType='E' && LANSTAR_IDENTITY.enterpriseService.professionService??>
+        <style type="text/css">
+            .target_box {
+                border: 1px solid #aaa;
+                background-color: #FDFDFE;
+                width: 150px;
+            }
+            .target_box p {
+                border-bottom: 1px dotted #CCCCCC;
+                padding: 2px;
+            }
+            .target_box p:hover {
+                background: #87ceeb;
+            }
+            .target_box a {
+                color: #000;
+            }
+            .target_box a:hover {
+                color: #ff6f37;
+            }
+        </style>
+        <div id="professions" class="shadow target_box dn" style="display: none">
+            <#list LANSTAR_IDENTITY.enterpriseService.professions as map>
+                <p><a href="/e/setTemplate?profession=${map.id}">${map.name}专业</a></p>
+            </#list>
+        </div>
+        <script type="text/javascript">
+            $(function() {
+                $("#chooseProfession").powerFloat({ eventType: 'click', position: "3-2", zIndex: 2000});
+            });
+        </script>
+        </#if>
         <#--  取消底部栏目
         <div id="ft" class="ue-clear" style="text-align:center;">
             <span style="color:#EEE;">copyright @2015 福建永创意信息科技有限公司,福州蓝石电子有限公司</span>
         </div>
         -->
     </div>
-        <#if LANSTAR_IDENTITY.tenantType='E'>${EnterpriseProcession!}</#if>
     </@>
 </#macro>
