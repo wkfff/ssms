@@ -9,7 +9,9 @@
 package com.lanstar.controller.system;
 
 import com.google.common.collect.Lists;
+import com.lanstar.common.ModelInjector;
 import com.lanstar.core.Controller;
+import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Industry;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
@@ -47,7 +49,7 @@ public class ProfessionsController extends Controller {
                 industry.put( "professions", professions );
             }
 
-            if (professionId!=null) {
+            if ( professionId != null ) {
                 Map<String, Object> profession = new HashMap<>();
                 profession.put( "id", professionId );
                 profession.put( "name", professionName );
@@ -65,18 +67,19 @@ public class ProfessionsController extends Controller {
         Integer id = getParaToInt( "id" );
         String name = getPara( "name" );
         Integer template = getParaToInt( "template" );
+        Integer industryId = getParaToInt( "industryId" );
+        IdentityContext context = IdentityContext.getIdentityContext( this );
         Profession profession;
-        if ( id == null ) {
-            profession = new Profession();
-            profession.setName( name );
-            profession.setTemplateId(template);
-            profession.save();
-        } else {
-            profession = Profession.dao.findById( id );
-            profession.setName( name );
-            profession.setTemplateId(template);
-            profession.update();
-        }
+        if ( id == null ) profession = new Profession();
+        else profession = Profession.dao.findById( id );
+
+        ModelInjector.injectOpreator( profession, context );
+        profession.setName( name );
+        profession.setTemplateId( template );
+        profession.setIndustryId( industryId );
+
+        if ( id == null ) profession.save();
+        else profession.update();
         renderJson( profession.getId() );
     }
 
@@ -96,15 +99,15 @@ public class ProfessionsController extends Controller {
         Integer id = getParaToInt( "id" );
         String name = getPara( "name" );
         Industry industry;
-        if ( id == null ) {
-            industry = new Industry();
-            industry.setName( name );
-            industry.save();
-        } else {
-            industry = Industry.dao.findById( id );
-            industry.setName( name );
-            industry.update();
-        }
+        if ( id == null ) industry = new Industry();
+        else industry = Industry.dao.findById( id );
+
+        IdentityContext context = IdentityContext.getIdentityContext( this );
+        industry.setName( name );
+        ModelInjector.injectOpreator( industry, context );
+
+        if ( id == null ) industry.save();
+        else industry.update();
         renderJson( industry.getId() );
     }
 }

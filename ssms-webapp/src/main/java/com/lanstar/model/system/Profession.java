@@ -24,10 +24,6 @@ public class Profession extends Model<Profession> {
         return dao.find( SqlKit.sql( "system.profession.list" ), tenantId );
     }
 
-    public void setTemplateId( Integer templateId ) {
-        set( "R_TEMPLATE", templateId );
-    }
-
     public String getName() {
         return getStr( "C_NAME" );
     }
@@ -38,5 +34,13 @@ public class Profession extends Model<Profession> {
 
     public Integer getId() {
         return getInt( "SID" );
+    }
+
+    public void setIndustryId( int industryId ) {
+        set( "R_INDUSTRY", industryId );
+    }
+
+    public void setTemplateId( Integer templateId ) {
+        set( "R_TEMPLATE", templateId );
     }
 }

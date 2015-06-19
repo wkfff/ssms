@@ -34,14 +34,47 @@
         .validationMessage {
             color: #f00;
         }
+
+        a {
+            line-height: 24px;
+            padding: 4px 4px 4px 4px;
+        }
+
+        a:hover {
+            background-color: #ADBDFF;
+        }
+
+        .icon-add {
+            background: url("/resource/images/addico.png") no-repeat 2px center;
+            padding-left: 20px;
+        }
+
+        .icon-edit {
+            background: url("/resource/images/edtico.png") no-repeat 2px center;
+            padding-left: 20px;
+        }
+
+        .icon-remove {
+            background: url("/resource/images/delico.png") no-repeat 2px center;
+            padding-left: 20px;
+        }
+
+        .icon-save {
+            background: url("/resource/images/saveicon.png") no-repeat 2px center;
+            padding-left: 20px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <header class="titlebar">专业管理</header>
+    <header class="titlebar"><img src="/resource/images/bookico.png" /> 专业管理</header>
     <div class="content">
-        <a href="javascript:void(0);" data-bind="click: addIndustry">添加行业</a>
-        <ul data-bind="template: { name: 'industry-template', foreach: industries }"></ul>
+        <div class="z-toolbar">
+            <a href="javascript:void(0);" class="icon-add" data-bind="click: addIndustry">添加行业</a>
+        </div>
+        <div style="padding: 21px;">
+            <ul data-bind="template: { name: 'industry-template', foreach: industries }"></ul>
+        </div>
     </div>
 </div>
 
@@ -53,10 +86,10 @@
                 <input class="editor" type="text" data-bind="textInput: name, visible: editable"/>
             </label>
 
-            <a href="javascript:void(0);" data-bind="click: $root.saveIndustry, visible: editable">保存</a>
-            <a href="javascript:void(0);" data-bind="click: $root.editIndustry, visible: editable() == false">编辑</a>
-            <a href="javascript:void(0);" data-bind="visible: professions().length==0, click: $root.removeIndustry">删除</a>
-            <a href="javascript:void(0);" data-bind="click: $root.addProfession, visible: id">添加专业</a>
+            <a href="javascript:void(0);" class="icon-save" data-bind="click: $root.saveIndustry, visible: editable">保存</a>
+            <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.editIndustry, visible: editable() == false">编辑</a>
+            <a href="javascript:void(0);" class="icon-remove" data-bind="visible: professions().length==0, click: $root.removeIndustry">删除</a>
+            <a href="javascript:void(0);" class="icon-add" data-bind="click: $root.addProfession, visible: id">添加专业</a>
         </div>
         <ul class="profession" data-bind="template: { name: 'profession-template', foreach: professions }"></ul>
     </li>
@@ -75,9 +108,9 @@
                                value: selectedTemplate,
                                visible: editable()"></select>
         </label>
-        <a href="javascript:void(0);" data-bind="click: $root.saveProfession, visible: editable">保存</a>
-        <a href="javascript:void(0);" data-bind="click: $root.editProfession, visible: editable() == false">编辑</a>
-        <a href="javascript:void(0);" data-bind="click: function(model, bindContext) { $root.removeProfession($parent, model, bindContext) }">删除</a>
+        <a href="javascript:void(0);" class="icon-save" data-bind="click: $root.saveProfession, visible: editable">保存</a>
+        <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.editProfession, visible: editable() == false">编辑</a>
+        <a href="javascript:void(0);" class="icon-remove" data-bind="click: function(model, bindContext) { $root.removeProfession($parent, model, bindContext) }">删除</a>
     </li>
 </script>
 </body>
@@ -92,17 +125,18 @@
             this.name = ko.observable(name).extend({required: true});
 
             this.professions = ko.observableArray(ko.utils.arrayMap(professions, function (item) {
-                return new professionModel(item.id, item.name, item.selectedTemplate);
+                return new professionModel(this, item.id, item.name, item.selectedTemplate);
             }));
             this.editable = ko.observable(id == null);
         }
 
-        function professionModel(id, name, selectedTemplate) {
+        function professionModel(industry, id, name, selectedTemplate) {
             this.id = ko.observable(id);
             this.name = ko.observable(name).extend({required: true});
             this.selectedTemplate = ko.observable(ko.utils.arrayFirst(self.templates, function (item) {
                 return item.CODE == selectedTemplate;
             })).extend({required: true});
+            this.industry = industry;
             this.editable = ko.observable(id == null);
         }
 
@@ -150,12 +184,13 @@
         };
 
         self.addProfession = function (model) {
-            model.professions.push(new professionModel());
+            model.professions.push(new professionModel(model));
         };
 
         self.saveProfession = function (model) {
             if (isValid(model) == false) return;
             var para = {
+                industryId: model.industry.id(),
                 name: model.name,
                 template: model.selectedTemplate().CODE
             };
