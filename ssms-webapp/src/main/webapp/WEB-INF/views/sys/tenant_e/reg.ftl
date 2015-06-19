@@ -11,6 +11,12 @@
         S_CITY: ko.observable(),
         P_COUNTY: ko.observable(),
         S_COUNTY: ko.observable(),
+        P_AT_PROVINCE: ko.observable(),
+        S_AT_PROVINCE: ko.observable(),
+        P_AT_CITY: ko.observable(),
+        S_AT_CITY: ko.observable(),
+        P_AT_COUNTY: ko.observable(),
+        S_AT_COUNTY: ko.observable(),
         C_ADDR: ko.observable(),
         C_CONTACT: ko.observable(),
         C_TEL: ko.observable(),
@@ -47,6 +53,18 @@
             queryParams: {R_CODE: newValue}
         });
     });
+    model.P_AT_PROVINCE.subscribe(function (newValue) {
+        settings.at_citySetting.combobox({
+            url: '/sys/para_area/list',
+            queryParams: {R_CODE: newValue}
+        });
+    });
+    model.P_AT_CITY.subscribe(function (newValue) {
+        settings.at_countySetting.combobox({
+            url: '/sys/para_area/list',
+            queryParams: {R_CODE: newValue}
+        });
+    });
 
     var settings = {
         industrySetting: {
@@ -69,6 +87,20 @@
             textField: 'C_VALUE'
         },
         countySetting: {
+            valueField: 'C_CODE',
+            textField: 'C_VALUE'
+        },
+        at_provinceSetting: {
+            url: '/sys/para_area/list',
+            queryParams: {N_LEVEL: 1},
+            valueField: 'C_CODE',
+            textField: 'C_VALUE'
+        },
+        at_citySetting: {
+            valueField: 'C_CODE',
+            textField: 'C_VALUE'
+        },
+        at_countySetting: {
             valueField: 'C_CODE',
             textField: 'C_VALUE'
         }
@@ -122,6 +154,16 @@
                     <input data-bind="comboboxValues:professionValues,easyuiOptions:professionSetting" required/>
                 </span>
             </p>
+            
+            <p class="ue-clear">
+                <label>所属辖区</label>
+                <span class="control">
+                    <input style="width: 60px" data-bind="comboboxValue:P_AT_PROVINCE,comboboxText:S_AT_PROVINCE,easyuiOptions:at_provinceSetting" required/>省
+                    <input style="width: 60px" data-bind="comboboxValue:P_AT_CITY,comboboxText:S_AT_CITY,easyuiOptions:at_citySetting" required/>市
+                    <input style="width: 60px" data-bind="comboboxValue:P_AT_COUNTY,comboboxText:S_AT_COUNTY,easyuiOptions:at_countySetting" required/>区(县)
+                </span>
+            </p>
+            
         </div>
         <div class="easyui-panel form" style="padding:10px" title="联系方式">
             <p class="long-input ue-clear">

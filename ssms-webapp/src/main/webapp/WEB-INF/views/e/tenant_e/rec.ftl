@@ -148,6 +148,16 @@
                     <input data-bind="comboboxValues:professionValues,easyuiOptions:professionSetting" readonly/>
                 </span>
             </p>
+            
+            <p class="ue-clear">
+                <label>所属辖区</label>
+                <span class="control">
+                    <input style="width: 60px; text-align: center" class="readonly" type="text" value="${S_AT_PROVINCE}" readonly/>省
+                    <input style="width: 60px; text-align: center" class="readonly" type="text" value="${S_AT_CITY}" readonly/>市
+                    <input style="width: 60px; text-align: center" class="readonly" type="text" value="${S_AT_COUNTY}" readonly/>区(县)
+                </span>
+            </p>
+            
         </div>
         <div  border="false">
             <p class="long-input ue-clear">
