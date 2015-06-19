@@ -65,7 +65,11 @@
                 }
             }
         }, 500);
-    })
+    });
+
+    function doSearch(){
+        $('#std_tree').tree('doFilter', $('#searchTree').textbox('getText'));
+    }
 </script>
 </#assign>
 <@layout.indexLayout footer=script>
@@ -99,6 +103,7 @@
         <table id="ttt" style="height: 100%; width: 100%; table-layout: fixed;">
             <tr><td>
                 <#-- TODO 放点工具 -->
+                    <#--<input class="easyui-textbox" id="searchTree" data-options="icons: [{ iconCls:'icon-search', handler: doSearch}], onChange: doSearch" >-->
             </td></tr>
             <tr style="height:100%;"><td><div style="height:100%; overflow: auto">
                 <@buildTree tree true/>
