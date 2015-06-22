@@ -65,13 +65,12 @@ public class HomeController extends Controller {
         setAttr( "FILE_NO_CREATE", identityContext.getTenantDb()
                                                   .queryLong( "select COUNT(*) from ssm_stdtmp_file where N_COUNT = 0" ) );
 
-        List<TemplateFile> files = TemplateFile.dao.find( "SELECT *\n"
-                + "FROM SSM_STDTMP_FILE\n"
-                + "WHERE R_SID IN (\n"
-                + "    SELECT SID FROM SSM_STDTMP_FOLDER\n"
-                + "    WHERE R_TEMPLATE = ? AND R_TENANT=? AND P_TENANT=?\n"
-                + ")\n"
-                + "and N_COUNT = 0 limit 0, 15", professionService.getSystemTemplate()
+        List<TemplateFile> files = TemplateFile.dao.find( "SELECT A.*\n"
+                + "FROM SSM_STDTMP_FILE A\n"
+                + "inner join SSM_STDTMP_FOLDER B on a.r_sid = b.sid\n"
+                + "where B.R_TEMPLATE = ? AND B.R_TENANT=? AND B.P_TENANT=?\n"
+                + "and A.N_COUNT = 0 ORDER BY B.N_INDEX, B.SID, A.N_INDEX, SID\n"
+                + "limit 0, 15", professionService.getSystemTemplate()
                                                                   .getId(), identityContext.getTenantId(), TenantType.ENTERPRISE
                 .getName() );
         setAttr( "rs_todo", files );

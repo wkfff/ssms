@@ -100,7 +100,7 @@
                     <#list rs_todo as rs>
                         <li class="ue-clear">
                             <span class="matter-time">${rs.T_CREATE?date}</span>
-                            <a href="javascript:nav2('${rs.C_URL!"/e/stdtmp/"}');" class="matter-title">${rs.C_NAME}</a>
+                            <a href="javascript:nav2('${rs.C_URL!"/e/stdtmp/tree?selected=${rs.SID}"}');" class="matter-title">${rs.C_NAME}</a>
                         </li>
                     </#list>
                     <li class="ue-clear"><a href="/e/stdtmp/" style="float: right; color: #ff0000">>>更多</a></li>
