@@ -21,6 +21,7 @@
             var aurl = $(this).find("a").attr("date-src");
             if (aurl == "") return;
             if (aurl == "/e/stdtmp/") window.location.href = aurl;
+            else if (aurl == "/e/stdtmp/tree") window.location.href = aurl;
             else {
                 $("#iframe").attr("src", aurl);
                 $(".nav>li").css({"borderColor": "#dbe9f1"});
