@@ -27,13 +27,13 @@
             $("#content").panel("refresh", node.url);
 
             if ($(node.target).find(".icon-new").length > 0) {
-                $.messager.confirm("提醒", "达标体系模板新增加了【"+$(node.target).find('.title').text()+"】文件。请确认是否同步添加？");
+                $.messager.confirm("提醒", "达标体系模板新增加了【" + $(node.target).find('.title').text() + "】文件。请确认是否同步添加？");
             }
             else if ($(node.target).find(".icon-del").length > 0) {
-                $.messager.confirm("提醒", "达标体系模板删除了【"+$(node.target).find('.title').text()+"】文件。请确认是否同步删除？");
+                $.messager.confirm("提醒", "达标体系模板删除了【" + $(node.target).find('.title').text() + "】文件。请确认是否同步删除？");
             }
             else if ($(node.target).find(".icon-update").length > 0) {
-                $.messager.confirm("提醒", "达标体系模板修改了【"+$(node.target).find('.title').text()+"】模板。请确认是否同步修改？");
+                $.messager.confirm("提醒", "达标体系模板修改了【" + $(node.target).find('.title').text() + "】模板。请确认是否同步修改？");
             }
         }
     }
@@ -53,21 +53,28 @@
     function showDev() {
         //        $.messager.alert('提示', '功能正在开发中...');
     }
+    var selected = 'F-${selected}';
     $(function () {
         $('#ttt').parent().show();
         setTimeout(function () {
             var $tree = $('#std_tree');
-            var children = $tree.tree('getChildren');
-            for (var i = 0; i < children.length; i++) {
-                if ($tree.tree('isLeaf', children[i].target)) {
-                    $tree.tree('select', children[i].target);
-                    return;
+            if (selected != null) {
+                var node = $tree.tree('find', selected);
+                $tree.tree('select', node.target);
+            }
+            else {
+                var children = $tree.tree('getChildren');
+                for (var i = 0; i < children.length; i++) {
+                    if ($tree.tree('isLeaf', children[i].target)) {
+                        $tree.tree('select', children[i].target);
+                        return;
+                    }
                 }
             }
         }, 500);
     });
 
-    function doSearch(){
+    function doSearch() {
         $('#std_tree').tree('doFilter', $('#searchTree').textbox('getText'));
     }
 </script>
@@ -101,13 +108,19 @@
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'west', title:'达标体系', split:true, tools:[{ iconCls:'icon-reload', handler:function(){location.href = '${BASE_PATH}/';} }]" style="width: 250px; display: none">
         <table id="ttt" style="height: 100%; width: 100%; table-layout: fixed;">
-            <tr><td>
+            <tr>
+                <td>
                 <#-- TODO 放点工具 -->
                     <#--<input class="easyui-textbox" id="searchTree" data-options="icons: [{ iconCls:'icon-search', handler: doSearch}], onChange: doSearch" >-->
-            </td></tr>
-            <tr style="height:100%;"><td><div style="height:100%; overflow: auto">
-                <@buildTree tree true/>
-            </div></td></tr>
+                </td>
+            </tr>
+            <tr style="height:100%;">
+                <td>
+                    <div style="height:100%; overflow: auto">
+                        <@buildTree tree true/>
+                    </div>
+                </td>
+            </tr>
         </table>
     </div>
     <div data-options="region:'center', border:false">
