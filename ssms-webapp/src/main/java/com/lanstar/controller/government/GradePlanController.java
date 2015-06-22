@@ -169,8 +169,10 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         this.identityContext.initReviewService( enterprise, profession );
 
         // 根据企业编号获取最后一次完成的评审编号
-        String sql = "SELECT SID FROM SSM_GRADE_E_M WHERE N_STATE=1  ORDER BY T_UPDATE DESC  LIMIT 1";
-        this.setAttr( "gradeid", GradePlan.dao.findFirst( sql ).getId() );
+        String sql = "SELECT SID FROM SSM_GRADE_E_M WHERE N_STATE=3  ORDER BY T_UPDATE DESC  LIMIT 1";
+        GradePlan model = GradePlan.dao.findFirst( sql );
+        if (model!=null)
+            this.setAttr( "gradeid", model.getId() );
         // 获取对选择企业的评审
         sql = "SELECT SID FROM SSM_GRADE_R_M WHERE N_STATE=0  ORDER BY T_UPDATE DESC  LIMIT 1";
         GradePlanR gpr = GradePlanR.dao.findFirst( sql );

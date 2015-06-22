@@ -112,7 +112,7 @@
             textField: 'C_VALUE'
         },
         at_citySetting: {
-            <#if P_AT_PROVINCE!="">
+            <#if P_AT_PROVINCE?? && P_AT_PROVINCE!="">
             url: '/sys/para_area/list',
             queryParams: {R_CODE: '${P_AT_PROVINCE}'},
             </#if>
@@ -120,7 +120,7 @@
             textField: 'C_VALUE'
         },
         at_countySetting: {
-            <#if P_AT_CITY!="">
+            <#if P_AT_CITY?? && P_AT_CITY!="">
             url: '/sys/para_area/list',
             queryParams: {R_CODE: '${P_AT_CITY}'},
             </#if>
