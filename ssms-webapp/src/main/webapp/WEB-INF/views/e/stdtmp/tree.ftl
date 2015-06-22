@@ -53,14 +53,13 @@
     function showDev() {
         //        $.messager.alert('提示', '功能正在开发中...');
     }
-    var selected = 'F-${selected}';
+    var selected = <#if selected??>'F-${selected}'<#else>null</#if>;
     $(function () {
         $('#ttt').parent().show();
         setTimeout(function () {
             var $tree = $('#std_tree');
             if (selected != null) {
-                var node = $tree.tree('find', selected);
-                $tree.tree('select', node.target);
+                selectNode(selected);
             }
             else {
                 var children = $tree.tree('getChildren');
@@ -73,6 +72,17 @@
             }
         }, 500);
     });
+
+    function selectNode(id){
+        var $tree = $('#std_tree');
+        var node = $tree.tree('find', id);
+        var parent = $tree.tree('getParent', node.target);
+        while(parent!=null) {
+            $tree.tree('expand', parent.target);
+            parent = $tree.tree('getParent', parent.target);
+        }
+        $tree.tree('select', node.target);
+    }
 
     function doSearch() {
         $('#std_tree').tree('doFilter', $('#searchTree').textbox('getText'));
