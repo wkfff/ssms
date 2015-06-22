@@ -124,7 +124,7 @@
     <#if (list?size>0)>
     <ul <#if root>class="easyui-tree" id="std_tree" data-options='onSelect: doSelect'</#if>>
         <#list list as map>
-            <li data-options="id: '${map.id}', url: '${map.attributes.C_URL!}', <#if map.attributes.C_URL??==false>iconCls: 'icon-folder'</#if>">
+            <li data-options="id: '${map.id}', url: '${map.attributes.C_URL!}', state: 'closed', <#if map.attributes.C_URL??==false>iconCls: 'icon-folder'</#if>">
                 <span>
                     <#--有URL说明是“文件”-->
                         <#if map.attributes.C_URL??>
