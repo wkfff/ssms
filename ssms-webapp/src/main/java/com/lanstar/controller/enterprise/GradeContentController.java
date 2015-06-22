@@ -29,7 +29,7 @@ public class GradeContentController extends SimplateController<GradeContent> {
                .WHERE( "P_TENANT = ?", identityContext.getTenantType().getName() )
                .WHERE( "R_SID = ?", getPara( "R_SID" ) )
                ._If( isParaExists( "N_STATE" ), "N_STATE = ?", getPara( "N_STATE" ) )
-               ._If( isParaBlank( "NOCOMPLETE" ) == false, " IFNULL(N_SCORE_REAL,0) = ?", 0 );
+               ._If( isParaBlank( "NOCOMPLETE" ) == false, " IFNULL(N_SCORE_REAL,0) = ? AND IFNULL(B_BLANK,'0')<>'1'", 0 );
         return builder;
     }
 

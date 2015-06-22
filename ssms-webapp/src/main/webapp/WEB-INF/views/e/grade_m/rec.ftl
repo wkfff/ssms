@@ -88,7 +88,7 @@
             <div class="db_tb">
                 <input type="checkbox" data-bind="booleanValue:noComplete"/>
                 <a href="javascript:void(0)" data-bind="click:gridEvents.noCompleteClick">只显示未完成项</a>
-                <a id="full" href="javascript:void(0)" data-bind="click:gridEvents.fullScreenClick" class="panel-tool-max" style="width:16px;height:16px;" title="最大化"></a>
+                <a id="full" href="javascript:void(0)" data-bind="click:gridEvents.fullScreenClick"  style="width:46px;height:16px;" title="最大化">最大化</a>
             </div>
         </div>
         <table data-bind="datagridValue:selectItem,datagridEditValue:editItem,easyuiOptions:gridSettings"></table>

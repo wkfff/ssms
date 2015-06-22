@@ -78,20 +78,22 @@ function ViewModel(recId) {
             gridEvents: {
                 fullScreenClick:function(){
                     var e = $('#full');
-                    if (e.hasClass('panel-tool-max')){
+                    if (e.attr('title')=='最大化'){
                         $('#north').panel('collapse');
                         $('#center').panel('maximize');
                         $('.layout-panel-north').hide();
-                        e.removeClass('panel-tool-max');
-                        e.addClass('panel-tool-min');
+                        //e.removeClass('panel-tool-max');
+                        //e.addClass('panel-tool-min');
                         e.attr('title','还原');
+                        e.text('还原');
                     }else{
                         $('#north').panel('expand');
                         $('#center').panel('restore');
                         $('.layout-panel-north').show();
-                        e.addClass('panel-tool-max');
-                        e.removeClass('panel-tool-min');
+                        //e.addClass('panel-tool-max');
+                        //e.removeClass('panel-tool-min');
                         e.attr('title','最大化');
+                        e.text('最大化');
                     }
                 },
                 refreshClick: function () {
