@@ -20,7 +20,7 @@
 </style>
 <div id="kocontainer">
     <div class="z-toolbar" data-bind="visible:!readonly">
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">发布</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-pdf" data-bind="click: function(){}">导出</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-back" data-bind="click: function(){panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}')}">返回列表</a>
         <#if TEMPLATE_ID??>

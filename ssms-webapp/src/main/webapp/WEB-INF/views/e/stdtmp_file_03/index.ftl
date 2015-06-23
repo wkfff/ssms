@@ -51,6 +51,14 @@
             <a href="javascript:void(0);" data-bind="disable: readonly,uploadOptions: {module: 'STDTMP_FILE_03', sid: '${SID!}'}">[选择文件]</a>
             </td>
         </tr>
+            <tr>
+                <td colspan="4">
+                    <div>
+                        <div style="background-color: #CCCCCC; margin-top: 5px">操作指南：</div>
+                        <span style="color: #ff0000; font-weight: bold">请根据要求将本要素相关记录完成并上传.(可将参考模板在线修改下载执行)</span>
+                    </div>
+                </td>
+            </tr>
         </table>
     </form>
 </div>

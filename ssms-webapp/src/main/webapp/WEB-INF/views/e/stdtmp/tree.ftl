@@ -87,6 +87,10 @@
     function doSearch() {
         $('#std_tree').tree('doFilter', $('#searchTree').textbox('getText'));
     }
+
+    function doDblClick(node){
+        $('#std_tree').tree('expand', node.target);
+    }
 </script>
 </#assign>
 <@layout.indexLayout footer=script>
@@ -145,7 +149,7 @@
 </@>
 <#macro buildTree list root=false>
     <#if (list?size>0)>
-    <ul <#if root>class="easyui-tree" id="std_tree" data-options='onSelect: doSelect'</#if>>
+    <ul <#if root>class="easyui-tree" id="std_tree" data-options='onSelect: doSelect, onDblClick: doDblClick'</#if>>
         <#list list as map>
             <li data-options="id: '${map.id}', url: '${map.attributes.C_URL!}', <#if map.attributes.C_URL??==false>state: 'closed', iconCls: 'icon-folder'</#if>">
                 <span>

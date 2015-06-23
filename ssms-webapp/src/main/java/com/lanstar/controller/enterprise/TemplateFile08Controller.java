@@ -20,7 +20,7 @@ public class TemplateFile08Controller extends SimplateController<TemplateFile08>
     @Override
     protected SqlBuilder buildWhere() {
         SqlBuilder sb = new SqlBuilder();
-        sb.WHERE(" R_TMPFILE=?",this.getPara( "R_TMPFILE" ));
+        sb.WHERE(" R_TMPFILE=?",this.getPara( "R_TMPFILE" )).ORDER_BY( "T_TEST_LAST" );
         return sb;
     }
     

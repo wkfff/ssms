@@ -79,11 +79,11 @@
             <tr>
                 <td>最新检验日期:</td>
                 <td>
-                    <input data-bind="disable: readonly,dateboxValue: T_TEST_LAST"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_TEST_LAST" required/>
                 </td>
                 <td>下次检验日期:</td>
                 <td>
-                    <input data-bind="disable: readonly,dateboxValue: T_TEST_NEXT"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_TEST_NEXT" required/>
                 </td>
             </tr>
             <tr>

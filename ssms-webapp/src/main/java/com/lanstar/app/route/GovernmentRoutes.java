@@ -32,7 +32,6 @@ public class GovernmentRoutes extends Routes {
 
         this.add("/g/tenant_g", GovernmentController.class);
         this.add("/g/tenant_gu", GovernmentUserController.class);
-        add("/common", GovernmentUserController.class);
 
         this.add("/g/statistics", StatisticsController.class);
 

@@ -1,5 +1,5 @@
 <div id="kocontainer" class="easyui-panel" border="false" fit="true">
-    <div class="z-toolbar" data-bind="visible:!readonly">
+    <div id="toolbar" class="z-toolbar" data-bind="visible:!readonly">
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
@@ -33,11 +33,11 @@
                 columns: [
                     [
                         {field: 'C_NAME', title: '通知标题', width: 150},
-                        {field: 'T_TIME', title: '培训日期', width: 150},
-                        {field: 'C_USER_01', title: '讲师', width: 80},
-                        {field: 'C_ADDR', title: '培训地点', width: 80},
-                        {field: 'S_TYPE', title: '培训种类', width: 80},
-                        {field: 'N_TIME', title: '学时', width: 80}
+                        {field: 'T_TIME', title: '培训日期', align: 'center', width: 150},
+                        {field: 'C_USER_01', title: '讲师', align: 'center', width: 80},
+                        {field: 'C_ADDR', title: '培训地点', align: 'center', width: 80},
+                        {field: 'S_TYPE', title: '培训种类', align: 'center', width: 80},
+                        {field: 'N_TIME', title: '学时', align: 'center', width: 80}
                     ]
                 ],
                 onDblClickRow: function (index, row) {

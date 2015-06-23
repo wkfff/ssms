@@ -35,7 +35,7 @@ public class TemplateFile02Controller extends SimplateController<TemplateFile02>
 
     @Override
     protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt( "R_SID" ) );
+        return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt( "R_SID" ) ).ORDER_BY("T_DATE_01 DESC");
     }
     
     public void view(){
