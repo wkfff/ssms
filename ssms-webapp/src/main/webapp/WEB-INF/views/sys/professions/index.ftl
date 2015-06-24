@@ -121,11 +121,12 @@
         var self = this;
 
         function industryModel(id, name, professions) {
+            var self = this;
             this.id = ko.observable(id);
             this.name = ko.observable(name).extend({required: true});
 
             this.professions = ko.observableArray(ko.utils.arrayMap(professions, function (item) {
-                return new professionModel(this, item.id, item.name, item.selectedTemplate);
+                return new professionModel(self, item.id, item.name, item.selectedTemplate);
             }));
             this.editable = ko.observable(id == null);
         }
