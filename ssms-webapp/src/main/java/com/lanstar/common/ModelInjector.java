@@ -119,7 +119,7 @@ public class ModelInjector {
             model.set( "S_UPDATE", identity.getName() );
             model.set( "T_UPDATE", new Date() );
 
-            if ( skipTenant ) {
+            if ( skipTenant == false ) {
                 model.set( "R_TENANT", identity.getTenantId() );
                 model.set( "S_TENANT", identity.getTenantName() );
                 model.set( "P_TENANT", identity.getTenantType().getName() );
