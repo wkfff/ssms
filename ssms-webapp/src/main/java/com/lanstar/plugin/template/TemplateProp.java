@@ -8,7 +8,8 @@
 
 package com.lanstar.plugin.template;
 
-import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.Identity;
+import com.lanstar.identity.Tenant;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.plugin.activerecord.ModelExt;
@@ -41,8 +42,8 @@ public class TemplateProp {
         return prop;
     }
 
-    public void sync( TemplateFile source, com.lanstar.model.tenant.TemplateFile target, TemplateFolder tenantFolder, IdentityContext targetContext ) {
-        syncUnitFactory.sync( source, target, tenantFolder, targetContext );
+    public void sync( TemplateFile source, com.lanstar.model.tenant.TemplateFile target, TemplateFolder tenantFolder, Tenant targetTenant, Identity operator ) {
+        syncUnitFactory.sync( source, target, tenantFolder, targetTenant, operator );
     }
 
     public String getCode() {

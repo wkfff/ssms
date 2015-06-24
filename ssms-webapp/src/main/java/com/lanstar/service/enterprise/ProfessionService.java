@@ -39,7 +39,7 @@ public class ProfessionService {
         Db.tx( new IAtom() {
             @Override
             public boolean run() throws SQLException {
-                TemplateSyncProcessor.process( getSystemTemplate(), identityContext );
+                TemplateSyncProcessor.process( ProfessionService.this, identityContext );
                 return true;
             }
         } );
@@ -90,6 +90,7 @@ public class ProfessionService {
     }
 
     public TemplateFolder getTenantTemplateFolder() {
+        // FIXME: 这里没有根据租户以及租户的专业进行过滤，因此取出来的数据可能有问题。
         Integer id = getSystemTemplate().getId();
         return TemplateFolder.dao.findFirstByColumns( Lists.newArrayList( "R_TEMPLATE", "R_SID" ), Lists.newArrayList( id, (Object) 0 ) );
     }

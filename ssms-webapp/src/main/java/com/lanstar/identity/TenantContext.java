@@ -42,6 +42,52 @@ public class TenantContext {
         this.tenant = tenant;
     }
 
+    /** 根据租户信息获取租户上下文实例。 */
+    public static TenantContext with( Tenant tenant ) {
+        return new TenantContext( tenant );
+    }
+
+    /** 根据值的类型从上下文中取出值 */
+    @SuppressWarnings("unchecked")
+    <T> T getValue( Class<T> clazz ) {
+        if ( valueMap == null || valueMap.isEmpty() ) return null;
+        Object value = valueMap.get( clazz );
+//        if (value == null) throw new RuntimeException( "can not retrive instance of" + clazz.getName() );
+        return (T) value;
+    }
+
+    /**
+     * 判断当前上下文中是否有指定类型的值
+     */
+    <T> boolean hasValue( Class<T> clazz ) {
+        return valueMap.containsKey( clazz );
+    }
+
+    /** 获取评审服务 */
+    public synchronized void initReviewService( Enterprise tenant, Profession profession ) {
+        Asserts.notNull( tenant, "tenant can not be null" );
+        Asserts.notNull( profession, "profession can not be null" );
+//        if ( TenantType.REVIEW.equals( getTenantType() ) == false )
+//            throw new RuntimeException( "tenant type must equals 'REVIEW'" );
+
+        ReviewService service = getValue( ReviewService.class );
+        if ( service == null ) {
+            service = new ReviewService( this, new TenantContext( tenant ) );
+            this.setValue( service );
+            service.getEnterpriseContext().getEnterpriseService().setProfessionService( profession );
+        } else {
+            if ( tenant.getTenantCode().equalsIgnoreCase( service.getEnterpriseContext().getTenantCode() ) == false ||
+                    profession.getId()
+                              .equals( service.getEnterpriseContext()
+                                              .getEnterpriseService()
+                                              .getProfessionService()
+                                              .getId() ) ) {
+                service.setEnterpriseContext( new TenantContext( tenant ) );
+                service.getEnterpriseContext().getEnterpriseService().setProfessionService( profession );
+            }
+        }
+    }
+
     public String getTenantName() {return tenant.getTenantName();}
 
     public TenantType getTenantType() {return tenant.getTenantType();}
@@ -66,28 +112,6 @@ public class TenantContext {
 
     public Tenant getTenant() {
         return tenant;
-    }
-
-    /** 将指定值与上下文绑定 */
-    void setValue( Object value ) {
-        if ( value == null ) return;
-        valueMap.put( value.getClass(), value );
-    }
-
-    /** 根据值的类型从上下文中取出值 */
-    @SuppressWarnings("unchecked")
-    <T> T getValue( Class<T> clazz ) {
-        if (valueMap==null || valueMap.isEmpty()) return null;
-        Object value = valueMap.get( clazz );
-//        if (value == null) throw new RuntimeException( "can not retrive instance of" + clazz.getName() );
-        return (T)value;
-    }
-
-    /**
-     * 判断当前上下文中是否有指定类型的值
-     */
-    <T> boolean hasValue( Class<T> clazz ) {
-        return valueMap.containsKey( clazz );
     }
 
     public List<TreeNode> getSystemNavgate() {
@@ -133,29 +157,14 @@ public class TenantContext {
         return service;
     }
 
-    /** 获取评审服务 */
-    public synchronized void initReviewService( Enterprise tenant, Profession profession  ) {
-        Asserts.notNull( tenant, "tenant can not be null" );
-        Asserts.notNull( profession, "profession can not be null" );
-//        if ( TenantType.REVIEW.equals( getTenantType() ) == false )
-//            throw new RuntimeException( "tenant type must equals 'REVIEW'" );
-        
-        ReviewService service = getValue( ReviewService.class );
-        if ( service == null ) {
-            service = new ReviewService( this, new TenantContext( tenant ) );
-            this.setValue( service );
-            service.getEnterpriseContext().getEnterpriseService().setProfessionService( profession );
-        } else {
-            if ( tenant.getTenantCode().equalsIgnoreCase( service.getEnterpriseContext().getTenantCode() ) == false ||
-                 profession.getId().equals( service.getEnterpriseContext().getEnterpriseService().getProfessionService().getId() )   ) {
-                service.setEnterpriseContext( new TenantContext( tenant ) );
-                service.getEnterpriseContext().getEnterpriseService().setProfessionService( profession );
-            }
-        }
-    }
-    
-    public synchronized ReviewService getReviewService(){
+    public synchronized ReviewService getReviewService() {
         return this.getValue( ReviewService.class );
+    }
+
+    /** 将指定值与上下文绑定 */
+    void setValue( Object value ) {
+        if ( value == null ) return;
+        valueMap.put( value.getClass(), value );
     }
 
     private TreeNode findNode( Collection<TreeNode> nodes, TenantType tenantType ) {

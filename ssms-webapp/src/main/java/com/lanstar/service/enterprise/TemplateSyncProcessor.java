@@ -9,7 +9,9 @@
 package com.lanstar.service.enterprise;
 
 import com.lanstar.common.log.Logger;
+import com.lanstar.identity.Identity;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.Tenant;
 import com.lanstar.model.system.Template;
 import com.lanstar.model.system.TemplateFolder;
 
@@ -18,21 +20,23 @@ import java.util.List;
 class TemplateSyncProcessor implements SyncProcessor {
     private static final Logger log = Logger.getLogger( TemplateSyncProcessor.class );
     private final Template template;
+    private final ProfessionService professionService;
 
-    public TemplateSyncProcessor( Template template ) {
-        this.template = template;
+    public TemplateSyncProcessor( ProfessionService professionService ) {
+        this.professionService = professionService;
+        this.template = professionService.getSystemTemplate();
     }
 
-    public static void process( Template template, IdentityContext identityContext ) {
-        new TemplateSyncProcessor( template ).sync( identityContext );
+    public static void process( ProfessionService professionService, IdentityContext identityContext ) {
+        new TemplateSyncProcessor( professionService ).sync( identityContext.getTenant(), identityContext.getIdentity() );
     }
 
     @Override
-    public void sync( IdentityContext target ) {
+    public void sync( Tenant target, Identity operator ) {
         log.debug( "----------开始同步模板----------" );
         List<TemplateFolder> folders = template.listFolder( 0 );
         for ( TemplateFolder folder : folders ) {
-            new FolderSyncProcessor( folder ).sync( target );
+            new FolderSyncProcessor( folder, professionService.getProfession() ).sync( target, operator );
         }
         log.debug( "----------同步模板完成----------" );
     }

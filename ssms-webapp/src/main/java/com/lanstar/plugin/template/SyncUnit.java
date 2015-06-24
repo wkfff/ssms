@@ -11,10 +11,12 @@ package com.lanstar.plugin.template;
 import com.lanstar.app.Const;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.common.log.Logger;
-import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.Identity;
+import com.lanstar.identity.Tenant;
+import com.lanstar.identity.TenantContext;
 import com.lanstar.model.system.TemplateFile;
-import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.model.tenant.FileContentState;
+import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.activerecord.ModelKit;
@@ -28,8 +30,9 @@ public class SyncUnit {
     com.lanstar.model.system.TemplateFile sourceFile;
     com.lanstar.model.tenant.TemplateFile targetFile;
     TemplateFolder tenantFolder;
-    IdentityContext targetContext;
     TemplateProp templateProp;
+    Tenant targetTenant;
+    Identity operator;
 
     public void execute() {
         // 同步文件信息
@@ -37,9 +40,9 @@ public class SyncUnit {
                 "C_NAME", "C_DESC", "B_REMIND", "N_CYCLE", "P_CYCLE", "S_CYCLE", "C_EXPLAIN", "P_TMPFILE", "S_TMPFILE", "N_INDEX" );
         if ( targetFile.isModified() ) {
             // tenantFile.setTenant(target.getIdentity() );
-            ModelInjector.injectOpreator( targetFile, targetContext );
+            ModelInjector.injectOpreator( targetFile, operator, true );
         }
-        if ( targetFile.getInt( "SID" ) == null ) initFile();
+        if ( targetFile.getId() == null ) initFile();
         else targetFile.update();
     }
 
@@ -53,10 +56,6 @@ public class SyncUnit {
 
     public TemplateFolder getTenantFolder() {
         return tenantFolder;
-    }
-
-    public IdentityContext getTargetContext() {
-        return targetContext;
     }
 
     public TemplateProp getTemplateProp() {
@@ -106,6 +105,9 @@ public class SyncUnit {
         tenantFileContent.set( "R_TENANT", targetFile.get( "R_TENANT" ) );
         tenantFileContent.set( "S_TENANT", targetFile.get( "S_TENANT" ) );
         tenantFileContent.set( "P_TENANT", targetFile.get( "P_TENANT" ) );
+        tenantFileContent.set( "R_TEMPLATE", targetFile.getTemplateId() );
+        tenantFileContent.set( "R_TMPFLODER", this.tenantFolder.getId() );
+        tenantFileContent.set( "P_PROFESSION", targetFile.getProfessionId() );
         tenantFileContent.set( "N_STATE", FileContentState.CLONED.getValue() );
         tenantFileContent.save();
         return tenantFileContent;
@@ -127,7 +129,8 @@ public class SyncUnit {
         log.debug( "================>拷贝文件内容->富文本数据..." );
         String content = AttachTextService.SYSTEM.getContent( src, "C_CONTENT", srcId );
 
-        AttachTextService service = targetContext.getAttachTextService();
-        service.save( dest, "C_CONTENT", destId, content, targetContext );
+        TenantContext tenantContext = TenantContext.with( targetTenant );
+        AttachTextService service = tenantContext.getAttachTextService();
+        service.save( dest, "C_CONTENT", destId, content, operator );
     }
 }

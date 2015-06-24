@@ -38,7 +38,8 @@ public class AttachTextService {
                 table, field, sid, tenantContext.getTenantId(), tenantContext.getTenantType().getName() );
         if ( attachText != null ) {
             attachText.setContent( content );
-            ModelInjector.injectOpreator( attachText, identity );
+            attachText.setTenant( tenantContext.getTenant() );
+            ModelInjector.injectOpreator( attachText, identity, true );
             attachText.update();
         } else {
             attachText = new AttachText();
@@ -46,7 +47,7 @@ public class AttachTextService {
             attachText.setField( field );
             attachText.setRSid( sid );
             attachText.setContent( content );
-            ModelInjector.injectOpreator( attachText, identity );
+            ModelInjector.injectOpreator( attachText, identity, true );
             attachText.save();
         }
         return attachText.getId();

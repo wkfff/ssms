@@ -100,6 +100,10 @@ public class ModelInjector {
     }
 
     public static void injectOpreator( Model<?> model, Identity identity ) {
+        injectOpreator( model, identity, false );
+    }
+
+    public static void injectOpreator( Model<?> model, Identity identity, boolean skipTenant ) {
         Asserts.notNull( model, "model can not null" );
         Asserts.notNull( identity, "identity can not null" );
 
@@ -115,9 +119,11 @@ public class ModelInjector {
             model.set( "S_UPDATE", identity.getName() );
             model.set( "T_UPDATE", new Date() );
 
-            model.set( "R_TENANT", identity.getTenantId() );
-            model.set( "S_TENANT", identity.getTenantName() );
-            model.set( "P_TENANT", identity.getTenantType().getName() );
+            if ( skipTenant ) {
+                model.set( "R_TENANT", identity.getTenantId() );
+                model.set( "S_TENANT", identity.getTenantName() );
+                model.set( "P_TENANT", identity.getTenantType().getName() );
+            }
         } else { // for update
             if ( model.isModified() == false ) return;
             model.set( "R_UPDATE", identity.getId() );

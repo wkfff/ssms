@@ -40,10 +40,10 @@
                 WHERE R_TEMPLATE = ? AND R_TENANT=? AND P_TENANT=?
             )
         </sql>
-        <sql id="getFolderByFolderTmp">SELECT * FROM SSM_STDTMP_FOLDER WHERE R_SOURCE=? AND R_TENANT=? AND P_TENANT=?</sql>
+        <sql id="getFolderByFolderTmp">SELECT * FROM SSM_STDTMP_FOLDER WHERE R_SOURCE=? AND R_TENANT=? AND P_TENANT=? AND P_PROFESSION=? AND R_TEMPLATE=?</sql>
     </sqlGroup>
     <sqlGroup name="templateFile">
-        <sql id="getFileByFileTmp">SELECT * FROM SSM_STDTMP_FILE WHERE R_SOURCE=? AND R_SID=? AND R_TENANT=? AND P_TENANT=?</sql>
+        <sql id="getFileByFileTmp">SELECT * FROM SSM_STDTMP_FILE WHERE R_SOURCE=? AND R_SID=? AND R_TENANT=? AND P_TENANT=? AND P_PROFESSION=? AND R_TEMPLATE=?</sql>
     </sqlGroup>
     
     <sqlGroup name="grade">
