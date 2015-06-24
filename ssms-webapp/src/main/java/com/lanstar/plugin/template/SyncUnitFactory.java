@@ -8,7 +8,8 @@
 
 package com.lanstar.plugin.template;
 
-import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.Identity;
+import com.lanstar.identity.Tenant;
 import com.lanstar.model.tenant.TemplateFolder;
 
 public abstract class SyncUnitFactory<T extends SyncUnit> {
@@ -19,12 +20,13 @@ public abstract class SyncUnitFactory<T extends SyncUnit> {
         }
     };
 
-    public void sync( com.lanstar.model.system.TemplateFile sourceFile, com.lanstar.model.tenant.TemplateFile targetFile, TemplateFolder tenantFolder, IdentityContext targetContext ) {
+    public void sync( com.lanstar.model.system.TemplateFile sourceFile, com.lanstar.model.tenant.TemplateFile targetFile, TemplateFolder tenantFolder, Tenant targetTenant, Identity operator ) {
         SyncUnit unit = getSyncUnit();
         unit.sourceFile = sourceFile;
         unit.targetFile = targetFile;
         unit.tenantFolder = tenantFolder;
-        unit.targetContext = targetContext;
+        unit.targetTenant = targetTenant;
+        unit.operator = operator;
         unit.templateProp = sourceFile.getTemplateProp();
 
         unit.execute();

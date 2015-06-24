@@ -8,10 +8,27 @@
 
 package com.lanstar.model.tenant;
 
+import com.lanstar.identity.Tenant;
 import com.lanstar.plugin.activerecord.ModelExt;
 
 public class TemplateFolder extends ModelExt<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
+
+    public int getProfessionId() {
+        return getInt( "P_PROFESSION" );
+    }
+
+    public void setProfessionId( int id ) {
+        set( "P_PROFESSION", id );
+    }
+
+    public int getTemplateId() {
+        return getInt( "R_TEMPLATE" );
+    }
+
+    public void setTemplateId( int id ) {
+        set( "R_TEMPLATE", id );
+    }
 
     public Integer getFileCount() {
         return getInt( "N_COUNT" );
@@ -39,6 +56,12 @@ public class TemplateFolder extends ModelExt<TemplateFolder> {
 
     public Integer getParentId() {
         return getInt( "R_SID" );
+    }
+
+    public void setTenant( Tenant target ) {
+        set( "R_TENANT", target.getTenantId() );
+        set( "S_TENANT", target.getTenantName() );
+        set( "P_TENANT", target.getTenantType().getName() );
     }
 
     public void setSourceFolder( com.lanstar.model.system.TemplateFolder systemFolder ) {

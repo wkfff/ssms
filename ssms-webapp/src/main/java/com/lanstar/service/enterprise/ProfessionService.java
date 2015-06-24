@@ -13,6 +13,7 @@ import com.lanstar.beans.FolderBean;
 import com.lanstar.beans.FolderTreeBuilder;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.TenantContext;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
 import com.lanstar.model.tenant.TemplateFile;
@@ -27,9 +28,12 @@ import java.util.List;
 
 public class ProfessionService {
     private final Profession profession;
+    private final TenantContext tenantContext;
+    private Template template;
 
-    public ProfessionService( Profession profession ) {
+    public ProfessionService( Profession profession, TenantContext tenantContext ) {
         this.profession = profession;
+        this.tenantContext = tenantContext;
     }
 
     /**
@@ -39,7 +43,7 @@ public class ProfessionService {
         Db.tx( new IAtom() {
             @Override
             public boolean run() throws SQLException {
-                TemplateSyncProcessor.process( getSystemTemplate(), identityContext );
+                TemplateSyncProcessor.process( ProfessionService.this, identityContext );
                 return true;
             }
         } );
@@ -86,12 +90,18 @@ public class ProfessionService {
     }
 
     public Template getSystemTemplate() {
+        if ( this.template == null ) {
+            this.template = Template.getByProfession( profession.getId() );
+            return template;
+        }
         return Template.getByProfession( profession.getId() );
     }
 
     public TemplateFolder getTenantTemplateFolder() {
         Integer id = getSystemTemplate().getId();
-        return TemplateFolder.dao.findFirstByColumns( Lists.newArrayList( "R_TEMPLATE", "R_SID" ), Lists.newArrayList( id, (Object) 0 ) );
+        return TemplateFolder.dao.findFirstByColumns( Lists.newArrayList( "R_TEMPLATE", "R_TENANT", "P_TENANT", "P_PROFESSION", "R_SID" ), Lists
+                .newArrayList( id, tenantContext.getTenantId(), tenantContext.getTenantType()
+                                                                             .getName(), profession.getId(), (Object) 0 ) );
     }
 
     public String getName() {return profession.getName();}

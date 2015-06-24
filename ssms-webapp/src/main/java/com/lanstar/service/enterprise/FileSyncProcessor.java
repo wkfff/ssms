@@ -9,7 +9,8 @@
 package com.lanstar.service.enterprise;
 
 import com.lanstar.common.log.Logger;
-import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.Identity;
+import com.lanstar.identity.Tenant;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.plugin.sqlinxml.SqlKit;
@@ -27,7 +28,7 @@ class FileSyncProcessor implements SyncProcessor {
     }
 
     @Override
-    public void sync( IdentityContext target ) {
+    public void sync( Tenant target, Identity operator ) {
         log.debug( "========>开始同步文件[%s->%s]...", tenantFolder.getName(), systemFile.getName() );
         // 获取或创建租户文件
         com.lanstar.model.tenant.TemplateFile tenantFile =
@@ -36,12 +37,19 @@ class FileSyncProcessor implements SyncProcessor {
                         this.systemFile.getId(),
                         this.tenantFolder.getId(),
                         target.getTenantId(),
-                        target.getTenantType().getName() );
-        if ( tenantFile == null ) tenantFile = new com.lanstar.model.tenant.TemplateFile();
+                        target.getTenantType().getName(),
+                        tenantFolder.getProfessionId(),
+                        tenantFolder.getTemplateId() );
+        if ( tenantFile == null ) {
+            tenantFile = new com.lanstar.model.tenant.TemplateFile();
+            tenantFile.setTemplateId( tenantFolder.getTemplateId() );
+            tenantFile.setProfessionId( tenantFolder.getProfessionId() );
+            tenantFile.setTenant( target );
+        }
 
         // 同步文件
         TemplateProp templateProp = systemFile.getTemplateProp();
-        if (templateProp == null) return;
-        templateProp.sync( systemFile, tenantFile, tenantFolder, target );
+        if ( templateProp == null ) return;
+        templateProp.sync( systemFile, tenantFile, tenantFolder, target, operator );
     }
 }

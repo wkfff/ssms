@@ -8,6 +8,7 @@
 
 package com.lanstar.model.system;
 
+import com.lanstar.identity.Tenant;
 import com.lanstar.plugin.activerecord.Model;
 
 import java.util.Objects;
@@ -49,5 +50,11 @@ public class AttachText extends Model<AttachText> {
 
     public Integer getId() {
         return getInt( "SID" );
+    }
+
+    public void setTenant( Tenant tenant ) {
+        set( "R_TENANT", tenant.getTenantId() );
+        set( "S_TENANT", tenant.getTenantName() );
+        set( "P_TENANT", tenant.getTenantType().getName() );
     }
 }

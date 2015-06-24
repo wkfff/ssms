@@ -8,8 +8,9 @@
 
 package com.lanstar.service.enterprise;
 
-import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.Identity;
+import com.lanstar.identity.Tenant;
 
 interface SyncProcessor {
-    void sync( IdentityContext target );
+    void sync( Tenant target, Identity operator);
 }

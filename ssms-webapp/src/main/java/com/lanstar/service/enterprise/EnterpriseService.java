@@ -36,7 +36,7 @@ public class EnterpriseService {
     }
 
     public void setProfessionService( Profession profession ) {
-        setValue( new ProfessionService( profession ) );
+        setValue( new ProfessionService( profession, tenantContext ) );
     }
 
     /** 将指定值与上下文绑定 */
