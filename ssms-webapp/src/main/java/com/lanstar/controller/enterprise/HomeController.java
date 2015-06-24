@@ -64,7 +64,11 @@ public class HomeController extends Controller {
         setAttr( "FILE_COUNT", folder == null ? 0 : folder.getFileCount() );
 
         setAttr( "FILE_NO_CREATE", identityContext.getTenantDb()
-                                                  .queryLong( "select COUNT(*) from ssm_stdtmp_file where N_COUNT = 0" ) );
+                                                  .queryLong( "select COUNT(*) from ssm_stdtmp_file where R_TENANT=? and P_TENANT=? and R_TEMPLATE=? and P_PROFESSION=? and N_COUNT = 0",
+                                                          identityContext.getTenantId(),
+                                                          identityContext.getTenantType().getName(),
+                                                          professionService.getSystemTemplate().getId(),
+                                                          professionService.getId() ) );
 
         List<TemplateFile> files = TemplateFile.dao.find( "SELECT A.*\n"
                 + "FROM SSM_STDTMP_FILE A\n"
@@ -72,7 +76,7 @@ public class HomeController extends Controller {
                 + "where B.R_TEMPLATE = ? AND B.R_TENANT=? AND B.P_TENANT=?\n"
                 + "and A.N_COUNT = 0 ORDER BY B.N_INDEX, B.SID, A.N_INDEX, SID\n"
                 + "limit 0, 15", professionService.getSystemTemplate()
-                                                                  .getId(), identityContext.getTenantId(), TenantType.ENTERPRISE
+                                                  .getId(), identityContext.getTenantId(), TenantType.ENTERPRISE
                 .getName() );
         setAttr( "rs_todo", files );
 

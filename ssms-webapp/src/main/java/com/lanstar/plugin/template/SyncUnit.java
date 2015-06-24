@@ -106,7 +106,7 @@ public class SyncUnit {
         tenantFileContent.set( "S_TENANT", targetFile.get( "S_TENANT" ) );
         tenantFileContent.set( "P_TENANT", targetFile.get( "P_TENANT" ) );
         tenantFileContent.set( "R_TEMPLATE", targetFile.getTemplateId() );
-        tenantFileContent.set( "R_TMPFLODER", this.tenantFolder.getId() );
+        tenantFileContent.set( "R_TMPFOLDER", this.tenantFolder.getId() );
         tenantFileContent.set( "P_PROFESSION", targetFile.getProfessionId() );
         tenantFileContent.set( "N_STATE", FileContentState.CLONED.getValue() );
         tenantFileContent.save();

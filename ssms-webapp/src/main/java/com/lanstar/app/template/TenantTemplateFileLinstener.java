@@ -68,6 +68,7 @@ public class TenantTemplateFileLinstener extends FilterCallbackLinstener<Templat
     private void addFolderCount( TemplateFolder folder, int value ) {
         if ( folder == null ) return;
         Integer count = folder.getFileCount();
+        if (count == null) count = 0;
         folder.setFileCount( count + value );
         folder.update();
 
