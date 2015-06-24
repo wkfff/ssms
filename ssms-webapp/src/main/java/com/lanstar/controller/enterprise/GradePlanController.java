@@ -8,8 +8,10 @@
 
 package com.lanstar.controller.enterprise;
 
+import java.util.Date;
 import java.util.List;
 
+import com.lanstar.common.kit.DateKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.GradeContent;
 import com.lanstar.model.tenant.GradePlan;
@@ -33,6 +35,9 @@ public class GradePlanController extends SimplateController<GradePlan> {
      * 开始新的自评
      */
     public void rec_new() {
+        String d = DateKit.toStr( new Date() );
+        setAttr("T_START",d);
+        setAttr("T_END",d);
     }
     
     /**

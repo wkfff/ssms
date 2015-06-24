@@ -8,9 +8,11 @@
 
 package com.lanstar.service.enterprise;
 
+import com.lanstar.controller.enterprise.EnterpriseGradeState;
 import com.lanstar.identity.TenantContext;
 import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Profession;
+import com.lanstar.model.tenant.GradePlan;
 
 import java.util.List;
 import java.util.Map;
@@ -47,5 +49,14 @@ public class EnterpriseService {
     @SuppressWarnings("unchecked")
     <T> T getValue( Class<T> clazz ) {
         return (T) valueMap.get( clazz );
+    }
+    
+    /**
+     * 获取最新自评方案编号
+     */
+    public int getPlanId(int eid,int pro){
+        String sql = "select sid from SSM_GRADE_E_M SSM_GRADE_PLAN where R_TENANT=? and P_PROFESSION=? and n_state=? order by t_update desc limit 1";
+        GradePlan model = GradePlan.dao.findFirst( sql,eid,pro,EnterpriseGradeState.END.getValue() );
+        return model==null?0:model.getId();
     }
 }

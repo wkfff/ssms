@@ -12,13 +12,19 @@ import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.lanstar.common.EasyUIControllerHelper;
+import com.lanstar.common.kit.DateKit;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.identity.TenantContext;
+import com.lanstar.model.system.AttachText;
 import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.Profession;
+import com.lanstar.model.tenant.GradeContentR;
 import com.lanstar.model.tenant.GradePlan;
 import com.lanstar.model.tenant.GradePlanR;
 import com.lanstar.plugin.activerecord.Db;
@@ -88,9 +94,9 @@ public class GradePlanController extends SimplateController<GradePlanR> {
     @Override
     protected void afterSave( GradePlanR model ) {
         int sid = model.getInt( "SID" );
-        int mid =  model.getInt("R_EID");      // 自评编号
+        int mid = model.getInt( "R_EID" ); // 自评编号
         Integer eid = model.getInt( "R_TENANT_E" ); // 企业编号
-        //String eid = this.getPara( "R_EID" ); // 企业的SID
+        // String eid = this.getPara( "R_EID" ); // 企业的SID
 
         if ( this.isNew && eid != null ) {
             // 设置企业的评审状态与评审机构
@@ -101,7 +107,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
             // 获取评审服务
             ReviewService service = this.identityContext.getReviewService();
             // 同步企业的评审数据
-            service.sync( mid,sid );
+            service.sync( mid, sid );
         }
     }
 
@@ -133,25 +139,24 @@ public class GradePlanController extends SimplateController<GradePlanR> {
     protected SqlBuilder buildWhere() {
         String name = this.getPara( "C_NAME" );
         try {
-            if (!StrKit.isBlank( name )) name = URLDecoder.decode( name, "UTF-8" );
+            if ( !StrKit.isBlank( name ) ) name = URLDecoder.decode( name, "UTF-8" );
         } catch ( UnsupportedEncodingException e ) {
-            
+
         }
         SqlBuilder builder = new SqlBuilder();
         builder.WHERE()
-                ._If( this.isParaExists( "P_PRO" ) && !StrKit.isBlank( this.getPara( "P_PRO" ) ), "P_PROVINCE = ?",
-                        this.getPara( "P_PRO" ) )
+        ._If( this.isParaExists( "P_PRO" ) && !StrKit.isBlank( this.getPara( "P_PRO" ) ), "P_PROVINCE = ?",
+                this.getPara( "P_PRO" ) )
                 ._If( this.isParaExists( "P_CITY" ) && !StrKit.isBlank( this.getPara( "P_CITY" ) ), "P_CITY = ?",
                         this.getPara( "P_CITY" ) )
-                ._If( this.isParaExists( "P_COUNTY" ) && !StrKit.isBlank( this.getPara( "P_COUNTY" ) ), "P_COUNTY = ?",
-                        this.getPara( "P_COUNTY" ) )
-                ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
-                ._If( this.isParaBlank( "C_NAME" ) == false, "C_NAME like ?", "%" + name + "%" )
-                ._If( isParaBlank( "R_TENANT_E" ) == false, "R_TENANT_E = ?", getPara( "R_TENANT_E" ) )
-                ._If( isParaBlank( "T_START" ) == false, "T_START >= ?", getPara( "T_START" ) )
-                ._If( isParaBlank( "T_END" ) == false, "T_END <= ?", getPara( "T_END" ) );
-        
-        
+                        ._If( this.isParaExists( "P_COUNTY" ) && !StrKit.isBlank( this.getPara( "P_COUNTY" ) ), "P_COUNTY = ?",
+                                this.getPara( "P_COUNTY" ) )
+                                ._If( this.isParaExists( "N_STATE" ), "N_STATE = ?", this.getPara( "N_STATE" ) )
+                                ._If( this.isParaBlank( "C_NAME" ) == false, "C_NAME like ?", "%" + name + "%" )
+                                ._If( this.isParaBlank( "R_TENANT_E" ) == false, "R_TENANT_E = ?", this.getPara( "R_TENANT_E" ) )
+                                ._If( this.isParaBlank( "T_START" ) == false, "T_START >= ?", this.getPara( "T_START" ) )
+                                ._If( this.isParaBlank( "T_END" ) == false, "T_END <= ?", this.getPara( "T_END" ) );
+
         return builder;
     }
 
@@ -234,55 +239,58 @@ public class GradePlanController extends SimplateController<GradePlanR> {
 
         // 根据企业编号获取企业最后一次完成的自评编号
         String sql = "SELECT SID FROM SSM_GRADE_E_M WHERE R_TENANT=? AND N_STATE=3  ORDER BY T_UPDATE DESC LIMIT 1";
-        GradePlan gp = GradePlan.dao.findFirst( sql,eid );
-        if (gp!=null){
+        GradePlan gp = GradePlan.dao.findFirst( sql, eid );
+        if ( gp != null ) {
             this.setAttr( "gradeid", gp.getId() );
-        
+
             // 判断是否已经开始评审了
             sql = "SELECT SID FROM SSM_GRADE_R_M WHERE R_TENANT_E=? AND R_EID=? ORDER BY T_UPDATE DESC LIMIT 1";
-            GradePlanR gpr = GradePlanR.dao.findFirst( sql,eid,gp.getId() );
-            if (gpr==null) {
+            GradePlanR gpr = GradePlanR.dao.findFirst( sql, eid, gp.getId() );
+            if ( gpr == null ) {
                 gpr = new GradePlanR();
-                gpr.setTitle( enterprise==null?"":enterprise.getName() );
-                gpr.set( "R_TENANT_E", eid);
-                gpr.set( "S_TENANT_E",enterprise==null?"":enterprise.getName() );
-                gpr.set( "R_EID",gp.getId());
+                gpr.setTitle( enterprise == null ? "" : enterprise.getName() );
+                gpr.set( "R_TENANT_E", eid );
+                gpr.set( "S_TENANT_E", enterprise == null ? "" : enterprise.getName() );
+                gpr.set( "R_EID", gp.getId() );
+                String d = DateKit.toStr( new Date() );
+                gpr.set( "T_START", d );
+                gpr.set( "T_END", d );
                 gpr.save();
                 this.isNew = true;
-                afterSave(gpr);
+                this.afterSave( gpr );
             }
-            this.setAttr( "graderid",gpr.getId());
+            this.setAttr( "graderid", gpr.getId() );
         }
     }
-    
-    public void result(){
-        
+
+    public void result() {
+
     }
-    
+
     /**
      * 评审历史查看.评分汇总表
      */
-    public void sum(){
+    public void sum() {
         int sid = this.getModel().getId();
-        List<Record> list = tenantDb.find( "select * from V_GRADE_SUM_R where R_SID=?", new Object[]{sid} );
+        List<Record> list = this.tenantDb.find( "select * from V_GRADE_SUM_R where R_SID=?", new Object[] { sid } );
         this.setAttr( "list", list );
         this.setAttr( "S_TENANT", this.identityContext.getTenantName() );
     }
-    
+
     /**
-     *  评审历史查看.扣分项汇总表
+     * 评审历史查看.扣分项汇总表
      */
-    public void sum_ded(){
+    public void sum_ded() {
         int sid = this.getModel().getId();
-        List<Record> list = tenantDb.find( "select * from V_GRADE_SUM_DED_R where R_SID=?", new Object[]{sid} );
+        List<Record> list = this.tenantDb.find( "select * from V_GRADE_SUM_DED_R where R_SID=?", new Object[] { sid } );
         this.setAttr( "list", list );
         this.setAttr( "S_TENANT", this.identityContext.getTenantName() );
     }
-    
+
     /**
      * 评审历史查看.评审报告
      */
-    public void history_rep(){
-        
+    public void history_rep() {
+
     }
 }

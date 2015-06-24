@@ -108,7 +108,7 @@ public class TemplateController extends Controller {
         this.setAttr( "version_name", version == 0 ? "当前版本" : "版本【" + version + "】" );
 
         String sid = this.getPara( 1 );
-        this.setAttr( "sid", sid );
+        this.setAttr( "sid", Integer.parseInt( sid ));
     }
 
     /**

@@ -10,7 +10,7 @@
             <img src="/resource/images/blue/star.png"/>&nbsp;企业安全标准化体系创建13要素&nbsp;  <span style="color:red;">${version_name!}</span>
             <span class="backing">
                 <#if version==0><a href="/e/stdtmp/archive">归档当前版本</a></#if>&nbsp;&nbsp;
-               <a href="/e/stdtmp/versions">返回列表</a>
+               <!-- <a href="/e/stdtmp/versions">返回列表</a> -->
             </span>
         </div>
         <table class="table">
@@ -37,8 +37,8 @@
 <#macro buildTree list root=false>
     <#if (list?size>0)>
         <#list list as r>
-            <tr id="tr_${r.attributes.SID!}" 
-                 <#if r.attributes.SID==sid!"">
+            <tr id="tr_${r.attributes.ID!}" 
+                 <#if r.attributes.ID==sid!"">
                         class="activerow"
                   </#if>
                 ><td>
