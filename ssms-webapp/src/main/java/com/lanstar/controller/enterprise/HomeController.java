@@ -39,7 +39,8 @@ public class HomeController extends Controller {
                         break;
                     }
                 }
-                if ( currentProfession == null ) throw new RuntimeException( "无法取得企业的专业！" );
+                // 如果根据cookie的值还是没有找到专业的话，则默认为第一个专业。
+                if ( currentProfession == null ) currentProfession = professions.get( 0 );
             }
             setProfession( currentProfession );
         }
