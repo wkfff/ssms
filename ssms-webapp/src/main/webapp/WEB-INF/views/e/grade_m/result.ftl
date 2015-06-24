@@ -26,17 +26,27 @@
 </script>
 </head>
 <body>
-<div class="titlebar_border">
-            <img src="/resource/images/blue/star.png"/>&nbsp;查看
-            <span class="backing"><a href="/e/grade_m/history">返回列表</a></span>
+
+        
+<div class="easyui-layout" data-options="fit:true,border:false" >
+    <div data-options="region:'north'" style="overflow:hidden;padding:0;">
+        <div id="tb" class="titlebar_noborder">
+                <img src="/resource/images/blue/star.png"/>&nbsp;查看
+                <span class="backing">
+                    <a href="/e/grade_m/history">返回列表</a>
+                 </span>
+        </div>
     </div>
-    <div id="tt" class="easyui-tabs" style="width:100%;height:auto" data-options="fit:true,border:false,onSelect: doSelect">
+    <div data-options="region:'center'" style="overflow:hidden;padding:0;" >
+        <div id="tt" class="easyui-tabs" style="width:100%;height:auto" data-options="fit:true,border:false, onSelect: doSelect">
             <div id="tab0" title="评分汇总" style="overflow:hidden;" url="/e/grade_m/sum?sid=${sid!}">
                 <iframe frameborder="0" width="100%" height="100%" src="/e/grade_m/sum?sid=${sid!}" ></iframe>
             </div>
             <div id="tab1" title="扣分汇总" style="overflow:hidden;" url="/e/grade_m/sum_ded?sid=${sid!}"></div>
             <div id="tab2" title="自评报告" style="overflow:hidden;" url="/e/grade_m/history_rep?sid=${sid!}"></div>
         </div>
+    </div>
+</div>
 </body>
 </html>
 
