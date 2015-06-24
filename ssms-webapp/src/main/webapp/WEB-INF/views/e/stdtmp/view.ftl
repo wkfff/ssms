@@ -9,8 +9,7 @@
         <div class="titlebar">
             <img src="/resource/images/blue/star.png"/>&nbsp;企业安全标准化体系创建13要素&nbsp;  <span style="color:red;">${version_name!}</span>
             <span class="backing">
-                <#if version==0><a href="/e/stdtmp/archive">归档当前版本</a></#if>&nbsp;&nbsp;
-               <!-- <a href="/e/stdtmp/versions">返回列表</a> -->
+                <#if version==0><a href="/e/stdtmp/archive">归档当前版本</a></#if>&nbsp;&nbsp;<!-- <a href="/e/stdtmp/versions">返回列表</a> -->
             </span>
         </div>
         <table class="table">
