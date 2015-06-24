@@ -44,6 +44,5 @@ public class EnterpriseRoutes extends Routes {
         
         add( "/e/tenant_e", EnterpriseController.class);
         add( "/e/tenant_eu", EnterpriseUserController.class);
-        add( "/common", EnterpriseUserController.class);
     }
 }

@@ -12,7 +12,7 @@ function ViewModel(p_city,p_county,c_name) {
                 $.each(data, function (idx, product) {
                     details.push({
                         SID: product.SID,
-                        C_NAME: product.SKU,
+                        C_NAME: product.C_NAME,
                         C_ADDR: product.C_ADDR,
                         C_CONTACT: product.C_CONTACT,
                         C_TEL: product.C_TEL,

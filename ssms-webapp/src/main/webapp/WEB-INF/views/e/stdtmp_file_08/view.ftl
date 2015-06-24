@@ -1,5 +1,5 @@
 <div id="kocontainer" class="easyui-panel" border="false" fit="true">
-    <div class="z-toolbar">
+    <div id="toolbar" class="z-toolbar">
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" data-bind="click: editClick">查看</a>
     </div>
@@ -32,15 +32,15 @@
                         {field: 'C_NAME', title: '设备名称', width: 120},
                         {field: 'C_NO_REG', title: '登记证号', width: 100},
                         {field: 'C_SPEC', title: '规格/型号', width: 300},
-                        {field: 'C_MAKE_UNIT', title: '制造单位',width: 100},
+                        {field: 'C_MAKE_UNIT', title: '制造单位', width: 100},
                         {field: 'C_NO_FACTORY', title: '出厂编号', width: 200},
-                        {field: 'C_DEPT', title: '使用部门', width: 200},
-                        {field: 'T_TEST_LAST', title: '最新检验日期', width: 100},
+                        {field: 'C_DEPT', title: '使用部门', align: 'center', width: 200},
+                        {field: 'T_TEST_LAST', title: '最新检验日期', align: 'center', width: 100},
                         {field: 'C_NO_REP', title: '检验报告编号', width: 100},
-                        {field: 'T_TEST_NEXT', title: '下次检验日期', width: 100},
-                        {field: 'C_TEST_CON', title: '检验结论',width: 100},
-                        {field: 'C_TEST_UNIT', title: '检验单位',width: 100}
-                        ]
+                        {field: 'T_TEST_NEXT', title: '下次检验日期', align: 'center', width: 100},
+                        {field: 'C_TEST_CON', title: '检验结论', width: 100},
+                        {field: 'C_TEST_UNIT', title: '检验单位', width: 100}
+                    ]
                 ],
                 onDblClickRow: function (index, row) {
                     events.editClick();

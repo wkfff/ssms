@@ -6,10 +6,9 @@
             C_NAME :ko.observable('${C_NAME!}'),
             S_SEX :ko.observable('${S_SEX!}'),
             S_NAME :ko.observable('${tenantName!}'),
-            T_BIRTH :ko.observable('${T_BIRTH!}'),
             R_SID :ko.observable('${tenantId!}'),
             SID :'${SID!}'
-    }
+    };
     var events = {
             saveClick: function () {
                 if ($form.validate($('.form'))) {
@@ -55,12 +54,6 @@
             <p class="ue-clear">
                 <label>姓名:</label> <span class="control"> <input
                     data-bind="textboxValue: C_NAME" required />
-                </span>
-            </p>
-
-            <p class="ue-clear">
-                <label>出生日期:</label> <span class="control"> <input
-                    data-bind="dateboxValue: T_BIRTH" required />
                 </span>
             </p>
 

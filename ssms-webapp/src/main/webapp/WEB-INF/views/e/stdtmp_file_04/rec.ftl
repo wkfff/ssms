@@ -92,7 +92,10 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    操作指南
+                    <div>
+                        <div style="background-color: #CCCCCC; margin-top: 5px">操作指南：</div>
+                        <span style="color: #ff0000; font-weight: bold">请根据要求将本要素相关记录完成并上传.(可将参考模板在线修改下载执行)</span>
+                    </div>
                 </td>
             </tr>
         </table>

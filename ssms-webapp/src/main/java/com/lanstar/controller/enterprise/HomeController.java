@@ -19,39 +19,41 @@ import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.enterprise.ProfessionService;
 
 import java.util.List;
+import java.util.Objects;
 
 public class HomeController extends Controller {
     public void index() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         EnterpriseService enterpriseService = identityContext.getEnterpriseService();
-        boolean needChooseProfessions = enterpriseService.getProfessionService() == null;
-        if ( needChooseProfessions ) {
+        // 如果专业服务还没初始化，那么就初始化服务。
+        if ( enterpriseService.getProfessionService() == null ) {
             List<Profession> professions = enterpriseService.getProfessions();
-            if ( professions.size() == 1 ) {
-                setAttr( "profession", professions.get( 0 ).getInt( "SID" ) );
-                setTemplate();
-                removeAttr( "profession" );
-                needChooseProfessions = false;
+            // 先从cookie里取出，如果没有的话就直接设置第一个了。
+            Integer professionId = getCookieToInt( "profession" );
+            Profession currentProfession = null;
+            if ( professionId == null ) currentProfession = professions.get( 0 );
+            else {
+                for ( Profession profession : professions ) {
+                    if ( Objects.equals( profession.getId(), professionId ) ) {
+                        currentProfession = profession;
+                        break;
+                    }
+                }
+                // 如果根据cookie的值还是没有找到专业的话，则默认为第一个专业。
+                if ( currentProfession == null ) currentProfession = professions.get( 0 );
             }
+            setProfession( currentProfession );
         }
-
-        setSessionAttr( "needChooseProfessions", needChooseProfessions );
-
-        if ( needChooseProfessions == false ) setAttr( "profession", enterpriseService.getProfessionService() );
 
         setAttr( Const.HOME_PAGE, "/e/home" );
     }
 
     public void setTemplate() {
-        Integer id = getAttr( "profession" );
-        if ( id == null ) id = getParaToInt( "profession" );
+        Integer id = getParaToInt( "profession" );
         Profession profession = Profession.dao.findById( id );
-        IdentityContext context = IdentityContext.getIdentityContext( this );
-        context.getEnterpriseService().setProfessionService( profession );
-    }
+        setProfession( profession );
 
-    public void getProfessions() {
-        renderJson( IdentityContext.getIdentityContext( this ).getEnterpriseService().getProfessions() );
+        redirect( "/" );
     }
 
     public void home() {
@@ -64,13 +66,12 @@ public class HomeController extends Controller {
         setAttr( "FILE_NO_CREATE", identityContext.getTenantDb()
                                                   .queryLong( "select COUNT(*) from ssm_stdtmp_file where N_COUNT = 0" ) );
 
-        List<TemplateFile> files = TemplateFile.dao.find( "SELECT *\n"
-                + "FROM SSM_STDTMP_FILE\n"
-                + "WHERE R_SID IN (\n"
-                + "    SELECT SID FROM SSM_STDTMP_FOLDER\n"
-                + "    WHERE R_TEMPLATE = ? AND R_TENANT=? AND P_TENANT=?\n"
-                + ")\n"
-                + "and N_COUNT = 0 limit 0, 15", professionService.getSystemTemplate()
+        List<TemplateFile> files = TemplateFile.dao.find( "SELECT A.*\n"
+                + "FROM SSM_STDTMP_FILE A\n"
+                + "inner join SSM_STDTMP_FOLDER B on a.r_sid = b.sid\n"
+                + "where B.R_TEMPLATE = ? AND B.R_TENANT=? AND B.P_TENANT=?\n"
+                + "and A.N_COUNT = 0 ORDER BY B.N_INDEX, B.SID, A.N_INDEX, SID\n"
+                + "limit 0, 15", professionService.getSystemTemplate()
                                                                   .getId(), identityContext.getTenantId(), TenantType.ENTERPRISE
                 .getName() );
         setAttr( "rs_todo", files );
@@ -81,5 +82,11 @@ public class HomeController extends Controller {
         setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 15" ) );
         setAttr( "rs_yh", TemplateFile06.dao.find( "select * from ssm_stdtmp_file_06 limit 15" ) );
         setAttr( "rs_ry", TemplateFile07.dao.find( "select * from SSM_STDTMP_FILE_07 limit 15" ) );
+    }
+
+    private void setProfession( Profession profession ) {
+        IdentityContext context = IdentityContext.getIdentityContext( this );
+        context.getEnterpriseService().setProfessionService( profession );
+        setCookie( "profession", String.valueOf( profession.getId() ), 365 * 24 * 60 * 60 );
     }
 }

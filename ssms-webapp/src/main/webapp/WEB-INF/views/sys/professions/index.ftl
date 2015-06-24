@@ -121,11 +121,12 @@
         var self = this;
 
         function industryModel(id, name, professions) {
+            var self = this;
             this.id = ko.observable(id);
             this.name = ko.observable(name).extend({required: true});
 
             this.professions = ko.observableArray(ko.utils.arrayMap(professions, function (item) {
-                return new professionModel(this, item.id, item.name, item.selectedTemplate);
+                return new professionModel(self, item.id, item.name, item.selectedTemplate);
             }));
             this.editable = ko.observable(id == null);
         }
@@ -212,8 +213,12 @@
         self.removeProfession = function (data, model, bindContext) {
             if (ko.unwrap(model.id) != null) {
                 if (confirm("确定删除专业？") == true)
-                    $.post('${BASE_PATH}/delProfession', {sid: model.id()}, function (result) {
-                        data.professions.remove(model);
+                    $.post('${BASE_PATH}/delProfession', {id: model.id()}, function (result) {
+                        if (result){
+                            data.professions.remove(model);
+                            alert("删除成功");
+                        }
+                        else alert("删除失败");
                     }, "json")
             }
             else {

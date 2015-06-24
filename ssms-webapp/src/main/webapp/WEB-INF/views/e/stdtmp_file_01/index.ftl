@@ -20,7 +20,7 @@
 </style>
 <div id="kocontainer">
     <div class="z-toolbar" data-bind="visible:!readonly">
-        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">发布</a>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: passClick">年审通过</a>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf"
            data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">导出</a>
