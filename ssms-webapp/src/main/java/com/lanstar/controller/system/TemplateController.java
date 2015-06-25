@@ -8,51 +8,41 @@
 
 package com.lanstar.controller.system;
 
-import java.util.List;
-import java.util.Map;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.lanstar.controller.SimplateController;
+import com.lanstar.common.ModelInjector;
+import com.lanstar.core.Controller;
+import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Template;
-import com.lanstar.plugin.activerecord.Db;
-import com.lanstar.plugin.activerecord.Record;
-import com.lanstar.plugin.activerecord.statement.SQL;
-import com.lanstar.plugin.activerecord.statement.SqlBuilder;
-import com.lanstar.plugin.activerecord.statement.SqlStatement;
-import com.lanstar.plugin.sqlinxml.SqlKit;
+import com.lanstar.plugin.activerecord.ModelKit;
 
-public class TemplateController extends SimplateController<Template> {
-    @Override
-    protected Template getDao() {
-        return Template.dao;
-    }
-    @Override
+import java.util.List;
+
+public class TemplateController extends Controller {
     public void index() {
-        SqlBuilder select = SQL.SELECT( "*" ).FROM( table.getName() );
-        SqlStatement selectStatement = select.toSqlStatement();
-        List<Template> list = getDao().find(selectStatement.getSql() );
-        setAttr( "templates", list );
+        List<Template> templates = Template.dao.findAll();
+
+        setAttr( "templates", ModelKit.toMap( templates, "SID", "C_NAME" ) );
     }
-    @Override
+
     public void save() {
-        // TODO Auto-generated method stub
+        Integer sid = getParaToInt( "id" );
+        String name = getPara( "name" );
+
         Template template;
-        String sid = getPara("id");
-        String name=getPara("name");
-        if(sid!=null){
-            template=getDao().findById( sid );
-            template.set( "C_NAME", name );
-            template.update();
-            renderJson( true );
-        }else if(name!=null&&name!="") {
-            template=getModel();
-            template.set( "C_NAME", name );
-            template.save();
-            renderJson( true );
-        }else{
-            renderJson( false );
-        }
+        if ( sid == null ) template = new Template();
+        else template = Template.dao.findById( sid );
+
+        IdentityContext context = IdentityContext.getIdentityContext( this );
+        template.setName( name );
+        ModelInjector.injectOpreator( template, context );
+
+        if ( sid == null ) template.save();
+        else template.update();
+        renderJson( template.getId() );
+    }
+
+    public void del() {
+        Integer id = getParaToInt( "id" );
+        if ( id != null ) renderJson( Template.dao.deleteById( id ) );
+        else renderJson( false );
     }
 }

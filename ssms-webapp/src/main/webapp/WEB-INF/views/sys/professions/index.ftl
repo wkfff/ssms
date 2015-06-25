@@ -96,7 +96,7 @@
                 </label>
 
                 <a href="javascript:void(0);" class="icon-save" data-bind="click: $root.saveIndustry, visible: editable">保存</a>
-                <a href="javascript:void(0);" class="icon-cancel" data-bind="click: $root.cancelIndustry, visible: editable">取消编辑</a>
+                <a href="javascript:void(0);" class="icon-cancel" data-bind="click: $root.cancelIndustry, visible: editable()==true && id()!=null">取消编辑</a>
                 <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.editIndustry, visible: editable() == false">编辑</a>
                 <a href="javascript:void(0);" class="icon-remove" data-bind="visible: professions().length==0, click: $root.removeIndustry">删除</a>
                 <a href="javascript:void(0);" class="icon-add" data-bind="click: $root.addProfession, visible: id">添加专业</a>
@@ -119,7 +119,7 @@
                                visible: editable()"></select>
             </label>
             <a href="javascript:void(0);" class="icon-save" data-bind="click: $root.saveProfession, visible: editable">保存</a>
-            <a href="javascript:void(0);" class="icon-cancel" data-bind="click: $root.cancelProfession, visible: editable">取消编辑</a>
+            <a href="javascript:void(0);" class="icon-cancel" data-bind="click: $root.cancelProfession, visible: editable()==true && id()!=null">取消编辑</a>
             <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.editProfession, visible: editable() == false">编辑</a>
             <a href="javascript:void(0);" class="icon-remove" data-bind="click: function(model, bindContext) { $root.removeProfession($parent, model, bindContext) }">删除</a>
         </li>

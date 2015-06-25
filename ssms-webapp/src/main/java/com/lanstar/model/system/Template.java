@@ -8,16 +8,33 @@
 
 package com.lanstar.model.system;
 
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
 import java.util.List;
 
-public class Template extends Model<Template> {
+public class Template extends ModelExt<Template> {
     public static final Template dao = new Template();
+
+    public Template() {
+        deleteColumnLabel = "B_DELETE";
+    }
 
     public static Template getByProfession( int professionId ) {
         return dao.findFirst( SqlKit.sql( "system.template.list" ), professionId );
+    }
+
+    @Override
+    public boolean pseudoDelete() {
+        return true;
+    }
+
+    public List<TemplateFolder> listFolder() {
+        return TemplateFolder.list( getId() );
+    }
+
+    public List<TemplateFolder> listFolder( int parentId ) {
+        return TemplateFolder.list( getId(), parentId );
     }
 
     public int getId() {
@@ -28,11 +45,7 @@ public class Template extends Model<Template> {
         return getStr( "C_NAME" );
     }
 
-    public List<TemplateFolder> listFolder() {
-        return TemplateFolder.list( getId() );
-    }
-
-    public List<TemplateFolder> listFolder( int parentId ) {
-        return TemplateFolder.list( getId(), parentId );
+    public void setName( String name ) {
+        set( "C_NAME", name );
     }
 }
