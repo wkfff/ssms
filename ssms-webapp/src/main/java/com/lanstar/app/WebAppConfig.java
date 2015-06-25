@@ -18,6 +18,7 @@ import com.lanstar.app.route.GovernmentRoutes;
 import com.lanstar.app.route.ReviewRoutes;
 import com.lanstar.app.route.SystemRoutes;
 import com.lanstar.app.template.TemplatePropsConfig;
+import com.lanstar.common.freemarker.BlockDirectiveUtils;
 import com.lanstar.common.kit.JsonKit;
 import com.lanstar.common.kit.ServletKit;
 import com.lanstar.config.*;
@@ -155,6 +156,7 @@ public class WebAppConfig extends RapidwareConfig {
             me.setSharedVariable( "DEV_MODE", devMode );
             // 添加JSON扩展方法               by 张铮彬#2015-5-7
             me.setSharedVariable( "json", new JsonMethod() );
+            me.setSharedVariable( "layout", BlockDirectiveUtils.directives() );
         } catch ( TemplateModelException ignored ) {
         }
     }
