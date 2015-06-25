@@ -22,6 +22,7 @@ ${footer}</html>
     <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
     <#--jquery-->
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resource/js/layui/layer.js"></script>
     <script type="text/javascript" src="/resource/js/jquery.json.min.js"></script>
     <#--easyui-->
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
@@ -47,6 +48,7 @@ ${footer}</html>
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resource/js/layui/layer.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/resource/js/core.js"></script>

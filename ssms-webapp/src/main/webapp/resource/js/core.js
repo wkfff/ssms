@@ -1,38 +1,52 @@
-String.prototype.format = function () {
-    var formatted = this;
-    for (var i = 0; i < arguments.length; i++) {
-        formatted = formatted.replace(RegExp("\\{" + i + "\\}", 'g'), arguments[i].toString());
-    }
-    return formatted;
-};
-String.prototype.replaceAll = function (searchValue, replaceValue) {
-    return this.replace(new RegExp(searchValue, "gm"), replaceValue);
-};
+if (!String.prototype.format) {
+    String.prototype.format = function () {
+        var formatted = this;
+        for (var i = 0; i < arguments.length; i++) {
+            formatted = formatted.replace(RegExp("\\{" + i + "\\}", 'g'), arguments[i].toString());
+        }
+        return formatted;
+    };
+}
+
+if (!String.prototype.replaceAll) {
+    String.prototype.replaceAll = function (searchValue, replaceValue) {
+        return this.replace(new RegExp(searchValue, "gm"), replaceValue);
+    };
+}
+
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function (searchString, position) {
         position = position || 0;
         return this.lastIndexOf(searchString, position) === position;
     };
 }
+
 var utils;
 (function (utils) {
-    function uuid() {
+    utils.uuid = function () {
         return "_" + new Date().valueOf();
-    }
-    utils.uuid = uuid;
+    };
+
     var messager;
     (function (messager) {
-        function showProgress() {
-            $.messager.progress({
-                title: '请稍等',
-                msg: '执行操作中...'
-            });
+        var indexArray = [];
+
+        messager.showProgress = function () {
+            var index = layer.msg('加载中', {icon: 16, time: 0});
+            indexArray.push(index);
+        };
+        messager.closeProgress = function () {
+            var index = indexArray.pop();
+            layer.close(index);
+        };
+
+        messager.alert = function (msg, callback) {
+            layer.alert(msg, callback);
+        };
+
+        messager.confirm = function (msg, callback) {
+            layer.confirm(msg, callback);
         }
-        messager.showProgress = showProgress;
-        function closeProgress() {
-            $.messager.progress('close');
-        }
-        messager.closeProgress = closeProgress;
     })(messager = utils.messager || (utils.messager = {}));
+
 })(utils || (utils = {}));
-//# sourceMappingURL=/typescript/maps/core.js.map

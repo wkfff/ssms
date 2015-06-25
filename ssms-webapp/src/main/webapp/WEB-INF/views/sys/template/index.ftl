@@ -12,6 +12,7 @@
         a:hover {
             background-color: #ADBDFF;
         }
+
         a:visited {
             color: #0000ee;
         }
@@ -41,9 +42,11 @@
             float: left;
             background-color: #FAFAFA;
         }
+
         li .editarea {
             padding: 10px 5px;
         }
+
         li .toolbar {
             border-top: 1px solid #EEE;
             padding: 5px 10px;
@@ -111,6 +114,8 @@
 
     <@layout.put block="footer">
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resource/js/layui/layer.js"></script>
+    <script type="text/javascript" src="/resource/js/core.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
     <script type="text/javascript">
         function ViewModel() {
@@ -149,29 +154,30 @@
 
             self.saveClick = function (model) {
                 if (isValid(model) == false) return;
-                var para = { name: model.name };
+                var para = {name: model.name};
                 if (model.id() != null) para.id = model.id();
 
                 $.post('${BASE_PATH}/save', para, function (result) {
                     if (result) {
                         model.id(result);
                         model.editable(false);
-                        alert("保存成功");
+                        utils.messager.alert("保存成功");
                     }
-                    else alert("保存的时候出现了问题, 请联系管理员！");
+                    else utils.messager.alert("保存的时候出现了问题, 请联系管理员！");
                 }, "json");
             };
 
             self.deleteClick = function (model) {
                 if (ko.unwrap(model.id) != null) {
-                    if (confirm("确定删除行业？") == true)
+                    utils.messager.confirm("确定删除行业？", function () {
                         $.post('${BASE_PATH}/del', {id: model.id}, function (result) {
                             if (result) {
                                 self.lists.remove(model);
-                                alert("删除成功");
+                                utils.messager.alert("删除成功");
                             }
-                            else alert("删除失败")
+                            else utils.messager.alert("删除失败")
                         }, "json")
+                    })
                 }
                 else {
                     self.lists.remove(model);

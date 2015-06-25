@@ -128,6 +128,8 @@
 
     <@layout.put block="footer">
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/resource/js/layui/layer.js"></script>
+    <script type="text/javascript" src="/resource/js/core.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
     <script type="text/javascript">
         function ViewModel() {
@@ -171,9 +173,9 @@
                     if (result) {
                         model.id(result);
                         model.editable(false);
-                        alert("保存成功");
+                        utils.messager.alert("保存成功");
                     }
-                    else alert("保存的时候出现了问题, 请联系管理员！");
+                    else utils.messager.alert("保存的时候出现了问题, 请联系管理员！");
                 }, "json");
             };
 
@@ -187,14 +189,15 @@
 
             self.removeIndustry = function (model, bindContext) {
                 if (ko.unwrap(model.id) != null) {
-                    if (confirm("确定删除行业？") == true)
+                    utils.messager.confirm("确定删除行业？", function () {
                         $.post('${BASE_PATH}/removeIndustry', {id: model.id}, function (result) {
                             if (result) {
                                 self.industries.remove(model);
-                                alert("删除成功");
+                                utils.messager.alert("删除成功");
                             }
-                            else alert("删除失败")
+                            else utils.messager.alert("删除失败")
                         }, "json")
+                    });
                 }
                 else {
                     self.industries.remove(model);
@@ -217,9 +220,9 @@
                     if (result) {
                         model.id(result);
                         model.editable(false);
-                        alert("保存成功");
+                        utils.messager.alert("保存成功");
                     }
-                    else alert("保存的时候出现了问题, 请联系管理员！");
+                    else utils.messager.alert("保存的时候出现了问题, 请联系管理员！");
                 }, "json");
             };
 
@@ -233,14 +236,15 @@
 
             self.removeProfession = function (data, model, bindContext) {
                 if (ko.unwrap(model.id) != null) {
-                    if (confirm("确定删除专业？") == true)
+                    utils.messager.confirm("确定删除专业？", function () {
                         $.post('${BASE_PATH}/delProfession', {id: model.id()}, function (result) {
                             if (result) {
                                 data.professions.remove(model);
-                                alert("删除成功");
+                                utils.messager.alert("删除成功");
                             }
-                            else alert("删除失败");
+                            else utils.messager.alert("删除失败");
                         }, "json")
+                    });
                 }
                 else {
                     data.professions.remove(model);
