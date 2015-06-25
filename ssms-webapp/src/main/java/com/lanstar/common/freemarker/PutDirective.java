@@ -28,7 +28,12 @@ public class PutDirective implements TemplateDirectiveModel {
         PutType putType = getPutType( params );
         String bodyResult = getBodyResult( body );
 
-        env.setVariable( getBlockContentsVarName( blockName ), new SimpleScalar( bodyResult ) );
+        String blockContentsVarName = getBlockContentsVarName( blockName );
+        SimpleScalar oldBodyResult = (SimpleScalar) env.getVariable( blockContentsVarName );
+        if ( oldBodyResult != null ) {
+            bodyResult = bodyResult + oldBodyResult.getAsString();
+        }
+        env.setVariable( blockContentsVarName, new SimpleScalar( bodyResult ) );
         env.setVariable( getBlockTypeVarName( blockName ), new SimpleScalar( putType.name() ) );
     }
 

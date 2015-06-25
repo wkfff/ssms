@@ -23,7 +23,6 @@ public class ExtendsDirective implements TemplateDirectiveModel {
         String layoutName = ((SimpleScalar) params.get( "name" )).getAsString();
 
         processBody( body );
-
         processLayout( env, layoutName );
     }
 
@@ -37,7 +36,7 @@ public class ExtendsDirective implements TemplateDirectiveModel {
     }
 
     private void processLayout( Environment env, String layoutName ) throws IOException, TemplateException {
-        String fullTemplateName = env.toFullTemplateName( env.getMainTemplate().getName(), layoutName );
+        String fullTemplateName = env.toFullTemplateName( ((Template) env.getParent()).getName(), layoutName );
         env.include( fullTemplateName, null, true );
     }
 }
