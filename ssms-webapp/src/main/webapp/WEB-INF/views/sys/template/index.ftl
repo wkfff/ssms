@@ -45,6 +45,10 @@
 
         li .editarea {
             padding: 10px 5px;
+            text-align: center;
+        }
+        li .editarea * {
+            text-align: left;
         }
 
         li .toolbar {
@@ -104,9 +108,9 @@
                 <a href="javascript:void(0)" class="icon-delete" data-bind="click: $root.deleteClick">删除</a>
             </div>
             <div class="toolbar">
-                <a class="icon-edit" data-bind="attr : {href: templateUrl}, visible: id">编辑达标体系模板</a>
-                <a class="icon-edit" data-bind="attr : {href: gradeUrl}, visible: id">编辑达标体系模板</a>
-                <a class="icon-edit" data-bind="attr : {href: reportUrl}, visible: id">编辑达标体系模板</a>&nbsp;
+                <a class="icon-edit" data-bind="attr : {href: templateUrl}, visible: id">达标体系模板</a>
+                <a class="icon-edit" data-bind="attr : {href: gradeUrl}, visible: id">评分标准模板</a>
+                <a class="icon-edit" data-bind="attr : {href: reportUrl}, visible: id">自评报告模板</a>&nbsp;
             </div>
         </li>
     </script>
