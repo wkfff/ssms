@@ -18,6 +18,7 @@ import com.lanstar.plugin.activerecord.*;
 import com.lanstar.plugin.tlds.DsKit;
 import com.lanstar.service.AttachFileService;
 import com.lanstar.service.AttachTextService;
+import com.lanstar.service.common.todo.TodoService;
 import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.review.ReviewService;
 
@@ -114,6 +115,9 @@ public class TenantContext {
         return tenant;
     }
 
+    /**
+     * 获取当前租户的系统导航
+     */
     public List<TreeNode> getSystemNavgate() {
         List<Navgate> list = Navgate.list();
         List<Map<String, Object>> navList = new ArrayList<>();
@@ -142,6 +146,18 @@ public class TenantContext {
         AttachTextService service = getValue( AttachTextService.class );
         if ( service == null ) {
             service = new AttachTextService( this.getTenant() );
+            setValue( service );
+        }
+        return service;
+    }
+
+    /**
+     * 获取待办服务
+     */
+    public synchronized TodoService getTodoService() {
+        TodoService service = getValue( TodoService.class );
+        if ( service == null ) {
+            service = new TodoService( this.getTenant() );
             setValue( service );
         }
         return service;

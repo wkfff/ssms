@@ -9,10 +9,7 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
-
 import com.lanstar.controller.enterprise.*;
-import com.lanstar.controller.system.DoneController;
-import com.lanstar.controller.system.TodoController;
 
 public class EnterpriseRoutes extends Routes {
     private static final Routes me = new EnterpriseRoutes();
@@ -39,8 +36,6 @@ public class EnterpriseRoutes extends Routes {
         add( "/e/grade_d", GradeContentController.class );
         
         add( "/e/notice", NoticeController.class );
-        add( "/e/todo", TodoController.class );
-        add( "/e/done", DoneController.class );
         
         add( "/e/tenant_e", EnterpriseController.class);
         add( "/e/tenant_eu", EnterpriseUserController.class);
