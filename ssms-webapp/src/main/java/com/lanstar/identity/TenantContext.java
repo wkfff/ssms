@@ -141,7 +141,7 @@ public class TenantContext {
     public synchronized AttachTextService getAttachTextService() {
         AttachTextService service = getValue( AttachTextService.class );
         if ( service == null ) {
-            service = new AttachTextService( this );
+            service = new AttachTextService( this.getTenant() );
             setValue( service );
         }
         return service;

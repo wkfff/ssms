@@ -11,35 +11,35 @@ package com.lanstar.service;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.identity.TenantContext;
+import com.lanstar.identity.Tenant;
 import com.lanstar.model.system.AttachText;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
 public class AttachTextService {
-    public static final AttachTextService SYSTEM = new AttachTextService( TenantContext.SYSTEM );
-    private final TenantContext tenantContext;
+    public static final AttachTextService SYSTEM = new AttachTextService( Tenant.SYSTEM_TENANT );
+    private final Tenant tenant;
 
-    public AttachTextService( TenantContext tenantContext ) {
-        this.tenantContext = tenantContext;
+    public AttachTextService( Tenant tenant ) {
+        this.tenant = tenant;
     }
 
     public String getContent( String table, String field, int sid ) {
         AttachText attachText = AttachText.dao.findFirst( SqlKit.sql( "system.attachText.get" ),
-                table, field, sid, tenantContext.getTenantId(), tenantContext.getTenantType().getName() );
+                table, field, sid, tenant.getTenantId(), tenant.getTenantType().getName() );
         return attachText == null ? "" : attachText.getContent();
     }
 
-    public Integer save( String table, String field, int sid, String content, IdentityContext identity ) {
-        return save( table, field, sid, content, identity.getIdentity() );
+    public Integer save( String table, String field, int sid, String content, IdentityContext operator ) {
+        return save( table, field, sid, content, operator.getIdentity() );
     }
 
-    public Integer save( String table, String field, int sid, String content, Identity identity ) {
+    public Integer save( String table, String field, int sid, String content, Identity opeartor ) {
         AttachText attachText = AttachText.dao.findFirst( SqlKit.sql( "system.attachText.get" ),
-                table, field, sid, tenantContext.getTenantId(), tenantContext.getTenantType().getName() );
+                table, field, sid, tenant.getTenantId(), tenant.getTenantType().getName() );
         if ( attachText != null ) {
             attachText.setContent( content );
-            attachText.setTenant( tenantContext.getTenant() );
-            ModelInjector.injectOpreator( attachText, identity, true );
+            attachText.setTenant( tenant );
+            ModelInjector.injectOpreator( attachText, opeartor, true );
             attachText.update();
         } else {
             attachText = new AttachText();
@@ -47,7 +47,7 @@ public class AttachTextService {
             attachText.setField( field );
             attachText.setRSid( sid );
             attachText.setContent( content );
-            ModelInjector.injectOpreator( attachText, identity, true );
+            ModelInjector.injectOpreator( attachText, opeartor, true );
             attachText.save();
         }
         return attachText.getId();
@@ -55,7 +55,7 @@ public class AttachTextService {
 
     public boolean del( String table, String field, int sid ) {
         AttachText attachText = AttachText.dao.findFirst( SqlKit.sql( "system.attachText.get" ),
-                table, field, sid, tenantContext.getTenantId(), tenantContext.getTenantType().getName() );
+                table, field, sid, tenant.getTenantId(), tenant.getTenantType().getName() );
         if ( attachText != null ) return attachText.delete();
         return false;
     }
