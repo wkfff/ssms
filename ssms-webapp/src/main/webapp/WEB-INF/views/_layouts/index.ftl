@@ -14,48 +14,55 @@
     <#if LANSTAR_IDENTITY.tenantType='E' && LANSTAR_IDENTITY.enterpriseService.professionService??>
         <@layout.put block="head">
         <style type="text/css">
+            .professions {
+            }
+
             .target_box {
+                display: none;
                 border: 1px solid #aaa;
-                background-color: #FDFDFE;
-                width: 150px;
+                background-color: #000000;
+                opacity: 0.7;
             }
 
-            .target_box p {
+            .target_box li {
                 border-bottom: 1px dotted #CCCCCC;
-                padding: 2px;
+                padding: 10px;
+                text-align: center;
             }
 
-            .target_box p:hover {
-                background: #87ceeb;
+            .target_box li:hover {
+                background-color: #58595b;
             }
 
             .target_box a {
-                color: #000;
-            }
-
-            .target_box a:hover {
-                color: #ff6f37;
+                color: #FFFFFF;
+                width: 100%;
+                display: block;
             }
         </style>
         </@>
         <@layout.put block="profession">
         <li class="split">|</li>
         <li class="action">
-            <a href="#" id="chooseProfession" rel="professions">${LANSTAR_IDENTITY.enterpriseService.professionService.name}专业
+            <a href="#" class="chooseProfession">${LANSTAR_IDENTITY.enterpriseService.professionService.name}专业
                 <b class="c-icon c-icon-triangle-down"></b></a>
         </li>
         </@layout.put>
         <@layout.put block="contents">
-        <div id="professions" class="shadow target_box dn" style="display: none">
+        <ul class="professions target_box">
             <#list LANSTAR_IDENTITY.enterpriseService.professions as map>
-                <p><a href="/e/setTemplate?profession=${map.id}">${map.name}专业</a></p>
+                <li><a href="/e/setTemplate?profession=${map.id}">${map.name}专业</a></li>
             </#list>
-        </div>
+        </ul>
         </@layout.put>
         <@layout.put block="footer">
         <script type="text/javascript">
             $(function () {
-                $("#chooseProfession").powerFloat({eventType: 'click', position: "3-2", zIndex: 2000});
+                $(".chooseProfession").powerFloat({
+                    target: $('.professions'),
+                    // eventType: 'click',
+                    position: "7-5"
+                });
             });
         </script>
         </@layout.put>
