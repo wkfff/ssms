@@ -86,7 +86,8 @@ input.readonly {
 
 input.readonly,
 .outline {
-    border-bottom: 1px solid #808080;
+    border-bottom: 1px solid #CCC;
+    background-color: #fafafa;
 }
 
 /*表单主体*/
