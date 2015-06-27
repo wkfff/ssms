@@ -9,11 +9,11 @@
 package com.lanstar.model.tenant;
 
 import com.lanstar.common.kit.DateKit;
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.model.TenantModel;
 
 import java.util.Date;
 
-public class GradePlan extends Model<GradePlan> {
+public class GradePlan extends TenantModel<GradePlan> {
     public static GradePlan dao = new GradePlan();
 
     public String getTitle() {

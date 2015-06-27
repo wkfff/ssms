@@ -7,16 +7,16 @@
  */
 package com.lanstar.model.tenant;
 
-import java.util.Date;
-
 import com.lanstar.common.kit.DateKit;
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.model.TenantModel;
+
+import java.util.Date;
 
 /**
  * 评审
  *
  */
-public class GradePlanR extends Model<GradePlanR> {
+public class GradePlanR extends TenantModel<GradePlanR> {
     public static GradePlanR dao = new GradePlanR();
 
     public String getTitle() {

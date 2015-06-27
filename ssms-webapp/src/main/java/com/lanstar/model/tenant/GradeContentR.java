@@ -7,13 +7,13 @@
  */
 package com.lanstar.model.tenant;
 
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.model.TenantModel;
 
 /**
  * 评审
  *
  */
-public class GradeContentR extends Model<GradeContentR> {
+public class GradeContentR extends TenantModel<GradeContentR> {
 public static GradeContentR dao = new GradeContentR();
     
     private int R_SID;
