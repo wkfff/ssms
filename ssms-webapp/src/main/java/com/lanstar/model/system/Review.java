@@ -8,14 +8,43 @@
 
 package com.lanstar.model.system;
 
+import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantType;
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 
-public class Review extends Model<Review> {
+public class Review extends ModelExt<Review> implements Tenant {
     public static final Review dao = new Review();
+
+    @Override
+    public boolean delete() {
+        set( "B_DELETE", 1 );
+        return update();
+    }
+
+    @Override
+    public boolean deleteById( Object id ) {
+        Review model = dao.findById( id );
+        model.set( "B_DELETE", 1 );
+        return update();
+    }
 
     public String getCountyCode() {
         return getStr( "P_COUNTY" );
+    }
+
+    @Override
+    public int getTenantId() {
+        return getId();
+    }
+
+    @Override
+    public String getTenantName() {
+        return getName();
+    }
+
+    @Override
+    public TenantType getTenantType() {
+        return TenantType.REVIEW;
     }
 
     public String getTenantCode() {
@@ -32,22 +61,5 @@ public class Review extends Model<Review> {
 
     public String getName() {
         return getStr( "C_NAME" );
-    }
-
-    public TenantType getTenantType() {
-        return TenantType.REVIEW;
-    }
-
-    @Override
-    public boolean delete() {
-        set( "B_DELETE", 1 );
-        return update();
-    }
-
-    @Override
-    public boolean deleteById( Object id ) {
-        Review model = dao.findById( id );
-        model.set( "B_DELETE", 1 );
-        return update();
     }
 }

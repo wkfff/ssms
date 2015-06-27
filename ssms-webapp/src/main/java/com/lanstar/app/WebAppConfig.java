@@ -21,6 +21,7 @@ import com.lanstar.app.template.TemplatePropsConfig;
 import com.lanstar.common.freemarker.BlockDirectiveUtils;
 import com.lanstar.common.kit.JsonKit;
 import com.lanstar.common.kit.ServletKit;
+import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.config.*;
 import com.lanstar.controller.HomeController;
 import com.lanstar.core.Rapidware;
@@ -34,6 +35,7 @@ import com.lanstar.plugin.druid.DruidPlugin;
 import com.lanstar.plugin.jsconstants.JsConstantBuilder;
 import com.lanstar.plugin.quartz.QuartzPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
+import com.lanstar.plugin.staticcache.StaticCachePlugin;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
 import freemarker.ext.util.WrapperTemplateModel;
@@ -109,6 +111,9 @@ public class WebAppConfig extends RapidwareConfig {
         me.add( arp2 );
         new TenantModelMapping().mappingTo( arp );
         // ================================================
+
+        // 静态缓存插件
+        me.add( new StaticCachePlugin( new TenantCache() ) );
 
         // 任务调度插件配置
         QuartzPlugin quartzPlugin = new QuartzPlugin( "quartz_jobs.properties", "quartz.properties" );

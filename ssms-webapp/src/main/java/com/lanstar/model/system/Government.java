@@ -8,14 +8,43 @@
 
 package com.lanstar.model.system;
 
+import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantType;
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 
-public class Government extends Model<Government> {
+public class Government extends ModelExt<Government> implements Tenant {
     public static final Government dao = new Government();
+
+    @Override
+    public boolean delete() {
+        set( "B_DELETE", 1 );
+        return update();
+    }
+
+    @Override
+    public boolean deleteById( Object id ) {
+        Government model = dao.findById( id );
+        model.set( "B_DELETE", 1 );
+        return update();
+    }
 
     public String getCountyCode() {
         return getStr( "P_COUNTY" );
+    }
+
+    @Override
+    public int getTenantId() {
+        return getId();
+    }
+
+    @Override
+    public String getTenantName() {
+        return getName();
+    }
+
+    @Override
+    public TenantType getTenantType() {
+        return TenantType.GOVERNMENT;
     }
 
     public String getTenantCode() {
@@ -32,23 +61,6 @@ public class Government extends Model<Government> {
 
     public String getName() {
         return getStr( "C_NAME" );
-    }
-
-    public TenantType getTenantType() {
-        return TenantType.GOVERNMENT;
-    }
-
-    @Override
-    public boolean delete() {
-        set( "B_DELETE", 1 );
-        return update();
-    }
-
-    @Override
-    public boolean deleteById( Object id ) {
-        Government model = dao.findById( id );
-        model.set( "B_DELETE", 1 );
-        return update();
     }
 
 }
