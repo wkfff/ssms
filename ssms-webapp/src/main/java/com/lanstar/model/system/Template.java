@@ -8,6 +8,8 @@
 
 package com.lanstar.model.system;
 
+import com.alibaba.fastjson.JSON;
+import com.lanstar.beans.system.FolderBean;
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
@@ -35,6 +37,24 @@ public class Template extends ModelExt<Template> {
 
     public List<TemplateFolder> listFolder( int parentId ) {
         return TemplateFolder.list( getId(), parentId );
+    }
+
+    public int getVersion() {
+        Integer version = getInt( "N_VERSION" );
+        if ( version == null ) version = 0;
+        return version;
+    }
+
+    public void setVersion( int version ) {
+        set( "N_VERSION", version );
+    }
+
+    public List<FolderBean> getCacheContent() {
+        return JSON.parseArray( getStr( "C_CONTENT" ), FolderBean.class );
+    }
+
+    public void setCacheContent( List<FolderBean> folderBeans ) {
+        set( "C_CONTENT", JSON.toJSONString( folderBeans ) );
     }
 
     public int getId() {

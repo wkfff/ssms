@@ -30,8 +30,17 @@ public class TemplateFolderController extends SimplateController<TemplateFolder>
     public void manager() {
         final Integer template = getParaToInt( "template" );
         Asserts.notNull( template, "template 不能为空" );
-        setAttr( "templateName", Template.dao.findById( template ).getName() );
+        setAttr( "template", Template.dao.findById( template ) );
         setAttr( "items", listTemplateItems( template ) );
+    }
+
+    public void publish() {
+        final Integer templateId = getParaToInt();
+        final List<FolderBean> folderBeans = listTemplateItems( templateId );
+        final Template template = Template.dao.findById( templateId );
+        template.setCacheContent( folderBeans );
+        template.setVersion( template.getVersion() + 1 );
+        renderJson( template.update() );
     }
 
     @Override

@@ -25,14 +25,13 @@ public class ReviewRoutes extends Routes {
         add( "/r/stdtmp", TemplateController.class );
         add( "/r/review", ReviewController.class );
         add( "/r/e/stdtmp", TemplateController.class );
-         
+
         add( "/r/tenant_r", ReviewController.class );
         add( "/r/tenant_ru", ReviewUserController.class );
         add( "/r/reviewer", ReviewerController.class );
         add( "/r/notice", NoticeController.class );
-        add( "/r/todo", TodoController.class );
-        add( "/r/done", DoneController.class );
-        
+
+
         add( "/r/grade", GradeController.class );
         add( "/r/reviewplan", ReviewPlanController.class );
         add( "/r/reviewcontent", ReviewContentController.class );
