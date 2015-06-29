@@ -8,14 +8,14 @@
 
 package com.lanstar.model.system;
 
-import java.util.List;
-
 import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantType;
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
-public class Enterprise extends Model<Enterprise> implements Tenant {
+import java.util.List;
+
+public class Enterprise extends ModelExt<Enterprise> implements Tenant {
     public static final Enterprise dao = new Enterprise();
 
     public EnterpriseUser getUser( String username, String password ) {

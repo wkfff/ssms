@@ -50,8 +50,6 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_PARA_AREA", "SID", AreaPara.class );
         
         addMapping( "SSM_NOTICE", "SID", Notice.class );
-        addMapping( "SYS_TODO", "SID", Todo.class );
-        addMapping( "SYS_DONE", "SID", Done.class );
         addMapping( "SSM_KNOWLEDGE_SORT", "SID", KnowledgeSort.class );
         addMapping( "SSM_KNOWLEDGE_FILE", "SID", KnowledgeFile.class );
     }

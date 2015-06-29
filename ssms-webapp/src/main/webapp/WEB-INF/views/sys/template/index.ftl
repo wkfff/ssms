@@ -43,11 +43,11 @@
             background-color: #FAFAFA;
         }
 
-        li .editarea {
+        li .editArea {
             padding: 10px 5px;
             text-align: center;
         }
-        li .editarea * {
+        li .editArea * {
             text-align: left;
         }
 
@@ -99,7 +99,7 @@
 
     <script type="text/html" id="templates">
         <li>
-            <div class="editarea">
+            <div class="editArea">
                 模板名称：<span class="readonly" data-bind="text :name ,visible: editable() == false"></span>
                 <input type="text" data-bind="textInput: name , visible : editable"/>
                 <a href="javascript:void(0)" class="icon-edit" data-bind="click: $root.editClick, visible: editable()==false">编辑</a>
@@ -131,7 +131,7 @@
                 this.name = ko.observable(name).extend({required: true});
                 this.editable = ko.observable(id == null);
 
-                this.templateUrl = '/sys/stdtmp/index?R_SID=' + id;
+                this.templateUrl = '/sys/stdtmp/manager?template=' + id;
                 this.gradeUrl = '/sys/stdtmp_grade/index?R_SID=' + id;
                 this.reportUrl = '/sys/stdtmp_rep/rec?type=1&R_SID=' + id;
                 this.reviewReportUrl = '/sys/stdtmp_rep/rec?type=2&R_SID=' + id;

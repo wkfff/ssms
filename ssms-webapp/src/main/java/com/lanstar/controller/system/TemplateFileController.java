@@ -8,39 +8,21 @@
 
 package com.lanstar.controller.system;
 
+import com.lanstar.service.MultiParaType;
 import com.lanstar.controller.SimplateController;
-import com.lanstar.model.system.MultiPara;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFolder;
-import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
-import com.lanstar.plugin.activerecord.statement.SqlStatement;
-import com.lanstar.service.Parameter;
 import com.lanstar.plugin.template.TemplatePropPlugin;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TemplateFileController extends SimplateController<TemplateFile> {
     @Override
     public void rec() {
         if ( isParaBlank( "pid" ) == false ) {
-            SqlBuilder builder = SQL.SELECT( "C_CODE, C_VALUE" )
-                                    .FROM( "SYS_PARA_MULTI" )
-                                    .WHERE( "C_NAME=?", "SYS_CYCLE" );
-            SqlStatement statement = builder.toSqlStatement();
-            List<MultiPara> multiParas = MultiPara.dao.find( statement.getSql(), statement.getParams() );
-            List<Parameter> list = new ArrayList<>();
-            for ( MultiPara multiPara : multiParas ) {
-                String code = multiPara.getCode();
-                String value = multiPara.geValue();
-                Parameter parameter = new Parameter( code, value );
-                list.add( parameter );
-            }
             TemplateFolder folder = TemplateFolder.dao.findById( getParaToInt( "pid" ) );
-            setAttr( "SYS_CYCLE", list );
             setAttr( "folder", folder );
         }
+        setAttr( "SYS_CYCLE", MultiParaType.SYS_CYCLE.parameters() );
         setAttr( "tmpfiles", TemplatePropPlugin.me().listParameter() );
         super.rec();
     }

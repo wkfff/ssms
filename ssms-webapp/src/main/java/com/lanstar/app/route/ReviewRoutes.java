@@ -9,20 +9,7 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
-import com.lanstar.controller.review.GradeController;
-import com.lanstar.controller.review.HomeController;
-import com.lanstar.controller.review.NoticeController;
-import com.lanstar.controller.review.ReviewCertController;
-import com.lanstar.controller.review.ReviewContentController;
-import com.lanstar.controller.review.ReviewController;
-import com.lanstar.controller.review.ReviewHistoryController;
-import com.lanstar.controller.review.ReviewPlanController;
-import com.lanstar.controller.review.ReviewReportController;
-import com.lanstar.controller.review.ReviewUserController;
-import com.lanstar.controller.review.ReviewerController;
-import com.lanstar.controller.review.TemplateController;
-import com.lanstar.controller.system.DoneController;
-import com.lanstar.controller.system.TodoController;
+import com.lanstar.controller.review.*;
 
 public class ReviewRoutes extends Routes {
     private static Routes me = new ReviewRoutes();

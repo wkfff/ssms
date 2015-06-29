@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class FolderTreeBuilder extends TreeKit<FolderBean> {
+public class FolderTreeBuilder extends TreeKit<FolderBean, Map<String, Object>> {
     private final List<Map<String, Object>> files;
 
     public FolderTreeBuilder( List<Map<String, Object>> folders, List<Map<String, Object>> files, String parentField ) {
@@ -30,6 +30,11 @@ public class FolderTreeBuilder extends TreeKit<FolderBean> {
         rootFolder.attrs.putAll( first( 0 ) );
         addChildren( rootFolder );
         return rootFolder;
+    }
+
+    @Override
+    public Object getValue( Map<String, Object> item ) {
+        return item.get( parentField );
     }
 
     private void addChildren( FolderBean bean ) {

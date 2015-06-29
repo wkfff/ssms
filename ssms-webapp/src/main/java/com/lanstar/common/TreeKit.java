@@ -12,34 +12,35 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-public abstract class TreeKit<T> {
-    protected final List<Map<String, Object>> list;
+public abstract class TreeKit<T, E> {
+    protected final List<E> list;
     protected final String parentField;
 
-    public TreeKit( List<Map<String, Object>> list, String parentField ) {
+    public TreeKit( List<E> list, String parentField ) {
         this.list = list;
         this.parentField = parentField;
     }
 
     public abstract T tree();
 
-    protected final Iterable<Map<String, Object>> children( final Object parentKey ) {
-        return Iterables.filter( list, new Predicate<Map<String, Object>>() {
+    public abstract Object getValue( E item );
+
+    protected final Iterable<E> children( final Object parentKey ) {
+        return Iterables.filter( list, new Predicate<E>() {
             @Override
-            public boolean apply( Map<String, Object> input ) {
-                return Objects.equals( parentKey, input.get( parentField ) );
+            public boolean apply( E input ) {
+                return Objects.equals( parentKey, getValue( input ) );
             }
         } );
     }
 
-    protected final Map<String, Object> first( final Object key ) {
-        return Iterables.find( list, new Predicate<Map<String, Object>>() {
+    protected final E first( final Object key ) {
+        return Iterables.find( list, new Predicate<E>() {
             @Override
-            public boolean apply( Map<String, Object> input ) {
-                return Objects.equals( input.get( parentField ), key );
+            public boolean apply( E input ) {
+                return Objects.equals( getValue( input ), key );
             }
         } );
     }

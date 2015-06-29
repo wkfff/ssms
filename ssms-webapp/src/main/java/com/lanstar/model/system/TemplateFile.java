@@ -22,6 +22,10 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFiles" ), folderId );
     }
 
+    public static List<TemplateFile> listByTemplate( int template ) {
+        return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFilesByTemplate" ), template );
+    }
+
     @Override
     public boolean delete() {
         // TODO:
@@ -38,6 +42,14 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return super.deleteById( id );
     }
 
+    public Integer getIndex() {
+        return getInt( "N_INDEX" );
+    }
+
+    public void setIndex( Integer index ) {
+        set( "N_INDEX", index );
+    }
+
     /** 获取模板属性 */
     public TemplateProp getTemplateProp() {
         return TemplatePropPlugin.me().get( getTemplateFileCode() );
@@ -51,7 +63,7 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return getInt( "SID" );
     }
 
-    public Object getName() {
+    public String getName() {
         return getStr( "C_NAME" );
     }
 }

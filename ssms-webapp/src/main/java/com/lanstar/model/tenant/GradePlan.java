@@ -9,12 +9,12 @@
 package com.lanstar.model.tenant;
 
 import com.lanstar.common.kit.DateKit;
-import com.lanstar.identity.Tenant;
+import com.lanstar.model.TenantModel;
 import com.lanstar.plugin.activerecord.Model;
 
 import java.util.Date;
 
-public class GradePlan extends Model<GradePlan> {
+public class GradePlan extends TenantModel<GradePlan> {
     public static GradePlan dao = new GradePlan();
 
     public String getTitle() {
@@ -59,12 +59,6 @@ public class GradePlan extends Model<GradePlan> {
     
     public void setProfessionName(String proName){
         set("S_PROFESSION",proName);
-    }
-    
-    public void setTenant(Tenant tenant){
-        set("R_TENANT",tenant.getTenantId());
-        set("S_TENANT",tenant.getTenantName());
-        set("P_TENANT",tenant.getTenantType().getName());
     }
     
     public void setGradeState( String state ) {

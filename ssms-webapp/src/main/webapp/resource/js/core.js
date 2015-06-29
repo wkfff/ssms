@@ -46,7 +46,7 @@ var utils;
 
         messager.confirm = function (msg, callback) {
             layer.confirm(msg, callback);
-        }
+        };
         
         messager.showDialog=function (type,width,height,title,id,callback){
         	layer.open({
@@ -58,7 +58,44 @@ var utils;
         		yes:callback,
         		content: $('#'+id)
             });
-        }
+        };
     })(messager = utils.messager || (utils.messager = {}));
 
+    var dialog;
+    (function (dialog) {
+        var defaultOptions = {
+            title: "信息编辑",
+            template: "",
+            loaded: function (element) {
+            },
+            ok: function () {
+                return true;
+            }
+        };
+        dialog.open = function (options) {
+            var opts = $.extend({}, defaultOptions, options);
+            layer.confirm(opts.template, {
+                title: opts.title,
+                success: function (layero, index) {
+                    opts.loaded(layero);
+                }
+            }, function (index) {
+                if (opts.ok() != false) layer.close(index);
+            });
+        }
+    })(dialog = utils.dialog || (utils.dialog = {}));
 })(utils || (utils = {}));
+
+if (ko && ko.utils.copyToModel == null) {
+    ko.utils.copyToModel = function (src, desc) {
+        for (var field in src) {
+            if (src.hasOwnProperty(field) == false) return;
+            if (desc.hasOwnProperty(field) == false) return;
+
+            var srcValue = src[field];
+            if (ko.isComputed(desc[field])) continue;
+            if (ko.isWriteableObservable(desc[field])) desc[field](ko.unwrap(srcValue));
+            else desc[field] = ko.unwrap(srcValue);
+        }
+    }
+}

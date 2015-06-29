@@ -9,9 +9,13 @@
 package com.lanstar.model.tenant;
 
 import com.lanstar.app.Const;
-import com.lanstar.plugin.activerecord.ModelExt;
+import com.lanstar.model.TenantModel;
 
-public class TemplateFileModel<T extends TemplateFileModel<T>> extends ModelExt<T> {
+public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantModel<T> {
+    public int getId() {
+        return getInt( "SID" );
+    }
+
     public int getTemplateFileId() {
         return getInt( Const.TEMPLATE_FILE_PARENT_FIELD );
     }

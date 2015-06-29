@@ -7,12 +7,12 @@
  */
 package com.lanstar.model.tenant;
 
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.model.TenantModel;
 
 /**
  * @author Administrator
  *
  */
-public class Reviewer extends Model<Reviewer> {
+public class Reviewer extends TenantModel<Reviewer> {
     public static final Reviewer dao=new Reviewer();
 }

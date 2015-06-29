@@ -19,6 +19,7 @@ public abstract class Cache<V> implements ICache<V> {
 
     @Override
     public void refresh() {
+        // FIXME 当在刷新缓存的时候调用getValue等方法，可能会出现异步并发问题。
         log.info( "开始缓存[%s]数据......", this.getName() );
         try {
             clear(); // 清空原有数据

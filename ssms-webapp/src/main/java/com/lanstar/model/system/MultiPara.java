@@ -8,25 +8,20 @@
 
 package com.lanstar.model.system;
 
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelExt;
 
-public class MultiPara extends Model<MultiPara> {
+public class MultiPara extends ModelExt<MultiPara> {
     public static final MultiPara dao = new MultiPara();
-    
-    /**
-     * @return
-     */
-    public String getName() {
-        return  getStr( "C_NAME" );
-    }
-    public String getCode(){
-        return getStr( "C_CODE" );
-    }
-    /**
-     * @return
-     */
+
     public String geValue() {
-        // TODO Auto-generated method stub
         return getStr( "C_VALUE" );
+    }
+
+    public String getName() {
+        return getStr( "C_NAME" );
+    }
+
+    public String getCode() {
+        return getStr( "C_CODE" );
     }
 }
