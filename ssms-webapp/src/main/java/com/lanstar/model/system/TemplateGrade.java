@@ -7,6 +7,8 @@
  */
 package com.lanstar.model.system;
 
+import java.util.List;
+
 import com.lanstar.plugin.activerecord.Model;
 
 /**
@@ -15,5 +17,12 @@ import com.lanstar.plugin.activerecord.Model;
  */
 public class TemplateGrade extends Model<TemplateGrade> {
     public static final TemplateGrade dao=new TemplateGrade(); 
+    
+    /**
+     * 根据专业取评分标准模板
+    */
+    public List<TemplateGrade> getTemplateByPro(int pro){
+         return this.dao.find( " SELECT T1.* FROM SYS_GRADE_STD T1  INNER JOIN SYS_TEMPLATE T2 ON T1.R_SID=T2.SID  INNER JOIN SYS_PROFESSION T3 ON T3.R_TEMPLATE=T2.SID  WHERE T3.SID=?",pro );
+    }
 
 }

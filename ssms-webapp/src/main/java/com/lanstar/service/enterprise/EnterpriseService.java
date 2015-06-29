@@ -9,10 +9,18 @@
 package com.lanstar.service.enterprise;
 
 import com.lanstar.controller.enterprise.EnterpriseGradeState;
+import com.lanstar.identity.Identity;
 import com.lanstar.identity.TenantContext;
 import com.lanstar.identity.TenantType;
+import com.lanstar.model.system.AttachText;
 import com.lanstar.model.system.Profession;
+import com.lanstar.model.system.TemplateGrade;
+import com.lanstar.model.system.TemplateRep;
+import com.lanstar.model.tenant.GradeContent;
 import com.lanstar.model.tenant.GradePlan;
+import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.plugin.activerecord.Record;
+import com.lanstar.service.AttachTextService;
 
 import java.util.List;
 import java.util.Map;
@@ -52,11 +60,49 @@ public class EnterpriseService {
     }
     
     /**
-     * 获取最新自评方案编号
+     * 获取最新自评方案的编号
      */
     public int getPlanId(int eid,int pro){
-        String sql = "select sid from SSM_GRADE_E_M SSM_GRADE_PLAN where R_TENANT=? and P_PROFESSION=? and n_state=? order by t_update desc limit 1";
+        String sql = "select sid from SSM_GRADE_PLAN where R_TENANT=? and P_PROFESSION=? and n_state=? order by t_update desc limit 1";
         GradePlan model = GradePlan.dao.findFirst( sql,eid,pro,EnterpriseGradeState.END.getValue() );
-        return model==null?0:model.getId();
+        return model==null?-1:model.getId();
+    }
+    /**
+     * 本年度是否已经有自评方案
+     */
+    public boolean hasPlan(){
+        String sql = "SELECT 1 FROM SSM_GRADE_PLAN WHERE R_TENANT=? AND P_TENANT='E' AND YEAR(T_START)=YEAR(NOW())";
+        Record r =  tenantContext.getTenantDb().findFirst( sql, tenantContext.getTenantId());
+        return r!=null;
+    }
+    /**
+     * 根据专业从评分标准生成评分内容
+     */
+    public boolean syncContent(int pro,int planId){
+        List<TemplateGrade> list = TemplateGrade.dao.getTemplateByPro( pro );
+        for(TemplateGrade gt:list){
+            GradeContent gc = new GradeContent();
+            ModelKit.copyColumns( gt, gc, "C_CATEGORY","C_PROJECT","C_REQUEST","C_CONTENT","N_SCORE","C_METHOD" );
+            gc.set("R_SID", planId );
+            gc.set( "R_STD", gt.getInt( "SID" ) );
+            gc.set( "R_TENANT", tenantContext.getTenantId() );
+            gc.set( "S_TENANT", tenantContext.getTenantName() );
+            gc.set( "P_TENANT", tenantContext.getTenantType().getName() );
+            gc.save();
+        }
+        return true;
+    }
+    /**
+     * 根据专业从自评报告模板生成自评报告
+     * @return
+     */
+    public boolean syncReport(int pro,int planId,Identity identity){
+        String sql = " SELECT C_CONTENT FROM SYS_REPORT_TEMPLATE T1 INNER JOIN SYS_TEMPLATE T2  ON T1.R_SID = T2.SID INNER JOIN SYS_PROFESSION T3  ON T3.R_TEMPLATE = T2.SID WHERE T3.SID = ? AND T1.Z_TYPE=1";
+        TemplateRep template = TemplateRep.dao.findFirst( sql,pro );
+        if (template!=null){
+            AttachTextService service = tenantContext.getAttachTextService();
+            service.save( "SSM_GRADE_REPORT", "C_CONTENT", planId, template.getStr( "C_CONTENT" ), identity);
+        }
+        return true;
     }
 }

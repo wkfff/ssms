@@ -921,4 +921,8 @@ public class DbPro {
             config.close( conn );
         }
     }
+
+    public Config getConfig() {
+        return config;
+    }
 }

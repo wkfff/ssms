@@ -8,12 +8,25 @@
 
 package com.lanstar.service.review;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.lanstar.identity.TenantContext;
 import com.lanstar.model.tenant.GradeContent;
-import com.lanstar.model.tenant.GradeContentR;
+import com.lanstar.model.tenant.ReviewCert;
+import com.lanstar.model.tenant.ReviewContent;
+import com.lanstar.model.tenant.ReviewMember;
+import com.lanstar.model.tenant.ReviewPlan;
+import com.lanstar.model.tenant.ReviewResultCert;
+import com.lanstar.model.tenant.ReviewResultContent;
+import com.lanstar.model.tenant.ReviewResultMember;
+import com.lanstar.model.tenant.ReviewResultPlan;
+import com.lanstar.model.tenant.ReviewResultReport;
 import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.plugin.activerecord.Record;
+import com.lanstar.plugin.activerecord.Table;
+import com.lanstar.plugin.activerecord.TableMapping;
 
 class ReviewSyncService {
     private final TenantContext source;
@@ -24,39 +37,105 @@ class ReviewSyncService {
         this.target = target;
     }
 
-    public static boolean sync( TenantContext source, TenantContext target, int r_sid, int sid ) {
-        return new ReviewSyncService( source, target ).execute( r_sid, sid );
-    }
+//    public static boolean sync( TenantContext source, TenantContext target, int r_sid, int sid ) {
+//        return new ReviewSyncService( source, target ).execute( r_sid, sid );
+//    }
 
     /**
-     * 同步企业的自评数据到评审中
-     * 
-     * @param r_sid
-     *            企业自评主表的编号
-     * @param sid
-     *            评审主表的编号
-     * @return
+     * 同步企业的自评数据到评审中 
+     * @param srcPlanId 企业自评方案的编号
+     * @param descPlanId  评审方案的编号
      */
-    private boolean execute( int r_sid, int sid ) {
+    public static boolean syncContentFromEnterprise( TenantContext source, TenantContext target, int srcPlanId, int descPlanId ) {
         try {
-            String sql = "select * from ssm_grade_e_d where r_sid=?";
-            // List<Record> list = source.getTenantDb().find( sql
-            // ,GradeContent.class,r_sid);
-            // TODO:用这种方式取的库是否正确，还是要通过上面的方法去取？
-            List<GradeContent> list = GradeContent.dao.find( sql, r_sid );
-
-            for ( GradeContent gc : list ) {
-                GradeContentR gcr = new GradeContentR();
-                ModelKit.copyColumns( gc, gcr, "R_SID", "C_CATEGORY", "C_PROJECT", "C_REQUEST", "C_CONTENT", "N_SCORE",
-                        "C_METHOD", "C_DESC", "B_BLANK", "N_SCORE_REAL" );
-//                gcr.setR_SID( sid );
-                gcr.set( "R_SID", sid );
-                gcr.save();
+            String sql = "select * from ssm_review_content where r_sid=?";
+            List<ReviewContent> rcs = ReviewContent.dao.find( sql, descPlanId );
+            // 目前先简单处理，后面进行比对处理，不在这个集合中的就添加
+            if (!rcs.isEmpty()) return true;
+            
+            sql = "select * from ssm_grade_content where r_sid=?";
+            List<Record> list = source.getTenantDb().find( sql,srcPlanId);
+           
+            for ( Record r : list ) {
+                ReviewContent rc = new ReviewContent();
+                Map<String,Object> row = r.getColumns();
+                row.remove( "SID" );
+                row.remove( "R_STD" );
+                row.put( "R_SID", descPlanId );
+                rc.setAttrs( row  );
+                rc.save();
             }
             return true;
         } catch ( Exception e ) {
-
+            e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * 同步评审方案到企业端
+     */
+    public static boolean syncPlan( TenantContext enterpriseContext, TenantContext reviewContext, ReviewPlan model ) {
+        ReviewResultPlan descPlan = new ReviewResultPlan();
+        ModelKit.clone( model, descPlan );
+        Table tableInfo = TableMapping.me().getTable(ReviewResultPlan.class);
+        enterpriseContext.getTenantDb().deleteById( tableInfo.getName(),"SID", descPlan.getId() );
+        return ModelKit.save( enterpriseContext.getTenantDb(), descPlan );
+    }
+
+    /**
+     * 同步评审小组成员到企业端
+     */
+    public static boolean syncPlanMembers( TenantContext enterpriseContext, TenantContext reviewContext, ReviewPlan model ) {
+        List<ReviewResultMember> memberlist = new ArrayList<ReviewResultMember>();
+        List<ReviewMember> members = model.getMembers();
+        for ( ReviewMember src : members ) {
+            ReviewResultMember desc = new ReviewResultMember();
+            ModelKit.clone( src, desc );
+            memberlist.add( desc );
+        }
+        if (!memberlist.isEmpty())
+            ModelKit.batchSave( enterpriseContext.getTenantDb(), memberlist );
+        return true;
+    }
+
+    /**
+     * 同步评审内容到企业端
+     */
+    public static boolean syncContents( TenantContext enterpriseContext, TenantContext reviewContext, ReviewPlan model ) {
+        List<ReviewResultContent> contentlist = new ArrayList<ReviewResultContent>();
+        List<ReviewContent> contents = model.getContents();
+        for ( ReviewContent src : contents ) {
+            ReviewResultContent desc = new ReviewResultContent();
+            ModelKit.clone( src, desc );
+            contentlist.add( desc );
+        }
+        if (!contentlist.isEmpty())
+            ModelKit.batchSave( enterpriseContext.getTenantDb(), contentlist );
+        return true;
+    }
+
+    /**
+     * 同步评审报告到企业端
+     */
+    public static boolean syncReport( TenantContext enterpriseContext, TenantContext reviewContext, ReviewPlan model ) {
+        ReviewResultReport rep = new ReviewResultReport();
+        rep.setContent( model.getReport() );
+        Table tableInfo = TableMapping.me().getTable(ReviewResultReport.class);
+        enterpriseContext.getTenantDb().deleteById( tableInfo.getName(),"R_SID", model.getId() );
+        return ModelKit.save( enterpriseContext.getTenantDb(), rep );
+    }
+    
+    
+    /**
+     * 同步评审证书到企业端
+     */
+    public static boolean syncCert( TenantContext enterpriseContext, TenantContext reviewContext, ReviewPlan model ) {
+        ReviewCert cert = model.getCert();
+        ReviewResultCert descCert = new ReviewResultCert();
+        ModelKit.clone( cert, descCert );
+        Table tableInfo = TableMapping.me().getTable(ReviewResultCert.class);
+        enterpriseContext.getTenantDb().deleteById( tableInfo.getName(),"SID", descCert.getId() );
+        return ModelKit.save( enterpriseContext.getTenantDb(), descCert );
     }
 }

@@ -110,7 +110,8 @@
             <div class="toolbar">
                 <a class="icon-edit" data-bind="attr : {href: templateUrl}, visible: id">达标体系模板</a>
                 <a class="icon-edit" data-bind="attr : {href: gradeUrl}, visible: id">评分标准模板</a>
-                <a class="icon-edit" data-bind="attr : {href: reportUrl}, visible: id">自评报告模板</a>&nbsp;
+                <a class="icon-edit" data-bind="attr : {href: reportUrl}, visible: id">自评报告模板</a>
+                <a class="icon-edit" data-bind="attr : {href: reviewReportUrl}, visible: id">评审报告模板</a>&nbsp;
             </div>
         </li>
     </script>
@@ -132,7 +133,8 @@
 
                 this.templateUrl = '/sys/stdtmp/index?R_SID=' + id;
                 this.gradeUrl = '/sys/stdtmp_grade/index?R_SID=' + id;
-                this.reportUrl = '/sys/stdtmp_rep/rec?R_SID=' + id;
+                this.reportUrl = '/sys/stdtmp_rep/rec?type=1&R_SID=' + id;
+                this.reviewReportUrl = '/sys/stdtmp_rep/rec?type=2&R_SID=' + id;
             }
 
             self.lists = ko.observableArray(ko.utils.arrayMap(${json(templates)}, function (item) {

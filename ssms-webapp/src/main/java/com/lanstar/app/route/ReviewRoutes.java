@@ -9,12 +9,15 @@
 package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
-
-import com.lanstar.controller.review.GradeContentController;
-import com.lanstar.controller.review.GradePlanController;
+import com.lanstar.controller.review.GradeController;
 import com.lanstar.controller.review.HomeController;
 import com.lanstar.controller.review.NoticeController;
+import com.lanstar.controller.review.ReviewCertController;
+import com.lanstar.controller.review.ReviewContentController;
 import com.lanstar.controller.review.ReviewController;
+import com.lanstar.controller.review.ReviewHistoryController;
+import com.lanstar.controller.review.ReviewPlanController;
+import com.lanstar.controller.review.ReviewReportController;
 import com.lanstar.controller.review.ReviewUserController;
 import com.lanstar.controller.review.ReviewerController;
 import com.lanstar.controller.review.TemplateController;
@@ -31,8 +34,6 @@ public class ReviewRoutes extends Routes {
     @Override
     public void config() {
         add( "/r", HomeController.class );
-        add( "/r/grade_m", GradePlanController.class );
-        add( "/r/grade_d", GradeContentController.class );
 
         add( "/r/stdtmp", TemplateController.class );
         add( "/r/review", ReviewController.class );
@@ -44,6 +45,13 @@ public class ReviewRoutes extends Routes {
         add( "/r/notice", NoticeController.class );
         add( "/r/todo", TodoController.class );
         add( "/r/done", DoneController.class );
+        
+        add( "/r/grade", GradeController.class );
+        add( "/r/reviewplan", ReviewPlanController.class );
+        add( "/r/reviewcontent", ReviewContentController.class );
+        add( "/r/reviewreport", ReviewReportController.class );
+        add( "/r/reviewcert", ReviewCertController.class );
+        add( "/r/reviewhistory", ReviewHistoryController.class );
 
     }
 }

@@ -12,24 +12,59 @@ import java.util.Date;
 import java.util.List;
 
 import com.lanstar.common.kit.DateKit;
+import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.model.system.AttachText;
 import com.lanstar.model.tenant.GradeContent;
 import com.lanstar.model.tenant.GradePlan;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
-import com.lanstar.service.enterprise.ProfessionService;
 
 public class GradePlanController extends SimplateController<GradePlan> {
     boolean isNew = false;
+    
+    public void init(){
+        int pro = this.identityContext.getEnterpriseService().getProfessionService().getId();
+        GradePlan model = new GradePlan();
+        model.setState( EnterpriseGradeState.START.getValue() );
+        model.setProfessionId( pro );
+        model.setProfessionName( this.identityContext.getEnterpriseService().getProfessionService().getName() );
+        model.setStartDate( new Date() );
+        model.setEndtDate( new Date() );
+        model.setTenant(this.identityContext.getTenant());
+        model.save();
+        //同步自评内容
+        this.identityContext.getEnterpriseService().syncContent( pro, model.getId() );
+        //同步自评报告
+        this.identityContext.getEnterpriseService().syncReport( pro, model.getId(),this.identityContext.getIdentity() );
+        
+        this.setAttr( "SID",  model.getId() );
+        renderJson();
+    }
+    
     @Override
     public void index() {
         // 本年度未开始自评时直接转到开始自评页面
-        String sql = "SELECT COUNT(*) N FROM SSM_GRADE_E_M WHERE R_TENANT=? AND P_TENANT='E' AND YEAR(T_START)=YEAR(NOW())";
-        Record r =  tenantDb.findFirst( sql, identityContext.getTenantId());
-        if (r==null || r.getLong( "N" )==0 ){
-            this.redirect( "/e/grade_m/rec_new" );
-        }
-        else super.index();
+        if (!this.identityContext.getEnterpriseService().hasPlan())
+            this.redirect( "/e/gradeplan/loading" );
+        else 
+            super.index();
+    }
+    
+    public void loading(){
+        
+    }
+    
+    public void tabs(){
+        String sid = this.getPara( 0 );
+        if (!StrKit.isBlank( sid ))
+            this.setAttr( "sid", sid );
+    }
+    
+    public void create(){
+        this.redirect( "/e/gradeplan/loading" );
+//        int sid = init();
+//        this.redirect( "/e/gradeplan/tabs/"+sid );
     }
     /**
      * 开始新的自评
@@ -53,6 +88,9 @@ public class GradePlanController extends SimplateController<GradePlan> {
     /**
      * 自评报告
      */
+    public void rep(){
+        
+    }
     public void report_rec(){
         rec();
     }
@@ -97,6 +135,7 @@ public class GradePlanController extends SimplateController<GradePlan> {
         builder.WHERE( "R_TENANT = ?", identityContext.getTenantId() )
                .WHERE( "P_TENANT = ?", identityContext.getTenantType().getName() )
                ._If( isParaExists( "N_STATE" ), "N_STATE = ?", getPara( "N_STATE" ) )
+               ._If( isParaExists( "P_STATE" ), "P_STATE = ?", getPara( "P_STATE" ) )
                ._If( isParaBlank( "T_START" ) == false, "T_START >= ?", getPara( "T_START" ) )
                ._If( isParaBlank( "T_END" ) == false, "T_END <= ?", getPara( "T_END" ) );
         return builder;
@@ -118,32 +157,29 @@ public class GradePlanController extends SimplateController<GradePlan> {
     }
 
     @Override
-    protected void afterSave( GradePlan model ) {
-        ProfessionService service = identityContext.getEnterpriseService().getProfessionService();
-        if (isNew)
-            //TODO:这里跨库操作不能用存储过程，林峰
-            tenantDb.callProcedure( "P_GRADE_INIT", model.getId(), service.getId(), identityContext.getTenantId(),
-                identityContext.getTenantType().getName() );
-//        int sid = model.get( "SID" );
-//        this.setAttr( "SID", sid );
-//        renderJson();
-    }
-
-    @Override
     public void del() {
         //删除自评内容
         GradeContent.dao.deleteById( this.getModel().getId(),"R_SID");
-        //TODO:删除自评报告
-        
+        //删除自评报告
+        AttachText at = AttachText.dao.findFirst( "select * from sys_attach_text where r_table='SSM_GRADE_REPORT' and r_field='C_CONTENT' and R_SID=?",this.getModel().getId() );
+        if (at!=null) at.delete();
         super.del();
     }
     
     /**
      * 验证自评内容是否都已经填写,N大于0时说明还有未填写内容
+     * N为-1时说明自评报告未完成
      */
     public void check(){
-        Record r =  tenantDb.findFirst("SELECT F_GRADE_CHECK_E(?) N", new Object[] { this.getModel().getId() } );
-        this.setAttr( "N", r==null?0:r.getInt( "N" ) );
+        int r=0;
+        Record rec =  tenantDb.findFirst("SELECT F_GRADE_CHECK_E(?) N", new Object[] { this.getModel().getId() } );
+        r = rec==null?0:rec.getInt( "N" );
+        
+        if (r==0){
+            AttachText at = AttachText.dao.findFirst( "select * from sys_attach_text where r_table='SSM_GRADE_REPORT' and r_field='C_CONTENT' and R_SID=?",this.getModel().getId() );
+            r = at==null?-1:0;
+        }
+        this.setAttr( "N", r );
         renderJson();
     }
     
@@ -151,8 +187,24 @@ public class GradePlanController extends SimplateController<GradePlan> {
      * 自评完成
      */
     public void complete() {
-        tenantDb.callProcedure( "P_GRADE_COMPLETE_E", this.getModel().getId() );
-        this.setAttr( "result", "OK" );
+        GradePlan model = this.getModel();
+//        if (StrKit.isBlank( model.getStr( "R_LEADER" )) ){
+//            this.setAttr( "result", "自评方案未完成，请填写！" );
+//        }
+//        
+//        Record rec =  tenantDb.findFirst("SELECT F_GRADE_CHECK_E(?) N", new Object[] { this.getModel().getId() } );
+//        int r = rec==null?0:rec.getInt( "N" );
+//        if(r>0){
+//            this.setAttr( "result", "自评内容未完成，请填写！" );
+//        }
+        
+        if (model.getState()==EnterpriseGradeState.END.getValue()) 
+            this.setAttr( "result", "自评已经完成！" );
+        else{
+            model.setState( EnterpriseGradeState.END.getValue() );
+            model.update();
+            this.setAttr( "result", "OK" );
+        }
         renderJson();
     }
     /**

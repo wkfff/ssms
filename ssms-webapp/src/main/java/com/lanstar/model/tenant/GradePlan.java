@@ -9,6 +9,7 @@
 package com.lanstar.model.tenant;
 
 import com.lanstar.common.kit.DateKit;
+import com.lanstar.identity.Tenant;
 import com.lanstar.plugin.activerecord.Model;
 
 import java.util.Date;
@@ -50,5 +51,23 @@ public class GradePlan extends Model<GradePlan> {
 
     public Integer getId() {
         return getInt( "SID" );
+    }
+    
+    public void setProfessionId(int pro){
+        set("P_PROFESSION",pro);
+    }
+    
+    public void setProfessionName(String proName){
+        set("S_PROFESSION",proName);
+    }
+    
+    public void setTenant(Tenant tenant){
+        set("R_TENANT",tenant.getTenantId());
+        set("S_TENANT",tenant.getTenantName());
+        set("P_TENANT",tenant.getTenantType().getName());
+    }
+    
+    public void setGradeState( String state ) {
+        set( "P_STATE", state );
     }
 }

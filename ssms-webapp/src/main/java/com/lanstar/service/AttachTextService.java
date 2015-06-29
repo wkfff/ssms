@@ -47,7 +47,7 @@ public class AttachTextService {
             attachText.setField( field );
             attachText.setRSid( sid );
             attachText.setContent( content );
-            ModelInjector.injectOpreator( attachText, opeartor, true );
+            ModelInjector.injectOpreator( attachText, opeartor, false );
             attachText.save();
         }
         return attachText.getId();

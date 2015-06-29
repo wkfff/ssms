@@ -20,7 +20,8 @@ import com.lanstar.controller.SimplateController;
 import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.tenant.GradePlan;
-import com.lanstar.model.tenant.GradePlanR;
+import com.lanstar.model.tenant.ReviewCert;
+import com.lanstar.model.tenant.ReviewPlan;
 import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.Page;
 import com.lanstar.plugin.activerecord.Record;
@@ -31,23 +32,12 @@ import com.lanstar.plugin.activerecord.statement.SqlStatement;
 /**
  * 企业监管
  */
-public class GradePlanController extends SimplateController<GradePlanR> {
+public class GradePlanController extends SimplateController<ReviewPlan> {
     boolean isNew = false;
 
     @Override
-    protected GradePlanR getDao() {
-        return GradePlanR.dao;
-    }
-
-    /**
-     * 列出待评审的企业
-     */
-    public void select() {
-
-    }
-
-    public void select2() {
-
+    protected ReviewPlan getDao() {
+        return ReviewPlan.dao;
     }
 
     /**
@@ -69,30 +59,6 @@ public class GradePlanController extends SimplateController<GradePlanR> {
             this.renderJson( EasyUIControllerHelper.toDatagridResult( paginate ) );
         } else {
             List<Record> list = Db.find( selectStatement.getSql() + " " + fromStatement.getSql(),
-                    fromStatement.getParams() );
-            this.renderJson( list );
-        }
-    }
-
-    /**
-     * 评审列表，要根据省市县过滤，所以从视图查询
-     */
-    public void list_r() {
-        SqlBuilder select = SQL.SELECT( "*" );
-        SqlBuilder from = new SqlBuilder().FROM( "V_GRADE_R_M" );
-        SqlBuilder where = this.buildWhere();
-        if ( where != null ) from.append( where );
-
-        SqlStatement selectStatement = select.toSqlStatement();
-        SqlStatement fromStatement = from.toSqlStatement();
-
-        if ( this.isParaExists( PAGE_INDEX ) && this.isParaExists( PAGE_SIZE ) ) {
-            Page<Record> paginate = this.tenantDb.paginate( this.getParaToInt( PAGE_INDEX ),
-                    this.getParaToInt( PAGE_SIZE ), selectStatement.getSql(), fromStatement.getSql(),
-                    fromStatement.getParams() );
-            this.renderJson( EasyUIControllerHelper.toDatagridResult( paginate ) );
-        } else {
-            List<Record> list = this.tenantDb.find( selectStatement.getSql() + " " + fromStatement.getSql(),
                     fromStatement.getParams() );
             this.renderJson( list );
         }
@@ -121,10 +87,7 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         return builder;
     }
 
-    public void rec_new() {
-        this.setAttr( "S_TENANT", this.identityContext.getTenantName() );
-    }
-
+  
     public void recdata() {
         super.rec();
         this.renderJson();
@@ -167,18 +130,19 @@ public class GradePlanController extends SimplateController<GradePlanR> {
         Enterprise enterprise = Enterprise.dao.findById( eid );
         Profession profession = Profession.dao.findById( pro );
         this.identityContext.initReviewService( enterprise, profession );
-
+        
         // 根据企业编号获取最后一次完成的评审编号
-        String sql = "SELECT SID FROM SSM_GRADE_E_M WHERE N_STATE=3  ORDER BY T_UPDATE DESC  LIMIT 1";
-        GradePlan model = GradePlan.dao.findFirst( sql );
-        if (model!=null)
-            this.setAttr( "gradeid", model.getId() );
-        // 获取对选择企业的评审
-        sql = "SELECT SID FROM SSM_GRADE_R_M WHERE N_STATE=0  ORDER BY T_UPDATE DESC  LIMIT 1";
-        GradePlanR gpr = GradePlanR.dao.findFirst( sql );
-        if (gpr!=null) {
-            this.setAttr( "graderid",gpr.getId());
+        int gradePlanId = this.identityContext.getReviewService().getEnterpriseContext().getEnterpriseService().getPlanId( eid, pro );
+        this.setAttr( "gradePlanId", gradePlanId );
+        // 评审方案
+        int reviewPlanId = this.identityContext.getReviewService().getPlanId( gradePlanId );
+        this.setAttr( "reviewPlanId",reviewPlanId);
+        
+        ReviewCert model = ReviewCert.dao.findFirst( "select * from ssm_review_cert where r_sid=?", reviewPlanId );
+        if ( model != null ) {
+            this.setAttr( "certId", model.getId() );
         }
+        
     }
     
     public void result(){
