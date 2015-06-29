@@ -90,10 +90,6 @@ public class TodoBean {
         return notifyTime;
     }
 
-    public void setNotifyTime( Date notifyTime ) {
-        this.notifyTime = notifyTime;
-    }
-
     public int getSrcId() {
         return srcId;
     }

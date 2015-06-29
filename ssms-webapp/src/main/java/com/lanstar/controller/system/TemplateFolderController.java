@@ -8,8 +8,13 @@
 
 package com.lanstar.controller.system;
 
+import com.lanstar.beans.system.FolderBean;
+import com.lanstar.beans.system.FolderTreeBuilder;
+import com.lanstar.common.Asserts;
 import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.model.system.Template;
+import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFolder;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
@@ -20,6 +25,13 @@ public class TemplateFolderController extends SimplateController<TemplateFolder>
     public void tree() {
         List<TemplateFolder> list = TemplateFolder.list( getParaToInt( "template" ) );
         renderJson( EasyUIControllerHelper.toTree( "0", ModelKit.toMap( list ), "SID", "R_SID", "C_NAME" ) );
+    }
+
+    public void manager() {
+        final Integer template = getParaToInt( "template" );
+        Asserts.notNull( template, "template 不能为空" );
+        setAttr( "templateName", Template.dao.findById( template ).getName() );
+        setAttr( "items", listTemplateItems( template ) );
     }
 
     @Override
@@ -47,4 +59,14 @@ public class TemplateFolderController extends SimplateController<TemplateFolder>
     protected void afterSave( TemplateFolder model ) {
         if ( model.getIndex() == null ) model.setIndex( model.getId() );
     }
+
+    private List<FolderBean> listTemplateItems( int template ) {
+        final List<TemplateFolder> folders = TemplateFolder.list( template );
+        List<TemplateFile> files = TemplateFile.listByTemplate( template );
+        // 根据目录信息构造树
+        FolderTreeBuilder treeBuilder = new FolderTreeBuilder( folders, files, "R_SID" );
+        FolderBean root = treeBuilder.tree();
+        return root.getChildren();
+    }
 }
+

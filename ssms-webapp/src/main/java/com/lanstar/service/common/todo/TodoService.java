@@ -38,6 +38,10 @@ public class TodoService {
         this.tenant = tenant;
     }
 
+    public static TodoService with( Tenant tenant ) {
+        return new TodoService( tenant );
+    }
+
     /**
      * 根据待办bean创建一个待办任务。
      *
@@ -214,6 +218,21 @@ public class TodoService {
      */
     public boolean exists( String signature, int srcId ) {
         return getTodo( signature, srcId ) != null;
+    }
+
+    /**
+     * 取消待办
+     *
+     * @param signature 待办特征码
+     * @param srcId     记录行id
+     *
+     * @return 如果取消成功则返回true，否则返回false。
+     */
+    public boolean cancelTodo( String signature, int srcId ) {
+        List<String> columns = Lists.newArrayList( "C_CONTROL", "R_SID", "R_TENANT", "P_TENANT" );
+        List<Object> objects = Lists.newArrayList( (Object) signature, srcId,
+                tenant.getTenantId(), tenant.getTenantType().getName() );
+        return Todo.dao.deleteByColumns( columns, objects ) > 0;
     }
 }
 

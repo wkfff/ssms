@@ -9,6 +9,7 @@
 package com.lanstar.common.staticcache;
 
 import com.lanstar.identity.Tenant;
+import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.Government;
 import com.lanstar.model.system.Review;
@@ -18,6 +19,13 @@ import java.util.List;
 import java.util.Map;
 
 public class TenantCache extends Cache<Tenant> {
+    public Tenant getValue( int tenantId, TenantType tenantType ) {
+        for ( Tenant tenant : getValues() ) {
+            if ( tenant.getTenantType().equals( tenantType ) && tenant.getTenantId() == tenantId ) return tenant;
+        }
+        return null;
+    }
+
     @Override
     public String getName() {
         return "租户缓存";
