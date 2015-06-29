@@ -93,7 +93,7 @@ public class ReviewPlanController extends SimplateController<ReviewPlan> {
         return true;
     }
 
-    public void init(){
+    public void init() throws Exception{
         // 企业
         int eid = this.getParaToInt( "eid" );
         // 专业
@@ -102,11 +102,14 @@ public class ReviewPlanController extends SimplateController<ReviewPlan> {
         this.initService( eid, pro );
         
         Enterprise enterprise = Enterprise.dao.findById( eid );
-        if ( enterprise == null ) return;
+        if ( enterprise == null ) {
+           throw new Exception("无效的企业！");
+        }
         // 查询出企业的自评方案编号
         int enterprisePlanId = this.identityContext.getReviewService().getEnterpriseContext().getEnterpriseService().getPlanId( eid, pro );
         if (enterprisePlanId==-1) {
             this.setAttr( "err", "企业还没有已经完成的自评!" );
+            renderJson();
             return;
         }
         //企业自评
