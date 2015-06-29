@@ -107,7 +107,7 @@
                     <td><input   class="button" type="button" value="选择企业单位" data-bind="click : doEnterpriseClick, disable: at_enterprise()==false"/></td>
                 </tr>
             </table>
-            <div class="title" data-bind="visible: (at_government&&at_review&&at_enterprise)">
+            <div class="title" data-bind="visible: (at_government()||at_review()||at_enterprise())">
                  <p >接收单位:</p>
             </div>
             <div style="margin-top: 10px" data-bind="visible : at_government" class="panel">
