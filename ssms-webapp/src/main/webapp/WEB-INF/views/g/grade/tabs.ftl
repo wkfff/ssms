@@ -19,9 +19,7 @@
         var e = $('#tab'+index);
         e.html('<iframe frameborder="0" width="100%" height="100%" src="'+e.attr("url")+'" ></iframe>');
     }
-    $.parser.onComplete = function(){
-        $("#tt").tabs("select",0);
-    }
+   
 </script>
 </head>
 <body>
@@ -31,11 +29,14 @@
     </div>
     <div data-options="region:'center',tools:'#tb'" style="overflow:hidden;padding:0px;" title="企业详细信息" iconCls="icon-star" >
         <div id="tt" class="easyui-tabs" style="width:100%;height:auto" data-options="fit:true,border:false,onSelect: doSelect">
-            <div id="tab0" title="基本信息" style="overflow:hidden;" url="/sys/tenant_e/view?sid=${sid!}">
-            </div>
+            <div id="tab0" title="基本信息" style="overflow:hidden;" url="/sys/tenant_e/view?sid=${sid!}"></div>
             <div id="tab1" title="体系查看" style="overflow:hidden;" url="/r/stdtmp/query"></div>
-            <div id="tab2" title="自评报告" style="overflow:hidden;" url="/e/grade_m/history_rep?sid=${gradeid!}"></div>
-            <div id="tab3" title="证书管理" style="overflow:hidden;" url="/static/cart.html"></div>
+            <div id="tab2" title="自评报告" style="overflow:hidden;" url="/r/reviewreport/rep?sid=${gradePlanId!}"></div>
+            
+            <div id="tab3" title="评审方案" style="overflow:hidden;" url="/r/reviewplan/view?sid=${reviewPlanId!}"></div>
+            <!-- <div id="tab6" title="评审内容" style="overflow:hidden;" url="/r/reviewcontent/index?sid=${reviewPlanId!}"></div> -->
+            <div id="tab4" title="评审报告" style="overflow:hidden;" url="/r/reviewreport/view?sid=${reviewPlanId!}"></div>
+            <div id="tab5" title="证书管理" style="overflow:hidden;" url="/r/reviewcert/view?R_SID=${reviewPlanId!}"></div>
         </div>
     </div>
 </div>

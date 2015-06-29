@@ -21,8 +21,6 @@ public class ReviewRoutes extends Routes {
     @Override
     public void config() {
         add( "/r", HomeController.class );
-        add( "/r/grade_m", GradePlanController.class );
-        add( "/r/grade_d", GradeContentController.class );
 
         add( "/r/stdtmp", TemplateController.class );
         add( "/r/review", ReviewController.class );
@@ -32,5 +30,15 @@ public class ReviewRoutes extends Routes {
         add( "/r/tenant_ru", ReviewUserController.class );
         add( "/r/reviewer", ReviewerController.class );
         add( "/r/notice", NoticeController.class );
+        add( "/r/todo", TodoController.class );
+        add( "/r/done", DoneController.class );
+        
+        add( "/r/grade", GradeController.class );
+        add( "/r/reviewplan", ReviewPlanController.class );
+        add( "/r/reviewcontent", ReviewContentController.class );
+        add( "/r/reviewreport", ReviewReportController.class );
+        add( "/r/reviewcert", ReviewCertController.class );
+        add( "/r/reviewhistory", ReviewHistoryController.class );
+
     }
 }

@@ -29,9 +29,9 @@ public  enum ReviewState {
      */
     REPORT(2),
     /**
-     * 已完成评审结果上传
+     * 已完成评审证书
      */
-    UPLOAD(3),
+    CERT(3),
     /**
      * 评审结束
      */

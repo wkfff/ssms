@@ -47,6 +47,18 @@ var utils;
         messager.confirm = function (msg, callback) {
             layer.confirm(msg, callback);
         };
+        
+        messager.showDialog=function (type,width,height,title,id,callback){
+        	layer.open({
+        		type: type, //page层
+        		area: [width, height],
+        		title:title,
+        		maxmin:true,
+        		btn:['确认','取消'],
+        		yes:callback,
+        		content: $('#'+id)
+            });
+        };
     })(messager = utils.messager || (utils.messager = {}));
 
     var dialog;
