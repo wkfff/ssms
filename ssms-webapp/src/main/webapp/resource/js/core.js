@@ -1,38 +1,40 @@
-if (!String.prototype.format) {
-    String.prototype.format = function () {
+(function (functions) {
+    for (var func in functions) {
+        if (functions.hasOwnProperty(func)) {
+            if (typeof String.prototype[func] === 'undefined') {
+                String.prototype[func] = functions[func];
+            }
+        }
+    }
+})({
+    format: function () {
         var formatted = this;
         for (var i = 0; i < arguments.length; i++) {
             formatted = formatted.replace(RegExp("\\{" + i + "\\}", 'g'), arguments[i].toString());
         }
         return formatted;
-    };
-}
-
-if (!String.prototype.replaceAll) {
-    String.prototype.replaceAll = function (searchValue, replaceValue) {
-        return this.replace(new RegExp(searchValue, "gm"), replaceValue);
-    };
-}
-
-if (!String.prototype.startsWith) {
-    String.prototype.startsWith = function (searchString, position) {
+    },
+    replaceAll: function (searchValue, replaceValue) {
+        return this.replace(RegExp(searchValue, "gm"), replaceValue);
+    },
+    startsWith: function (searchString, position) {
         position = position || 0;
         return this.lastIndexOf(searchString, position) === position;
-    };
-}
+    }
+});
 
 var utils;
 (function (utils) {
     utils.uuid = function () {
-        return "_" + new Date().valueOf();
+        return "_" + Date().valueOf();
     };
 
     var messager;
     (function (messager) {
         var indexArray = [];
 
-        messager.showProgress = function () {
-            var index = layer.msg('加载中', {icon: 16, time: 0});
+        messager.showProgress = function (title) {
+            var index = layer.msg(title || '加载中', {icon: 16, time: 0});
             indexArray.push(index);
         };
         messager.closeProgress = function () {
@@ -51,15 +53,15 @@ var utils;
             layer.confirm(msg, callback);
         };
         
-        messager.showDialog=function (type,width,height,title,id,callback){
-        	layer.open({
-        		type: type, //page层
-        		area: [width, height],
-        		title:title,
-        		maxmin:true,
-        		btn:['确认','取消'],
-        		yes:callback,
-        		content: $('#'+id)
+        messager.showDialog = function (type, width, height, title, id, callback) {
+            layer.open({
+                type: type, //page层
+                area: [width, height],
+                title: title,
+                maxmin: true,
+                btn: ['确认', '取消'],
+                yes: callback,
+                content: $('#' + id)
             });
         };
     })(messager = utils.messager || (utils.messager = {}));
@@ -68,7 +70,8 @@ var utils;
     (function (dialog) {
         var defaultOptions = {
             title: "信息编辑",
-            template: "",
+            template: undefined,
+            templateId: undefined,
             loaded: function (element) {
             },
             ok: function () {
@@ -77,7 +80,8 @@ var utils;
         };
         dialog.open = function (options) {
             var opts = $.extend({}, defaultOptions, options);
-            layer.confirm(opts.template, {
+            var template = opts.templateId ? $('#' + template).html() : template;
+            layer.confirm(template, {
                 title: opts.title,
                 success: function (layero, index) {
                     opts.loaded(layero);
@@ -89,16 +93,18 @@ var utils;
     })(dialog = utils.dialog || (utils.dialog = {}));
 })(utils || (utils = {}));
 
-if (ko && ko.utils.copyToModel == null) {
+if (typeof ko !== 'undefined' && ko.utils.copyToModel == null) {
     ko.utils.copyToModel = function (src, desc) {
         for (var field in src) {
-            if (src.hasOwnProperty(field) == false) return;
-            if (desc.hasOwnProperty(field) == false) return;
-
-            var srcValue = src[field];
-            if (ko.isComputed(desc[field])) continue;
-            if (ko.isWriteableObservable(desc[field])) desc[field](ko.unwrap(srcValue));
-            else desc[field] = ko.unwrap(srcValue);
+            if (src.hasOwnProperty(field) == false) {
+                // skip undefined field
+                if (typeof desc[field] === 'undefined') continue;
+                // copy value
+                var srcValue = src[field];
+                if (ko.isComputed(desc[field])) continue;
+                if (ko.isWriteableObservable(desc[field])) desc[field](ko.unwrap(srcValue));
+                else desc[field] = ko.unwrap(srcValue);
+            }
         }
     }
 }

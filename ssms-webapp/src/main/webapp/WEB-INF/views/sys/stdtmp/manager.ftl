@@ -1,15 +1,6 @@
-<@layout.extends name="../../_layouts/base.ftl">
+<@layout.extends name="../../_layouts/stdtmp.ftl">
     <@layout.put block="head">
-    <link rel="stylesheet" href="/resource/css/base.css"/>
-    <link rel="stylesheet" href="/resource/css/layout.css"/>
     <style type="text/css">
-        .container {
-        }
-
-        ul li ul {
-            padding-left: 30px;
-        }
-
         .icon-folder {
             background: url("/resource/images/foot02.png") no-repeat 0 center;
             padding-left: 20px;
@@ -21,27 +12,23 @@
         }
     </style>
     </@>
-
-    <@layout.put block="contents">
-    <div class="container">
-        <header class="titlebar">
-            【${templateName}】达标体系
-            <a href="/sys/template/" style="position: absolute; right: 15px;">返回列表</a>
-        </header>
-
-        <div class="content">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th class="th_left">体系目录名称</th>
-                    <th class="th_left">排序</th>
-                    <th style="width: 200px">操作</th>
-                </tr>
-                </thead>
-                <tbody data-bind="template: {name: 'folderTemplate', foreach: folders}"></tbody>
-            </table>
-        </div>
-    </div>
+    <@layout.put block="panel_title">
+    【${template.name}】达标体系 <span style="color: #ff0000">(当前版本:${template.version})</span>
+    </@>
+    <@layout.put block="panel_tools" type="PREPEND">
+    <a data-bind="click: publish">发布模板</a>
+    </@>
+    <@layout.put block="panel_content">
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="th_left">体系目录名称</th>
+            <th class="th_left">排序</th>
+            <th style="width: 200px">操作</th>
+        </tr>
+        </thead>
+        <tbody data-bind="template: {name: 'folderTemplate', foreach: folders}"></tbody>
+    </table>
 
     <script type="text/html" id="folderTemplate">
         <tr>
@@ -59,7 +46,6 @@
         <!-- ko template: {name: 'folderTemplate', foreach: children} --><!-- /ko -->
         <!-- ko template: {name: 'fileTemplate', foreach: files} --><!-- /ko -->
     </script>
-
     <script type="text/html" id="fileTemplate">
         <tr>
             <td data-bind="style: {'padding-left': 8+30*level()+'px'}">
@@ -73,8 +59,6 @@
             </td>
         </tr>
     </script>
-
-
     <script type="text/html" id="dlgFolder">
         <p>目录名称: <input type="text" data-bind="value: name"/></p>
         <p>描述: </p>
@@ -82,7 +66,6 @@
             <textarea data-bind="value: desc"></textarea>
         </p>
     </script>
-
     <script type="text/html" id="dlgFile">
         <p>文件名称: <input type="text" data-bind="value: name"/></p>
         <p>描述: </p>
@@ -93,13 +76,13 @@
     </@>
 
     <@layout.put block="footer">
-    <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
-    <script type="text/javascript" src="/resource/js/layui/layer.js"></script>
-    <script type="text/javascript" src="/resource/js/core.js"></script>
     <script type="text/javascript">
         function ViewModel(template, folders) {
-            var self = this;
+            this.publish = function () {
+                $.post('${BASE_PATH}/publish/${template}', function (result) {
+                    utils.messager.alert(result != false ? '成功发布模板!' : '模板发布失败,请联系管理人员!');
+                }, 'json')
+            };
 
             function FolderModel(parent, item) {
                 var self = this;
@@ -312,7 +295,7 @@
         $(function () {
             var items = ${json(items)};
 
-            var vm = new ViewModel(${template}, items);
+            var vm = new ViewModel(${template.id}, items);
             ko.applyBindings(vm)
         });
 
