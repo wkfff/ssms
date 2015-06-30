@@ -51,6 +51,7 @@ public class FolderTreeBuilder extends TreeKit<FolderBean, TemplateFolder> {
         desc.setId( src.getId() );
         desc.setName( src.getName() );
         desc.setIndex( src.getIndex() );
+        // desc.setTemplateType( src.getTemplateProp().getCode() );
         // TODO ....
     }
 

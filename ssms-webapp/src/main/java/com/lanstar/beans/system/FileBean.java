@@ -37,4 +37,18 @@ public class FileBean {
     public void setIndex( Integer index ) {
         this.index = index;
     }
+    
+    public String getTemplateUrl(){
+        // TemplateProp templateProp = TemplatePropPlugin.me().get( templateType );
+        // return templateProp.getTemplateUrl(id);
+        return "";
+    }
+    
+    public String getTemplateType() {
+        return templateType;
+    }
+
+    public void setTemplateType( String code ) {
+        this.templateType = code;
+    }
 }

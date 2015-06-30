@@ -41,7 +41,10 @@ var utils;
         };
 
         messager.alert = function (msg, callback) {
-            layer.alert(msg, callback);
+            layer.alert(msg, function (index) {
+                if (typeof callback === 'function') callback(index);
+                layer.close(index);
+            });
         };
 
         messager.confirm = function (msg, callback) {

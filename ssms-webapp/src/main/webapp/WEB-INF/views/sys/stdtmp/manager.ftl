@@ -139,7 +139,7 @@
                 this.desc = ko.observable(item.desc);
                 this.template = ko.observable(item.template);
 
-                this.templateUrl = ko.observable(item.templateUrl || "javascript: void(0)");
+                this.templateUrl = item.templateUrl || "javascript: void(0)";
                 this.level = ko.computed(function () {
                     var level = 0;
                     var parent = this.parent;
