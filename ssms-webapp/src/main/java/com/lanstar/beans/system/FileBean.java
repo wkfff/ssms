@@ -12,6 +12,8 @@ public class FileBean {
     private int id;
     private String name;
     private Integer index;
+    private String templateType;
+    
     // TODO add more fields
 
     public int getId() {

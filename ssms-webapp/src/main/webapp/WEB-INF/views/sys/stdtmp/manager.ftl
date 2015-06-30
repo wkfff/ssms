@@ -169,7 +169,9 @@
                     },
                     ok: function () {
                         if (isValid(tmpFolder) == false) return false;
-                        model.children.push(tmpFolder);
+                        saveFolder(tmpFolder, function () {
+                        	model.children.push(tmpFolder);
+                        });
                     }
                 });
             };
@@ -185,7 +187,9 @@
                     },
                     ok: function () {
                         if (isValid(tmpModel) == false) return false;
-                        ko.utils.copyToModel(tmpModel, model);
+                        saveFolder(tmpModel, function () {
+                        	ko.utils.copyToModel(tmpModel, model);
+                        })
                     }
                 });
             };
@@ -234,11 +238,36 @@
                     }
                 });
             };
-
+            function saveFolder(model, callback){
+            	var params={
+            		name: model.name(),
+                    desc: model.desc(),
+                    index: model.index(),
+                    template: model.template(),
+                    parent : model.parent.id()
+            	};
+            	 var id = ko.unwrap(model.id);
+                 if (id != null) params.id = id;
+                 $.post('${BASE_PATH}/saveFolder', params, function (result) {
+                     if (result != null) {
+                         utils.messager.alert("保存成功!", function () {
+                             model.id(result);
+                             callback(model);
+                         });
+                     }
+                     else {
+                         utils.messager.alert("保存失败!");
+                     }
+                 }, 'json');
+            };
             function saveFile(model, callback) {
                 var params = {
                     name: model.name(),
-                    desc: model.desc()
+                    desc: model.desc(),
+                    index: model.index(),
+                    template: model.template(),
+                    parent : model.parent.id(),
+                    parentName: model.parent.name()
                 };
                 var id = ko.unwrap(model.id);
                 if (id != null) params.id = id;

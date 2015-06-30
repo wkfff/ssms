@@ -28,11 +28,17 @@ public class TemplateProp {
     private Parameter parameter;
     private SyncUnitFactory syncUnitFactory;
 
-    public static TemplateProp with( String code, String name, Class<? extends ModelExt> systemModelClazz, Class<? extends ModelExt> tenantModelClazz ) {
-        return with( code, name, systemModelClazz, tenantModelClazz, SyncUnitFactory.DEFAULT );
+    public static TemplateProp with( String code, String name,
+            Class<? extends ModelExt> systemModelClazz,
+            Class<? extends ModelExt> tenantModelClazz ) {
+        return with( code, name, systemModelClazz, tenantModelClazz,
+                     SyncUnitFactory.DEFAULT );
     }
 
-    public static TemplateProp with( String code, String name, Class<? extends ModelExt> systemModelClazz, Class<? extends ModelExt> tenantModelClazz, SyncUnitFactory unitFactory ) {
+    public static TemplateProp with( String code, String name,
+            Class<? extends ModelExt> systemModelClazz,
+            Class<? extends ModelExt> tenantModelClazz,
+            SyncUnitFactory unitFactory ) {
         TemplateProp prop = new TemplateProp();
         prop.code = code;
         prop.name = name;
@@ -42,8 +48,11 @@ public class TemplateProp {
         return prop;
     }
 
-    public void sync( TemplateFile source, com.lanstar.model.tenant.TemplateFile target, TemplateFolder tenantFolder, Tenant targetTenant, Identity operator ) {
-        syncUnitFactory.sync( source, target, tenantFolder, targetTenant, operator );
+    public void sync( TemplateFile source,
+            com.lanstar.model.tenant.TemplateFile target,
+            TemplateFolder tenantFolder, Tenant targetTenant, Identity operator ) {
+        syncUnitFactory.sync( source, target, tenantFolder, targetTenant,
+                              operator );
     }
 
     public String getCode() {
@@ -67,5 +76,10 @@ public class TemplateProp {
             parameter = new Parameter( code, name );
         }
         return parameter;
+    }
+
+    public String getTemplateUrl( int id ) {
+        // TODO: 模板页面的规则被固定在这里，可能要考虑迁移出去。
+        return "/sys/stdtmp_file_" + code + "/?sid=" + id;
     }
 }
