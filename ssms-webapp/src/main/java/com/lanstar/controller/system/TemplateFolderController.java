@@ -13,27 +13,23 @@ import java.util.List;
 import com.lanstar.beans.system.FolderBean;
 import com.lanstar.beans.system.FolderTreeBuilder;
 import com.lanstar.common.Asserts;
-import com.lanstar.common.EasyUIControllerHelper;
-import com.lanstar.controller.SimplateController;
-import com.lanstar.core.render.JsonRender;
+import com.lanstar.common.ModelInjector;
+import com.lanstar.core.Controller;
+import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Template;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFolder;
-import com.lanstar.plugin.activerecord.ModelKit;
-import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.plugin.template.TemplatePropPlugin;
+import com.lanstar.service.MultiParaType;
 
-public class TemplateFolderController extends SimplateController<TemplateFolder> {
-    public void tree() {
-        List<TemplateFolder> list = TemplateFolder.list( getParaToInt( "template" ) );
-        renderJson( EasyUIControllerHelper.toTree( "0", ModelKit.toMap( list ),
-                                                   "SID", "R_SID", "C_NAME" ) );
-    }
-
+public class TemplateFolderController extends Controller {
     public void manager() {
         final Integer template = getParaToInt( "template" );
         Asserts.notNull( template, "template 不能为空" );
         setAttr( "template", Template.dao.findById( template ) );
         setAttr( "items", listTemplateItems( template ) );
+        setAttr( "SYS_CYCLE", MultiParaType.SYS_CYCLE.parameters() );
+        setAttr( "tmpfiles", TemplatePropPlugin.me().listParameter() );
     }
 
     // 保存文件目录
@@ -41,68 +37,83 @@ public class TemplateFolderController extends SimplateController<TemplateFolder>
         Integer id = getParaToInt( "id" );
         String name = getPara( "name" );
         String desc = getPara( "desc" );
-        Integer tempalte = getParaToInt( "template" );
         Integer index = getParaToInt( "index" );
-        Integer parent = getParaToInt( "parent" );
-        if ( id != null ) {
-            TemplateFolder templatefolder = getDao().findById( id );
-            templatefolder.set( "C_NAME", name );
-            templatefolder.set( "C_DESC", desc );
-            templatefolder.update();
-            setAttr( "SID", id );
-            renderJson();
-        } else {
-            TemplateFolder model = new TemplateFolder();
-            model.set( "C_NAME", name );
-            model.set( "C_DESC", desc );
-            model.set( "R_TEMPLATE", tempalte );
-            model.set( "R_SID", parent );
-            model.set( "N_INDEX", index );
-            afterSave( model );
-            model.save();
-            setAttr( "SID", model.getId() );
-            renderJson();
-        }
+        int template = getParaToInt( "template" );
+        int parent = getParaToInt( "parent" );
+        TemplateFolder model;
+        if ( id == null ) model = new TemplateFolder();
+        else model = TemplateFolder.dao.findById( id );
+
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        model.setName( name );
+        model.setDescript( desc );
+        model.setIndex( index );
+        model.setTemplateId( template );
+        model.setParentId( parent );
+        ModelInjector.injectOpreator( model, identityContext );
+
+        if ( id == null ) model.save();
+        else model.update();
+
+        renderJson( model.getId() );
     }
+
     // 保存文件模板
     public void saveFile() {
         Integer id = getParaToInt( "id" );
         String name = getPara( "name" );
         String desc = getPara( "desc" );
-        Integer tempalte = getParaToInt( "template" );
+        Integer template = getParaToInt( "template" );
         Integer index = getParaToInt( "index" );
-        Integer parent = getParaToInt( "parent" );
+        Integer parentId = getParaToInt( "parentId" );
         String parentName = getPara( "parentName" );
-        if ( id != null ) {
-            TemplateFile templatefile = TemplateFile.dao.findById( id );
-            templatefile.set( "C_NAME", name );
-            templatefile.set( "C_DESC", desc );
-            templatefile.update();
-            setAttr( "SID", id );
-            renderJson();
-        } else {
-            TemplateFile model = new TemplateFile();
-            model.set( "C_NAME", name );
-            model.set( "C_DESC", desc );
-            model.set( "R_TEMPLATE", tempalte );
-            model.set( "R_SID", parent );
-            model.set( "N_INDEX", index );
-            model.set( "S_NAME", parentName );
-            model.save();
-            setAttr( "SID", model.getId() );
-            renderJson();
-        }
+        String templateFileCode = getPara( "templateFileCode" );
+        String explain = getPara( "explain" );
+        String cycleUnitCode = getPara( "cycleUnitCode" );
+        String cycleUnitName = getPara( "cycleUnitName" );
+        Integer cycleValue = getParaToInt( "cycleValue" );
+
+        TemplateFile model;
+        if ( id == null ) model = new TemplateFile();
+        else model = TemplateFile.dao.findById( id );
+
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        model.setTemplateId( template );
+        model.setParentId( parentId );
+        model.setParentName( parentName );
+        model.setName( name );
+        model.setDescript( desc );
+        model.setIndex( index );
+        model.setCycleValue( cycleValue );
+        model.setCycleUnitCode( cycleUnitCode );
+        model.setCycleUnitName( cycleUnitName );
+        model.setTemplateProp( TemplatePropPlugin.me().get( templateFileCode ) );
+        model.setExplain( explain );
+
+        ModelInjector.injectOpreator( model, identityContext );
+
+        if ( id == null ) model.save();
+        else model.update();
+
+        renderJson( model.getId() );
     }
 
     public void removeFile() {
-        TemplateFile model=TemplateFile.dao.findById(  getParaToInt( "id" ) );
-        if(model!=null){
-            model.delete();
-            render( new JsonRender( true ).forIE() );
-        }else{
-            render( new JsonRender( false ).forIE() );
+        TemplateFile model = TemplateFile.dao.findById( getParaToInt( "id" ) );
+        if ( model != null ) {
+            renderJson( model.delete() );
+        } else {
+            renderJson( false );
         }
-        
+    }
+
+    public void removeFolder() {
+        TemplateFolder model = TemplateFolder.dao.findById( getParaToInt( "id" ) );
+        if ( model != null ) {
+            renderJson( model.delete() );
+        } else {
+            renderJson( false );
+        }
     }
 
     public void publish() {
@@ -112,33 +123,6 @@ public class TemplateFolderController extends SimplateController<TemplateFolder>
         template.setCacheContent( folderBeans );
         template.setVersion( template.getVersion() + 1 );
         renderJson( template.update() );
-    }
-
-    @Override
-    public void rec() {
-        super.rec();
-        renderJson();
-    }
-
-    @Override
-    protected TemplateFolder getDao() {
-        return TemplateFolder.dao;
-    }
-
-    @Override
-    protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE()._If( isParaBlank( "R_SID" ) == false,
-                                             "R_SID=?", getPara( "R_SID" ) );
-    }
-
-    @Override
-    protected SqlBuilder buildOrder() {
-        return new SqlBuilder().ORDER_BY( "N_INDEX, T_CREATE" );
-    }
-
-    @Override
-    protected void afterSave( TemplateFolder model ) {
-        if ( model.getIndex() == null ) model.setIndex( model.getId() );
     }
 
     private List<FolderBean> listTemplateItems( int template ) {

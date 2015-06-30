@@ -79,8 +79,8 @@ var utils;
             }
         };
         dialog.open = function (options) {
-            var opts = $.extend({}, defaultOptions, options);
-            var template = opts.templateId ? $('#' + template).html() : template;
+        	var opts = $.extend({}, defaultOptions, options);
+            var template = opts.templateId ? $('#' + opts.templateId).html() : opts.template;
             layer.confirm(template, {
                 title: opts.title,
                 success: function (layero, index) {
@@ -96,9 +96,9 @@ var utils;
 if (typeof ko !== 'undefined' && ko.utils.copyToModel == null) {
     ko.utils.copyToModel = function (src, desc) {
         for (var field in src) {
-            if (src.hasOwnProperty(field) == false) {
+            if (src.hasOwnProperty(field)) {
                 // skip undefined field
-                if (typeof desc[field] === 'undefined') continue;
+                if (desc.hasOwnProperty(field) == false) continue;
                 // copy value
                 var srcValue = src[field];
                 if (ko.isComputed(desc[field])) continue;

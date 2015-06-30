@@ -43,16 +43,18 @@ public class FolderTreeBuilder extends TreeKit<FolderBean, TemplateFolder> {
     private void putValues( TemplateFolder src, FolderBean desc ) {
         desc.setId( src.getId() );
         desc.setName( src.getName() );
+        desc.setDescript( src.getDescript() );
         desc.setIndex( src.getIndex() );
-        // TODO ....
     }
 
     private void putValues( TemplateFile src, FileBean desc ) {
         desc.setId( src.getId() );
         desc.setName( src.getName() );
         desc.setIndex( src.getIndex() );
-        // desc.setTemplateType( src.getTemplateProp().getCode() );
-        // TODO ....
+        desc.setCycleValue( src.getCycleValue() );
+        desc.setCycleUnitCode( src.getCycleUnitCode());
+        desc.setTemplateFileCode( src.getTemplateFileCode() );
+        desc.setExplain( src.getExplain() );
     }
 
     private void addChildren( final FolderBean bean ) {

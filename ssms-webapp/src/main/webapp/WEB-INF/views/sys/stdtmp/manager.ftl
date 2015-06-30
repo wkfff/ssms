@@ -1,36 +1,34 @@
-<@layout.extends name="../../_layouts/stdtmp.ftl">
-    <@layout.put block="head">
-    <style type="text/css">
-        .icon-folder {
-            background: url("/resource/images/foot02.png") no-repeat 0 center;
-            padding-left: 20px;
-        }
+<@layout.extends name="../../_layouts/stdtmp.ftl"> <@layout.put
+block="head">
+<style type="text/css">
+.icon-folder {
+    background: url("/resource/images/foot02.png") no-repeat 0 center;
+    padding-left: 20px;
+}
 
-        .icon-file {
-            background: url("/resource/images/rmail.png") no-repeat 0 center;
-            padding-left: 20px;
-        }
-    </style>
-    </@>
-    <@layout.put block="panel_title">
-    【${template.name}】达标体系 <span style="color: #ff0000">(当前版本:${template.version})</span>
-    </@>
-    <@layout.put block="panel_tools" type="PREPEND">
-    <a data-bind="click: publish">发布模板</a>
-    </@>
-    <@layout.put block="panel_content">
-    <table class="table">
-        <thead>
+.icon-file {
+    background: url("/resource/images/rmail.png") no-repeat 0 center;
+    padding-left: 20px;
+}
+</style>
+</@> <@layout.put block="panel_title"> 【${template.name}】达标体系
+<span style="color: #ff0000">(当前版本:${template.version})</span>
+</@> <@layout.put block="panel_tools" type="PREPEND">
+<a data-bind="click: publish">发布模板</a>
+</@> <@layout.put block="panel_content">
+<table class="table">
+    <thead>
         <tr>
             <th class="th_left">体系目录名称</th>
             <th class="th_left">排序</th>
             <th style="width: 200px">操作</th>
         </tr>
-        </thead>
-        <tbody data-bind="template: {name: 'folderTemplate', foreach: folders}"></tbody>
-    </table>
+    </thead>
+    <tbody
+        data-bind="template: {name: 'folderTemplate', foreach: folders}"></tbody>
+</table>
 
-    <script type="text/html" id="folderTemplate">
+<script type="text/html" id="folderTemplate">
         <tr>
             <td data-bind="style: {'padding-left': 8+30*level()+'px'}">
                 <span class="icon-folder" data-bind="text:name"></span>
@@ -46,7 +44,7 @@
         <!-- ko template: {name: 'folderTemplate', foreach: children} --><!-- /ko -->
         <!-- ko template: {name: 'fileTemplate', foreach: files} --><!-- /ko -->
     </script>
-    <script type="text/html" id="fileTemplate">
+<script type="text/html" id="fileTemplate">
         <tr>
             <td data-bind="style: {'padding-left': 8+30*level()+'px'}">
                 <a class="icon-file" data-bind="text: name, attr: {href: templateUrl}"></a>
@@ -59,41 +57,54 @@
             </td>
         </tr>
     </script>
-    <script type="text/html" id="dlgFolder">
+<script type="text/html" id="dlgFolder">
         <p>目录名称: <input type="text" data-bind="value: name"/></p>
+        <p>排序: <input type="text" data-bind="value: index"/></p>
         <p>描述: </p>
         <p>
             <textarea data-bind="value: desc"></textarea>
         </p>
     </script>
-    <script type="text/html" id="dlgFile">
-        <p>文件名称: <input type="text" data-bind="value: name"/></p>
+<script type="text/html" id="dlgFile">
+        <p>文件名称: <input type="text" data-bind="value: model.name"/></p>
         <p>描述: </p>
         <p>
-            <textarea data-bind="value: desc"></textarea>
+            <textarea data-bind="value: model.desc"></textarea>
         </p>
+        <p>更新周期：<input data-bind="value: model.cycleValue" style="width: 50px"/> 
+        <select data-bind="options: $root.cycleSource,optionsText:'name', optionsCaption: '请选择周期...',value: model.cycleUnit"></select></p>
+        <p>模板文件: <select data-bind="options: $root.tmpfilesSource,optionsText: 'name', optionsValue: 'code', optionsCaption: '请选择模板...', value: model.templateFileCode"></select></p>
+        <p>政测解读: <input data-bind="value: model.explain"/> </p>
     </script>
-    </@>
-
-    <@layout.put block="footer">
-    <script type="text/javascript">
+</@> <@layout.put block="footer">
+<script type="text/javascript">
         function ViewModel(template, folders) {
             this.publish = function () {
                 $.post('${BASE_PATH}/publish/${template}', function (result) {
                     utils.messager.alert(result != false ? '成功发布模板!' : '模板发布失败,请联系管理人员!');
                 }, 'json')
             };
-
+            
+            var fileViewModel = {
+                cycleSource: ko.observableArray(${json(SYS_CYCLE)}),
+                tmpfilesSource: ko.observableArray(${json(tmpfiles)}),
+                getCycle: function(code){
+                    for (var i = 0; i < this.cycleSource.length; i++) {
+                        if (this.cycleSource[i].code == code) return this.cycleSource[i];
+                    }
+                },
+                model: null
+            };
+            
             function FolderModel(parent, item) {
                 var self = this;
                 this.parent = parent;
                 item = item || {};
                 this.id = ko.observable(item.id);
-
+                
                 this.name = ko.observable(item.name).extend({required: true});
                 this.desc = ko.observable(item.desc);
                 this.index = ko.observable(item.index);
-                this.template = ko.observable(item.template);
 
                 this.level = ko.computed(function () {
                     var level = 0;
@@ -112,15 +123,19 @@
                     return new FileModel(self, item);
                 }));
             }
-
+            
             function FileModel(parent, item) {
                 item = item || {};
+                
                 this.parent = parent;
                 this.id = ko.observable(item.id);
-
                 this.name = ko.observable(item.name).extend({required: true});
                 this.desc = ko.observable(item.desc);
-                this.template = ko.observable(item.template);
+                this.explain=ko.observable(item.explain);
+                this.templateFileCode=ko.observable(item.templateFileCode).extend({required: true});
+                
+                this.cycleUnit=ko.observable(fileViewModel.getCycle(item.cycleUnitCode));
+                this.cycleValue=ko.observable(item.cycleValue);
 
                 this.templateUrl = item.templateUrl || "javascript: void(0)";
                 this.level = ko.computed(function () {
@@ -143,7 +158,6 @@
             this.addFolder = function (model) {
                 // 弹出对话框
                 var tmpFolder = new FolderModel(model);
-                tmpFolder.template(template);
 
                 utils.dialog.open({
                     template: $('#dlgFolder').html(),
@@ -171,87 +185,100 @@
                     ok: function () {
                         if (isValid(tmpModel) == false) return false;
                         saveFolder(tmpModel, function () {
-                        	ko.utils.copyToModel(tmpModel, model);
+                            ko.utils.copyToModel(tmpModel, model);
                         })
                     }
                 });
             };
 
             this.removeFolder = function (model) {
-                //                if (model.id() == null) parent.children.remove(model);
                 if (ko.unwrap(model.id) == null) model.parent.files.remove(model);
                 else {
-                    // ...
-                }
+                	 $.post("${BASE_PATH}/removeFolder", {id: model.id()}, function (result) {
+                         if (result != false) {
+                             utils.messager.alert('删除成功!', function () {
+                                 model.parent.children.remove(model);
+                             })
+                         }
+                         else {
+                             utils.messager.alert('删除失败!');
+                         }
+                     }, 'json');
+                 }
             };
 
             this.addFile = function (model) {
                 // 弹出对话框
-                var tmp = new FileModel(model);
-                tmp.template(template);
+                fileViewModel.model = new FileModel(model) 
 
                 utils.dialog.open({
                     template: $('#dlgFile').html(),
                     loaded: function (element) {
-                        ko.applyBindings(tmp, element[0]);
+                        ko.applyBindings(fileViewModel, element[0]);
                     },
                     ok: function () {
-                        if (isValid(tmp) == false) return false;
-                        // TODO if (ko.unwrap(tmp.index) == null) tmp.index(tmp.id());
-                        saveFile(tmp, function () {
-                            model.files.push(tmp);
+                        if (isValid(fileViewModel.model) == false) return false;
+                        saveFile(fileViewModel.model, function () {
+                            model.files.push(fileViewModel.model);
                         });
                     }
                 });
             };
 
             this.editFile = function (model) {
-                var tmpModel = new FileModel();
-                ko.utils.copyToModel(model, tmpModel);
+                fileViewModel.model = new FileModel();
+                ko.utils.copyToModel(model, fileViewModel.model );
                 utils.dialog.open({
                     template: $('#dlgFile').html(),
                     loaded: function (element) {
-                        ko.applyBindings(tmpModel, element[0]);
+                        ko.applyBindings(fileViewModel , element[0]);
                     },
                     ok: function () {
-                        if (isValid(tmpModel) == false) return false;
-                        saveFile(tmpModel, function () {
-                            ko.utils.copyToModel(tmpModel, model);
+                        if (isValid(fileViewModel.model ) == false) return false;
+                        saveFile(fileViewModel.model , function () {
+                            ko.utils.copyToModel(fileViewModel.model , model);
                         })
                     }
                 });
             };
             function saveFolder(model, callback){
-            	var params={
-            		name: model.name(),
+                var params={
+                    name: model.name(),
                     desc: model.desc(),
                     index: model.index(),
-                    template: model.template(),
+                    template: template,
                     parent : model.parent.id()
-            	};
-            	 var id = ko.unwrap(model.id);
-                 if (id != null) params.id = id;
-                 $.post('${BASE_PATH}/saveFolder', params, function (result) {
-                     if (result != null) {
-                         utils.messager.alert("保存成功!", function () {
-                             model.id(result);
-                             callback(model);
-                         });
-                     }
-                     else {
-                         utils.messager.alert("保存失败!");
-                     }
-                 }, 'json');
+                };
+                var id = ko.unwrap(model.id);
+                if (id != null) params.id = id;
+                $.post('${BASE_PATH}/saveFolder', params, function (result) {
+                    if (result != null) {
+                        utils.messager.alert("保存成功!", function () {
+                            model.id(result);
+                            callback(model);
+                        });
+                    }
+                    else {
+                        utils.messager.alert("保存失败!");
+                    }
+                }, 'json');
             };
             function saveFile(model, callback) {
                 var params = {
                     name: model.name(),
                     desc: model.desc(),
                     index: model.index(),
-                    template: model.template(),
-                    parent : model.parent.id(),
-                    parentName: model.parent.name()
+                    template: template,
+                    parentId: model.parent.id(),
+                    parentName: model.parent.name(),
+                    templateFileCode:model.templateFileCode(),
+                    cycleValue: model.cycleValue(),
+                    explain:model.explain()
                 };
+                if (model.cycleUnit() != null) {
+                    params.cycleUnitCode = model.cycleUnit().code;
+                    params.cycleUnitName = model.cycleUnit().name;
+                }
                 var id = ko.unwrap(model.id);
                 if (id != null) params.id = id;
                 $.post('${BASE_PATH}/saveFile', params, function (result) {
@@ -289,7 +316,7 @@
                 if (errors().length == 0) return true;
                 errors.showAllMessages();
                 return false;
-            }
+            };
         }
 
         $(function () {
@@ -300,5 +327,4 @@
         });
 
     </script>
-    </@>
-</@>
+</@> </@>

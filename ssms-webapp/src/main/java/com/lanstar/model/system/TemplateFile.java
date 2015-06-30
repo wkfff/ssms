@@ -19,26 +19,32 @@ public class TemplateFile extends ModelExt<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
 
     public static List<TemplateFile> list( Integer folderId ) {
-        return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFiles" ), folderId );
+        return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFiles" ),
+                                      folderId );
     }
 
     public static List<TemplateFile> listByTemplate( int template ) {
-        return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFilesByTemplate" ), template );
+        return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFilesByTemplate" ),
+                                      template );
     }
 
     @Override
     public boolean delete() {
         // TODO:
-        //context.getAttachTextService().del( "STDTMP_FILE_" + code, "C_CONTENT", tmpfileId );
-        getTemplateProp().getSystemModelWrap().getDao().deleteById( getId(), "R_TMPFILE" );
+        // context.getAttachTextService().del( "STDTMP_FILE_" + code,
+        // "C_CONTENT", tmpfileId );
+        getTemplateProp().getSystemModelWrap().getDao()
+                         .deleteById( getId(), "R_TMPFILE" );
         return super.delete();
     }
 
     @Override
     public boolean deleteById( Object id ) {
         // TODO:
-        //context.getAttachTextService().del( "STDTMP_FILE_" + code, "C_CONTENT", tmpfileId );
-        getTemplateProp().getSystemModelWrap().getDao().deleteById( getId(), "R_TMPFILE" );
+        // context.getAttachTextService().del( "STDTMP_FILE_" + code,
+        // "C_CONTENT", tmpfileId );
+        getTemplateProp().getSystemModelWrap().getDao()
+                         .deleteById( getId(), "R_TMPFILE" );
         return super.deleteById( id );
     }
 
@@ -59,11 +65,88 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return getStr( "P_TMPFILE" );
     }
 
+    public String getTemplateFileName() {
+        return getStr( "S_TMPFILE" );
+    }
+
+    public void setTemplateProp( TemplateProp prop ) {
+        set( "P_TMPFILE", prop.getCode() );
+        set( "S_TMPFILE", prop.getName() );
+    }
+
     public Integer getId() {
         return getInt( "SID" );
     }
 
     public String getName() {
         return getStr( "C_NAME" );
+    }
+
+    public void setName( String name ) {
+        set( "C_NAME", name );
+    }
+
+    public Integer getCycleValue() {
+        return getInt( "N_CYCLE" );
+    }
+
+    public void setCycleValue( Integer value ) {
+        set( "N_CYCLE", value );
+    }
+
+    public String getCycleUnitCode() {
+        return getStr( "P_CYCLE" );
+    }
+
+    public void setCycleUnitCode( String value ) {
+        set( "P_CYCLE", value );
+    }
+
+    public String getCycleUnitName() {
+        return getStr( "S_CYCLE" );
+    }
+
+    public void setCycleUnitName( String name ) {
+        set( "S_CYCLE", name );
+    }
+
+    public String getExplain() {
+        return getStr( "C_EXPLAIN" );
+    }
+
+    public void setExplain( String explain ) {
+        set( "C_EXPLAIN", explain );
+    }
+
+    public String getDescript() {
+        return getStr( "C_DESC" );
+    }
+
+    public void setDescript( String desc ) {
+        set( "C_DESC", desc );
+    }
+
+    public int getParentId() {
+        return getInt( "R_SID" );
+    }
+
+    public void setParentId( Integer parentId ) {
+        set( "R_SID", parentId );
+    }
+
+    public String getParentName() {
+        return getStr( "S_NAME" );
+    }
+
+    public void setParentName( String parentName ) {
+        set( "S_NAME", parentName );
+    }
+
+    public int getTemplateId() {
+        return getInt( "R_TEMPLATE" );
+    }
+
+    public void setTemplateId( Integer template ) {
+        set( "R_TEMPLATE", template );
     }
 }
