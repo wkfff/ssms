@@ -28,6 +28,11 @@ public class TemplateFile extends ModelExt<TemplateFile> {
                                       template );
     }
 
+    public String getRemind() {
+
+        return getStr( "B_REMIND" );
+    }
+
     @Override
     public boolean delete() {
         // TODO:
@@ -148,5 +153,9 @@ public class TemplateFile extends ModelExt<TemplateFile> {
 
     public void setTemplateId( Integer template ) {
         set( "R_TEMPLATE", template );
+    }
+
+    public void setRemind( String remind ) {
+        set( "B_REMIND", remind );
     }
 }

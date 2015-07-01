@@ -72,7 +72,7 @@ public class TemplateFolderController extends Controller {
         String cycleUnitCode = getPara( "cycleUnitCode" );
         String cycleUnitName = getPara( "cycleUnitName" );
         Integer cycleValue = getParaToInt( "cycleValue" );
-
+        String remind = getPara( "remind" );
         TemplateFile model;
         if ( id == null ) model = new TemplateFile();
         else model = TemplateFile.dao.findById( id );
@@ -89,7 +89,7 @@ public class TemplateFolderController extends Controller {
         model.setCycleUnitName( cycleUnitName );
         model.setTemplateProp( TemplatePropPlugin.me().get( templateFileCode ) );
         model.setExplain( explain );
-
+        model.setRemind( remind );
         ModelInjector.injectOpreator( model, identityContext );
 
         if ( id == null ) model.save();
