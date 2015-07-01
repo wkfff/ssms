@@ -15,6 +15,30 @@ import com.lanstar.plugin.template.TemplatePropPlugin;
 public class TemplateFile extends TenantModel<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
 
+    public String getParentName() {
+        return getStr( "S_NAME" );
+    }
+
+    public void setParentName( String name ) {
+        set( "S_NAME", name );
+    }
+
+    public Integer getParentId() {
+        return getInt( "R_SID" );
+    }
+
+    public void setParentId( int id ) {
+        set( "R_SID", id );
+    }
+
+    public Integer getIndex() {
+        return getInt( "N_INDEX" );
+    }
+
+    public void setIndex( Integer index ) {
+        set( "N_INDEX", index );
+    }
+
     /**
      * 获取模板文件所属专业的ID
      */
@@ -75,6 +99,11 @@ public class TemplateFile extends TenantModel<TemplateFile> {
     /** 获取模板属性 */
     public TemplateProp getTemplateProp() {
         return TemplatePropPlugin.me().get( getTemplateFileCode() );
+    }
+
+    public void setTemplateProp( TemplateProp prop ) {
+        set( "P_TMPFILE", prop.getCode() );
+        set( "S_TMPFILE", prop.getName() );
     }
 
     /**
@@ -147,6 +176,54 @@ public class TemplateFile extends TenantModel<TemplateFile> {
      */
     public void setVersion( int version ) {
         set( "N_VERSION", version );
+    }
+
+    public String getDesc() {
+        return getStr( "C_DESC" );
+    }
+
+    public void setDesc( String desc ) {
+        set( "C_DESC", desc );
+    }
+
+    public String getCycleUnitCode() {
+        return getStr( "P_CYCLE" );
+    }
+
+    public void setCycleUnitCode( String code ) {
+        set( "P_CYCLE", code );
+    }
+
+    public String getCycleUnitName() {
+        return getStr( "S_CYCLE" );
+    }
+
+    public void setCycleUnitName( String name ) {
+        set( "S_CYCLE", name );
+    }
+
+    public String getExplain() {
+        return getStr( "C_EXPLAIN" );
+    }
+
+    public void setExplain( String value ) {
+        set( "C_EXPLAIN", value );
+    }
+
+    public boolean getRemind() {
+        return "1".equals( getStr( "B_REMIND" ) );
+    }
+
+    public void setRemind( boolean remind ) {
+        set( "B_REMIND", remind ? "1" : "0" );
+    }
+
+    public Integer getCycleValue() {
+        return getInt( "N_CYCLE" );
+    }
+
+    public void setCycleValue( Integer value ) {
+        set( "N_CYCLE", value );
     }
 }
 

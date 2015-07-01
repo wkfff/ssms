@@ -13,7 +13,7 @@ import com.lanstar.plugin.activerecord.ModelExt;
 public class MultiPara extends ModelExt<MultiPara> {
     public static final MultiPara dao = new MultiPara();
 
-    public String geValue() {
+    public String getValue() {
         return getStr( "C_VALUE" );
     }
 

@@ -1,10 +1,12 @@
 <@layout.extends name="../_layouts/base.ftl">
     <@layout.put block="head">
-    <script type="text/javascript">
-        setInterval(function () {
-            window.location.href = "${BASE_PATH}/status?_"+new Date().valueOf()+"#this";
-        }, 3000);
-    </script>
+        <#if STATUS!='FINISH'>
+        <script type="text/javascript">
+            setInterval(function () {
+                window.location.href = "${BASE_PATH}/status?_" + new Date().valueOf() + "#this";
+            }, 3000);
+        </script>
+        </#if>
     </@>
     <@layout.put block="contents">
     <div style="  width: 800px; margin: 0 auto;">

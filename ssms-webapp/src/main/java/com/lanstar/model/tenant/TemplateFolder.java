@@ -14,6 +14,22 @@ import com.lanstar.plugin.activerecord.ModelExt;
 public class TemplateFolder extends ModelExt<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
 
+    public Integer getIndex() {
+        return getInt( "N_INDEX" );
+    }
+
+    public void setIndex( Integer index ) {
+        set( "N_INDEX", index );
+    }
+
+    public String getDescript() {
+        return getStr( "C_DESC" );
+    }
+
+    public void setDescript( String descript ) {
+        set( "C_DESC", descript );
+    }
+
     public int getProfessionId() {
         return getInt( "P_PROFESSION" );
     }
@@ -64,6 +80,10 @@ public class TemplateFolder extends ModelExt<TemplateFolder> {
 
     public Integer getParentId() {
         return getInt( "R_SID" );
+    }
+
+    public void setParentId( int id ) {
+        set( "R_SID", id );
     }
 
     public void setTenant( Tenant target ) {
