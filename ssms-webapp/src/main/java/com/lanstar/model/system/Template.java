@@ -49,11 +49,11 @@ public class Template extends ModelExt<Template> {
         set( "N_VERSION", version );
     }
 
-    public List<FolderBean> getCacheContent() {
-        return JSON.parseArray( getStr( "C_CONTENT" ), FolderBean.class );
+    public FolderBean getCacheContent() {
+        return JSON.parseObject( getStr( "C_CONTENT" ), FolderBean.class );
     }
 
-    public void setCacheContent( List<FolderBean> folderBeans ) {
+    public void setCacheContent( FolderBean folderBeans ) {
         set( "C_CONTENT", JSON.toJSONString( folderBeans ) );
     }
 

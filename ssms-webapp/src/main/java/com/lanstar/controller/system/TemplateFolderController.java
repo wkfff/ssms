@@ -31,12 +31,12 @@ public class TemplateFolderController extends SimplateController<TemplateFolder>
         final Integer template = getParaToInt( "template" );
         Asserts.notNull( template, "template 不能为空" );
         setAttr( "template", Template.dao.findById( template ) );
-        setAttr( "items", listTemplateItems( template ) );
+        setAttr( "items", getTemplate( template ).getChildren() );
     }
 
     public void publish() {
         final Integer templateId = getParaToInt();
-        final List<FolderBean> folderBeans = listTemplateItems( templateId );
+        final FolderBean folderBeans = getTemplate( templateId );
         final Template template = Template.dao.findById( templateId );
         template.setCacheContent( folderBeans );
         template.setVersion( template.getVersion() + 1 );
@@ -69,13 +69,12 @@ public class TemplateFolderController extends SimplateController<TemplateFolder>
         if ( model.getIndex() == null ) model.setIndex( model.getId() );
     }
 
-    private List<FolderBean> listTemplateItems( int template ) {
+    private FolderBean getTemplate( int template ) {
         final List<TemplateFolder> folders = TemplateFolder.list( template );
         List<TemplateFile> files = TemplateFile.listByTemplate( template );
         // 根据目录信息构造树
         FolderTreeBuilder treeBuilder = new FolderTreeBuilder( folders, files, "R_SID" );
-        FolderBean root = treeBuilder.tree();
-        return root.getChildren();
+        return treeBuilder.tree();
     }
 }
 

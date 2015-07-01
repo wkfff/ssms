@@ -8,8 +8,6 @@
 
 package com.lanstar.app.model;
 
-import com.lanstar.model.Done;
-import com.lanstar.model.Todo;
 import com.lanstar.model.tenant.*;
 
 public class TenantModelMapping extends ActiveRecordMapping {
@@ -27,6 +25,7 @@ public class TenantModelMapping extends ActiveRecordMapping {
         addMapping( "SSM_STDTMP_FILE_08", "SID", TemplateFile08.class );
         addMapping( "SSM_STDTMP_FILE_09", "SID", TemplateFile09.class );
         addMapping( "SSM_TEMPLATE_VERSION", "SID", TemplateVersion.class );
+        addMapping( "SSM_TEMPLATE", "SID", Template.class );
 
 //        addMapping( "SSM_GRADE_E_M", "SID", GradePlan.class );
 //        addMapping( "SSM_GRADE_E_D", "SID", GradeContent.class );        

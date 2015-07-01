@@ -84,11 +84,19 @@ public class TemplateFile extends TenantModel<TemplateFile> {
         return getInt( "SID" );
     }
 
+    public void setId( int id ) {
+        set( "SID", id );
+    }
+
     /**
      * 获取文件名称
      */
     public String getName() {
         return getStr( "C_NAME" );
+    }
+
+    public void setName( String name ) {
+        set( "C_NAME", name );
     }
 
     /**

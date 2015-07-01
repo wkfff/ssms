@@ -79,7 +79,7 @@
     <script type="text/javascript">
         function ViewModel(template, folders) {
             this.publish = function () {
-                $.post('${BASE_PATH}/publish/${template}', function (result) {
+                $.post('${BASE_PATH}/publish/${template.id}', function (result) {
                     utils.messager.alert(result != false ? '成功发布模板!' : '模板发布失败,请联系管理人员!');
                 }, 'json')
             };

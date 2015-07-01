@@ -75,7 +75,7 @@ public class TenantContext {
         if ( service == null ) {
             service = new ReviewService( this, new TenantContext( tenant ) );
             this.setValue( service );
-            service.getEnterpriseContext().getEnterpriseService().setProfessionService( profession );
+            service.getEnterpriseContext().getEnterpriseService().initProfessionService( profession );
         } else {
             if ( tenant.getTenantCode().equalsIgnoreCase( service.getEnterpriseContext().getTenantCode() ) == false ||
                     profession.getId()
@@ -84,7 +84,7 @@ public class TenantContext {
                                               .getProfessionService()
                                               .getId() ) ) {
                 service.setEnterpriseContext( new TenantContext( tenant ) );
-                service.getEnterpriseContext().getEnterpriseService().setProfessionService( profession );
+                service.getEnterpriseContext().getEnterpriseService().initProfessionService( profession );
             }
         }
     }

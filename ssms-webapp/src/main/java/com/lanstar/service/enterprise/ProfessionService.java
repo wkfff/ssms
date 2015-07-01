@@ -11,8 +11,11 @@ package com.lanstar.service.enterprise;
 import com.google.common.collect.Lists;
 import com.lanstar.beans.FolderBean;
 import com.lanstar.beans.FolderTreeBuilder;
+import com.lanstar.common.ListKit;
 import com.lanstar.common.ModelInjector;
+import com.lanstar.identity.Identity;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantContext;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
@@ -30,6 +33,7 @@ public class ProfessionService {
     private final Profession profession;
     private final TenantContext tenantContext;
     private Template template;
+    private TemplateInitTask templateInitTask;
 
     public ProfessionService( Profession profession, TenantContext tenantContext ) {
         this.profession = profession;
@@ -47,6 +51,55 @@ public class ProfessionService {
                 return true;
             }
         } );
+    }
+
+    /**
+     * 判断模板是否已经初始化
+     *
+     * @return 如果已经初始化则返回true，否则返回false。
+     */
+    public boolean templateInitialized() {
+        List<String> columns = ListKit.newArrayList( "R_TENANT", "P_TENANT", "P_PROFESSION" );
+        List<Object> values = ListKit.newObjectArrayList(
+                tenantContext.getTenantId(),
+                tenantContext.getTenantType().getName(),
+                getId() );
+        return com.lanstar.model.tenant.Template.dao.findFirstByColumns( columns, values ) != null;
+    }
+
+    /**
+     * 初始化模板
+     *
+     * @param operator 操作人员
+     */
+    public void initTemplate( Identity operator ) {
+        TemplateInitTaskFactory factory = TemplateInitTaskFactory.me();
+        Tenant tenant = tenantContext.getTenant();
+        Profession profession = getProfession();
+        Template systemTemplate = getSystemTemplate();
+        templateInitTask = factory.startTask( tenant, profession, systemTemplate, operator );
+    }
+
+    /**
+     * 获取模板初始化任务，该任务对象可以获取到当前执行的状态和任务日志。
+     */
+    public TemplateInitTask getTemplateInitTask() {
+        return templateInitTask;
+    }
+
+    /**
+     * 完成模板初始化工作
+     */
+    public synchronized void finishInitTemplate() {
+        // 这里的完成主要是指清理
+        if ( templateInitTask.status() == TemplateInitializerState.FINISH ) {
+            TemplateInitTaskFactory factory = TemplateInitTaskFactory.me();
+            Tenant tenant = tenantContext.getTenant();
+            Profession profession = getProfession();
+            Template systemTemplate = getSystemTemplate();
+            factory.removeTask( tenant, profession, systemTemplate );
+            templateInitTask = null;
+        }
     }
 
     public List<TemplateFolder> listTenantTemplateFolder() {
