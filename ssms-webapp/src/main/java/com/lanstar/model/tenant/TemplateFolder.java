@@ -42,8 +42,16 @@ public class TemplateFolder extends ModelExt<TemplateFolder> {
         return getInt( "SID" );
     }
 
+    public void setId( int id ) {
+        set( "SID", id );
+    }
+
     public String getName() {
         return getStr( "C_NAME" );
+    }
+
+    public void setName( String name ) {
+        set( "C_NAME", name );
     }
 
     public TemplateFolder getParent() {

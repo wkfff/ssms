@@ -8,8 +8,6 @@
 
 package com.lanstar.model.system;
 
-import com.lanstar.identity.IdentityException;
-import com.lanstar.identity.TenantType;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
@@ -18,9 +16,7 @@ import java.util.List;
 public class Profession extends Model<Profession> {
     public static final Profession dao = new Profession();
 
-    public static List<Profession> list( TenantType tenantType, int tenantId ) {
-        if ( tenantType != TenantType.ENTERPRISE )
-            throw new IdentityException( "tenant type must be 'ENTERPRISE', but current is " + tenantType + "." );
+    public static List<Profession> list( int tenantId ) {
         return dao.find( SqlKit.sql( "system.profession.list" ), tenantId );
     }
 

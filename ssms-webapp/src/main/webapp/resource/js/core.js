@@ -26,7 +26,7 @@
 var utils;
 (function (utils) {
     utils.uuid = function () {
-        return "_" + Date().valueOf();
+        return "_" + new Date().valueOf();
     };
 
     var messager;

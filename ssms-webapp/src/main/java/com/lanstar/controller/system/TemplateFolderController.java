@@ -27,9 +27,9 @@ public class TemplateFolderController extends Controller {
         final Integer template = getParaToInt( "template" );
         Asserts.notNull( template, "template 不能为空" );
         setAttr( "template", Template.dao.findById( template ) );
-        setAttr( "items", listTemplateItems( template ) );
         setAttr( "SYS_CYCLE", MultiParaType.SYS_CYCLE.parameters() );
         setAttr( "tmpfiles", TemplatePropPlugin.me().listParameter() );
+        setAttr( "items", getTemplate( template ).getChildren() );
     }
 
     // 保存文件目录
@@ -125,13 +125,11 @@ public class TemplateFolderController extends Controller {
         renderJson( template.update() );
     }
 
-    private List<FolderBean> listTemplateItems( int template ) {
+    private FolderBean getTemplate( int template ) {
         final List<TemplateFolder> folders = TemplateFolder.list( template );
         List<TemplateFile> files = TemplateFile.listByTemplate( template );
         // 根据目录信息构造树
-        FolderTreeBuilder treeBuilder = new FolderTreeBuilder( folders, files,
-                                                               "R_SID" );
-        FolderBean root = treeBuilder.tree();
-        return root.getChildren();
+        FolderTreeBuilder treeBuilder = new FolderTreeBuilder( folders, files, "R_SID" );
+        return treeBuilder.tree();
     }
 }

@@ -179,17 +179,24 @@ public class ModelKit {
         }
         return true;
     }
-    
 
     @SuppressWarnings("rawtypes")
-    public static int[] batchSave(DbPro dbPro ,List<? extends Model> data) {
+    public static int[] batchSave(List<? extends Model> data) {
+        return batchSave( DbPro.use(), data );
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static int[] batchSave( DbPro dbPro, List<? extends Model> data ) {return batchSave( dbPro, data, data.size() );}
+
+    @SuppressWarnings("rawtypes")
+    public static int[] batchSave(DbPro dbPro ,List<? extends Model> data, int batchSize) {
         Model<?> model = data.get(0);
         Map<String, Object> attrs = model.getAttrs();
         Class<? extends Model> modelClass = model.getClass();
         Table tableInfo = TableMapping.me().getTable(modelClass);
         StringBuilder sql = new StringBuilder();
         List<Object> paras = Lists.newArrayList();
-        
+
         dbPro.getConfig().dialect.forModelSave(tableInfo, attrs, sql, paras);
         Object[][] batchPara = new Object[data.size()][attrs.size()];
         for (int i = 0; i < data.size(); i++) {
@@ -198,9 +205,9 @@ public class ModelKit {
                 batchPara[i][j++] = data.get(i).get(key);
             }
         }
-        return dbPro.batch( sql.toString(), batchPara, data.size() );
+        return dbPro.batch( sql.toString(), batchPara, batchSize );
     }
-    
+
     @SuppressWarnings("rawtypes")
     public static boolean save(DbPro dbPro ,Model<?> model) {
         Map<String, Object> attrs = model.getAttrs();
