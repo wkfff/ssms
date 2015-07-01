@@ -11,10 +11,18 @@ package com.lanstar.controller.system;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
 import com.lanstar.core.aop.Before;
+import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile02;
+import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile02Controller extends SimplateController<TemplateFile02> {
+    public void index() {
+        TemplateFile file=getAttr( "file" );
+        TemplateFile02 model=getDao().findFirstByColumn( "R_TMPFILE", file.getId() );
+        if(model!=null) setAttrs(ModelKit.toMap( model ));
+
+    }
     @Before( AttachTokenGenerator.class )
     public void view() {
         super.rec();

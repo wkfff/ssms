@@ -70,10 +70,9 @@
         </p>
     </script>
     <script type="text/html" id="dlgFile">
-        <p>文件名称: <input size="52" type="text" data-bind="value: model.name"/></p>
-        <p>更新周期: <input data-bind="value: model.cycleValue,disable:model.remind()==false" style="width: 100px;"/>
-            <select data-bind="options: $root.cycleSource,optionsText:'name', optionsCaption: '请选择周期...',value: model.cycleUnit"></select>
-        </p>
+        <p>文件名称: <input size="50" type="text" data-bind="value: model.name"/></p>
+        <p>更新周期: <input data-bind="value: (model.cycleUnit()==null ? null : model.cycleValue),disable:model.cycleUnit()==null" style="width: 84px;"/> 
+        <select  data-bind="options: $root.cycleSource,optionsText:'name', optionsValue:'code' , optionsCaption: '请选择周期...',value: model.cycleUnit"></select></p>
         <p>模板文件:
             <select data-bind="options: $root.tmpfilesSource,optionsText: 'name', optionsValue: 'code', optionsCaption: '请选择模板...', value: model.templateFileCode"></select>
         </p>

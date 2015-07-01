@@ -20,7 +20,7 @@
         };
         var settings = {
             viewSettings: {
-                url: "list",
+                url: "${BASE_PATH}/list",
                 queryParams: {
                     R_SID: catalogId
                 },
@@ -55,7 +55,7 @@
                 settings.viewSettings.datagrid('reload');
             },
             addClick: function () {
-                window.location.href = 'rec?pid=' + catalogId;
+                window.location.href = '${BASE_PATH}/rec?pid=' + catalogId;
             },
             editClick: function () {
                 var value = model.selectItem();
@@ -63,7 +63,7 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
-                window.location.href = 'rec?sid=' + value.SID;
+                window.location.href = '${BASE_PATH}/rec?sid=' + value.SID;
             },
             deleteClick: function () {
                 var value = model.selectItem();
@@ -71,7 +71,7 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
-                $.post('del', {sid: value.SID}, function () {
+                $.post('${BASE_PATH}/del', {sid: value.SID}, function () {
                     $.messager.alert('消息', '成功删除记录！', "info", function () {
                         events.refreshClick();
                     });
@@ -83,7 +83,7 @@
     }
 
     $(function () {
-        ko.applyBindings(new ViewModel(${sid}));
+        ko.applyBindings(new ViewModel(${file.id!}));
     });
 </script>
 </@>

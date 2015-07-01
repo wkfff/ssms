@@ -107,7 +107,7 @@
             T_DATE_03: ko.observable('${T_DATE_03!}'),
             T_DATE_04: ko.observable('${T_DATE_04!}'),
             SID: '${SID!}',
-            R_TMPFILE: '${R_TMPFILE!sid}'
+            R_TMPFILE: '${R_TMPFILE!file.id}'
         };
         var extModel = {
             htmlContent: ko.observable(),
@@ -122,7 +122,6 @@
             }
         };
 
-        // ${file.id}
         var events = {
             saveClick: function () {
                 if ($form.validate('.form') != true) return;
@@ -133,7 +132,7 @@
                         settings.htmleditSettings.save(function (editorResult) {
                             utils.messager.closeProgress();
                             $.messager.alert("提示", "保存成功", "info", function () {
-                                window.location.href = 'index?SID=' + result.SID + "&backURL=${backURL!referer!}";
+                                window.location.href = "/sys/stdtmp/file/"+file.id;
                             });
                         });
                     } else {

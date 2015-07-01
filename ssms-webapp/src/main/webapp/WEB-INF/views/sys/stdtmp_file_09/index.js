@@ -1,4 +1,4 @@
-function ViewModel(templateId) {
+function ViewModel(templateId,path) {
     var self = this;
     var model = {
         selectedNode: ko.observable(),
@@ -15,7 +15,7 @@ function ViewModel(templateId) {
         gridSettings: {
             title:' 安全附件定期检查检验记录',
             idField: 'SID',
-            url: "/sys/stdtmp_file_09/list",
+            url: path+"/list",
             queryParams: {
                 R_TMPFILE: templateId
             },
@@ -76,7 +76,7 @@ function ViewModel(templateId) {
                     var row = model.selectItem();
                     if (row) {
                         if (!row.SID.toString().startsWith("_"))
-                            $.post('del', {sid: row.SID}, function () {
+                            $.post(path+'/del', {sid: row.SID}, function () {
                                 $.messager.alert('消息', '成功删除记录！', 'info', function () {
                                     settings.gridSettings.datagrid('reload');
                                 });
@@ -93,7 +93,7 @@ function ViewModel(templateId) {
                     }
                     var changes = settings.gridSettings.datagrid('getChanges');
                     if (changes.length > 0) {
-                        $.post("batchSave", {data: $.toJSON(changes)}, function () {
+                        $.post(path+"/batchSave", {data: $.toJSON(changes)}, function () {
                             $.messager.alert('消息', '成功保存记录！', "info", function () {
                                 settings.gridSettings.datagrid('reload');
                             });
@@ -129,7 +129,7 @@ function ViewModel(templateId) {
                             settings.gridSettings.datagrid('refreshRow', index + 1);
                             settings.gridSettings.datagrid('selectRow', index + 1);                            
                             var d = [{'SID':todown.SID,'N_INDEX':toup.N_INDEX},{'SID':toup.SID,'N_INDEX':todown.N_INDEX}];
-                            $.post("batchSave", {data:$.toJSON(d)}, function () {});
+                            $.post(path+"/batchSave", {data:$.toJSON(d)}, function () {});
                         }
                     }
                 }

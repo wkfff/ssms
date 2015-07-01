@@ -28,7 +28,7 @@
         saveClick: function () {
             if ($form.validate('.form') != true) return;
             utils.messager.showProgress();
-            $.post('save', model, function (result) {
+            $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
                     if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
                     settings.htmleditSettings.save(function (editorResult) {
@@ -69,7 +69,7 @@
 <@layout.doLayout header=script>
 <div class="z-toolbar" data-bind="visible: !readonly">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${referer!}'">返回</a>
+    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '/sys/stdtmp/file/${R_TMPFILE!pid}'">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
     <table>

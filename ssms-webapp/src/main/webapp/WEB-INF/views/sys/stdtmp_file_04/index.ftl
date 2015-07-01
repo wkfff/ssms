@@ -1,8 +1,8 @@
 <#import "../../layout/_list.ftl" as layout/>
 <#assign script>
-<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="${BASE_PATH}/index.js"></script>
 <script type="text/javascript">
-    ko.applyBindings(new ViewModel(${sid}));
+    ko.applyBindings(new ViewModel(${file.id},'${BASE_PATH}'));
 </script>
 </#assign>
 <@layout.doLayout script=script>

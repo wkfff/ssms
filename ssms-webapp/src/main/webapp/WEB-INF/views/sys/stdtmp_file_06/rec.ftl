@@ -32,7 +32,7 @@
         <a class="easyui-linkbutton" plain="true" iconCls="icon-add" data-bind="click: addItem">新建隐患项目</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-remove" data-bind="click: remove">删除</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${BASE_PATH}/?sid=${R_TMPFILE!pid}'">返回列表</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '/sys/stdtmp/file/${R_TMPFILE!pid}'">返回列表</a>
 
         <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="">上一条</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="">下一条</a>
