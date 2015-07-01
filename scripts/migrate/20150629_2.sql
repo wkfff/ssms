@@ -1,0 +1,23 @@
+-- 添加达标体系模板中间结果的保存
+ALTER TABLE `sys_template`
+	ADD COLUMN `C_CONTENT` LONGTEXT NULL DEFAULT NULL COMMENT '模板发布后的中间结果' AFTER `C_NAME`;
+
+-- 修改
+ALTER TABLE `ssm_stdtmp_folder`
+	ALTER `SID` DROP DEFAULT;
+ALTER TABLE `ssm_stdtmp_folder`
+	ADD COLUMN `UID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '内部编号' FIRST,
+	CHANGE COLUMN `SID` `SID` INT(11) NOT NULL COMMENT '目录ID，直接拷贝自模模板，不做处理直接使用。' AFTER `UID`,
+	DROP PRIMARY KEY,
+	ADD PRIMARY KEY (`UID`);
+
+ALTER TABLE `ssm_stdtmp_file`
+	ALTER `SID` DROP DEFAULT;
+ALTER TABLE `ssm_stdtmp_file`
+	ADD COLUMN `UID` INT(11) NOT NULL AUTO_INCREMENT COMMENT '内部编号' FIRST,
+	CHANGE COLUMN `SID` `SID` INT(11) NOT NULL COMMENT '目录ID，直接拷贝自模模板，不做处理直接使用。' AFTER `UID`,
+	DROP PRIMARY KEY,
+	ADD PRIMARY KEY (`UID`);
+
+-- 创建租户专业模板表
+create table SSM_TEMPLATE like ssm_template_version;
