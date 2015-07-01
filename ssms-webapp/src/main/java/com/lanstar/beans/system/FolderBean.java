@@ -14,14 +14,18 @@ import java.util.List;
 public class FolderBean {
     private int id;
     private String name;
+    private String desc;
     private Integer index;
-    // TODO add more fields
     private List<FolderBean> children = new ArrayList<>();
     private List<FileBean> files = new ArrayList<>();
 
-    public boolean addFile( FileBean bean ) {return files.add( bean );}
+    public boolean addFile( FileBean bean ) {
+        return files.add( bean );
+    }
 
-    public boolean addFolder( FolderBean bean ) {return children.add( bean );}
+    public boolean addFolder( FolderBean bean ) {
+        return children.add( bean );
+    }
 
     public int getId() {
         return id;
@@ -61,5 +65,13 @@ public class FolderBean {
 
     public void setFiles( List<FileBean> files ) {
         this.files = files;
+    }
+
+    public void setDescript( String descript ) {
+        this.desc = descript;
+    }
+
+    public String getDescript() {
+        return desc;
     }
 }

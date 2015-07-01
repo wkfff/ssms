@@ -11,8 +11,12 @@ package com.lanstar.beans.system;
 public class FileBean {
     private int id;
     private String name;
+    private String desc;
     private Integer index;
-    // TODO add more fields
+    private String templateFileCode;
+    private String cycleUnitCode;
+    private Integer cycleValue;
+    private String explain;
 
     public int getId() {
         return id;
@@ -36,5 +40,49 @@ public class FileBean {
 
     public void setIndex( Integer index ) {
         this.index = index;
+    }
+
+    public String getTemplateUrl() {
+        return "/sys/stdtmp_file_" + getTemplateFileCode() + "/?sid=" + getId();
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc( String desc ) {
+        this.desc = desc;
+    }
+
+    public String getTemplateFileCode() {
+        return templateFileCode;
+    }
+
+    public void setTemplateFileCode( String templateFileCode ) {
+        this.templateFileCode = templateFileCode;
+    }
+
+    public String getCycleUnitCode() {
+        return cycleUnitCode;
+    }
+
+    public void setCycleUnitCode( String cycleUnitCode ) {
+        this.cycleUnitCode = cycleUnitCode;
+    }
+
+    public Integer getCycleValue() {
+        return cycleValue;
+    }
+
+    public void setCycleValue( Integer cycleValue ) {
+        this.cycleValue = cycleValue;
+    }
+
+    public String getExplain() {
+        return explain;
+    }
+
+    public void setExplain( String explain ) {
+        this.explain = explain;
     }
 }

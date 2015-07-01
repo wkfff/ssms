@@ -17,11 +17,13 @@ public class TemplateFolder extends Model<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
 
     public static List<TemplateFolder> list( int template ) {
-        return dao.find( SqlKit.sql( "system.templateFolder.getFolders" ), template );
+        return dao.find( SqlKit.sql( "system.templateFolder.getFolders" ),
+                         template );
     }
 
     public static List<TemplateFolder> list( int template, int parentId ) {
-        return dao.find( SqlKit.sql( "system.templateFolder.getFoldersByParentId" ), template, parentId );
+        return dao.find( SqlKit.sql( "system.templateFolder.getFoldersByParentId" ),
+                         template, parentId );
     }
 
     public List<TemplateFolder> listSubFolder() {
@@ -36,7 +38,7 @@ public class TemplateFolder extends Model<TemplateFolder> {
         return getInt( "N_INDEX" );
     }
 
-    public void setIndex( int index ) {
+    public void setIndex( Integer index ) {
         set( "N_INDEX", index );
     }
 
@@ -48,7 +50,31 @@ public class TemplateFolder extends Model<TemplateFolder> {
         return getStr( "C_NAME" );
     }
 
+    public void setName( String name ) {
+        set( "C_NAME", name );
+    }
+
     public Integer getTemplateId() {
         return getInt( "R_TEMPLATE" );
+    }
+
+    public void setTemplateId( int id ) {
+        set( "R_TEMPLATE", id );
+    }
+
+    public String getDescript() {
+        return getStr( "C_DESC" );
+    }
+
+    public void setDescript( String desc ) {
+        set( "C_DESC", desc );
+    }
+
+    public int getParentId() {
+        return getInt( "R_SID" );
+    }
+
+    public void setParentId( int id ) {
+        set( "R_SID", id );
     }
 }
