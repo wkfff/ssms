@@ -78,11 +78,12 @@ var utils;
                 return true;
             }
         };
-        dialog.open = function (options) {
+        dialog.open = function (options,width,height) {
         	var opts = $.extend({}, defaultOptions, options);
             var template = opts.templateId ? $('#' + opts.templateId).html() : opts.template;
             layer.confirm(template, {
                 title: opts.title,
+                area:[width,height],
                 success: function (layero, index) {
                     opts.loaded(layero);
                 }

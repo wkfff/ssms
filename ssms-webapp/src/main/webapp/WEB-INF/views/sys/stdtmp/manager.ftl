@@ -58,23 +58,25 @@ block="head">
         </tr>
     </script>
 <script type="text/html" id="dlgFolder">
-        <p>目录名称: <input type="text" data-bind="value: name"/></p>
-        <p>排序: <input type="text" data-bind="value: index"/></p>
+        <p>目录名称: <input size="52" type="text" data-bind="value: name" /></p>
+        <p>排序: <input size="52" type="text" data-bind="value: index"style="margin-left:28px"/></p>
         <p>描述: </p>
         <p>
-            <textarea data-bind="value: desc"></textarea>
+            <textarea style="width:520px;height:150px" data-bind="value: desc" style="margin-left:65px;width:175px;"></textarea>
         </p>
     </script>
 <script type="text/html" id="dlgFile">
-        <p>文件名称: <input type="text" data-bind="value: model.name"/></p>
+        <p>文件名称: <input size="52" type="text" data-bind="value: model.name"/></p>
+        <p>更新周期: <input data-bind="value: model.cycleValue,disable:model.remind()==false" style="width: 100px;"/> 
+        <select  data-bind="options: $root.cycleSource,optionsText:'name', optionsCaption: '请选择周期...',value: model.cycleUnit"></select></p>
+        <p>模板文件: <select data-bind="options: $root.tmpfilesSource,optionsText: 'name', optionsValue: 'code', optionsCaption: '请选择模板...', value: model.templateFileCode"></select></p>
+        <p>是否提醒:<input type="checkbox" data-bind="checked : model.remind" /></p>
+        <p>政测解读: </p>
+        <p><textarea data-bind="value: model.explain" style="width:520px;height:50px"> </textarea></p>
         <p>描述: </p>
         <p>
-            <textarea data-bind="value: model.desc"></textarea>
+            <textarea data-bind="value: model.desc" style="width:520px;height:50px"></textarea>
         </p>
-        <p>更新周期：<input data-bind="value: model.cycleValue" style="width: 50px"/> 
-        <select data-bind="options: $root.cycleSource,optionsText:'name', optionsCaption: '请选择周期...',value: model.cycleUnit"></select></p>
-        <p>模板文件: <select data-bind="options: $root.tmpfilesSource,optionsText: 'name', optionsValue: 'code', optionsCaption: '请选择模板...', value: model.templateFileCode"></select></p>
-        <p>政测解读: <input data-bind="value: model.explain"/> </p>
     </script>
 </@> <@layout.put block="footer">
 <script type="text/javascript">
@@ -133,7 +135,7 @@ block="head">
                 this.desc = ko.observable(item.desc);
                 this.explain=ko.observable(item.explain);
                 this.templateFileCode=ko.observable(item.templateFileCode).extend({required: true});
-                
+                this.remind=ko.observable(item.remind=='1');
                 this.cycleUnit=ko.observable(fileViewModel.getCycle(item.cycleUnitCode));
                 this.cycleValue=ko.observable(item.cycleValue);
 
@@ -170,7 +172,7 @@ block="head">
                         	model.children.push(tmpFolder);
                         });
                     }
-                });
+                },"570px","360px");
             };
 
             this.editFolder = function (model) {
@@ -222,7 +224,7 @@ block="head">
                             model.files.push(fileViewModel.model);
                         });
                     }
-                });
+                },"570px","380px");
             };
 
             this.editFile = function (model) {
@@ -273,7 +275,8 @@ block="head">
                     parentName: model.parent.name(),
                     templateFileCode:model.templateFileCode(),
                     cycleValue: model.cycleValue(),
-                    explain:model.explain()
+                    explain:model.explain(),
+                    remind: (model.remind()==true ? '1' : '0')
                 };
                 if (model.cycleUnit() != null) {
                     params.cycleUnitCode = model.cycleUnit().code;

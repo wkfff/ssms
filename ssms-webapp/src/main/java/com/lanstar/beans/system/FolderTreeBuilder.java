@@ -20,7 +20,8 @@ import java.util.Objects;
 public class FolderTreeBuilder extends TreeKit<FolderBean, TemplateFolder> {
     private final List<TemplateFile> files;
 
-    public FolderTreeBuilder( List<TemplateFolder> folders, List<TemplateFile> files, String parentField ) {
+    public FolderTreeBuilder( List<TemplateFolder> folders,
+            List<TemplateFile> files, String parentField ) {
         super( folders, parentField );
         this.files = files;
     }
@@ -52,9 +53,10 @@ public class FolderTreeBuilder extends TreeKit<FolderBean, TemplateFolder> {
         desc.setName( src.getName() );
         desc.setIndex( src.getIndex() );
         desc.setCycleValue( src.getCycleValue() );
-        desc.setCycleUnitCode( src.getCycleUnitCode());
+        desc.setCycleUnitCode( src.getCycleUnitCode() );
         desc.setTemplateFileCode( src.getTemplateFileCode() );
         desc.setExplain( src.getExplain() );
+        desc.setRemind( src.getRemind() );
     }
 
     private void addChildren( final FolderBean bean ) {
@@ -64,12 +66,15 @@ public class FolderTreeBuilder extends TreeKit<FolderBean, TemplateFolder> {
             bean.addFolder( child );
             addChildren( child );
         }
-        Iterable<TemplateFile> files = Iterables.filter( this.files, new Predicate<TemplateFile>() {
-            @Override
-            public boolean apply( TemplateFile input ) {
-                return Objects.equals( input.getInt( "R_SID" ), bean.getId() );
-            }
-        } );
+        Iterable<TemplateFile> files = Iterables.filter( this.files,
+                                                         new Predicate<TemplateFile>() {
+                                                             @Override
+                                                             public boolean apply(
+                                                                     TemplateFile input ) {
+                                                                 return Objects.equals( input.getInt( "R_SID" ),
+                                                                                        bean.getId() );
+                                                             }
+                                                         } );
         for ( TemplateFile file : files ) {
             FileBean fileBean = new FileBean();
             putValues( file, fileBean );
