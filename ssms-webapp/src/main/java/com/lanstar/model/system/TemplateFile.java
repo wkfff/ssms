@@ -19,18 +19,11 @@ public class TemplateFile extends ModelExt<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
 
     public static List<TemplateFile> list( Integer folderId ) {
-        return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFiles" ),
-                                      folderId );
+        return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFiles" ), folderId );
     }
 
     public static List<TemplateFile> listByTemplate( int template ) {
-        return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFilesByTemplate" ),
-                                      template );
-    }
-
-    public String getRemind() {
-
-        return getStr( "B_REMIND" );
+        return TemplateFile.dao.find( SqlKit.sql( "system.templateFile.getFilesByTemplate" ), template );
     }
 
     @Override
@@ -66,17 +59,17 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         return TemplatePropPlugin.me().get( getTemplateFileCode() );
     }
 
+    public void setTemplateProp( TemplateProp prop ) {
+        set( "P_TMPFILE", prop.getCode() );
+        set( "S_TMPFILE", prop.getName() );
+    }
+
     public String getTemplateFileCode() {
         return getStr( "P_TMPFILE" );
     }
 
     public String getTemplateFileName() {
         return getStr( "S_TMPFILE" );
-    }
-
-    public void setTemplateProp( TemplateProp prop ) {
-        set( "P_TMPFILE", prop.getCode() );
-        set( "S_TMPFILE", prop.getName() );
     }
 
     public Integer getId() {
@@ -155,7 +148,11 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         set( "R_TEMPLATE", template );
     }
 
-    public void setRemind( String remind ) {
-        set( "B_REMIND", remind );
+    public Boolean getRemind() {
+        return "1".equals( getStr( "B_REMIND" ) );
+    }
+
+    public void setRemind( Boolean remind ) {
+        set( "B_REMIND", remind ? "1" : "0" );
     }
 }

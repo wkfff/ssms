@@ -17,13 +17,11 @@ public class TemplateFolder extends Model<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
 
     public static List<TemplateFolder> list( int template ) {
-        return dao.find( SqlKit.sql( "system.templateFolder.getFolders" ),
-                         template );
+        return dao.find( SqlKit.sql( "system.templateFolder.getFolders" ), template );
     }
 
     public static List<TemplateFolder> list( int template, int parentId ) {
-        return dao.find( SqlKit.sql( "system.templateFolder.getFoldersByParentId" ),
-                         template, parentId );
+        return dao.find( SqlKit.sql( "system.templateFolder.getFoldersByParentId" ), template, parentId );
     }
 
     public List<TemplateFolder> listSubFolder() {

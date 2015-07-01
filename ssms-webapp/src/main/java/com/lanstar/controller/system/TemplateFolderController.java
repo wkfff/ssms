@@ -8,8 +8,6 @@
 
 package com.lanstar.controller.system;
 
-import java.util.List;
-
 import com.lanstar.beans.system.FolderBean;
 import com.lanstar.beans.system.FolderTreeBuilder;
 import com.lanstar.common.Asserts;
@@ -21,6 +19,8 @@ import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFolder;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 import com.lanstar.service.MultiParaType;
+
+import java.util.List;
 
 public class TemplateFolderController extends Controller {
     public void manager() {
@@ -72,7 +72,7 @@ public class TemplateFolderController extends Controller {
         String cycleUnitCode = getPara( "cycleUnitCode" );
         String cycleUnitName = getPara( "cycleUnitName" );
         Integer cycleValue = getParaToInt( "cycleValue" );
-        String remind = getPara( "remind" );
+        Boolean remind = getParaToBoolean( "remind" );
         TemplateFile model;
         if ( id == null ) model = new TemplateFile();
         else model = TemplateFile.dao.findById( id );
@@ -118,7 +118,7 @@ public class TemplateFolderController extends Controller {
 
     public void publish() {
         final Integer templateId = getParaToInt();
-        final List<FolderBean> folderBeans = listTemplateItems( templateId );
+        final FolderBean folderBeans = getTemplate( templateId );
         final Template template = Template.dao.findById( templateId );
         template.setCacheContent( folderBeans );
         template.setVersion( template.getVersion() + 1 );

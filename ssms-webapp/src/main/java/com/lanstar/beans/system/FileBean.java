@@ -17,7 +17,8 @@ public class FileBean {
     private String cycleUnitCode;
     private Integer cycleValue;
     private String explain;
-    private String remind;
+    private boolean remind;
+
     public int getId() {
         return id;
     }
@@ -86,17 +87,11 @@ public class FileBean {
         this.explain = explain;
     }
 
-    /**
-     * @return the remind
-     */
-    public String getRemind() {
+    public boolean getRemind() {
         return remind;
     }
 
-    /**
-     * @param remind the remind to set
-     */
-    public void setRemind( String remind ) {
+    public void setRemind( boolean remind ) {
         this.remind = remind;
     }
 }
