@@ -8,10 +8,10 @@
 
 package com.lanstar.controller.system;
 
-import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
 import com.lanstar.core.aop.Before;
+import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile01;
 import com.lanstar.plugin.activerecord.ModelKit;
 
@@ -23,16 +23,8 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
 
     public void index() {
         //先判断sid 是否有值，如果有值根据模板获R_TMPFILE取到对应的模板，如果没值根据SID获取到模板。。。
-        TemplateFile01 model;
-        String sid = getPara("sid");
-        if (StrKit.isEmpty(sid)) {
-            sid = getPara("SID");
-            if (sid == null)
-                return;
-            model = getDao().findById(sid);
-        } else {
-            model = getDao().findFirstByColumn("R_TMPFILE", sid);
-        }
+        TemplateFile file = getAttr( "file" );
+        TemplateFile01 model = getDao().findFirstByColumn( "R_TMPFILE", file.getId() );
 
         if (model != null)
             setAttrs(ModelKit.toMap(model));

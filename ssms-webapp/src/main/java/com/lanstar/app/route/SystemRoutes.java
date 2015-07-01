@@ -30,7 +30,8 @@ public class SystemRoutes extends Routes {
         add( "/sys/nav", NavgateController.class );
         add( "/sys/template", TemplateController.class );
         add( "/sys/stdtmp", TemplateFolderController.class );
-        add( "/sys/stdtmp_file", TemplateFileController.class );
+        add( "/sys/stdtmp/file", TemplateFileController.class );
+        //add( "/sys/stdtmp_file", TemplateFileController.class );
         add( "/sys/stdtmp_grade", TemplateGradeController.class );
         add( "/sys/stdtmp_rep", TemplateRepController.class );
         add( "/sys/stdtmp_file_01", TemplateFile01Controller.class );

@@ -8,15 +8,22 @@
 
 package com.lanstar.controller.system;
 
-import com.lanstar.service.MultiParaType;
-import com.lanstar.controller.SimplateController;
+import com.lanstar.common.Asserts;
+import com.lanstar.core.Controller;
 import com.lanstar.model.system.TemplateFile;
-import com.lanstar.model.system.TemplateFolder;
-import com.lanstar.plugin.activerecord.statement.SqlBuilder;
-import com.lanstar.plugin.template.TemplatePropPlugin;
 
-public class TemplateFileController extends SimplateController<TemplateFile> {
-    @Override
+public class TemplateFileController extends Controller {
+    public void index(){
+        Integer fileId = getParaToInt();
+        Asserts.notNull( fileId, "file id is null" );
+
+        TemplateFile file = TemplateFile.dao.findById( fileId );
+        setAttr( "file", file );
+
+        this.forwardAction( "/sys/stdtmp_file_"+ file.getTemplateFileCode() +"/");
+    }
+
+    /*@Override
     public void rec() {
         if ( isParaBlank( "pid" ) == false ) {
             TemplateFolder folder = TemplateFolder.dao.findById( getParaToInt( "pid" ) );
@@ -36,5 +43,5 @@ public class TemplateFileController extends SimplateController<TemplateFile> {
     protected SqlBuilder buildWhere() {
         return new SqlBuilder().WHERE()._If( isParaBlank( "R_SID" ) == false,
                 "R_SID=?", getPara( "R_SID" ) ).ORDER_BY( "N_INDEX, SID" );
-    }
+    }*/
 }

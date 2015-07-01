@@ -10,12 +10,12 @@
     format: function () {
         var formatted = this;
         for (var i = 0; i < arguments.length; i++) {
-            formatted = formatted.replace(RegExp("\\{" + i + "\\}", 'g'), arguments[i].toString());
+            formatted = formatted.replace(new RegExp("\\{" + i + "\\}", 'g'), arguments[i].toString());
         }
         return formatted;
     },
     replaceAll: function (searchValue, replaceValue) {
-        return this.replace(RegExp(searchValue, "gm"), replaceValue);
+        return this.replace(new RegExp(searchValue, "gm"), replaceValue);
     },
     startsWith: function (searchString, position) {
         position = position || 0;
@@ -78,28 +78,28 @@ var utils;
                 return true;
             }
         };
-        dialog.open = function (options,width,height) {
-        	var opts = $.extend({}, defaultOptions, options);
+        dialog.open = function (options, width, height) {
+            var opts = $.extend({}, defaultOptions, options);
             var template = opts.templateId ? $('#' + opts.templateId).html() : opts.template;
             layer.confirm(template, {
                 title: opts.title,
-                area:[width,height],
+                area: [width, height],
                 success: function (layero, index) {
                     opts.loaded(layero);
                 }
             }, function (index) {
-                if (opts.ok() != false) layer.close(index);
+                if (opts.ok() !== false) layer.close(index);
             });
-        }
+        };
     })(dialog = utils.dialog || (utils.dialog = {}));
 })(utils || (utils = {}));
 
-if (typeof ko !== 'undefined' && ko.utils.copyToModel == null) {
+if (typeof ko !== 'undefined' && ko.utils.copyToModel === undefined) {
     ko.utils.copyToModel = function (src, desc) {
         for (var field in src) {
             if (src.hasOwnProperty(field)) {
                 // skip undefined field
-                if (desc.hasOwnProperty(field) == false) continue;
+                if (desc.hasOwnProperty(field) === false) continue;
                 // copy value
                 var srcValue = src[field];
                 if (ko.isComputed(desc[field])) continue;
@@ -107,5 +107,5 @@ if (typeof ko !== 'undefined' && ko.utils.copyToModel == null) {
                 else desc[field] = ko.unwrap(srcValue);
             }
         }
-    }
+    };
 }
