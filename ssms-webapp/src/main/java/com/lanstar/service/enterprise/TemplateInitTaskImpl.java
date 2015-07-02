@@ -85,6 +85,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
                 // 拷贝目录
                 cloneFolders();
                 cloneFileContetns();
+                cloneFileText();
 
                 for ( List<Model> batch : batchs.values() ) {
                     ModelKit.batchSave( DbPro.use(), batch );
