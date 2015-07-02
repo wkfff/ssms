@@ -53,6 +53,7 @@
     <script type="text/javascript">
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
+        R_TEMPLATE: '${file.templateId}',
         R_TMPFILE: '${R_TMPFILE!}',
         SID: '${SID!}'
     };

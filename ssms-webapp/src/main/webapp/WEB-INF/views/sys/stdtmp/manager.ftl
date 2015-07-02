@@ -63,30 +63,54 @@
         </tr>
     </script>
     <script type="text/html" id="dlgFolder">
-    <div style="width:570px;height:290px;" >
-        <p>目录名称: <input style="width:70%" type="text" data-bind="value: name"/></p>
-        <p>排序: <input type="text" data-bind="value: index" style="width:70%;margin-left:28px"/></p>
-        <p>描述: </p>
+        <div style="width:570px;">
+            <p>
+                目录名称: <input style="width:400px" type="text" data-bind="value: name"/>
+            </p>
+            <p>
+                目录排序: <span data-bind="text: parent._index()+'-'"></span><input type="number" data-bind="value: index" style="width: 50px"/>
+            </p>
+            <p>描述: </p>
             <textarea data-bind="value: desc" style="width:100%;height:150px;"></textarea>
-    </div>  
+        </div>
     </script>
     <script type="text/html" id="dlgFile">
-    <div style="width:570px;height:290px;" >
-        <table style="width:100%">
-          <tr><th style="width:15%">文件名称:</th><td colspan="3"><input style="width:80%" type="text" data-bind="value: model.name"/></td></tr>
-          <tr><th>更新周期:</th>
-              <td style="width:16%"><input style="width:90%" data-bind="value: (model.cycleUnit()==null ? null : model.cycleValue),disable:model.cycleUnit()==null" /></td>
-              <td><select  data-bind="options: $root.cycleSource,optionsText:'name', optionsValue:'code' , optionsCaption: '请选择周期...',value: model.cycleUnit"></select></td>
-              <td></td>
-          </tr>
-          <tr><th>模板文件:</th><td colspan="2"><select data-bind="options: $root.tmpfilesSource,optionsText: 'name', optionsValue: 'code', optionsCaption: '请选择模板...', value: model.templateFileCode"></select></td></tr>
-          <tr><th>是否提醒:</th><td><input type="checkbox" data-bind="checked : model.remind"/></td><td></td><td></td></tr>
-          <tr><th>政测解读:</th></tr>
-          <tr><td colspan="4"><textarea data-bind="value: model.explain" style="width:100%;height:50px"> </textarea></td></tr>
-          <tr><th>描述:</th></tr>
-          <tr><td colspan="4"><textarea data-bind="value: model.desc" style="width:100%;height:50px"></textarea></td></tr>
-        </table>
-    </div>
+        <div style="width:570px;" data-bind="with:model">
+            <p>
+                文件名称:
+                <input type="text" data-bind="value: name" style="width: 400px;"/>
+            </p>
+
+            <p>
+                更新周期:
+                <input data-bind="value: (cycleUnit()==null ? null : cycleValue),disable:cycleUnit()==null" style="width: 50px;"/>
+                <select data-bind="options: $root.cycleSource,
+                                   optionsText:'name',
+                                   optionsValue:'code' ,
+                                   optionsCaption: '请选择周期...',
+                                   value: cycleUnit">
+                </select>
+                <label><input type="checkbox" data-bind="checked : remind"/>是否提醒</label>
+            </p>
+
+            <p>
+                模板文件:
+                <select data-bind="options: $root.tmpfilesSource,
+                                   optionsText: 'name',
+                                   optionsValue: 'code',
+                                   optionsCaption: '请选择模板...',
+                                   value: templateFileCode"
+                        style="width: 400px;">
+                </select>
+            </p>
+            <p>
+                文件排序: <span data-bind="text: parent._index()+'-'"></span><input type="number" data-bind="value: index" style="width: 50px"/>
+            </p>
+            <p>政测解读:</p>
+            <textarea data-bind="value: explain" style="width:100%;height:50px"> </textarea>
+            <p>描述:</p>
+            <textarea data-bind="value: desc" style="width:100%;height:50px"></textarea>
+        </div>
     </script>
 
     <script type="text/html" id="dlgStatus">
@@ -160,11 +184,11 @@
 
                 this.name = ko.observable(item.name).extend({required: true});
                 this.desc = ko.observable(item.desc);
-                this.index = ko.observable(item.index);
+                this.index = ko.observable(item.index || 0);
                 this._index = ko.computed(function () {
                     var parent = this.parent;
                     if (parent == null) return this.index();
-                    return this.parent._index()+ '-' + this.index();
+                    return this.parent._index() + '-' + this.index();
                 }, this);
 
                 this.level = ko.computed(function () {
@@ -197,15 +221,12 @@
                 this.remind = ko.observable(item.remind == '1');
                 this.cycleUnit = ko.observable(fileViewModel.getCycle(item.cycleUnitCode));
                 this.cycleValue = ko.observable(item.cycleValue);
-                this.index = ko.observable(item.index);
-                this._index=ko.computed(function(){
-                    if(this.parent==null) return this.index();
-                    else {
-                        if(this.index()!=null)
-                        return this.parent._index()+'-'+this.index();
-                        else return this.parent._index();
-                    }
-                },this)
+                this.index = ko.observable(item.index || 0);
+                this._index = ko.computed(function () {
+                    var parent = this.parent;
+                    if (parent == null) return this.index();
+                    return this.parent._index() + '-' + this.index();
+                }, this);
 
                 this.templateUrl = "${BASE_PATH}/file/" + item.id;
                 this.level = ko.computed(function () {

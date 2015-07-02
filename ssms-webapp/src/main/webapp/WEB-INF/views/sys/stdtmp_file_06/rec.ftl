@@ -124,6 +124,7 @@
         T_ACCEPTANCE: ko.observable('${T_ACCEPTANCE!}'),
         B_FINISH: ko.observable('${B_FINISH!0}'),
         SID: ko.observable('${SID!}'),
+        R_TEMPLATE: '${file.templateId}',
         R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var settings = {

@@ -20,7 +20,7 @@
 <script type="text/javascript" src="${BASE_PATH}/index.js"></script>
 <script type="text/javascript">
     $(function () {
-        ko.applyBindings(new ViewModel(${file.id!},'${BASE_PATH}'));
+        ko.applyBindings(new ViewModel(${file.id!}, ${file.templateId},'${BASE_PATH}'));
     });
 </script>
 </@>

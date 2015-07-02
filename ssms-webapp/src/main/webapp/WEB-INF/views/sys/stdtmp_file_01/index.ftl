@@ -107,6 +107,7 @@
             T_DATE_03: ko.observable('${T_DATE_03!}'),
             T_DATE_04: ko.observable('${T_DATE_04!}'),
             SID: '${SID!}',
+            R_TEMPLATE: '${file.templateId}',
             R_TMPFILE: '${R_TMPFILE!file.id}'
         };
         var extModel = {

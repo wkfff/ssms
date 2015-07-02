@@ -1,4 +1,4 @@
-function ViewModel(templateId,path) {
+function ViewModel(templateId, template,path) {
     var self = this;
     var model = {
         selectedNode: ko.observable(),
@@ -56,7 +56,7 @@ function ViewModel(templateId,path) {
                 refreshClick: function () {
                     settings.gridSettings.datagrid('reload');
                 }, addClick: function () {
-                    var row = {SID: utils.uuid(), R_TMPFILE: templateId};
+                    var row = {SID: utils.uuid(), R_TMPFILE: templateId, R_TEMPLATE: template};
                     if(model.selectIndex() && model.selectIndex()!=-1){
                         var index = model.selectIndex();
                         if (settings.gridSettings.datagrid('validateRow', index)) {

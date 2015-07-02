@@ -90,6 +90,7 @@
         N_TIME: ko.observable('${N_TIME!}'),
         C_USER_02: ko.observable('${C_USER_02!}'),
         SID: '${SID!}',
+        R_TEMPLATE: '${file.templateId}',
         R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
