@@ -10,6 +10,7 @@
             background: url("/resource/images/rmail.png") no-repeat 0 center;
             padding-left: 20px;
         }
+
     </style>
     </@>
 
@@ -62,28 +63,29 @@
         </tr>
     </script>
     <script type="text/html" id="dlgFolder">
-        <p>目录名称: <input size="52" type="text" data-bind="value: name"/></p>
-        <p>排序: <input size="52" type="text" data-bind="value: index" style="margin-left:28px"/></p>
+    <div style="width:570px;height:290px;" >
+        <p>目录名称: <input style="width:70%" type="text" data-bind="value: name"/></p>
+        <p>排序: <input type="text" data-bind="value: index" style="width:70%;margin-left:28px"/></p>
         <p>描述: </p>
-        <p>
-            <textarea data-bind="value: desc" style="margin-left:65px;width:175px;"></textarea>
-        </p>
+            <textarea data-bind="value: desc" style="width:100%;height:150px;"></textarea>
+    </div>  
     </script>
     <script type="text/html" id="dlgFile">
-    <div style="width:570px;height:80px;">
-        <p>文件名称: <input size="50" type="text" data-bind="value: model.name"/></p>
-        <p>更新周期: <input data-bind="value: (model.cycleUnit()==null ? null : model.cycleValue),disable:model.cycleUnit()==null" style="width: 84px;"/> 
-        <select  data-bind="options: $root.cycleSource,optionsText:'name', optionsValue:'code' , optionsCaption: '请选择周期...',value: model.cycleUnit"></select></p>
-        <p>模板文件:
-            <select data-bind="options: $root.tmpfilesSource,optionsText: 'name', optionsValue: 'code', optionsCaption: '请选择模板...', value: model.templateFileCode"></select>
-        </p>
-        <p>是否提醒:<input type="checkbox" data-bind="checked : model.remind"/></p>
-        <p>政测解读: </p>
-        <p><textarea data-bind="value: model.explain" style="width:520px;height:50px"> </textarea></p>
-        <p>描述: </p>
-        <p>
-            <textarea data-bind="value: model.desc" style="width:520px;height:50px"></textarea>
-        </p> 
+    <div style="width:570px;height:290px;" >
+        <table style="width:100%">
+          <tr><th style="width:15%">文件名称:</th><td colspan="3"><input style="width:80%" type="text" data-bind="value: model.name"/></td></tr>
+          <tr><th>更新周期:</th>
+              <td style="width:16%"><input style="width:90%" data-bind="value: (model.cycleUnit()==null ? null : model.cycleValue),disable:model.cycleUnit()==null" /></td>
+              <td><select  data-bind="options: $root.cycleSource,optionsText:'name', optionsValue:'code' , optionsCaption: '请选择周期...',value: model.cycleUnit"></select></td>
+              <td></td>
+          </tr>
+          <tr><th>模板文件:</th><td colspan="2"><select data-bind="options: $root.tmpfilesSource,optionsText: 'name', optionsValue: 'code', optionsCaption: '请选择模板...', value: model.templateFileCode"></select></td></tr>
+          <tr><th>是否提醒:</th><td><input type="checkbox" data-bind="checked : model.remind"/></td><td></td><td></td></tr>
+          <tr><th>政测解读:</th></tr>
+          <tr><td colspan="4"><textarea data-bind="value: model.explain" style="width:100%;height:50px"> </textarea></td></tr>
+          <tr><th>描述:</th></tr>
+          <tr><td colspan="4"><textarea data-bind="value: model.desc" style="width:100%;height:50px"></textarea></td></tr>
+        </table>
     </div>
     </script>
     </@>

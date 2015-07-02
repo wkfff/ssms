@@ -83,6 +83,7 @@ var utils;
             var template = opts.templateId ? $('#' + opts.templateId).html() : opts.template;
             layer.confirm(template, {
                 title: opts.title,
+                maxWidth:980,
                 success: function (layero, index) {
                     opts.loaded(layero);
                 }
