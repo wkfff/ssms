@@ -21,15 +21,11 @@
             if ($form.validate($('.form'))) {
                 utils.messager.showProgress();
                 $.post('save', model, function (result) {
-                    if (result.SID) {
-                        $.messager.alert("提示", "保存成功", "info", function () {
-                                utils.messager.closeProgress();
-                                window.location.href = 'rec?sid=' + result.SID + "&backURL=${backURL!referer!}";
-                        });
-                    } else {
-                        utils.messager.closeProgress();
-                        $.messager.alert("提示", "保存失败", "warning");
-                    }
+                    utils.messager.closeProgress();
+                    if (result.SID)
+                        utils.messager.alert("保存成功");
+                    else 
+                        utils.messager.alert("保存失败");
                 }, "json");
             }
         }

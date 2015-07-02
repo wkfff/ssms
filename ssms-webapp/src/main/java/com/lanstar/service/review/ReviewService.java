@@ -12,7 +12,10 @@ import com.lanstar.controller.review.ReviewGradeState;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.TenantContext;
 import com.lanstar.model.system.AttachText;
+import com.lanstar.model.system.TemplateRep;
+import com.lanstar.model.tenant.GradeReport;
 import com.lanstar.model.tenant.ReviewPlan;
+import com.lanstar.model.tenant.ReviewReport;
 import com.lanstar.service.AttachTextService;
 
 public class ReviewService {
@@ -40,7 +43,7 @@ public class ReviewService {
 //        return ReviewSyncService.sync( enterpriseContext, reviewContext,r_sid,sid );
 //    }
     
-    public boolean syncContentFromEnterprise(int srcPlanId,int descPlanId){
+    public int syncContentFromEnterprise(int srcPlanId,int descPlanId){
         return ReviewSyncService.syncContentFromEnterprise( enterpriseContext, reviewContext,srcPlanId,descPlanId );
     }
     
@@ -103,11 +106,15 @@ public class ReviewService {
      * @return
      */
     public boolean syncReportTemplate(int pro,int planId,Identity identity){
-        String sql = " SELECT C_CONTENT FROM SYS_REPORT_TEMPLATE T1 INNER JOIN SYS_TEMPLATE T2  ON T1.R_SID = T2.SID INNER JOIN SYS_PROFESSION T3  ON T3.R_TEMPLATE = T2.SID WHERE T3.SID = ? AND T1.Z_TYPE=2";
-        AttachText template = AttachText.dao.findFirst( sql,pro );
+        String sql = " SELECT T1.C_CONTENT FROM SYS_REPORT_TEMPLATE T1 INNER JOIN SYS_TEMPLATE T2  ON T1.R_SID = T2.SID INNER JOIN SYS_PROFESSION T3  ON T3.R_TEMPLATE = T2.SID WHERE T3.SID = ? AND T1.Z_TYPE=2";
+        TemplateRep template = TemplateRep.dao.findFirst( sql,pro );
         if (template!=null){
-            AttachTextService service = reviewContext.getAttachTextService();
-            service.save( "SSM_REVIEW_REPORT", "C_CONTENT", planId, template.getStr( "C_CONTENT" ), identity);
+            ReviewReport rep = new ReviewReport();
+            rep.setContent( template.getStr( "C_CONTENT" ) );
+            rep.setPlanId( planId );
+            return rep.save();
+//            AttachTextService service = reviewContext.getAttachTextService();
+//            service.save( "SSM_REVIEW_REPORT", "C_CONTENT", planId, template.getStr( "C_CONTENT" ), identity);
         }
         return true;
     }

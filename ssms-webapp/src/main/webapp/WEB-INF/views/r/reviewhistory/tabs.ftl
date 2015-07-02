@@ -23,8 +23,8 @@
 </head>
 <body>
 <div class="easyui-layout" data-options="fit:true,border:false" >
-    <div data-options="region:'north'" border="false" class="toolbar" style="overflow:hidden;">
-        <div id="tb" class="titlebar_noborder">
+    <div data-options="region:'north'" border="false" style="overflow:hidden;">
+        <div class="titlebar">
                 <img src="/resource/images/blue/star.png"/>&nbsp;${title!}评审情况
                 <span class="backing">
                     <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="doBack();">返回</a>

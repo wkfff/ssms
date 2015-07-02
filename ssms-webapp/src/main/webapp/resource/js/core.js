@@ -34,7 +34,7 @@ var utils;
         var indexArray = [];
 
         messager.showProgress = function (title) {
-            var index = layer.msg(title || '加载中', {icon: 16, time: 0});
+            var index = layer.msg(title || '加载中', {icon: 16, time: 0,shade:[0.3, '#000'] });
             indexArray.push(index);
         };
         messager.closeProgress = function () {

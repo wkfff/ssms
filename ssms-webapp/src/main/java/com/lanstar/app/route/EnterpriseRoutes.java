@@ -48,5 +48,7 @@ public class EnterpriseRoutes extends Routes {
         add( "/e/reviewresultcontent", ReviewResultContentController.class );
         add( "/e/reviewresultreport", ReviewResultReportController.class );
         add( "/e/reviewresultcert", ReviewResultCertController.class );
+        
+        add( "/e/gradereport", GradeReportController.class );
     }
 }

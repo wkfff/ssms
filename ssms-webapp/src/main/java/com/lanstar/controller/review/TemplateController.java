@@ -21,6 +21,7 @@ import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
+import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.plugin.activerecord.DbPro;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.sqlinxml.SqlKit;
@@ -34,27 +35,26 @@ public class TemplateController extends Controller {
     public void rec() {
 
     }
-    public void query2(){
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
-        // 企业
-        int eid = this.getParaToInt( "sid" );
-        // 专业
-        int pro = this.getParaToInt( "pro" );
-        Enterprise enterprise = Enterprise.dao.findById( eid );
-        Profession profession = Profession.dao.findById( pro );
-        identityContext.initReviewService( enterprise, profession );
-        
-        query();
-        render( "query.ftl" );
-    }
+
     /**
      * 查看企业当前生效的达标体系
      */
-    public void query(){
+    public void view(){
+        // 企业
+        int eid = this.getParaToInt( 0,0);
+        // 专业
+        int pro = this.getParaToInt( 1,0 );
+        // 是否显示返回，1显示
+        int showBack = this.getParaToInt(2,0);
+        this.setAttr( "showBack", showBack );
+        this.setAttr( "viewUrl", eid+"-"+pro+"-"+showBack );
+        
+        Enterprise enterprise = Enterprise.dao.findById( eid );
+        Profession profession = Profession.dao.findById( pro );
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        identityContext.initReviewService( enterprise, profession );
         ProfessionService professionService = identityContext.getReviewService().getEnterpriseContext().getEnterpriseService().getProfessionService();
         Template template = professionService.getSystemTemplate();
-        int eid = identityContext.getReviewService().getEnterpriseContext().getTenantId();
         String type = identityContext.getReviewService().getEnterpriseContext().getTenantType().getName();
         DbPro tenantDb = identityContext.getReviewService().getEnterpriseContext().getTenantDb();
         List<Record> folder = tenantDb.find(
@@ -66,18 +66,30 @@ public class TemplateController extends Controller {
             @Override
             public Map<String, Object> apply( Record input ) {
                 Map<String, Object> columns = input.getColumns();
-                columns = Maps.newHashMap( columns );
-                String url = input.getStr( "C_URL" );
-                if ( StrKit.isEmpty( url ) == false )
-                    columns.put( "C_URL", "/e/" + url );
                 return columns;
             }
         } );
         List<TreeNode> value = TreeNode.build( "D-0", list, "SID", "R_SID", "C_NAME" );
         setAttr("tree",value);
-    }
-    
-    public void see(){
         
+        //当前选中的
+        int sid = this.getParaToInt(3,0 );
+        setAttr("sid",sid);
+    }
+    /**
+     * 查看详细页面
+     * 路径：see/企业编号-专业编号-是否显示返回-模板文件编号-版本号-文件编号
+     */
+    public void see(){
+        this.setAttr( "viewUrl", this.getPara(0)+"-"+this.getPara(1)+"-"+this.getPara(2) );
+        String tmpfile = this.getPara( 3 );
+        int version = this.getParaToInt( 4, 0 );
+        int sid = this.getParaToInt( 5, 0 );
+        this.setAttr( "tmpfile", tmpfile );
+        this.setAttr( "version", version );
+        this.setAttr( "sid", sid );
+        TemplateFile tf = TemplateFile.dao.findById( sid );
+        if ( tf != null )
+            this.setAttr( "title", tf.get( "C_NAME" ) );
     }
 }

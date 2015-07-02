@@ -4,19 +4,15 @@
 <script type="text/javascript">
     var editor;
     function doSave(){
-        parent.$.messager.progress({title : '保存',text : '正在保存中，请稍后....'});
+        utils.messager.showProgress('正在保存中，请稍后....');
         editor.sync();
-        if ($form.validate($('#formMain')))
-            $.ajax({
-                type:'post',
-                url:'/sys/attachtext/save',
-                data:$("#formMain").serialize(), 
-                success:function(data){
-                    parent.$.messager.progress('close');
-                    $.messager.alert("提示", "保存成功", "info");
-                }
-            });
-        return false;
+        $('#formMain').form('submit', {
+            url:'save',
+            success: function(data){
+                utils.messager.closeProgress();
+                utils.messager.alert('保存成功！');
+            }
+        });
     }
 
     function doDownload(){
@@ -34,7 +30,7 @@
     $(function () {
          KindEditor.ready(function(K) {
                 var h = $('.layout-body')[0].scrollHeight-35;
-                editor = K.create('#content', {
+                editor = K.create('#C_CONTENT', {
                     width:'100%',height:h,border:0,
                     themeType :'simple',resizeType:0,
                     items : [
@@ -45,9 +41,7 @@
                     '|', 'table','|','fullscreen'
                     ],
                     afterCreate : function() {
-                        $.get("/sys/attachtext/get?table=SSM_REVIEW_REPORT&field=C_CONTENT&sid=${sid!}",function(data){
-                             if (data) editor.html(data);
-                        });
+                       
                     }
                  });
         });
@@ -66,10 +60,9 @@
                 </#if>
          </div>
          <form id="formMain" method="post">
-                <textarea id="content" name="content" style="display:none;"></textarea>
-                <input type="hidden" name="table" value="SSM_REVIEW_REPORT" />
-                <input type="hidden" name="field" value="C_CONTENT" />
-                <input type="hidden" name="sid" value="${sid!}" />
+                <textarea id="C_CONTENT" name="C_CONTENT" style="display:none;">${C_CONTENT!}</textarea>
+                <input type="hidden" name="R_SID" value="${R_SID!}" />
+                <input type="hidden" name="SID" value="${SID!}" />
          </form>
     </div>
 </div>

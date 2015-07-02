@@ -11,12 +11,11 @@ package com.lanstar.controller.enterprise;
 import java.util.Date;
 import java.util.List;
 
-import com.lanstar.common.kit.DateKit;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
-import com.lanstar.model.system.AttachText;
 import com.lanstar.model.tenant.GradeContent;
 import com.lanstar.model.tenant.GradePlan;
+import com.lanstar.model.tenant.GradeReport;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
@@ -34,7 +33,10 @@ public class GradePlanController extends SimplateController<GradePlan> {
         model.setTenant(this.identityContext.getTenant());
         model.save();
         //同步自评内容
-        this.identityContext.getEnterpriseService().syncContent( pro, model.getId() );
+        int n = this.identityContext.getEnterpriseService().syncContent( pro, model.getId() );
+        //总共多少项，用于判断是否还有未完成项
+        model.set( "N_COUNT", n );
+        model.update();
         //同步自评报告
         this.identityContext.getEnterpriseService().syncReport( pro, model.getId(),this.identityContext.getIdentity() );
         
@@ -44,15 +46,9 @@ public class GradePlanController extends SimplateController<GradePlan> {
     
     @Override
     public void index() {
-        // 本年度未开始自评时直接转到开始自评页面
+        // 本年度未开始自评时直接开始自评
         if (!this.identityContext.getEnterpriseService().hasPlan())
-            this.redirect( "/e/gradeplan/loading" );
-        else 
-            super.index();
-    }
-    
-    public void loading(){
-        
+            this.setAttr( "autoCreate", "1" );
     }
     
     public void tabs(){
@@ -60,37 +56,14 @@ public class GradePlanController extends SimplateController<GradePlan> {
         if (!StrKit.isBlank( sid ))
             this.setAttr( "sid", sid );
     }
-    
-    public void create(){
-        this.redirect( "/e/gradeplan/loading" );
-//        int sid = init();
-//        this.redirect( "/e/gradeplan/tabs/"+sid );
-    }
-    /**
-     * 开始新的自评
-     */
-    public void rec_new() {
-        String d = DateKit.toStr( new Date() );
-        setAttr("T_START",d);
-        setAttr("T_END",d);
-    }
-    
-    /**
-     * 自评
-     */
-    @Override
-    public void rec() {
-        super.rec();
-        if ( isParaExists( "json" ) == true )
-            renderJson();
-    }
-    
+       
     /**
      * 自评报告
      */
     public void rep(){
         
     }
+    
     public void report_rec(){
         rec();
     }
@@ -147,40 +120,13 @@ public class GradePlanController extends SimplateController<GradePlan> {
     }
 
     @Override
-    protected void beforeSave( GradePlan model, boolean[] handled ) {
-        Integer sid = model.getInt( "SID" );
-        if ( sid == null ) { // for insert
-            isNew = true;
-            model.setTitle( model.getStartDate() + "企业自评" );
-            model.setState( 0 );
-        }
-    }
-
-    @Override
     public void del() {
         //删除自评内容
         GradeContent.dao.deleteById( this.getModel().getId(),"R_SID");
         //删除自评报告
-        AttachText at = AttachText.dao.findFirst( "select * from sys_attach_text where r_table='SSM_GRADE_REPORT' and r_field='C_CONTENT' and R_SID=?",this.getModel().getId() );
-        if (at!=null) at.delete();
-        super.del();
-    }
-    
-    /**
-     * 验证自评内容是否都已经填写,N大于0时说明还有未填写内容
-     * N为-1时说明自评报告未完成
-     */
-    public void check(){
-        int r=0;
-        Record rec =  tenantDb.findFirst("SELECT F_GRADE_CHECK_E(?) N", new Object[] { this.getModel().getId() } );
-        r = rec==null?0:rec.getInt( "N" );
+        GradeReport.dao.delByPlanId( this.getModel().getId() );
         
-        if (r==0){
-            AttachText at = AttachText.dao.findFirst( "select * from sys_attach_text where r_table='SSM_GRADE_REPORT' and r_field='C_CONTENT' and R_SID=?",this.getModel().getId() );
-            r = at==null?-1:0;
-        }
-        this.setAttr( "N", r );
-        renderJson();
+        super.del();
     }
     
     /**
@@ -188,36 +134,29 @@ public class GradePlanController extends SimplateController<GradePlan> {
      */
     public void complete() {
         GradePlan model = this.getModel();
-//        if (StrKit.isBlank( model.getStr( "R_LEADER" )) ){
-//            this.setAttr( "result", "自评方案未完成，请填写！" );
-//        }
-//        
-//        Record rec =  tenantDb.findFirst("SELECT F_GRADE_CHECK_E(?) N", new Object[] { this.getModel().getId() } );
-//        int r = rec==null?0:rec.getInt( "N" );
-//        if(r>0){
-//            this.setAttr( "result", "自评内容未完成，请填写！" );
-//        }
+        if (StrKit.isBlank( model.getStr( "C_LEADER" )) || StrKit.isBlank( model.getStr( "C_MEMBERS" ))){
+            this.setAttr( "msg", "自评方案还有未填写的项，填写后才能完成自评！" );
+            renderJson();
+            return;
+        };
+
+        if (!model.isContentComplete()){
+            this.setAttr( "msg", "自评内容还有未填写的项，填写后才能完成自评！" );
+            renderJson();
+            return;
+        };
         
-        if (model.getState()==EnterpriseGradeState.END.getValue()) 
-            this.setAttr( "result", "自评已经完成！" );
-        else{
-            model.setState( EnterpriseGradeState.END.getValue() );
-            model.update();
-            this.setAttr( "result", "OK" );
-        }
+        GradeReport rep = GradeReport.dao.getReport( model.getId() );
+        if(rep==null || !rep.isSaved() ) {
+            this.setAttr( "msg", "自评报告未完成，填写后才能完成自评！" );
+            renderJson();
+            return;
+        };
+        
+        model.setState( EnterpriseGradeState.END.getValue() );
+        model.update();
+        this.setAttr( "msg", "自评完成！" );
         renderJson();
-    }
-    /**
-     * 评审结果列表
-     */
-    public void review_result(){
-        
-    }
-    /**
-     * 评审结果查看
-     */
-    public void review_tabs(){
-        
     }
     /**
      * 自评历史

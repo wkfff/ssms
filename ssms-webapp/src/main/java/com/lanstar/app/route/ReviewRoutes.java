@@ -38,6 +38,8 @@ public class ReviewRoutes extends Routes {
         add( "/r/reviewreport", ReviewReportController.class );
         add( "/r/reviewcert", ReviewCertController.class );
         add( "/r/reviewhistory", ReviewHistoryController.class );
+        add( "/r/reviewmember", ReviewMemberController.class );
+        
 
     }
 }

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/resource/css/base.css"/>
     <link rel="stylesheet" href="/resource/css/common.css"/>
     <link rel="stylesheet" href="/resource/css/index.css"/>
-    <link rel="stylesheet" href="/resource/css/kefu.css"/>
+    <link rel="stylesheet" type="text/css" href="/resource/css/layout.css">
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
@@ -31,8 +31,10 @@
     </#if>
 </head>
 <body>
-<div id="db_tb" style="padding:5px;">
-    <a href="#" class="easyui-linkbutton" iconCls="icon-back" plain="true" onclick="window.location.href='${referer!}';">返回要素列表</a>
+
+<div class="titlebar">
+            <img src="/resource/images/blue/star.png"/>&nbsp;${title!}&nbsp; 
+            <span class="backing"><a href="/r/stdtmp/view/${viewUrl!}-${sid!}">返回列表</a></span>
 </div>
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'center', border:false,tools:'#db_tb'">
@@ -55,9 +57,13 @@
         if (isFunction(onPanelLoad)) onPanelLoad();
     }
     $(document).ready(function(){
-        var url = '${URL}';
+    /*
+        var url = '${URL!}';
         if (url.length>0)
             $("#content").panel("setTitle", "").panel("refresh",url);
+            */
+            var url = '/e/stdtmp_file_${tmpfile}/view?sid=${sid}'
+        $("#content").panel("setTitle", "").panel("refresh",url);
     });
 </script>
 </body>
