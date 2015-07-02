@@ -14,6 +14,14 @@ import com.lanstar.plugin.activerecord.ModelExt;
 public class TemplateFolder extends ModelExt<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
 
+    public int getVersion() {
+        return getInt( "N_VERSION" );
+    }
+
+    public void setVersion( int version ) {
+        set( "N_VERSION", version );
+    }
+
     public Integer getIndex() {
         return getInt( "N_INDEX" );
     }

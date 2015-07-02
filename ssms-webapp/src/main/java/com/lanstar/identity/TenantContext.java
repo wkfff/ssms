@@ -107,7 +107,7 @@ public class TenantContext {
         if ( getTenantType() == TenantType.SYSTEM ) return DbPro.use();
 
         Config config = DbKit.getConfig( Const.TENANT_DB_NAME );
-        DsKit.switchDs( config.getDataSource(), getTenantCode() );
+        DsKit.switchDs( config.getDataSource(), getTenantDbCode() );
         return Db.use( Const.TENANT_DB_NAME );
     }
 

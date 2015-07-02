@@ -136,24 +136,10 @@ public class TemplateFile extends TenantModel<TemplateFile> {
     }
 
     /**
-     * 获取来源文件ID，即描述拷贝自哪个文件。
-     */
-    public Integer getSourceFileId() {
-        return getInt( "R_SOURCE" );
-    }
-
-    /**
      * 获取来源文件，即拷贝自的文件
      */
     public com.lanstar.model.system.TemplateFile getSourceFile() {
-        return com.lanstar.model.system.TemplateFile.dao.findById( getSourceFileId() );
-    }
-
-    /**
-     * 设置来源文件
-     */
-    public void setSourceFile( com.lanstar.model.system.TemplateFile file ) {
-        set( "R_SOURCE", file.getId() );
+        return com.lanstar.model.system.TemplateFile.dao.findById( getId() );
     }
 
     /**

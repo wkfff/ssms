@@ -51,4 +51,9 @@ public class TemplateFile06Controller extends SimplateController<TemplateFile06>
     protected SqlBuilder buildOrder() {
         return new SqlBuilder().ORDER_BY( "T_CREATE DESC" );
     }
+
+    @Override
+    protected void afterSave( TemplateFile06 model ) {
+        final TemplateFile templateFile = model.getTemplateFile();
+    }
 }

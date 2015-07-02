@@ -32,4 +32,10 @@ public class TemplateProps {
     public boolean remove( Object o ) {return list.remove( o );}
 
     public TemplateProp remove( int index ) {return list.remove( index );}
+
+    public TemplateProp with( String code, String name ) {
+        TemplateProp prop = new TemplateProp( code, name );
+        add( prop );
+        return prop;
+    }
 }
