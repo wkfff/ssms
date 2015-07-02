@@ -80,10 +80,10 @@ var utils;
         };
         dialog.open = function (options) {
             var opts = $.extend({}, defaultOptions, options);
-            var template = opts.templateId ? $('#' + opts.templateId).html() : opts.template;
+            var template = opts.templateId ? $(opts.templateId).html() : opts.template;
             layer.confirm(template, {
                 title: opts.title,
-                maxWidth:980,
+                maxWidth: 980,
                 success: function (layero, index) {
                     opts.loaded(layero);
                 }

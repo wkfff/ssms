@@ -25,11 +25,12 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "TENANT_USER", TenantUser.class );
         addMapping( "SYS_NAV", "SID", Navgate.class );
         addMapping( "SYS_PROFESSION", "SID", Profession.class );
-        addMapping( "SYS_TEMPLATE", "SID", Template.class );
 
         addMapping( "SYS_ATTACH_TEXT", "SID", AttachText.class );
         addMapping( "SYS_ATTACH_FILE", "SID", AttachFile.class );
 
+        addMapping( "SYS_TEMPLATE", "SID", Template.class );
+        addMapping( "SYS_TEMPLATE_TEXT", "SID", TemplateText.class );
         addMapping( "SYS_STDTMP_FOLDER", "SID", TemplateFolder.class );
         addMapping( "SYS_STDTMP_FILE", "SID", TemplateFile.class );
         addMapping( "SYS_GRADE_STD", "SID", TemplateGrade.class );
@@ -40,10 +41,23 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_STDTMP_FILE_03", "SID", TemplateFile03.class );
         addMapping( "SYS_STDTMP_FILE_04", "SID", TemplateFile04.class );
         addMapping( "SYS_STDTMP_FILE_06", "SID", TemplateFile06.class );
-        
         addMapping( "SYS_STDTMP_FILE_07", "SID", TemplateFile07.class );
         addMapping( "SYS_STDTMP_FILE_08", "SID", TemplateFile08.class );
         addMapping( "SYS_STDTMP_FILE_09", "SID", TemplateFile09.class );
+
+        // 系统模板归档相关的表
+        addMapping( "SYS_TEMPLATE_ARCH", "UID", com.lanstar.model.system.archive.Template.class );
+        addMapping( "SYS_TEMPLATE_TEXT_ARCH", "UID", com.lanstar.model.system.archive.TemplateText.class );
+        addMapping( "SYS_STDTMP_FOLDER_ARCH", "UID", com.lanstar.model.system.archive.TemplateFolder.class );
+        addMapping( "SYS_STDTMP_FILE_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile.class );
+        addMapping( "SYS_STDTMP_FILE_01_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile01.class );
+        addMapping( "SYS_STDTMP_FILE_02_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile02.class );
+        addMapping( "SYS_STDTMP_FILE_03_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile03.class );
+        addMapping( "SYS_STDTMP_FILE_04_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile04.class );
+        addMapping( "SYS_STDTMP_FILE_06_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile06.class );
+        addMapping( "SYS_STDTMP_FILE_07_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile07.class );
+        addMapping( "SYS_STDTMP_FILE_08_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile08.class );
+        addMapping( "SYS_STDTMP_FILE_09_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile09.class );
 
         addMapping( "SYS_PARA_MULTI", "SID", MultiPara.class );
         addMapping( "SYS_INDUSTRY", "SID", Industry.class );

@@ -33,8 +33,6 @@ public class TemplateController extends Controller {
 
         // get template instance
         Template template = professionService.getSystemTemplate();
-        // sync template
-        professionService.sync( identityContext );
 
         // load template tree data
         DbPro tenantDb = identityContext.getTenantDb();

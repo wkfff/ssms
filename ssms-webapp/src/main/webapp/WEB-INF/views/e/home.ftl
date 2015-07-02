@@ -87,7 +87,7 @@
                 </div>
             <#-- <a href="/e/grade_m/index" class="more">更多</a> -->
             </div>
-            <div id="tbc" class="content" style="height:410px">
+            <div id="tbc" class="content" style="height:280px">
                 <div id="tc1">
                     <table class="matter-list">
                         <#if rs_todo?? && rs_todo?size!=0>

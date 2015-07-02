@@ -190,6 +190,7 @@ public class ModelKit {
 
     @SuppressWarnings("rawtypes")
     public static int[] batchSave(DbPro dbPro ,List<? extends Model> data, int batchSize) {
+        if (data.size() == 0) return null;
         Model<?> model = data.get(0);
         Map<String, Object> attrs = model.getAttrs();
         Class<? extends Model> modelClass = model.getClass();

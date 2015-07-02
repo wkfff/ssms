@@ -88,6 +88,16 @@
         </table>
     </div>
     </script>
+
+    <script type="text/html" id="dlgStatus">
+        <div style="height: 300px; width: 450px; overflow: auto; white-space:nowrap;">
+            <!-- ko foreach: logs -->
+            <p data-bind="text: $data"></p>
+            <!-- /ko -->
+        </div>
+        <div class="layui-layer-btn" data-bind="visible: status">
+            <a class="layui-layer-btn0" data-bind="click: finish">确定</a></div>
+    </script>
     </@>
     <@layout.put block="footer">
     <script type="text/javascript">
@@ -96,10 +106,38 @@
         }
         function ViewModel(template, folders) {
             this.publish = function () {
-                utils.messager.confirm("确定要发布模板吗？", function () {
-                    $.post('${BASE_PATH}/publish/${template.id}', function (result) {
-                        utils.messager.alert(result != false ? '成功发布模板!' : '模板发布失败,请联系管理人员!', reload);
-                    }, 'json')
+                utils.messager.confirm("确定要发布模板吗？", function (_index) {
+                    layer.close(_index);
+                    var publishResult = {
+                        status: ko.observable(),
+                        logs: ko.observableArray(),
+                        finish: function () {
+                            layer.close(index);
+                            $.post("${BASE_PATH}/finish/${template.id}", reload);
+                        }
+                    };
+
+                    var index = layer.open({
+                        type: 1,
+                        title: "发布状态",
+                        closeBtn: false, //不显示关闭按钮
+                        content: $('#dlgStatus').html(),
+                        maxWidth: 500,
+                        scrollbar: false,
+                        success: function (layero) {
+                            ko.applyBindings(publishResult, layero[0]);
+                        }
+                    });
+
+                    var callback = function (result) {
+                        publishResult.status(result.status == "FINISH");
+                        publishResult.logs(result.logs);
+                        if (publishResult.status()) return;
+                        setTimeout(function () {
+                            $.post('${BASE_PATH}/status/${template.id}', callback, 'json');
+                        }, 3000);
+                    };
+                    $.post('${BASE_PATH}/publish/${template.id}', callback, 'json');
                 });
             };
 
@@ -169,7 +207,7 @@
                     }
                 },this)
 
-                this.templateUrl = "${BASE_PATH}/file/"+item.id;
+                this.templateUrl = "${BASE_PATH}/file/" + item.id;
                 this.level = ko.computed(function () {
                     var level = 0;
                     var parent = this.parent;
@@ -240,7 +278,7 @@
 
             this.addFile = function (model) {
                 // 弹出对话框
-                fileViewModel.model = new FileModel(model)
+                fileViewModel.model = new FileModel(model);
 
                 utils.dialog.open({
                     template: $('#dlgFile').html(),

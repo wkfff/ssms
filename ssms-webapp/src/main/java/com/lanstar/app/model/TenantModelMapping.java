@@ -11,15 +11,14 @@ import com.lanstar.model.tenant.*;
 
 public class TenantModelMapping extends ActiveRecordMapping {
     public TenantModelMapping() {
-        addMapping( "SSM_STDTMP_FOLDER", "SID", TemplateFolder.class );
-        addMapping( "SSM_STDTMP_FILE", "SID", TemplateFile.class );
+        addMapping( "SSM_STDTMP_FOLDER", "UID", TemplateFolder.class );
+        addMapping( "SSM_STDTMP_FILE", "UID", TemplateFile.class );
         addMapping( "SSM_STDTMP_FILE_01", "SID", TemplateFile01.class );
         addMapping( "SSM_STDTMP_FILE_01_ITEM", "SID", TemplateFile01Item.class );
         addMapping( "SSM_STDTMP_FILE_02", "SID", TemplateFile02.class );
         addMapping( "SSM_STDTMP_FILE_03", "SID", TemplateFile03.class );
         addMapping( "SSM_STDTMP_FILE_04", "SID", TemplateFile04.class );
         addMapping( "SSM_STDTMP_FILE_06", "SID", TemplateFile06.class );
-
         addMapping( "SSM_STDTMP_FILE_07", "SID", TemplateFile07.class );
         addMapping( "SSM_STDTMP_FILE_08", "SID", TemplateFile08.class );
         addMapping( "SSM_STDTMP_FILE_09", "SID", TemplateFile09.class );

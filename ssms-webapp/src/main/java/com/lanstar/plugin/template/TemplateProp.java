@@ -8,51 +8,35 @@
 
 package com.lanstar.plugin.template;
 
-import com.lanstar.identity.Identity;
-import com.lanstar.identity.Tenant;
-import com.lanstar.model.system.TemplateFile;
-import com.lanstar.model.tenant.TemplateFolder;
+import com.google.common.collect.Maps;
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.service.Parameter;
+
+import java.util.Map;
 
 /**
  * 模板属性说明文件
  */
 @SuppressWarnings("rawtypes")
-public class TemplateProp {
+public final class TemplateProp {
     private String name;
     private String code;
-    private ModelWrap systemModelWrap;
-    private ModelWrap tenantModelWrap;
+    private Map<ModelType, ModelWrap> models = Maps.newHashMap();
 
     private Parameter parameter;
-    private SyncUnitFactory syncUnitFactory;
 
-    public static TemplateProp with( String code, String name,
-            Class<? extends ModelExt> systemModelClazz,
-            Class<? extends ModelExt> tenantModelClazz ) {
-        return with( code, name, systemModelClazz, tenantModelClazz,
-                     SyncUnitFactory.DEFAULT );
+    public TemplateProp( String code, String name ) {
+        this.name = name;
+        this.code = code;
     }
 
-    public static TemplateProp with( String code, String name,
-            Class<? extends ModelExt> systemModelClazz,
-            Class<? extends ModelExt> tenantModelClazz,
-            SyncUnitFactory unitFactory ) {
-        TemplateProp prop = new TemplateProp();
-        prop.code = code;
-        prop.name = name;
-        prop.systemModelWrap = ModelWrap.wrap( systemModelClazz );
-        prop.tenantModelWrap = ModelWrap.wrap( tenantModelClazz );
-        prop.syncUnitFactory = unitFactory;
-        return prop;
+    public TemplateProp putModel( ModelType type, Class<? extends ModelExt> model ) {
+        models.put( type, ModelWrap.wrap( model ) );
+        return this;
     }
 
-    public void sync( TemplateFile source,
-            com.lanstar.model.tenant.TemplateFile target,
-            TemplateFolder tenantFolder, Tenant targetTenant, Identity operator ) {
-        syncUnitFactory.sync( source, target, tenantFolder, targetTenant,
-                              operator );
+    public ModelWrap getModel( ModelType type ) {
+        return models.get( type );
     }
 
     public String getCode() {
@@ -63,23 +47,10 @@ public class TemplateProp {
         return name;
     }
 
-    public ModelWrap getSystemModelWrap() {
-        return systemModelWrap;
-    }
-
-    public ModelWrap getTenantModelWrap() {
-        return tenantModelWrap;
-    }
-
-    public final Parameter getParameter() {
+    public Parameter getParameter() {
         if ( parameter == null ) {
             parameter = new Parameter( code, name );
         }
         return parameter;
-    }
-
-    public String getTemplateUrl( int id ) {
-        // TODO: 模板页面的规则被固定在这里，可能要考虑迁移出去。
-        return "/sys/stdtmp_file_" + code + "/?sid=" + id;
     }
 }

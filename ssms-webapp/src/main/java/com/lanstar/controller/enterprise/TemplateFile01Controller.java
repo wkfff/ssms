@@ -19,15 +19,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class TemplateFile01Controller extends SimplateController<TemplateFile01> {
-    @Override
-    protected TemplateFile01 getDao() {
-        return TemplateFile01.dao;
-    }
-
     public void index() {
         String sid = getPara( "sid" );
         TemplateFile01 templateFile = getDao().findFirstByColumn( "R_TMPFILE", sid );
-        if (templateFile == null) return;
+        if ( templateFile == null ) return;
         setAttrs( ModelKit.toMap( templateFile ) );
         TemplateFile file = templateFile.getTemplateFile();
         com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
@@ -37,36 +32,41 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
 
         String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ?";
 
-        setAttr("pass", TemplateFile01Item.dao.find(sql, templateFile.get("SID")));
+        setAttr( "pass", TemplateFile01Item.dao.find( sql, templateFile.get( "SID" ) ) );
     }
 
     public void pass() {
         TemplateFile01Item model = new TemplateFile01Item();
-        Integer sid = getParaToInt("SID");
+        Integer sid = getParaToInt( "SID" );
 
         Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
+        int year = c.get( Calendar.YEAR );
         String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ? and '" + year + "-01-01' <=T_DATE_01 and T_DATE_01<='" + year + "-12-31'";
 
-        if (model.findFirst(sql, sid) == null) {
-            model.set("R_TMPFILE_01", sid);
-            model.set("T_DATE_01", new Date());
-            ModelInjector.injectOpreator(model, identityContext);
+        if ( model.findFirst( sql, sid ) == null ) {
+            model.set( "R_TMPFILE_01", sid );
+            model.set( "T_DATE_01", new Date() );
+            ModelInjector.injectOpreator( model, identityContext );
 
-            if (model.save()) {
+            if ( model.save() ) {
                 //审核通过
-                renderJson("1");
+                renderJson( "1" );
             } else {
                 //审核不通过
-                renderJson("0");
+                renderJson( "0" );
             }
         } else {
             //已审核通过
-            renderJson("3");
+            renderJson( "3" );
         }
     }
-    
-    public void view(){
+
+    public void view() {
         super.rec();
+    }
+
+    @Override
+    protected TemplateFile01 getDao() {
+        return TemplateFile01.dao;
     }
 }

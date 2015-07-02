@@ -8,6 +8,7 @@
 
 package com.lanstar.controller.system;
 
+import com.google.common.collect.Maps;
 import com.lanstar.beans.system.FolderBean;
 import com.lanstar.beans.system.FolderTreeBuilder;
 import com.lanstar.common.Asserts;
@@ -19,7 +20,10 @@ import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFolder;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 import com.lanstar.service.MultiParaType;
+import com.lanstar.service.system.template.PublishTask;
+import com.lanstar.service.system.template.PublishTaskFactory;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class TemplateFolderController extends Controller {
@@ -117,12 +121,24 @@ public class TemplateFolderController extends Controller {
     }
 
     public void publish() {
-        final Integer templateId = getParaToInt();
-        final FolderBean folderBeans = getTemplate( templateId );
-        final Template template = Template.dao.findById( templateId );
-        template.setCacheContent( folderBeans );
-        template.setVersion( template.getVersion() + 1 );
-        renderJson( template.update() );
+        Integer templateId = getParaToInt();
+        PublishTaskFactory.me().startTask( templateId );
+        status();
+    }
+
+    public void status() {
+        Integer templateId = getParaToInt();
+        PublishTask task = PublishTaskFactory.me().getTask( templateId );
+        if ( task != null ) {
+            HashMap<String, Object> map = Maps.newHashMap();
+            map.put( "status", task.status() );
+            map.put( "logs", task.getLogs() );
+            renderJson( map );
+        }
+    }
+
+    public void finish(){
+        PublishTaskFactory.me().removeTask( getParaToInt() );
     }
 
     private FolderBean getTemplate( int template ) {
