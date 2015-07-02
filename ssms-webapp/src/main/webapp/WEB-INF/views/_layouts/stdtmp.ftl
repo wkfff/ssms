@@ -17,9 +17,6 @@
         <div class="content">
             <@layout.block name="panel_content"/>
         </div>
-        <div style="display: block;height:685px;width:1237px">
-            <@layout.block name="list"/>
-        </div>
     </div>
     </@>
 

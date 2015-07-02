@@ -66,10 +66,11 @@
         <p>排序: <input size="52" type="text" data-bind="value: index" style="margin-left:28px"/></p>
         <p>描述: </p>
         <p>
-            <textarea style="width:520px;height:150px" data-bind="value: desc" style="margin-left:65px;width:175px;"></textarea>
+            <textarea data-bind="value: desc" style="margin-left:65px;width:175px;"></textarea>
         </p>
     </script>
     <script type="text/html" id="dlgFile">
+    <div style="width:570px;height:80px;">
         <p>文件名称: <input size="50" type="text" data-bind="value: model.name"/></p>
         <p>更新周期: <input data-bind="value: (model.cycleUnit()==null ? null : model.cycleValue),disable:model.cycleUnit()==null" style="width: 84px;"/> 
         <select  data-bind="options: $root.cycleSource,optionsText:'name', optionsValue:'code' , optionsCaption: '请选择周期...',value: model.cycleUnit"></select></p>
@@ -82,7 +83,8 @@
         <p>描述: </p>
         <p>
             <textarea data-bind="value: model.desc" style="width:520px;height:50px"></textarea>
-        </p>
+        </p> 
+    </div>
     </script>
     </@>
     <@layout.put block="footer">
@@ -104,7 +106,7 @@
                 tmpfilesSource: ko.observableArray(${json(tmpfiles)}),
                 getCycle: function (code) {
                     for (var i = 0; i < this.cycleSource.length; i++) {
-                        if (this.cycleSource[i].code == code) return this.cycleSource[i].code;
+                        if (this.cycleSource[i].code == code) return this.cycleSource[i];
                     }
                 },
                 model: null
@@ -197,7 +199,7 @@
                             model.children.push(tmpFolder);
                         });
                     }
-                }, "570px", "360px");
+                });
             };
 
             this.editFolder = function (model) {
@@ -249,7 +251,7 @@
                             model.files.push(fileViewModel.model);
                         });
                     }
-                }, "570px", "380px");
+                });
             };
 
             this.editFile = function (model) {
