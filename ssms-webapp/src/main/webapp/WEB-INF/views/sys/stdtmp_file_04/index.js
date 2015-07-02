@@ -55,7 +55,7 @@ function ViewModel(catalogId,path) {
                 $.messager.alert("警告", "请先选择一行数据！", "warning");
                 return;
             }
-            window.location.href = path+'/rec?sid=' + value.SID;
+            window.location.href = path+'/rec?sid=' + value.SID+'&pid=' + catalogId;
         },
         deleteClick: function () {
             var value = model.selectItem();

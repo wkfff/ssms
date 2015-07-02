@@ -1,5 +1,5 @@
-<#import "../../layout/_rec.ftl" as layout/>
-<@layout.doLayout script>
+<@layout.extends name="../../_layouts/stdtmpfile.ftl">
+<@layout.put block="head">
 <style type="text/css">
     .kocontainer {
         position: absolute;
@@ -27,7 +27,8 @@
         height: 35px;
     }
 </style>
-<div class="kocontainer">
+</@>
+<@layout.put block="panel_content">
     <div class="z-toolbar" data-bind="visible: !readonly">
         <a class="easyui-linkbutton" plain="true" iconCls="icon-add" data-bind="click: addItem">新建隐患项目</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
@@ -104,7 +105,8 @@
         </tr>-->
         </table>
     </form>
-</div>
+</@>
+<@layout.put block="footer">
 <script type="text/javascript">
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
@@ -169,6 +171,7 @@
             $.post('${BASE_PATH}/del', {sid: model.SID()}, function (result) {
                 utils.messager.closeProgress();
                 $.messager.alert('提示', result == true ? '删除成功' : '删除失败');
+                window.location.href = '/sys/stdtmp/file/${R_TMPFILE!pid}';
             }, 'json')
         }
     };
@@ -177,3 +180,4 @@
     });
 </script>
 </@>
+</@layout.extends>

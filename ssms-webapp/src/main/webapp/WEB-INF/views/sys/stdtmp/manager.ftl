@@ -37,7 +37,7 @@
             <td data-bind="style: {'padding-left': 8+30*level()+'px'}">
                 <span class="icon-folder" data-bind="text:name"></span>
             </td>
-            <td data-bind="text: index"></td>
+            <td data-bind="text: _index"></td>
             <td>
                 <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.addFolder" title="添加子目录">添加目录</a>
                 <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.addFile" title="添加文件">添加文件</a>
@@ -53,7 +53,7 @@
             <td data-bind="style: {'padding-left': 8+30*level()+'px'}">
                 <a class="icon-file" data-bind="text: name, attr: {href: templateUrl}"></a>
             </td>
-            <td data-bind="text: index"></td>
+            <td data-bind="text: _index"></td>
             <td>
                 <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.editFile">编辑</a>
                 <a href="javascript:void(0);" class="icon-remove" data-bind="click: $root.removeFile">删除</a>
@@ -104,7 +104,7 @@
                 tmpfilesSource: ko.observableArray(${json(tmpfiles)}),
                 getCycle: function (code) {
                     for (var i = 0; i < this.cycleSource.length; i++) {
-                        if (this.cycleSource[i].code == code) return this.cycleSource[i];
+                        if (this.cycleSource[i].code == code) return this.cycleSource[i].code;
                     }
                 },
                 model: null
@@ -119,6 +119,11 @@
                 this.name = ko.observable(item.name).extend({required: true});
                 this.desc = ko.observable(item.desc);
                 this.index = ko.observable(item.index);
+                this._index = ko.computed(function () {
+                    var parent = this.parent;
+                    if (parent == null) return this.index();
+                    return this.parent._index()+ '-' + this.index();
+                }, this);
 
                 this.level = ko.computed(function () {
                     var level = 0;
@@ -150,6 +155,15 @@
                 this.remind = ko.observable(item.remind == '1');
                 this.cycleUnit = ko.observable(fileViewModel.getCycle(item.cycleUnitCode));
                 this.cycleValue = ko.observable(item.cycleValue);
+                this.index = ko.observable(item.index);
+                this._index=ko.computed(function(){
+                    if(this.parent==null) return this.index();
+                    else {
+                        if(this.index()!=null)
+                        return this.parent._index()+'-'+this.index();
+                        else return this.parent._index();
+                    }
+                },this)
 
                 this.templateUrl = "${BASE_PATH}/file/"+item.id;
                 this.level = ko.computed(function () {
@@ -161,7 +175,6 @@
                     }
                     return level;
                 }, this);
-                this.index = ko.observable(item.index);
             }
 
 
