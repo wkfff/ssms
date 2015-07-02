@@ -13,7 +13,6 @@ function ViewModel(templateId,path) {
     
     var settings = {
         gridSettings: {
-            title:'特种设备台账及定期检验记录',
             idField: 'SID',
             url: path+"/list",
             queryParams: {

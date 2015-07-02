@@ -13,7 +13,6 @@ function ViewModel(templateId,path) {
     
     var settings = {
         gridSettings: {
-            title:' 安全附件定期检查检验记录',
             idField: 'SID',
             url: path+"/list",
             queryParams: {

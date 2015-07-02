@@ -1,5 +1,7 @@
-<#import "../../layout/_list.ftl" as layout/>
-<@layout.doLayout script=script>
+<@layout.extends name="../../_layouts/stdtmpfile.ftl">
+<@layout.put block="head">
+</@>
+<@layout.put block="list">
 <div id="toolbar">
     <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
@@ -7,7 +9,9 @@
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" data-bind="click: deleteClick">删除</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-back" plain="true" data-bind="click:function(){window.location.href='${referer!}';}">返回</a>
 </div>
-<table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table>
+<table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table> 
+</@>
+<@layout.put block="footer">
 <script type="text/javascript">
     function ViewModel(catalogId) {
         var model = {
@@ -87,3 +91,4 @@
     });
 </script>
 </@>
+</@layout.extends>

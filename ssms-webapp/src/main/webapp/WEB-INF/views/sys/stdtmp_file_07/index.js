@@ -14,7 +14,6 @@ function ViewModel(templateId,path) {
     
     var settings = {
         gridSettings: {
-            title:'特种作业人员持证登记表',
             idField: 'SID',
             url: path+"/list",
             queryParams: {
