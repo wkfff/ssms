@@ -8,6 +8,8 @@
 
 package com.lanstar.service.enterprise;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.lanstar.common.Asserts;
 import com.lanstar.controller.enterprise.EnterpriseGradeState;
 import com.lanstar.identity.Identity;
@@ -19,9 +21,9 @@ import com.lanstar.model.system.TemplateGrade;
 import com.lanstar.model.system.TemplateRep;
 import com.lanstar.model.tenant.GradeContent;
 import com.lanstar.model.tenant.GradePlan;
+import com.lanstar.model.tenant.GradeReport;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.Record;
-import com.lanstar.service.AttachTextService;
 
 import java.util.List;
 import java.util.Map;
@@ -101,19 +103,26 @@ public class EnterpriseService {
     /**
      * 根据专业从评分标准生成评分内容
      */
-    public boolean syncContent( int pro, int planId ) {
+    public int syncContent( int pro, final int planId ) {
         List<TemplateGrade> list = TemplateGrade.dao.getTemplateByPro( pro );
-        for ( TemplateGrade gt : list ) {
-            GradeContent gc = new GradeContent();
-            ModelKit.copyColumns( gt, gc, "C_CATEGORY", "C_PROJECT", "C_REQUEST", "C_CONTENT", "N_SCORE", "C_METHOD" );
-            gc.set( "R_SID", planId );
-            gc.set( "R_STD", gt.getInt( "SID" ) );
-            gc.set( "R_TENANT", tenantContext.getTenantId() );
-            gc.set( "S_TENANT", tenantContext.getTenantName() );
-            gc.set( "P_TENANT", tenantContext.getTenantType().getName() );
-            gc.save();
-        }
-        return true;
+        
+        List<GradeContent> models = Lists.transform( list, new Function<TemplateGrade, GradeContent>(){
+            @Override
+            public GradeContent apply( TemplateGrade input ) {
+                GradeContent gc = new GradeContent();
+                ModelKit.copyColumns( input, gc, "C_CATEGORY","C_PROJECT","C_REQUEST","C_CONTENT","N_SCORE","C_METHOD" );
+                gc.set("R_SID", planId );
+                gc.set( "R_STD", input.getInt( "SID" ) );
+                gc.set( "R_TENANT", tenantContext.getTenantId() );
+                gc.set( "S_TENANT", tenantContext.getTenantName() );
+                gc.set( "P_TENANT", tenantContext.getTenantType().getName() );
+                
+                return gc; 
+            }
+        } );
+        models = Lists.newArrayList(models);
+        ModelKit.batchSave( this.tenantContext.getTenantDb(), models);
+        return models.size();
     }
 
     /**
@@ -123,8 +132,12 @@ public class EnterpriseService {
         String sql = " SELECT C_CONTENT FROM SYS_REPORT_TEMPLATE T1 INNER JOIN SYS_TEMPLATE T2  ON T1.R_SID = T2.SID INNER JOIN SYS_PROFESSION T3  ON T3.R_TEMPLATE = T2.SID WHERE T3.SID = ? AND T1.Z_TYPE=1";
         TemplateRep template = TemplateRep.dao.findFirst( sql, pro );
         if ( template != null ) {
-            AttachTextService service = tenantContext.getAttachTextService();
-            service.save( "SSM_GRADE_REPORT", "C_CONTENT", planId, template.getStr( "C_CONTENT" ), identity );
+            GradeReport rep = new GradeReport();
+            rep.setContent( template.getStr( "C_CONTENT" ) );
+            rep.setPlanId( planId );
+            return rep.save();
+//            AttachTextService service = tenantContext.getAttachTextService();
+//            service.save( "SSM_GRADE_REPORT", "C_CONTENT", planId, template.getStr( "C_CONTENT" ), identity);
         }
         return true;
     }

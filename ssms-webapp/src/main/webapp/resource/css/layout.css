@@ -30,6 +30,20 @@
     height: 16px;
 }
 
+.titlebar label{
+    padding-left:20px;
+    background: url(/resource/images/blue/new.png) no-repeat;
+    background-size:16px 16px;
+}
+
+/*工具栏*/
+.toolbar{
+    padding-left:15px; 
+    height:37px; 
+    line-height:37px; 
+    border-bottom: 1px solid #CCCCCC;
+}
+
 /*列表*/
 .table {
     width: 100%;

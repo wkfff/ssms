@@ -33,7 +33,7 @@
                 {field: 'T_END', title: '评审结束日期', width: 100,formatter:function(value,row){return (value)?value.substring(0,10):'';}},
                 {field: 'SID', title: '查看', width: 80,align:'center',
                     formatter:function(value,row){
-                            return "<a href='#' onclick='doOpen(\"review_tabs\","+value+")'>查看</a>";
+                            return "<a href='#' onclick='doOpen(\"/e/reviewresult/tabs\","+value+")'>查看</a>";
                         }}
             ]]
         });

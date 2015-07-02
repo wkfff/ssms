@@ -46,16 +46,15 @@ class ReviewSyncService {
      * @param srcPlanId 企业自评方案的编号
      * @param descPlanId  评审方案的编号
      */
-    public static boolean syncContentFromEnterprise( TenantContext source, TenantContext target, int srcPlanId, int descPlanId ) {
+    public static int syncContentFromEnterprise( TenantContext source, TenantContext target, int srcPlanId, int descPlanId ) {
         try {
             String sql = "select * from ssm_review_content where r_sid=?";
             List<ReviewContent> rcs = ReviewContent.dao.find( sql, descPlanId );
             // 目前先简单处理，后面进行比对处理，不在这个集合中的就添加
-            if (!rcs.isEmpty()) return true;
+            if (!rcs.isEmpty()) return -1;
             
             sql = "select * from ssm_grade_content where r_sid=?";
-            List<Record> list = source.getTenantDb().find( sql,srcPlanId);
-           
+            List<Record> list = source.getTenantDb().find( sql,srcPlanId);           
             for ( Record r : list ) {
                 ReviewContent rc = new ReviewContent();
                 Map<String,Object> row = r.getColumns();
@@ -63,13 +62,14 @@ class ReviewSyncService {
                 row.remove( "R_STD" );
                 row.put( "R_SID", descPlanId );
                 rc.setAttrs( row  );
-                rc.save();
+                rcs.add( rc );
             }
-            return true;
+            int[] r = ModelKit.batchSave( target.getTenantDb(), rcs);
+            return r.length;
         } catch ( Exception e ) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     /**
@@ -110,8 +110,10 @@ class ReviewSyncService {
             ModelKit.clone( src, desc );
             contentlist.add( desc );
         }
-        if (!contentlist.isEmpty())
+        if (!contentlist.isEmpty()){
+            enterpriseContext.getTenantDb().update( "delete from ssm_result_content where r_sid=? ",model.getId());
             ModelKit.batchSave( enterpriseContext.getTenantDb(), contentlist );
+        }
         return true;
     }
 

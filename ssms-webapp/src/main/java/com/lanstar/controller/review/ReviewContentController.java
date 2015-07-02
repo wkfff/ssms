@@ -47,6 +47,6 @@ public class ReviewContentController extends SimplateController<ReviewContent> {
 
     @Override
     protected void afterSave( ReviewContent model ) {
-        this.tenantDb.callProcedure( "P_GRADE_SUM_R", model.getInt( "R_SID" ) );
+        this.tenantDb.callProcedure( "P_REVIEW_SUM", model.getInt( "R_SID" ) );
     }
 }

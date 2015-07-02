@@ -10,6 +10,8 @@
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/resource/js/layui/layer.js"></script>
+    <script type="text/javascript" src="/resource/js/core.js"></script>
    
     <script type="text/javascript">
     function doBack(){
@@ -22,26 +24,14 @@
     }
     
     function doComplete(){
-            $.getJSON("/e/gradeplan/check", {sid:${sid!}}, function (data) {
-                        if (data && data.N>0) {
-                            $.messager.alert("提示", "自评还有未填写的项，请填写后再完成自评！");
-                        }else if(data && data.N==-1) {
-                            $.messager.alert("提示", "自评报告未完成，请填写后再完成自评！");
-                        }else {
-                            $.messager.confirm("完成确认", "您确认完成当前的自评吗？", function (action) {
-                                if (action) {
-                                    $.getJSON("/e/gradeplan/complete", {sid:${sid!}}, function (data) {
-                                        if (data.result == "OK") {
-                                            $.messager.alert("提示", "自评完成");
-                                        }
-                                        else {
-                                            $.messager.alert("提示", data);
-                                        }
-                                    });
-                                }
-                            });
-                        }
-          });
+        utils.messager.confirm("是否确认完成自评？",function(){
+            $.getJSON("/e/gradeplan/complete", {sid:${sid!}}, function (data) {
+                utils.messager.alert(data.msg,function(){
+                    window.location.href = '/e/gradeplan/';
+                });
+                
+            }); 
+        });
     }
 </script>
 </head>
@@ -61,7 +51,7 @@
         <div id="tt" class="easyui-tabs" style="width:100%;height:auto" data-options="fit:true,border:false,onSelect: doSelect">
             <div id="tab0" title="自评方案" style="overflow:hidden;" url="/e/gradeplan/rec?sid=${sid!}"></div>
             <div id="tab1" title="自评内容" style="overflow:hidden;" url="/e/gradecontent/index?R_SID=${sid!}"></div>
-            <div id="tab2" title="自评报告" style="overflow:hidden;" url="/e/gradeplan/rep?R_SID=${sid!}"></div>
+            <div id="tab2" title="自评报告" style="overflow:hidden;" url="/e/gradereport/rec?R_SID=${sid!}"></div>
         </div>
     </div>
 </div>

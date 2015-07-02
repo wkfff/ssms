@@ -10,7 +10,6 @@ package com.lanstar.model.tenant;
 
 import com.lanstar.common.kit.DateKit;
 import com.lanstar.model.TenantModel;
-import com.lanstar.plugin.activerecord.Model;
 
 import java.util.Date;
 
@@ -63,5 +62,17 @@ public class GradePlan extends TenantModel<GradePlan> {
     
     public void setGradeState( String state ) {
         set( "P_STATE", state );
+    }
+    
+    /**
+     * 判断自评内容是否填写完毕
+     */
+    public boolean isContentComplete(){
+        int allCount = get( "N_COUNT",0 );
+        if (allCount==0) return false;
+        int getCount = get( "N_GET",0 );
+        int dedCount = get( "N_DEDUCT",0 );
+        int lackCount = get( "N_LACK",0 );
+        return allCount==(getCount+dedCount+lackCount);
     }
 }

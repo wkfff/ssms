@@ -20,9 +20,6 @@
         var e = $('#tab'+index);
         e.html('<iframe frameborder="0" width="100%" height="100%" src="'+e.attr("url")+'" ></iframe>');
     }
-    $.parser.onComplete = function(){
-        $("#tt").tabs("select",0);
-    }
 </script>
 </head>
 <body>
@@ -40,10 +37,9 @@
     <div data-options="region:'center'" style="overflow:hidden;padding:0;" >
         <div id="tt" class="easyui-tabs" style="width:100%;height:auto" data-options="fit:true,border:false, onSelect: doSelect">
             <div id="tab0" title="评分汇总" style="overflow:hidden;" url="/e/gradeplan/sum?sid=${sid!}">
-                <iframe frameborder="0" width="100%" height="100%" src="/e/gradeplan/sum?sid=${sid!}" ></iframe>
             </div>
             <div id="tab1" title="扣分汇总" style="overflow:hidden;" url="/e/gradeplan/sum_ded?sid=${sid!}"></div>
-            <div id="tab2" title="自评报告" style="overflow:hidden;" url="/e/gradeplan/history_rep?sid=${sid!}"></div>
+            <div id="tab2" title="自评报告" style="overflow:hidden;" url="/e/gradereport/view?R_SID=${sid!}"></div>
         </div>
     </div>
 </div>

@@ -7,6 +7,8 @@
  */
 package com.lanstar.model.tenant;
 
+import java.util.List;
+
 import com.lanstar.plugin.activerecord.Model;
 
 /**

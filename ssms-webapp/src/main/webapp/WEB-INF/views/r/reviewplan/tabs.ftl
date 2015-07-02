@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/resource/js/layui/layer.js"></script>
+    <script type="text/javascript" src="/resource/js/core.js"></script>
     <script type="text/javascript">
         function doSelect(title,index){
             var e = $('#tab'+index);
@@ -16,15 +18,16 @@
         }
 
         function doComplete(){
-            $.post('/r/reviewplan/complete', {sid:'${sid!}'}, function (result) {
-                if (result.SID)
-                    $.messager.alert("提示", "评审完成处理成功", "info", function () {
-                        window.location.href = "/r/grade/index";
-                    });
-                else {
-                    $.messager.alert("提示", "评审完成失败", "warning");
-                }
-            }, 'json');
+           utils.messager.confirm("是否确认完成评审？",function(){
+                $.post('/r/reviewplan/complete', {sid:'${sid!}'}, function (data) {
+                        if(data.msg=='评审完成！'){
+                            utils.messager.alert(data.msg,function(){
+                                window.location.href = '/e/gradeplan/';
+                            });
+                        }else
+                            utils.messager.alert(data.msg);
+                }, 'json'); 
+            });
         }
     </script>
 </head>
@@ -49,11 +52,11 @@
         <div id="tt" class="easyui-tabs" style="width:100%;height:auto;" data-options="fit:true,border:false,onSelect: doSelect">
                 <div id="tab0" title="评审方案" style="overflow:hidden;" url="/r/reviewplan/rec?sid=${sid!}"></div>
                 <div id="tab1" title="在线评审" style="overflow:hidden;" url="/r/reviewcontent/index?sid=${sid!}" ></div>
-                <div id="tab2" title="评审报告" style="overflow:hidden;" url="/r/reviewreport/rec?sid=${sid!}"></div>
+                <div id="tab2" title="评审报告" style="overflow:hidden;" url="/r/reviewreport/rec?R_SID=${sid!}"></div>
                 <div id="tab3" title="证书管理" style="overflow:hidden;" url="/r/reviewcert/rec?R_SID=${sid!}"></div>
                 
                 <div id="tab4" title="企业基本信息" style="overflow:hidden;" url="/sys/tenant_e/view?sid=${eid!}"></div>
-                <div id="tab5" title="达标体系查看" style="overflow:hidden;" url="/r/stdtmp/query"></div>
+                <div id="tab5" title="达标体系查看" style="overflow:hidden;" url="/r/stdtmp/view/${eid!}-${pro}-0"></div>
                 <div id="tab6" title="企业自评报告" style="overflow:hidden;" url="/r/reviewreport/rep?sid=${gradePlanId!}"></div>
          </div>
          </#if>

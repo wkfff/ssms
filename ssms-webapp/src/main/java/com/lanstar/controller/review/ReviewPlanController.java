@@ -10,15 +10,24 @@ package com.lanstar.controller.review;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.controller.enterprise.EnterpriseGradeState;
+import com.lanstar.model.system.AttachText;
 import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Review;
+import com.lanstar.model.tenant.GradePlan;
+import com.lanstar.model.tenant.GradeReport;
 import com.lanstar.model.tenant.ReviewCert;
+import com.lanstar.model.tenant.ReviewContent;
 import com.lanstar.model.tenant.ReviewPlan;
+import com.lanstar.model.tenant.ReviewReport;
+import com.lanstar.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
@@ -44,7 +53,7 @@ public class ReviewPlanController extends SimplateController<ReviewPlan> {
     /**
      * 初始化评审方案
      */
-    public int initPlan( Enterprise enterprise, int pro ,int enterprisePlanId) {
+    public ReviewPlan initPlan( Enterprise enterprise, int pro ,int enterprisePlanId) {
         // 2查询评审方案编号，如果未开始则自动创建
         int reviewPlanId = this.identityContext.getReviewService().getPlanId( enterprisePlanId );
         if ( reviewPlanId == -1 ) {
@@ -65,15 +74,13 @@ public class ReviewPlanController extends SimplateController<ReviewPlan> {
                 model.set( "C_FAX", review.getStr( "C_FAX" ) );
             }
             model.save();
-            this.setAttr( "sid", model.getId() );
-            return model.getId();
+            return model;
         } else {
-            this.setAttr( "sid", reviewPlanId );
-            return reviewPlanId;
+            return ReviewPlan.dao.findById( reviewPlanId );
         }
     }
     
-    public boolean initContent(int enterprisePlanId, int planId ){
+    public int initContent(int enterprisePlanId, int planId ){
         return this.identityContext.getReviewService().syncContentFromEnterprise( enterprisePlanId, planId );
     }
     
@@ -116,14 +123,21 @@ public class ReviewPlanController extends SimplateController<ReviewPlan> {
         this.setAttr( "gradePlanId", enterprisePlanId );
         
         // 初始化评审方案
-        int planId = this.initPlan( enterprise, pro,enterprisePlanId );
+        ReviewPlan model =  this.initPlan( enterprise, pro,enterprisePlanId );
+        int planId = model.getId();
+        this.setAttr( "sid",planId );
+        
         // 初始化评审内容
-        this.initContent( enterprisePlanId,planId );
+        int count = this.initContent( enterprisePlanId,planId );
+        model.setCount(count);
+        model.update();
+        
         // 评审报告
         this.identityContext.getReviewService().syncReportTemplate( pro,planId,this.identityContext.getIdentity());
         // 初始化评审证书
         this.initCert( planId );
         
+        this.setAttr( "url", "/r/reviewplan/tabs/"+planId+"-"+eid+"-"+enterprisePlanId+"-"+pro );
         this.setAttr( "SID",  planId );
         renderJson();
     }
@@ -142,15 +156,47 @@ public class ReviewPlanController extends SimplateController<ReviewPlan> {
         String gradePlanId = this.getPara( 2 );
         if (!StrKit.isBlank( gradePlanId ))
             this.setAttr( "gradePlanId", gradePlanId );
+        String pro = this.getPara( 3 );
+        if (!StrKit.isBlank( pro ))
+            this.setAttr( "pro", pro );
     }
     
     public void view(){
         super.rec();
     }
     /**
+     * 判断评审内容是否已经完成
+     */
+    public boolean isContentComplete(int planId) {
+        String sql = "select count(*) N from ssm_review_content where r_sid=? and ifnull(n_score_review,0)=0";
+        Record rec = this.identityContext.getTenantDb().findFirst( sql,planId );
+        return rec.getLong( "N" )==0;
+    }
+    
+    /**
      * 评审完成后的处理
      */
     public void complete() {
+        ReviewPlan model = this.getModel();
+        if (StrKit.isBlank( model.getStr( "S_LEADER" ))){
+            this.setAttr( "msg", "评审方案还有未填写的项，填写后才能完成评审！" );
+            renderJson();
+            return;
+        };
+
+        if (!isContentComplete(model.getId())){
+            this.setAttr( "msg", "评审内容还有未填写的项，填写后才能完成评审！" );
+            renderJson();
+            return;
+        };
+        
+        ReviewReport rep = ReviewReport.dao.getReport( model.getId() );
+        if(rep==null || !rep.isSaved() ) {
+            this.setAttr( "msg", "自评报告未完成，填写后才能完成自评！" );
+            renderJson();
+            return;
+        };
+        
         // 1.变更状态为评审完成
         this.identityContext.getReviewService().setComplete( this.getModel() );
 
@@ -170,6 +216,7 @@ public class ReviewPlanController extends SimplateController<ReviewPlan> {
         this.identityContext.getReviewService().syncCert( this.getModel() );
 
         this.setAttr( "SID", this.getModel().getId() );
+        this.setAttr( "msg", "评审完成！" );
         this.renderJson();
     }
     

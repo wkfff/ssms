@@ -1,9 +1,6 @@
 <#import "../../layout/_list.ftl" as layout/>
 <#assign script>
 <script type="text/javascript">
-    function doNew(){
-        window.location.href='/e/gradeplan/create';
-    }
     function doBack(){
        window.location.href='${referer!}';
     }
@@ -21,23 +18,40 @@
         $(".easyui-datebox",$("#"+id+"_tb")).datebox("setValue", "");
     }
     function doDel(sid) {
-        $.messager.confirm("删除确认", "您确认删除选定的记录吗？", function (deleteAction) {
-                    if (deleteAction) {
-                        $.get("del", {sid:sid}, function (data) {
-                            if (data == "true" || data== "\"\"") {
-                                $.messager.alert("提示", "记录删除成功!");
-                                $("#dg_draft").datagrid("reload");
-                                $("#dg_draft").datagrid("clearSelections");
-                            }
-                            else {
-                                $.messager.alert("提示", data);
-                            }
-                        });
-                    }
+        utils.messager.confirm("您确认删除选定的自评吗？", function () {
+            $.get("del", {sid:sid}, function (data) {
+                if (data == "true" || data== "\"\"") {
+                    utils.messager.alert("记录删除成功!");
+                    $("#dg_draft").datagrid("reload");
+                    $("#dg_draft").datagrid("clearSelections");
+                }
+                else {
+                    utils.messager.alert(data);
+                }
+            });
         });
         
     }
+    function doCreate(){
+        utils.messager.showProgress('开始新的自评，初始化数据中，请稍候......');
+            
+        $.post('/e/gradeplan/init', {}, function (result) {
+                utils.messager.closeProgress();
+                if (result.SID) {
+                    utils.messager.alert("初始化成功! 点击确认开始自评。",function () {
+                        window.location.href = 'tabs/' + result.SID;
+                    });
+                } else {
+                    utils.messager.alert("初始化失败:"+result);
+                }
+         }, "json");
+    }
+    
     $(function () {
+        <#if autoCreate??>
+            doCreate();
+        </#if>
+        
         $('#dg_draft').datagrid({
             title:'自评草稿',
             //iconCls:'icon-star',
@@ -60,10 +74,9 @@
                 {field: 'N_GET', title: '得分项', width: 60},
                 {field: 'N_DEDUCT', title: '扣分项', width: 60},
                 {field: 'N_LACK', title: '缺项', width: 60},
-                {field: 'SID', title: '操作',width:180,align:'center',
+                {field: 'SID', title: '操作',width:140,align:'center',
                     formatter:function(value,row){
-                    //&nbsp;&nbsp;<a href='#' onclick='doOpen(\"rep\","+value+")'>编辑自评报告</a>
-                            return "<a href='#' onclick='doOpen(\"tabs\","+value+")'>编辑</a>&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'>删除</a>";
+                            return "<a href='#' onclick='doOpen(\"tabs\","+value+")'><img src='/resource/images/edtico.png'/>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='#' onclick='doDel("+value+")'><img src='/resource/images/delico.png'/>删除</a>";
                     }}
             ]],
             onLoadSuccess: function(data){
@@ -80,6 +93,6 @@
                 至: <input class="easyui-datebox" style="width:90px" name="T_END">
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch('dg_draft')">查询</a>
             <a href="#" class="easyui-linkbutton" iconCls="icon-clear" plain="true" onclick="doClear('dg_draft')" title="清空查询条件">重置</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-new" onclick="doNew();">开始新的自评</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-new" onclick="doCreate();">开始新的自评</a>
         </div>
 </@layout.doLayout>

@@ -7,7 +7,6 @@
  */
 
 package com.lanstar.app.model;
-
 import com.lanstar.model.tenant.*;
 
 public class TenantModelMapping extends ActiveRecordMapping {
@@ -26,20 +25,17 @@ public class TenantModelMapping extends ActiveRecordMapping {
         addMapping( "SSM_STDTMP_FILE_09", "SID", TemplateFile09.class );
         addMapping( "SSM_TEMPLATE_VERSION", "SID", TemplateVersion.class );
         addMapping( "SSM_TEMPLATE", "SID", Template.class );
-
-//        addMapping( "SSM_GRADE_E_M", "SID", GradePlan.class );
-//        addMapping( "SSM_GRADE_E_D", "SID", GradeContent.class );        
-//        addMapping( "SSM_GRADE_R_M", "SID", GradePlanR.class );
-//        addMapping( "SSM_GRADE_R_D", "SID", GradeContentR.class );
         addMapping( "SSM_REVIEWER", "SID", Reviewer.class );
         
         //20150618后修改
         addMapping( "SSM_GRADE_PLAN", "SID", GradePlan.class );                 //企业自评方案表
         addMapping( "SSM_GRADE_CONTENT", "SID", GradeContent.class );            //企业自评内容表
+        addMapping( "SSM_GRADE_REPORT", "SID", GradeReport.class );            //企业自评报告表
         
         addMapping( "SSM_REVIEW_PLAN", "SID", ReviewPlan.class );               //评审方案表
         addMapping( "SSM_REVIEW_MEMBERS", "SID", ReviewMember.class );          //评审成员表
         addMapping( "SSM_REVIEW_CONTENT", "SID", ReviewContent.class );         //评审内容表
+        addMapping( "SSM_REVIEW_REPORT", "SID", ReviewReport.class );             //评审报告表
         addMapping( "SSM_REVIEW_CERT", "SID", ReviewCert.class );               //评审证书表
         
         addMapping( "SSM_RESULT_PLAN", "SID", ReviewResultPlan.class );         //评审方案结果表

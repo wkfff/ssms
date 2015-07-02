@@ -236,4 +236,8 @@ public class ReviewPlan extends Model<ReviewPlan> {
         return state.substring( 2, 3 );
         
     }
+    
+    public void setCount(int value){
+        set("N_COUNT",value);
+    }
 }

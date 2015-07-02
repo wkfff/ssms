@@ -15,6 +15,94 @@ import com.lanstar.plugin.activerecord.Model;
  */
 public class ReviewMember extends Model<ReviewMember> {
     public static ReviewMember dao = new ReviewMember();
+    private int R_MEMBER;
+    private String S_MEMBER;
+    private String C_JOB;
+    private String C_TEL;
+    private String C_REMARKS;
+    
+    
+    /**
+     * @return the r_MEMBER
+     */
+    public int getR_MEMBER() {
+//        return R_MEMBER;
+        return getInt("R_MEMBER");
+    }
+
+    /**
+     * @param r_MEMBER the r_MEMBER to set
+     */
+    public void setR_MEMBER( int r_MEMBER ) {
+//        R_MEMBER = r_MEMBER;
+        set( "R_MEMBER", r_MEMBER );
+    }
+
+    /**
+     * @return the s_MEMBER
+     */
+    public String getS_MEMBER() {
+//        return S_MEMBER;
+        return getStr("S_MEMBER");
+    }
+
+    /**
+     * @param s_MEMBER the s_MEMBER to set
+     */
+    public void setS_MEMBER( String s_MEMBER ) {
+        S_MEMBER = s_MEMBER;
+        set("S_MEMBER",s_MEMBER);
+    }
+
+    
+    
+    /**
+     * @return the c_JOB
+     */
+    public String getC_JOB() {
+//        return C_JOB;
+        return getStr("C_JOB");
+    }
+
+    /**
+     * @param c_JOB the c_JOB to set
+     */
+    public void setC_JOB( String c_JOB ) {
+        C_JOB = c_JOB;
+        set("C_JOB",c_JOB);
+    }
+
+    /**
+     * @return the c_TEL
+     */
+    public String getC_TEL() {
+//        return C_TEL;
+        return getStr("C_TEL");
+    }
+
+    /**
+     * @param c_TEL the c_TEL to set
+     */
+    public void setC_TEL( String c_TEL ) {
+        C_TEL = c_TEL;
+        set("C_TEL",c_TEL);
+    }
+
+    /**
+     * @return the c_REMARKS
+     */
+    public String getC_REMARKS() {
+//        return C_REMARKS;
+        return getStr("C_REMARKS");
+    }
+
+    /**
+     * @param c_REMARKS the c_REMARKS to set
+     */
+    public void setC_REMARKS( String c_REMARKS ) {
+        C_REMARKS = c_REMARKS;
+        set( "C_REMARKS", c_REMARKS );
+    }
 
     public Integer getId() {
         return getInt( "SID" );
@@ -32,76 +120,6 @@ public class ReviewMember extends Model<ReviewMember> {
      */
     public void setRsid( int rsid ) {
         set( "R_SID", rsid );
-    }
-
-    /**
-     * @return the memberId
-     */
-    public int getMemberId() {
-        return getInt( "R_MEMBER" );
-    }
-
-    /**
-     * @param memberId the memberId to set
-     */
-    public void setMemberId( int memberId ) {
-        set( "R_MEMBER", memberId );
-    }
-
-    /**
-     * @return the memberName
-     */
-    public String getMemberName() {
-        return getStr( "S_MEMBER" );
-    }
-
-    /**
-     * @param memberName the memberName to set
-     */
-    public void setMemberName( String memberName ) {
-        set( "S_MEMBER", memberName );
-    }
-
-    /**
-     * @return the job
-     */
-    public String getJob() {
-        return getStr( "C_JOB" );
-    }
-
-    /**
-     * @param job the job to set
-     */
-    public void setJob( String job ) {
-        set( "C_JOB", job );
-    }
-
-    /**
-     * @return the tel
-     */
-    public String getTel() {
-        return getStr( "C_TEL" );
-    }
-
-    /**
-     * @param tel the tel to set
-     */
-    public void setTel( String tel ) {
-        set( "C_TEL", tel );
-    }
-
-    /**
-     * @return the remarks
-     */
-    public String getRemarks() {
-        return getStr( "C_REMARKS" );
-    }
-
-    /**
-     * @param remarks the remarks to set
-     */
-    public void setRemarks( String remarks ) {
-        set( "C_REMARKS", remarks );
     }
 
 }
