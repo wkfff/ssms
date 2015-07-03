@@ -8,12 +8,21 @@
 
 package com.lanstar.model.system.archive;
 
+import com.lanstar.common.ListKit;
 import com.lanstar.identity.Tenant;
 
 import java.util.Objects;
 
 public class TemplateText extends ArchiveModel<TemplateText> {
     public static final TemplateText dao = new TemplateText();
+
+    public static String getContent( int templateId, int version, String templateFileCode, int recoredId ) {
+        TemplateText text = dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "P_TMPFILE", "R_SID", "N_VERSION" ),
+                ListKit.newObjectArrayList( templateId, templateFileCode, recoredId, version ) );
+        if ( text == null ) return null;
+        return text.getContent();
+    }
 
     public String getContent() {
         return getStr( "C_CONTENT" );
