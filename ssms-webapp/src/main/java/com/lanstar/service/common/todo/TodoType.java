@@ -6,11 +6,9 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.model;
+package com.lanstar.service.common.todo;
 
 import com.lanstar.identity.Identity;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
 
 public enum TodoType {
     STDFILE;
@@ -36,6 +34,15 @@ public enum TodoType {
      */
     public void finishTodo( TodoService service, int srcId, Identity operator ) {
         service.finish( name(), srcId, operator );
+    }
+
+    /**
+     * 获取待办列表
+     *
+     * @param service 待办服务
+     */
+    public void listTodo( TodoService service ) {
+        service.listTodoBean( name() );
     }
 
     /**
