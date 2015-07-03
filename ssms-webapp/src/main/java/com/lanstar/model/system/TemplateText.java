@@ -15,8 +15,6 @@ import com.lanstar.identity.IdentityContext;
 import com.lanstar.identity.Tenant;
 import com.lanstar.plugin.activerecord.ModelExt;
 
-import java.util.Objects;
-
 public class TemplateText extends ModelExt<TemplateText> {
     public static final TemplateText dao = new TemplateText();
 
@@ -68,7 +66,7 @@ public class TemplateText extends ModelExt<TemplateText> {
     }
 
     public void setContent( String content ) {
-        if ( Objects.equals( getContent(), content ) == false ) set( "C_CONTENT", content );
+        set( "C_CONTENT", content );
     }
 
     public String getTemplateFileCode() {
