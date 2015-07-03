@@ -109,7 +109,7 @@ public class WebAppConfig extends RapidwareConfig {
                 .setShowSql( true )
                 .setContainerFactory( new CaseInsensitiveContainerFactory() );
         me.add( arp2 );
-        new TenantModelMapping().mappingTo( arp );
+        new TenantModelMapping().mappingTo( arp2 );
         // ================================================
 
         // 静态缓存插件

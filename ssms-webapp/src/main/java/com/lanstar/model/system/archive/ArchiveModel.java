@@ -11,6 +11,11 @@ package com.lanstar.model.system.archive;
 import com.lanstar.plugin.activerecord.ModelExt;
 
 public class ArchiveModel<T extends ArchiveModel<T>> extends ModelExt<T> {
+
+    public int getId() {
+        return getInt( "SID" );
+    }
+
     public void setVersion( int version ) {
         set( "N_VERSION", version );
     }
