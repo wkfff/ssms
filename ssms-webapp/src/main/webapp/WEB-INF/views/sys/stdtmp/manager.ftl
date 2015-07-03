@@ -168,8 +168,8 @@
                 cycleSource: ${json(SYS_CYCLE)},
                 tmpfilesSource: ${json(tmpfiles)},
                 getCycle: function (code) {
-                    for (var i = 0; i < this.cycleSource.length; i++) {
-                        if (this.cycleSource[i].code == code) return this.cycleSource[i];
+                    for (var i = 0; i < this.cycleSource._latestValue.length; i++) {
+                        if (this.cycleSource._latestValue[i].code == code) return this.cycleSource._latestValue[i];
                     }
                 },
                 model: null
@@ -376,6 +376,7 @@
                     if (result != null) {
                         utils.messager.alert("保存成功!", function () {
                             model.id(result);
+                            model.templateUrl='${BASE_PATH}/file/'+result;
                             callback(model);
                         });
                     }
