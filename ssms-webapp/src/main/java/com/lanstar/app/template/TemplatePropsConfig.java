@@ -8,7 +8,6 @@
 
 package com.lanstar.app.template;
 
-import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.template.ModelType;
 import com.lanstar.plugin.template.TemplateProps;
 
@@ -53,8 +52,5 @@ public class TemplatePropsConfig extends TemplateProps {
                 .putModel( ModelType.SYSTEM, com.lanstar.model.system.TemplateFile09.class )
                 .putModel( ModelType.SYSTEM_ARCHIVE, com.lanstar.model.system.archive.TemplateFile09.class )
                 .putModel( ModelType.TENANT, com.lanstar.model.tenant.TemplateFile09.class );
-
-        ModelExt.addCallbackListener( new TenantTemplateFileLinstener() );
-        //ModelExt.addCallbackListener( new SystemTemplateFileLinstener() );
     }
 }

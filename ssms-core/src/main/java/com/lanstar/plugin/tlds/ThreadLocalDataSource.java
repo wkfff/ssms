@@ -71,6 +71,7 @@ class ThreadLocalDataSource implements DataSource {
 
         Asserts.notNull( provider, "unknown dsName" );
         dataSource.set( provider.getDataSource() );
+        this.dsName.set( dsName );
     }
 
     @Override

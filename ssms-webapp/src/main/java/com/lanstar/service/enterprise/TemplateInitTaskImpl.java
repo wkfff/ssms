@@ -9,6 +9,8 @@
 package com.lanstar.service.enterprise;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.lanstar.beans.system.FileBean;
 import com.lanstar.beans.system.FolderBean;
@@ -28,10 +30,7 @@ import com.lanstar.service.MultiParaType;
 import com.lanstar.service.Parameter;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 class TemplateInitTaskImpl implements TemplateInitTask {
@@ -41,7 +40,8 @@ class TemplateInitTaskImpl implements TemplateInitTask {
     private final Identity opertaor;
     private final FolderBean cacheContent;
     private final TenantContext tenantContext;
-    private TemplateInitializerState status;
+    private TemplateInitializerState status = TemplateInitializerState.NONE;
+    private final List<Parameter> cycle = MultiParaType.SYS_CYCLE.parameters();
 
     private List<String> logs = new ArrayList<>();
     private Map<Class<?>, List<Model>> batchs = new LinkedHashMap<>();
@@ -57,10 +57,6 @@ class TemplateInitTaskImpl implements TemplateInitTask {
         batchs.put( TemplateFolder.class, new ArrayList<Model>() );
         batchs.put( TemplateFile.class, new ArrayList<Model>() );
         batchs.put( TemplateText.class, new ArrayList<Model>() );
-        for ( Parameter parameter : TemplatePropPlugin.me().listParameter() ) {
-            TemplateProp prop = TemplatePropPlugin.me().get( parameter.getCode() );
-            batchs.put( prop.getModel( ModelType.TENANT ).getModelClass(), new ArrayList<Model>() );
-        }
     }
 
     @Override
@@ -80,15 +76,19 @@ class TemplateInitTaskImpl implements TemplateInitTask {
         tenantContext.getTenantDb().tx( new IAtom() {
             @Override
             public boolean run() throws SQLException {
-                // 记录模板版本
-                initTemplateVersion();
-                // 拷贝目录
-                cloneFolders();
-                cloneFileContetns();
-                cloneFileText();
+                try {
+                    // 记录模板版本
+                    initTemplateVersion();
+                    // 拷贝目录
+                    cloneFolders();
+                    cloneFileContetns();
 
-                for ( List<Model> batch : batchs.values() ) {
-                    ModelKit.batchSave( DbPro.use(), batch );
+                    for ( List<Model> batch : batchs.values() ) {
+                        ModelKit.batchSave( DbPro.use(), batch );
+                    }
+                } catch ( Throwable e ) {
+                    status = TemplateInitializerState.ERROR;
+                    throw e;
                 }
                 return true;
             }
@@ -138,7 +138,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
         folder.setTenant( tenant );
         folder.setTemplateId( systemTemplate.getId() );
         folder.setProfessionId( profession.getId() );
-        folder.setVersion(systemTemplate.getVersion());
+        folder.setVersion( systemTemplate.getVersion() );
         // 设置操作人员
         ModelInjector.injectOpreator( folder, opertaor, true );
         batchs.get( TemplateFolder.class ).add( folder );
@@ -171,7 +171,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
         file.setIndex( bean.getIndex() );
         file.setTemplateProp( TemplatePropPlugin.me().get( bean.getTemplateFileCode() ) );
         file.setCycleUnitCode( bean.getCycleUnitCode() );
-        file.setCycleUnitName( MultiParaType.SYS_CYCLE.getName( bean.getCycleUnitCode() ) );
+        file.setCycleUnitName( getCycleName( bean.getCycleUnitCode() ) );
         file.setCycleValue( bean.getCycleValue() );
         file.setExplain( bean.getExplain() );
         file.setRemind( bean.getRemind() );
@@ -181,21 +181,36 @@ class TemplateInitTaskImpl implements TemplateInitTask {
         file.setTenant( tenant );
         file.setTemplateId( systemTemplate.getId() );
         file.setProfessionId( profession.getId() );
-        file.setVersion(systemTemplate.getVersion() );
+        file.setVersion( systemTemplate.getVersion() );
         ModelInjector.injectOpreator( file, opertaor, true );
         batchs.get( TemplateFile.class ).add( file );
     }
 
+    private String getCycleName( final String code ) {
+        Parameter parameter = Iterables.find( cycle, new Predicate<Parameter>() {
+            @Override
+            public boolean apply( Parameter input ) {
+                return Objects.equals( input.getCode(), code );
+            }
+        }, null );
+        if ( parameter == null ) return null;
+        else return parameter.getName();
+    }
+
     private void cloneFileContetns() {
         TemplatePropPlugin plugin = TemplatePropPlugin.me();
+
+        // 文本列表
+        List<com.lanstar.model.system.archive.TemplateText> textList = getAllTemplateText();
+
         for ( Parameter parameter : plugin.listParameter() ) {
-            TemplateProp prop = plugin.get( parameter.getCode() );
+            final TemplateProp prop = plugin.get( parameter.getCode() );
             ModelWrap archiveModelWrap = prop.getModel( ModelType.SYSTEM_ARCHIVE );
-            ModelWrap tenantModelWrap = prop.getModel( ModelType.TENANT );
-            List<Model> list = archiveModelWrap.getDao().findByColumns(
+            List<com.lanstar.model.system.archive.ArchiveModel> list = archiveModelWrap.getDao().findByColumns(
                     ListKit.newArrayList( "R_TEMPLATE", "N_VERSION" ),
                     ListKit.newObjectArrayList( systemTemplate.getId(), systemTemplate.getVersion() ) );
-            for ( Model model : list ) {
+            for ( final com.lanstar.model.system.archive.ArchiveModel model : list ) {
+                final int id = model.getId();
                 model.remove( "UID", "SID" );
                 ModelExt newModel = prop.getModel( ModelType.TENANT ).getModel();
                 ModelKit.clone( model, newModel );
@@ -204,25 +219,33 @@ class TemplateInitTaskImpl implements TemplateInitTask {
                 tenantModel.setOperator( opertaor );
                 tenantModel.setTemplateId( systemTemplate.getId() );
                 tenantModel.setProfessionId( profession.getId() );
+                tenantModel.save();
 
-                batchs.get( tenantModelWrap.getModelClass() ).add( newModel );
+                com.lanstar.model.system.archive.TemplateText text = Iterables.find( textList, new Predicate<com.lanstar.model.system.archive.TemplateText>() {
+                    @Override
+                    public boolean apply( com.lanstar.model.system.archive.TemplateText input ) {
+                        return input.getParentId() == id
+                                && Objects.equals( input.getTemplateFileCode(), prop.getCode() );
+                    }
+                }, null );
+                if ( text != null ) {
+                    TemplateText newText = new TemplateText();
+                    text.remove( "UID", "SID" );
+                    ModelKit.clone( text, newText );
+                    newText.setParentId( tenantModel.getId() );
+                    newText.setTenant( tenant );
+                    newText.setOperator( opertaor );
+                    newText.setTemplateId( systemTemplate.getId() );
+                    newText.setProfessionId( profession.getId() );
+                    batchs.get( TemplateText.class ).add( newText );
+                }
             }
         }
     }
 
-    private void cloneFileText() {
-        List<com.lanstar.model.system.archive.TemplateText> list = com.lanstar.model.system.archive.TemplateText.dao.findByColumns(
+    private List<com.lanstar.model.system.archive.TemplateText> getAllTemplateText() {
+        return com.lanstar.model.system.archive.TemplateText.dao.findByColumns(
                 ListKit.newArrayList( "R_TEMPLATE", "N_VERSION" ),
                 ListKit.newObjectArrayList( systemTemplate.getId(), systemTemplate.getVersion() ) );
-        for ( com.lanstar.model.system.archive.TemplateText templateText : list ) {
-            TemplateText newModel = new TemplateText();
-            templateText.remove( "UID", "SID" );
-            ModelKit.clone( templateText, newModel );
-            newModel.setTenant( tenant );
-            newModel.setOperator( opertaor );
-            newModel.setTemplateId( systemTemplate.getId() );
-            newModel.setProfessionId( profession.getId() );
-            batchs.get( TemplateText.class ).add( newModel );
-        }
     }
 }

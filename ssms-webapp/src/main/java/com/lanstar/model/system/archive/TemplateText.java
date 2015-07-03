@@ -39,10 +39,6 @@ public class TemplateText extends ArchiveModel<TemplateText> {
         set( "R_SID", sid );
     }
 
-    public Integer getId() {
-        return getInt( "SID" );
-    }
-
     public void setTenant( Tenant tenant ) {
         set( "R_TENANT", tenant.getTenantId() );
         set( "S_TENANT", tenant.getTenantName() );

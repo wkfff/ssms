@@ -11,7 +11,8 @@ package com.lanstar.service.enterprise;
 public enum TemplateInitializerState {
     NONE( "未开始初始化" ),
     FINISH( "完成模板初始化" ),
-    STARTUP( "开始模板初始化" );
+    STARTUP( "开始模板初始化" ),
+    ERROR( "发生了错误" );
 
     private final String msg;
 

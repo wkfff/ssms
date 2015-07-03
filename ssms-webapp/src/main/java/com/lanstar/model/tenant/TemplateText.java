@@ -13,6 +13,14 @@ import com.lanstar.model.TenantModel;
 public class TemplateText extends TenantModel<TemplateText> {
     public static final TemplateText dao = new TemplateText();
 
+    public int getParentId() {
+        return getInt( "R_SID" );
+    }
+
+    public void setParentId( int id ) {
+        set( "R_SID", id );
+    }
+
     /**
      * 获取模板文件所属专业的ID
      */
