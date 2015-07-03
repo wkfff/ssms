@@ -168,8 +168,8 @@
                 cycleSource: ${json(SYS_CYCLE)},
                 tmpfilesSource: ${json(tmpfiles)},
                 getCycle: function (code) {
-                    for (var i = 0; i < this.cycleSource._latestValue.length; i++) {
-                        if (this.cycleSource._latestValue[i].code == code) return this.cycleSource._latestValue[i];
+                    for (var i = 0; i < this.cycleSource.length; i++) {
+                        if (this.cycleSource[i].code == code) return this.cycleSource[i];
                     }
                 },
                 model: null

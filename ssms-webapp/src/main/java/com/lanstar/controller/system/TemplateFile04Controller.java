@@ -14,6 +14,7 @@ import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
 import com.lanstar.core.aop.Before;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile04;
+import com.lanstar.model.system.TemplateText;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.sun.tools.javac.util.Assert;
@@ -22,12 +23,22 @@ public class TemplateFile04Controller extends SimplateController<TemplateFile04>
 
     @Override
     public void rec() {
-        Integer pid=getParaToInt( "pid" );
-        Asserts.notNull( pid, "id connot null");
-        TemplateFile file=TemplateFile.dao.findById( pid );
+        Integer pid = getParaToInt( "pid" );
+        Asserts.notNull( pid, "id connot null" );
+        TemplateFile file = TemplateFile.dao.findById( pid );
         setAttr( "file", file );
+        String content = null;
+        if ( getParaToInt( "sid" ) != null ) content = TemplateText.getContent( file, getParaToInt( "sid" ) );
+        setAttr( "C_CONTENT", content );
         super.rec();
     }
+
+    @Override
+    protected void afterSave( TemplateFile04 model ) {
+        String content = getPara( "htmlContent" );
+        TemplateText.saveContent( model, content, identityContext );
+    }
+
     @Before(AttachTokenGenerator.class)
     public void view() {
         super.rec();

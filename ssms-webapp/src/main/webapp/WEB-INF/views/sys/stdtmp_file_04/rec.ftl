@@ -73,7 +73,7 @@
         </tr>
         <tr>
             <td colspan="4">
-                <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px"></textarea>
+                <textarea data-bind="htmleditValue: htmlContent" style="width: 100%; min-height: 400px"></textarea>
             </td>
         </tr>
     </table>
@@ -89,12 +89,12 @@
         S_TYPE: ko.observable('${S_TYPE!}'),
         N_TIME: ko.observable('${N_TIME!}'),
         C_USER_02: ko.observable('${C_USER_02!}'),
+        htmlContent: ko.observable(${json(C_CONTENT)}),
         SID: '${SID!}',
         R_TEMPLATE: '${file.templateId}',
         R_TMPFILE: '${R_TMPFILE!pid}'
     };
     var extModel = {
-        htmlContent: ko.observable(),
         readonly: ${@READONLY!'false'}
     };
     var settings = {
@@ -111,14 +111,11 @@
             utils.messager.showProgress();
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
-                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                    settings.htmleditSettings.save(function (editorResult) {
                         utils.messager.closeProgress();
                         $.messager.alert("提示", "保存成功", "info", function () {
                             window.location.href = 'rec?sid=' + result.SID +'&pid=${pid}'+ "&backURL=${backURL!referer!}";
                         });
-                    });
-                } else {
+                }else {
                     $.messager.alert("提示", "保存失败", "warning", function () {
                         utils.messager.closeProgress();
                     });
@@ -128,7 +125,7 @@
     };
 
     $(function () {
-        ko.applyBindings($.extend({}, model, events, settings, extModel));
+        ko.applyBindings($.extend({}, model, events, extModel));
     });
 </script>
 </@>
