@@ -8,6 +8,10 @@
 
 package com.lanstar.model.system;
 
+import com.lanstar.common.ListKit;
+import com.lanstar.common.ModelInjector;
+import com.lanstar.identity.Identity;
+import com.lanstar.identity.IdentityContext;
 import com.lanstar.identity.Tenant;
 import com.lanstar.plugin.activerecord.ModelExt;
 
@@ -15,6 +19,49 @@ import java.util.Objects;
 
 public class TemplateText extends ModelExt<TemplateText> {
     public static final TemplateText dao = new TemplateText();
+
+    public static String getContent( TemplateFile file, int recoredId ) {
+        return getContent( file.getTemplateId(), file.getTemplateFileCode(), recoredId );
+    }
+
+    public static String getContent( int templateId, String templateFileCode, int recoredId ) {
+        TemplateText text = dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "P_TMPFILE", "R_SID" ),
+                ListKit.newObjectArrayList( templateId, templateFileCode, recoredId ) );
+        if ( text == null ) return null;
+        return text.getContent();
+    }
+
+    public static int saveContent( TemplateFileModel<?> model, String content, IdentityContext identityContext ) {
+        TemplateFile file = model.getTemplateFile();
+        return saveContent(
+                file.getTemplateId(),
+                file.getTemplateFileCode(),
+                model.getId(),
+                content,
+                identityContext.getTenant(),
+                identityContext.getIdentity() );
+    }
+
+    public static int saveContent( int templateId, String templateFileCode, int recoredId, String content, Tenant tenant, Identity operator ) {
+        TemplateText text = dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "P_TMPFILE", "R_SID" ),
+                ListKit.newObjectArrayList( templateId, templateFileCode, recoredId ) );
+        boolean exists = text != null;
+        if ( exists == false ) text = new TemplateText();
+
+        text.setTemplateId( templateId );
+        text.setTemplateFileCode( templateFileCode );
+        text.setParentId( recoredId );
+        text.setContent( content );
+        text.setTenant( tenant );
+        ModelInjector.injectOpreator( text, operator, true );
+
+        if ( exists ) text.update();
+        else text.save();
+
+        return text.getId();
+    }
 
     public String getContent() {
         return getStr( "C_CONTENT" );
@@ -30,6 +77,14 @@ public class TemplateText extends ModelExt<TemplateText> {
 
     public void setTemplateFileCode( String code ) {
         set( "P_TMPFILE", code );
+    }
+
+    public int getTemplateId() {
+        return getInt( "R_TEMPLATE" );
+    }
+
+    public void setTemplateId( int id ) {
+        set( "R_TEMPLATE", id );
     }
 
     public int getParentId() {

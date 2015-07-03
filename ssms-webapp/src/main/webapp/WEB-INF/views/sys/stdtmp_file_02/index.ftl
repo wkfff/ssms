@@ -40,7 +40,7 @@
 
             <tr>
                 <td colspan="4">
-                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px"></textarea>
+                    <textarea data-bind="htmleditValue: htmlContent" style="width: 100%; min-height: 400px"></textarea>
                 </td>
             </tr>
 
@@ -72,46 +72,31 @@
             T_DATE_01: ko.observable('${T_DATE_01!}'),
             C_DEPT_02: ko.observable('${C_DEPT_02!}'),
             C_DEPT_03: ko.observable('${C_DEPT_03!}'),
+            htmlContent: ko.observable(${json(C_CONTENT)}),
             SID: '${SID!}',
             R_TEMPLATE: '${file.templateId}',
             R_TMPFILE: '${R_TMPFILE!file.id}'
         };
         var extModel = {
-            htmlContent: ko.observable(),
             readonly: ${@READONLY!'false'}
-        };
-        var settings = {
-            htmleditSettings: {
-                table: "SYS_STDTMP_FILE_02",
-                field: 'C_CONTENT',
-                sid: '${SID!}',
-                readonly: extModel.readonly
-            }
         };
         var events = {
             saveClick: function () {
                 if ($form.validate('.form') != true) return;
                 utils.messager.showProgress();
                 $.post('${BASE_PATH}/save', model, function (result) {
+                    utils.messager.closeProgress();
                     if (result.SID) {
-                        if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                        settings.htmleditSettings.save(function (editorResult) {
-                            utils.messager.closeProgress();
-                            $.messager.alert("提示", "保存成功", "info", function () {
-                                window.location.href = "/sys/stdtmp/file/" + file.id;
-                            });
+                        utils.messager.alert("保存成功", function () {
+                            window.location.href = "/sys/stdtmp/file/${file.id}";
                         });
-                    } else {
-                        $.messager.alert("提示", "保存失败", "warning", function () {
-                            utils.messager.closeProgress();
-                        });
-                    }
+                    } else utils.messager.alert("保存失败");
                 }, "json");
             }
         };
 
         $(function () {
-            ko.applyBindings($.extend({}, model, events, settings, extModel));
+            ko.applyBindings($.extend({}, model, events, extModel));
         });
     </script>
     </@>
