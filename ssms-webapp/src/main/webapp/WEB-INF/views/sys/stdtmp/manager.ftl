@@ -29,8 +29,7 @@
             <th style="width: 200px">操作</th>
         </tr>
         </thead>
-        <tbody
-                data-bind="template: {name: 'folderTemplate', foreach: folders}"></tbody>
+        <tbody data-bind="template: {name: 'folderTemplate', foreach: folders}"></tbody>
     </table>
 
     <script type="text/html" id="folderTemplate">
@@ -86,7 +85,7 @@
                 <input data-bind="value: (cycleUnit()==null ? null : cycleValue),disable:cycleUnit()==null" style="width: 50px;"/>
                 <select data-bind="options: $root.cycleSource,
                                    optionsText:'name',
-                                   optionsValue:'code' ,
+                                   optionsValue: 'code',
                                    optionsCaption: '请选择周期...',
                                    value: cycleUnit">
                 </select>
@@ -166,8 +165,8 @@
             };
 
             var fileViewModel = {
-                cycleSource: ko.observableArray(${json(SYS_CYCLE)}),
-                tmpfilesSource: ko.observableArray(${json(tmpfiles)}),
+                cycleSource: ${json(SYS_CYCLE)},
+                tmpfilesSource: ${json(tmpfiles)},
                 getCycle: function (code) {
                     for (var i = 0; i < this.cycleSource.length; i++) {
                         if (this.cycleSource[i].code == code) return this.cycleSource[i];
@@ -219,7 +218,7 @@
                 this.explain = ko.observable(item.explain);
                 this.templateFileCode = ko.observable(item.templateFileCode).extend({required: true});
                 this.remind = ko.observable(item.remind == '1');
-                this.cycleUnit = ko.observable(fileViewModel.getCycle(item.cycleUnitCode));
+                this.cycleUnit = ko.observable(item.cycleUnitCode);
                 this.cycleValue = ko.observable(item.cycleValue);
                 this.index = ko.observable(item.index || 0);
                 this._index = ko.computed(function () {
@@ -368,8 +367,8 @@
                     remind: (model.remind() == true ? '1' : '0')
                 };
                 if (model.cycleUnit() != null) {
-                    params.cycleUnitCode = model.cycleUnit().code;
-                    params.cycleUnitName = model.cycleUnit().name;
+                    params.cycleUnitCode = model.cycleUnit();
+                    params.cycleUnitName =fileViewModel.getCycle(model.cycleUnit()).name;
                 }
                 var id = ko.unwrap(model.id);
                 if (id != null) params.id = id;
