@@ -38,7 +38,7 @@
      <table >
         <tr >
             <td colspan="4">
-                <textarea data-bind=" htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
+                <textarea data-bind=" htmleditValue: htmlContent" style="width: 100%; height: 500px"></textarea>
             </td>
         </tr>
      </table>
@@ -53,43 +53,33 @@
     var model = {
         C_NAME: ko.observable('${C_NAME!}'),
         R_TEMPLATE: '${file.templateId}',
+        htmlContent: ko.observable(${json(C_CONTENT)}),
         R_TMPFILE: '${R_TMPFILE!file.id}',
         SID: '${SID!}'
     };
     var extModel = {
-        htmlContent: ko.observable(),
         readonly: ${@READONLY!'false'}
     };
-    var settings = {
-        htmleditSettings: {
-            table: "SYS_STDTMP_FILE_03",
-            field: 'C_CONTENT',
-            sid: '${SID!}',
-            readonly: extModel.readonly
-        }
-    };
+   
     var events = {
         saveClick: function () {
             utils.messager.showProgress();
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
-                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                    settings.htmleditSettings.save(function (editorResult) {
                         utils.messager.closeProgress();
                         $.messager.alert("提示", "保存成功", "info", function () {
                             window.location.href = "sys/stdtmp/file"+file.id;
                         });
-                    });
-                } else {
-                    $.messager.alert("提示", "保存失败", "warning", function () {
-                        utils.messager.closeProgress();
-                    });
-                }
-            }, "json");
+                    }else{
+                        $.messager.alert("提示", "保存失败", "warning", function () {
+                            utils.messager.closeProgress();
+                        });
+                    }
+                }, "json");
         }
     };
     $(function () {
-        ko.applyBindings($.extend({}, model, settings, extModel, events));
+        ko.applyBindings($.extend({}, model, extModel, events));
     });
     </script>
     </@>

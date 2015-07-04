@@ -14,6 +14,7 @@ import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
 import com.lanstar.core.aop.Before;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile03;
+import com.lanstar.model.system.TemplateText;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
@@ -24,9 +25,17 @@ public class TemplateFile03Controller extends SimplateController<TemplateFile03>
     public void index() {
         TemplateFile file = getAttr( "file" );
         TemplateFile03 model = getDao().findFirstByColumn( "R_TMPFILE", file.getId() );
-        if ( model != null ) setAttrs( ModelKit.toMap( model ) );
+        if ( model != null ) {
+            setAttrs( ModelKit.toMap( model ) );
+            String content = TemplateText.getContent( file, model.getId() );
+            setAttr( "C_CONTENT", content );
+        }
     }
-
+    @Override
+    protected void afterSave( TemplateFile03 model ) {
+        String content=getPara("htmlContent");
+        TemplateText.saveContent( model, content, identityContext );
+    }
     @Before(AttachTokenGenerator.class)
     public void view() {
         super.rec();

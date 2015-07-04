@@ -13,6 +13,7 @@ import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
 import com.lanstar.core.aop.Before;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile01;
+import com.lanstar.model.system.TemplateText;
 import com.lanstar.plugin.activerecord.ModelKit;
 
 public class TemplateFile01Controller extends SimplateController<TemplateFile01> {
@@ -22,19 +23,27 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
     }
 
     public void index() {
-        //先判断sid 是否有值，如果有值根据模板获R_TMPFILE取到对应的模板，如果没值根据SID获取到模板。。。
+        // 先判断sid 是否有值，如果有值根据模板获R_TMPFILE取到对应的模板，如果没值根据SID获取到模板。。。
         TemplateFile file = getAttr( "file" );
         TemplateFile01 model = getDao().findFirstByColumn( "R_TMPFILE", file.getId() );
 
-        if (model != null)
-            setAttrs(ModelKit.toMap(model));
+        if ( model != null ) {
+            setAttrs( ModelKit.toMap( model ) );
+            String content = TemplateText.getContent( file, model.getId() );
+            setAttr( "C_CONTENT", content );
+        }
     }
 
-    @Before( AttachTokenGenerator.class )
+    @Before(AttachTokenGenerator.class)
     public void view() {
         this.index();
         setAttr( "@READONLY", "true" );
         render( "index.ftl" );
     }
 
+    @Override
+    protected void afterSave( TemplateFile01 model ) {
+        String content = getPara( "htmlContent" );
+        TemplateText.saveContent( model, content, identityContext );
+    }
 }
