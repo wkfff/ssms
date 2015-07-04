@@ -34,7 +34,7 @@
 
     <@layout.put block="containers">
     <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'west', title:'达标体系', split:true, tools:[{ iconCls:'icon-reload', handler:function(){location.href = '${BASE_PATH}/';} }]" style="width: 250px; display: none">
+        <div data-options="region:'west', title:'达标体系', split:true" style="width: 250px; display: none">
             <table id="ttt" style="height: 100%; width: 100%; table-layout: fixed;">
                 <tr>
                     <td>
@@ -69,6 +69,7 @@
         <script type="text/javascript" src="/resource/js/kindeditor/plugins/autoheight/autoheight.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
+        <script type="text/javascript" src="/resource/js/knockout/htmleditor.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/upload.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/dataPager.js"></script>

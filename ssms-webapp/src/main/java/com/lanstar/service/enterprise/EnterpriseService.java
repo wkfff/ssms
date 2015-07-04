@@ -144,10 +144,10 @@ public class EnterpriseService {
 
     public UniqueTag getUniqueTag() {
         UniqueTag tag = new UniqueTag();
-        tag.tenantId = tenantContext.getTenantId();
         ProfessionService service = getProfessionService();
         tag.professionId = service.getId();
         tag.templateId = service.getSystemTemplate().getId();
+        tag.tenant = tenantContext.getTenant();
         return tag;
     }
 }

@@ -8,6 +8,7 @@
 
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.common.Asserts;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.TemplateFile;
@@ -20,7 +21,9 @@ import java.util.Date;
 
 public class TemplateFile01Controller extends SimplateController<TemplateFile01> {
     public void index() {
-        String sid = getPara( "sid" );
+        Integer sid = getParaToInt();
+        Asserts.notNull( sid, "发现非法的参数请求" );
+
         TemplateFile01 templateFile = getDao().findFirstByColumn( "R_TMPFILE", sid );
         if ( templateFile == null ) return;
         setAttrs( ModelKit.toMap( templateFile ) );
@@ -41,7 +44,8 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
 
         Calendar c = Calendar.getInstance();
         int year = c.get( Calendar.YEAR );
-        String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ? and '" + year + "-01-01' <=T_DATE_01 and T_DATE_01<='" + year + "-12-31'";
+        String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ? and '" + year
+                + "-01-01' <=T_DATE_01 and T_DATE_01<='" + year + "-12-31'";
 
         if ( model.findFirst( sql, sid ) == null ) {
             model.set( "R_TMPFILE_01", sid );

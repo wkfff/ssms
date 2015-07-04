@@ -8,12 +8,28 @@
 
 package com.lanstar.model.tenant;
 
+import com.lanstar.common.ListKit;
+import com.lanstar.identity.TenantType;
 import com.lanstar.model.TenantModel;
+import com.lanstar.model.system.archive.ArchiveModel;
+import com.lanstar.plugin.template.ModelType;
 import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplatePropPlugin;
+import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile extends TenantModel<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
+
+    public static TemplateFile findFirst( UniqueTag uniqueTag, Integer id ) {
+        return dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "R_TENANT", "P_TENANT", "P_PROFESSION", "SID" ),
+                ListKit.newObjectArrayList(
+                        uniqueTag.getTemplateId(),
+                        uniqueTag.getTenantId(),
+                        TenantType.ENTERPRISE.getName(),
+                        uniqueTag.getProfessionId(),
+                        id ) );
+    }
 
     public String getParentName() {
         return getStr( "S_NAME" );
@@ -210,6 +226,12 @@ public class TemplateFile extends TenantModel<TemplateFile> {
 
     public void setCycleValue( Integer value ) {
         set( "N_CYCLE", value );
+    }
+    
+    public ArchiveModel<?> getTemplateModel() {
+        return (ArchiveModel<?>) getTemplateProp().getModel( ModelType.SYSTEM_ARCHIVE ).getDao().findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "R_TMPFILE", "N_VERSION" ),
+                ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
     }
 }
 

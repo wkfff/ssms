@@ -15,12 +15,14 @@ import com.lanstar.common.TreeNode;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Template;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.plugin.activerecord.DbPro;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.enterprise.ProfessionService;
+import com.lanstar.service.enterprise.UniqueTag;
 
 import java.util.List;
 import java.util.Map;
@@ -29,16 +31,25 @@ public class TemplateController extends Controller {
     public void index() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
 
-        ProfessionService professionService = identityContext.getEnterpriseService().getProfessionService();
-
-        // get template instance
-        Template template = professionService.getSystemTemplate();
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
 
         // load template tree data
+        List<TreeNode> value = templateTree( identityContext, uniqueTag );
+        List<TreeNode> tmp = value;
+        TreeNode firstRec = null;
+        while ( tmp.size() > 0 ) {
+            firstRec = tmp.get( 0 );
+            tmp = firstRec.getChildren();
+        }
+
+        this.setAttr( "R_SID", uniqueTag.getTemplateId() ).setAttr( "tree", value ).setAttr( "firstRec", firstRec );
+    }
+
+    private List<TreeNode> templateTree( IdentityContext identityContext, UniqueTag uniqueTag ) {
         DbPro tenantDb = identityContext.getTenantDb();
         List<Record> folder = tenantDb.find( SqlKit.sql( "tenant.templateFolder.getFolderByTemplateId" ),
-                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName(),
-                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName() );
+                uniqueTag.getTemplateId(), uniqueTag.getTenantId(), TenantType.ENTERPRISE.getName(), uniqueTag.getProfessionId(),
+                uniqueTag.getTemplateId(), uniqueTag.getTenantId(), TenantType.ENTERPRISE.getName(), uniqueTag.getProfessionId() );
         List<Map<String, Object>> list = Lists.transform( folder, new Function<Record, Map<String, Object>>() {
             @Override
             public Map<String, Object> apply( Record input ) {
@@ -49,18 +60,10 @@ public class TemplateController extends Controller {
                 return columns;
             }
         } );
-        List<TreeNode> value = TreeNode.build( "D-0", list, "SID", "R_SID", "C_NAME" );
-        if ( value.size() == 1 ) {
-            value = value.get( 0 ).getChildren();
-        }
-        List<TreeNode> tmp = value;
-        TreeNode firstRec = null;
-        while ( tmp.size() > 0 ) {
-            firstRec = tmp.get( 0 );
-            tmp = firstRec.getChildren();
-        }
 
-        this.setAttr( "R_SID", template.getId() ).setAttr( "tree", value ).setAttr( "firstRec", firstRec );
+        List<TreeNode> value = TreeNode.build( "D-0", list, "SID", "R_SID", "C_NAME" );
+        if ( value.size() == 1 ) return value.get( 0 ).getChildren();
+        return value;
     }
 
     public void tree() {
@@ -106,8 +109,8 @@ public class TemplateController extends Controller {
         this.setAttr( "version_name", version == 0 ? "当前版本" : "版本【" + version + "】" );
 
         String sid = this.getPara( 1 );
-        if (sid==null) sid = "0";
-        this.setAttr( "sid", Integer.parseInt( sid ));
+        if ( sid == null ) sid = "0";
+        this.setAttr( "sid", Integer.parseInt( sid ) );
     }
 
     /**

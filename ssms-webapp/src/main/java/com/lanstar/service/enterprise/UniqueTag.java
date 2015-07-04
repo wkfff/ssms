@@ -8,14 +8,13 @@
 
 package com.lanstar.service.enterprise;
 
+import com.lanstar.identity.Tenant;
+import com.lanstar.identity.TenantType;
+
 public class UniqueTag {
-    int tenantId;
     int professionId;
     int templateId;
-
-    public int getTenantId() {
-        return tenantId;
-    }
+    Tenant tenant;
 
     public int getProfessionId() {
         return professionId;
@@ -23,5 +22,13 @@ public class UniqueTag {
 
     public int getTemplateId() {
         return templateId;
+    }
+
+    public int getTenantId() {return tenant.getTenantId();}
+
+    public TenantType getTenantType() {return tenant.getTenantType();}
+
+    public Tenant getTenant() {
+        return tenant;
     }
 }

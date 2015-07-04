@@ -8,10 +8,60 @@
 
 package com.lanstar.model.tenant;
 
+import com.lanstar.common.ListKit;
+import com.lanstar.common.ModelInjector;
+import com.lanstar.identity.Identity;
 import com.lanstar.model.TenantModel;
+import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateText extends TenantModel<TemplateText> {
     public static final TemplateText dao = new TemplateText();
+
+    public static String getContent( UniqueTag uniqueTag, String templateFileCode, int recoredId ) {
+        TemplateText text = dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "P_PROFESSION", "R_TENANT", "P_TENANT", "P_TMPFILE", "R_SID" ),
+                ListKit.newObjectArrayList(
+                        uniqueTag.getTemplateId(),
+                        uniqueTag.getProfessionId(),
+                        uniqueTag.getTenantId(),
+                        uniqueTag.getTenantType().getName(),
+                        templateFileCode,
+                        recoredId ) );
+        if ( text == null ) return null;
+        return text.getContent();
+    }
+
+    public static int saveContent( UniqueTag uniqueTag, String templateFileCode, int recoredId, String content, Identity operator ) {
+        TemplateText text = dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "P_PROFESSION", "R_TENANT", "P_TENANT", "P_TMPFILE", "R_SID" ),
+                ListKit.newObjectArrayList(
+                        uniqueTag.getTemplateId(),
+                        uniqueTag.getProfessionId(),
+                        uniqueTag.getTenantId(),
+                        uniqueTag.getTenantType().getName(),
+                        templateFileCode,
+                        recoredId ) );
+        boolean exists = text != null;
+        if ( exists == false ) text = new TemplateText();
+
+        text.setTemplateId( uniqueTag.getTemplateId() );
+        text.setProfessionId( uniqueTag.getProfessionId() );
+        text.setTenant( uniqueTag.getTenant() );
+        text.setTemplateFileCode( templateFileCode );
+        text.setParentId( recoredId );
+        text.setContent( content );
+
+        ModelInjector.injectOpreator( text, operator, true );
+
+        if ( exists ) text.update();
+        else text.save();
+
+        return text.getId();
+    }
+
+    public Integer getId() {
+        return getInt( "SID" );
+    }
 
     public int getParentId() {
         return getInt( "R_SID" );
@@ -47,5 +97,21 @@ public class TemplateText extends TenantModel<TemplateText> {
      */
     public void setTemplateId( int templateId ) {
         set( "R_TEMPLATE", templateId );
+    }
+
+    public String getTemplateFileCode() {
+        return getStr( "P_TMPFILE" );
+    }
+
+    public void setTemplateFileCode( String code ) {
+        set( "P_TMPFILE", code );
+    }
+
+    public String getContent() {
+        return getStr( "C_CONTENT" );
+    }
+
+    public void setContent( String content ) {
+        set( "C_CONTENT", content );
     }
 }

@@ -22,9 +22,9 @@
     <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">发布</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-pdf" data-bind="click: function(){}">导出</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-back" data-bind="click: function(){panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}')}">返回列表</a>
-        <#if TEMPLATE_ID??>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_02/view?sid=${TEMPLATE_ID}')}">查看模板</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-back" data-bind="click: function(){panelLoad('${BASE_PATH}/?sid=${file.id}')}">返回列表</a>
+        <#if file.templateModel.id??>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_02/view?sid=${file.templateModel.id}')}">查看模板</a>
         </#if>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
@@ -93,20 +93,12 @@
         T_DATE_01: ko.observable('${T_DATE_01!}'),
         C_DEPT_02: ko.observable('${C_DEPT_02!}'),
         C_DEPT_03: ko.observable('${C_DEPT_03!}'),
+        htmlContent: ko.observable(${json(htmlContent)}),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!pid}'
+        R_TMPFILE: '${file.id}'
     };
     var extModel = {
-        htmlContent: ko.observable(),
         readonly: ${@READONLY!'false'}
-    };
-    var settings = {
-        htmleditSettings: {
-            table: "SSM_STDTMP_FILE_02",
-            field: 'C_CONTENT',
-            sid: '${SID!}',
-            readonly: extModel.readonly
-        }
     };
     var events = {
         saveClick: function () {
@@ -129,7 +121,7 @@
     };
 
     var onPanelLoad = function () {
-        var vm = $.extend({}, model, settings, extModel, events);
+        var vm = $.extend({}, model, extModel, events);
         ko.applyBindings(vm, document.getElementById('kocontainer'));
     }
 </script>
