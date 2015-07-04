@@ -22,7 +22,7 @@
     <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">发布</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-pdf" data-bind="click: function(){}">导出</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-back" data-bind="click: function(){panelLoad('${BASE_PATH}/?sid=${file.id}')}">返回列表</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-back" data-bind="click: function(){panelLoad('${BASE_PATH}/?fileid=${file.id}')}">返回列表</a>
         <#if file.templateModel.id??>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_02/view?sid=${file.templateModel.id}')}">查看模板</a>
         </#if>
@@ -51,7 +51,7 @@
 
             <tr>
                 <td colspan="4">
-                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px"></textarea>
+                    <textarea data-bind="htmleditValue: htmlContent" style="width: 100%; min-height: 400px"></textarea>
                 </td>
             </tr>
 
@@ -93,7 +93,7 @@
         T_DATE_01: ko.observable('${T_DATE_01!}'),
         C_DEPT_02: ko.observable('${C_DEPT_02!}'),
         C_DEPT_03: ko.observable('${C_DEPT_03!}'),
-        htmlContent: ko.observable(${json(htmlContent)}),
+        htmlContent: ko.observable(${json(C_CONTENT)}),
         SID: '${SID!}',
         R_TMPFILE: '${file.id}'
     };
@@ -106,16 +106,13 @@
             utils.messager.showProgress();
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
-                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                    settings.htmleditSettings.save(function (editorResult) {
                         utils.messager.closeProgress();
                         $.messager.alert("提示", "保存成功", "info");
-                    });
-                } else {
-                    $.messager.alert("提示", "保存失败", "warning", function () {
-                        utils.messager.closeProgress();
-                    });
-                }
+                    }else {
+                        $.messager.alert("提示", "保存失败", "warning", function () {
+                            utils.messager.closeProgress();
+                        }); 
+                    }
             }, "json");
         }
     };

@@ -8,34 +8,52 @@
 
 package com.lanstar.controller.enterprise;
 
-import com.lanstar.common.Asserts;
-import com.lanstar.common.ModelInjector;
-import com.lanstar.controller.SimplateController;
-import com.lanstar.model.tenant.TemplateFile;
-import com.lanstar.model.tenant.TemplateFile01;
-import com.lanstar.model.tenant.TemplateFile01Item;
-import com.lanstar.plugin.activerecord.ModelKit;
-
 import java.util.Calendar;
 import java.util.Date;
 
-public class TemplateFile01Controller extends SimplateController<TemplateFile01> {
+import com.lanstar.common.Asserts;
+import com.lanstar.common.ModelInjector;
+import com.lanstar.identity.Identity;
+import com.lanstar.model.tenant.TemplateFile;
+import com.lanstar.model.tenant.TemplateFile01;
+import com.lanstar.model.tenant.TemplateFile01Item;
+import com.lanstar.model.tenant.TemplateText;
+import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.service.enterprise.UniqueTag;
+
+public class TemplateFile01Controller extends TemplateFileController<TemplateFile01> {
+    
     public void index() {
-        Integer sid = getParaToInt();
-        Asserts.notNull( sid, "发现非法的参数请求" );
-
-        TemplateFile01 templateFile = getDao().findFirstByColumn( "R_TMPFILE", sid );
-        if ( templateFile == null ) return;
-        setAttrs( ModelKit.toMap( templateFile ) );
-        TemplateFile file = templateFile.getTemplateFile();
-        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
-        if ( sourceFile == null ) return;
-        int sourceId = sourceFile.getId();
-        setAttr( "TEMPLATE_ID", sourceId );
-
+        Integer templatefileId = getParaToInt();
+        Asserts.notNull( templatefileId, "发现非法的参数请求" );
+        TemplateFile01 templateFile = getDao().findFirstByColumn( "R_TMPFILE", templatefileId );
+        Integer sid=templateFile.get( "SID" );
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+        super.rec();
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, sid );
+        if(file==null){
+            file = TemplateFile.findFirst( uniqueTag, templatefileId );
+        }else{
+            String content=TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), sid );
+            setAttr( "C_CONTENT", content );
+        }
+        setAttr( "file", file );
         String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ?";
 
-        setAttr( "pass", TemplateFile01Item.dao.find( sql, templateFile.get( "SID" ) ) );
+        setAttr( "pass", TemplateFile01Item.dao.find( sql, sid ) );
+    }
+    @Override
+    protected SqlBuilder buildWhere() {
+        return super.buildWhere().WHERE( "R_TMPFILE=?", getPara( "sid" ) );
+    }
+    @Override
+    protected void afterSave( TemplateFile01 model ) {
+        String content = getPara("htmlContent");
+        Integer fileId=getParaToInt("R_TMPFILE");
+        UniqueTag  uniqueTag=identityContext.getEnterpriseService().getUniqueTag();
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, fileId );
+        Identity identity=identityContext.getIdentity();
+        TemplateText.saveContent( uniqueTag, file.getTemplateFileCode(), model.getId(), content, identity );
     }
 
     public void pass() {

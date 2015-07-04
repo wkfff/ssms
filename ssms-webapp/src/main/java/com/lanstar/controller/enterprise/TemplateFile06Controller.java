@@ -12,39 +12,38 @@ import com.lanstar.app.Const;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile06;
+import com.lanstar.model.tenant.TemplateText;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.service.enterprise.UniqueTag;
 
-public class TemplateFile06Controller extends SimplateController<TemplateFile06> {
+public class TemplateFile06Controller extends TemplateFileController<TemplateFile06> {
     @Override
     public void rec() {
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
         super.rec();
         Integer pid = getAttrForInt( Const.TEMPLATE_FILE_PARENT_FIELD );
-        if (pid == null) pid = getParaToInt("pid");
-        TemplateFile file = TemplateFile.dao.findById( pid );
-        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
-
-        com.lanstar.model.system.TemplateFile06 sysFile = com.lanstar.model.system.TemplateFile06.dao.findFirstByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFile
-                .getId() );
-        if (sysFile == null) return;
-        setAttr( "TEMPLATE_ID", sysFile.getId() );
+        boolean isNew = pid == null;
+        if ( isNew ) pid = getParaToInt( "fileId" );
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
+        setAttr( "file", file );
     }
 
     @Override
     protected TemplateFile06 getDao() {
         return TemplateFile06.dao;
     }
-    
-    public void view(){
-        
+
+    public void view() {
+
     }
-    
-    public void detail(){
+
+    public void detail() {
         super.rec();
     }
 
     @Override
     protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt( "R_SID" ) );
+        return super.buildWhere().WHERE( "R_TMPFILE=?", getPara( "fileId" ) );
     }
 
     @Override

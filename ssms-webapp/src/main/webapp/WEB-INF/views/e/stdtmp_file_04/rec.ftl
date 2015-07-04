@@ -24,9 +24,9 @@
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf"
            data-bind="click: function(){}">导出</a>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-back"
-           onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回列表</a>
-        <#if TEMPLATE_ID??>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_04/view?sid=${TEMPLATE_ID}')}">查看模板</a>
+           onclick="panelLoad('${BASE_PATH}/?fileid=${file.id}');">返回列表</a>
+        <#if file.templateModel.id??>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_04/view?sid=${file.templateModel.id}')}">查看模板</a>
         </#if>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
@@ -81,7 +81,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings"
+                    <textarea data-bind="htmleditValue: htmlContent"
                               style="width: 100%; min-height: 400px"></textarea>
                 </td>
             </tr>
@@ -110,20 +110,12 @@
         S_TYPE: ko.observable('${S_TYPE!}'),
         N_TIME: ko.observable('${N_TIME!}'),
         C_USER_02: ko.observable('${C_USER_02!}'),
+        htmlContent: ko.observable(${json(C_CONTENT)}),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!pid}'
+        R_TMPFILE: '${file.id}'
     };
     var extModel = {
-        htmlContent: ko.observable(),
         readonly: ${@READONLY!'false'}
-    };
-    var settings = {
-        htmleditSettings: {
-            table: "SSM_STDTMP_FILE_04",
-            field: 'C_CONTENT',
-            sid: '${SID!}',
-            readonly: extModel.readonly
-        }
     };
     var events = {
         saveClick: function () {
@@ -131,22 +123,19 @@
             utils.messager.showProgress();
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
-                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                    settings.htmleditSettings.save(function (editorResult) {
-                        utils.messager.closeProgress();
-                        $.messager.alert("提示", "保存成功", "info");
-                    });
-                } else {
+                    utils.messager.closeProgress();
+                    $.messager.alert("提示", "保存成功", "info");
+                }else {
                     $.messager.alert("提示", "保存失败", "warning", function () {
                         utils.messager.closeProgress();
-                    });
+                    }); 
                 }
             }, "json");
         }
     };
 
     var onPanelLoad = function () {
-        var vm = $.extend({}, model, settings, extModel, events);
+        var vm = $.extend({}, model, extModel, events);
         ko.applyBindings(vm, document.getElementById('kocontainer'));
     }
 </script>

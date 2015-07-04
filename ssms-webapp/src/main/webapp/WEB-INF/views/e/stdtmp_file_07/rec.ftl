@@ -20,7 +20,7 @@
 <div id="kocontainer">
     <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}');">返回</a>
+        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?fileid=${file.id}');">返回</a>
     </div>
 
     <form class="form" method="post" style="padding:10px 31px;">
@@ -99,7 +99,7 @@
         C_CERT: ko.observable('${C_CERT!}'),
         T_CERT_REVIEW: ko.observable('${T_CERT_REVIEW!}'),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!pid}'
+        R_TMPFILE: '${file.id}'
     };
     var extModel = {
         readonly: ${@READONLY!'false'}

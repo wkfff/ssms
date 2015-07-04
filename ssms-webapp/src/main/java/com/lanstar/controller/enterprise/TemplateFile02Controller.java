@@ -9,6 +9,7 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
+import com.lanstar.identity.Identity;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile02;
 import com.lanstar.model.tenant.TemplateText;
@@ -27,7 +28,7 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
 
         if ( isNew == false ) {
             String content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), getAttrForInt( "SID" ) );
-            setAttr( "htmlContent", content );
+            setAttr( "C_CONTENT", content );
         }
         setAttr( "file", file );
     }
@@ -36,7 +37,15 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
     protected TemplateFile02 getDao() {
         return TemplateFile02.dao;
     }
-
+    @Override
+    protected void afterSave( TemplateFile02 model ) {
+        String content = getPara("htmlContent");
+        Integer fileId=getParaToInt("R_TMPFILE");
+        UniqueTag  uniqueTag=identityContext.getEnterpriseService().getUniqueTag();
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, fileId );
+        Identity identity=identityContext.getIdentity();
+        TemplateText.saveContent( uniqueTag, file.getTemplateFileCode(), model.getId(), content, identity );
+    }
     @Override
     protected SqlBuilder buildWhere() {
         return super.buildWhere().WHERE( "R_TMPFILE=?", getPara( "fileId" ) ).ORDER_BY( "T_DATE_01 DESC" );
