@@ -16,7 +16,11 @@ public class ArchiveModel<T extends ArchiveModel<T>> extends ModelExt<T> {
         return getInt( "UID" );
     }
 
-    public int getSid(){
+    public String getName() {
+        return getStr( "C_NAME" );
+    }
+
+    public int getSid() {
         return getInt( "SID" );
     }
 

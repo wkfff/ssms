@@ -11,7 +11,7 @@
     </@>
 
     <@layout.put block="panel_title">
-    ${file.name}
+    ${file.name!title}
     </@>
     <@layout.put block="panel_tools" type="REPLACE">
     <a href="/sys/stdtmp/manager?template=${file.templateId}">返回列表</a>
