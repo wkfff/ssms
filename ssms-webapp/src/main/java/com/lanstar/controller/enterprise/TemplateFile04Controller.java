@@ -39,11 +39,7 @@ public class TemplateFile04Controller extends TemplateFileController<TemplateFil
     @Override
     protected void afterSave( TemplateFile04 model ) {
         String content = getPara( "htmlContent" );
-        Integer fileId = getParaToInt( "R_TMPFILE" );
-        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-        TemplateFile file = TemplateFile.findFirst( uniqueTag, fileId );
-        Identity identity = identityContext.getIdentity();
-        TemplateText.saveContent( uniqueTag, file.getTemplateFileCode(), model.getId(), content, identity );
+        model.setContentText( content );
     }
 
     @Override

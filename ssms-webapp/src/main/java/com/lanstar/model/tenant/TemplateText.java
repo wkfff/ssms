@@ -37,21 +37,25 @@ public class TemplateText extends TenantModel<TemplateText> {
     }
 
     public static int saveContent( UniqueTag uniqueTag, String templateFileCode, int recoredId, String content, Identity operator ) {
+        return saveContent( uniqueTag.getTemplateId(), uniqueTag.getTenant(), uniqueTag.getProfessionId(), templateFileCode, recoredId, content, operator );
+    }
+    
+    public static int saveContent( int templateId, Tenant tenant, int professionId, String templateFileCode, int recoredId, String content, Identity operator ) {
         TemplateText text = dao.findFirstByColumns(
-                ListKit.newArrayList( "R_TEMPLATE", "P_PROFESSION", "R_TENANT", "P_TENANT", "P_TMPFILE", "R_SID" ),
-                ListKit.newObjectArrayList(
-                        uniqueTag.getTemplateId(),
-                        uniqueTag.getProfessionId(),
-                        uniqueTag.getTenantId(),
-                        uniqueTag.getTenantType().getName(),
-                        templateFileCode,
-                        recoredId ) );
+            ListKit.newArrayList( "R_TEMPLATE", "P_PROFESSION", "R_TENANT", "P_TENANT", "P_TMPFILE", "R_SID" ),
+            ListKit.newObjectArrayList(
+                templateId,
+                professionId,
+                tenant.getTenantId(),
+                tenant.getTenantType().getName(),
+                templateFileCode,
+                recoredId ) );
         boolean exists = text != null;
         if ( exists == false ) text = new TemplateText();
 
-        text.setTemplateId( uniqueTag.getTemplateId() );
-        text.setProfessionId( uniqueTag.getProfessionId() );
-        text.setTenant( uniqueTag.getTenant() );
+        text.setTemplateId( templateId );
+        text.setProfessionId( professionId );
+        text.setTenant( tenant );
         text.setTemplateFileCode( templateFileCode );
         text.setParentId( recoredId );
         text.setContent( content );

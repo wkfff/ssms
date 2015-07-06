@@ -73,9 +73,20 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantMod
     public void setTemplateId( int templateId ) {
         set( "R_TEMPLATE", templateId );
     }
-    
-    public String getContentText(){
+
+    /**
+     * 获取关联的文本内容
+     */
+    public String getContentText() {
         TemplateProp templateProp = TemplatePropPlugin.me().get( ModelType.TENANT, getClass() );
         return TemplateText.getContent( getTemplateId(), getTenant(), getProfessionId(), templateProp.getCode(), getId() );
+    }
+
+    /**
+     * 设置关联的文本内容
+     */
+    public void setContentText( String text ) {
+        TemplateProp templateProp = TemplatePropPlugin.me().get( ModelType.TENANT, getClass() );
+        TemplateText.saveContent( getTemplateId(), getTenant(), getProfessionId(), templateProp.getCode(), getId(), text, getOperator() );
     }
 }
