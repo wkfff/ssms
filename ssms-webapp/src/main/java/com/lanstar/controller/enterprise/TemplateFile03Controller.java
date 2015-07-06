@@ -26,20 +26,22 @@ public class TemplateFile03Controller extends TemplateFileController<TemplateFil
         Integer templatefileId = getParaToInt();
         Asserts.notNull( templatefileId, "发现非法的参数请求" );
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-        TemplateFile03 templateFile = templateModel(uniqueTag,templatefileId);
-        if(templateFile==null) return;
+        TemplateFile03 templateFile = getTemplateFile( uniqueTag, templatefileId );
+        if ( templateFile == null ) return;
         setAttrs( ModelKit.toMap( templateFile ) );
         TemplateFile file = TemplateFile.findFirst( uniqueTag, templatefileId );
-        String content=TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), templateFile.getId() );
+        String content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), templateFile.getId() );
         setAttr( "C_CONTENT", content );
         setAttr( "file", file );
     }
+
     @Override
     protected void afterSave( TemplateFile03 model ) {
         String content = getPara( "htmlContent" );
         model.setContentText( content );
     }
-    protected TemplateFile03 templateModel(UniqueTag uniqueTag,Integer templateFileId) {
+
+    protected TemplateFile03 getTemplateFile( UniqueTag uniqueTag, Integer templateFileId ) {
         TemplateFile03 model = getDao().findFirstByColumns(
             ListKit.newArrayList( "R_TENANT", "P_TENANT", "R_TEMPLATE", "P_PROFESSION", "R_TMPFILE" ),
             ListKit.newObjectArrayList(
@@ -51,19 +53,21 @@ public class TemplateFile03Controller extends TemplateFileController<TemplateFil
         if ( model == null ) return null;
         return model;
     }
+
     public void export() {
         Integer sid = getParaToInt();
-        Asserts.notNull( sid, "非法的参数请求");
+        Asserts.notNull( sid, "非法的参数请求" );
         TemplateFile03 fileItem = TemplateFile03.dao.findById( sid );
         String content = fileItem.getContentText();
         render( AsposeRender.me( content, fileItem.getName(), OutputFormat.DOC ) );
     }
+
     @Override
     protected TemplateFile03 getDao() {
         return TemplateFile03.dao;
     }
-    
-    public void view(){
+
+    public void view() {
         super.rec();
     }
 }
