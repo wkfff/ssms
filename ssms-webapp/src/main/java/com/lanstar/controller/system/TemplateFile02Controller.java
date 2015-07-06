@@ -14,6 +14,7 @@ import com.lanstar.core.aop.Before;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile02;
 import com.lanstar.model.system.TemplateText;
+import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
@@ -36,9 +37,12 @@ public class TemplateFile02Controller extends SimplateController<TemplateFile02>
 
     @Before(AttachTokenGenerator.class)
     public void view() {
-        super.rec();
-        setAttr( "@READONLY", "true" );
-        render( "rec.ftl" );
+        com.lanstar.model.system.archive.TemplateFile file = getAttr( "file" );
+        ArchiveModel<?> model = file.getTemplateModel();
+
+        // setAttr("file", file);
+        // setAttr("model", ModelKit.toMap(model));
+        render( "view.ftl" );
     }
 
     @Override

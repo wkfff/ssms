@@ -34,10 +34,10 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
         }
         setAttr( "file", file );
     }
-    
+
     public void export() {
         Integer sid = getParaToInt();
-        Asserts.notNull( sid, "非法的参数请求");
+        Asserts.notNull( sid, "非法的参数请求" );
         TemplateFile02 fileItem = TemplateFile02.dao.findById( sid );
         String content = fileItem.getContentText();
         render( AsposeRender.me( content, fileItem.getName(), OutputFormat.PDF ) );
@@ -53,6 +53,7 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
         String content = getPara( "htmlContent" );
         model.setContentText( content );
     }
+
     @Override
     protected SqlBuilder buildWhere() {
         return super.buildWhere().WHERE( "R_TMPFILE=?", getPara( "fileId" ) ).ORDER_BY( "T_DATE_01 DESC" );

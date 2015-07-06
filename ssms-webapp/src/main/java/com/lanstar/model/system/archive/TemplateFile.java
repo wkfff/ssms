@@ -8,6 +8,30 @@
 
 package com.lanstar.model.system.archive;
 
+import com.lanstar.common.ListKit;
+import com.lanstar.plugin.template.ModelType;
+import com.lanstar.plugin.template.TemplateProp;
+import com.lanstar.plugin.template.TemplatePropPlugin;
+
 public class TemplateFile extends ArchiveModel<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
+
+    public String getTemplateFileCode() {
+        return getStr( "P_TMPFILE" );
+    }
+
+    /** 获取模板属性 */
+    public TemplateProp getTemplateProp() {
+        return TemplatePropPlugin.me().get( getTemplateFileCode() );
+    }
+
+    public ArchiveModel<?> getTemplateModel() {
+        return (ArchiveModel<?>) getTemplateProp().getModel( ModelType.SYSTEM_ARCHIVE ).getDao().findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "R_TMPFILE", "N_VERSION" ),
+                ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
+    }
+
+    public String getContextText() {
+        return TemplateText.getContent( getTemplateId(), getVersion(), getTemplateFileCode(), getSid() );
+    }
 }
