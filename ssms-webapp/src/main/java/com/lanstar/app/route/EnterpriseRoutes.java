@@ -21,6 +21,8 @@ public class EnterpriseRoutes extends Routes {
     @Override
     public void config() {
         add( "/e", HomeController.class );
+        add( "/e/charts", ChartsController.class );
+
         add( "/e/stdtmp", TemplateController.class );
         add( "/e/stdtmp_file_01", TemplateFile01Controller.class );
         add( "/e/stdtmp_file_02", TemplateFile02Controller.class );
