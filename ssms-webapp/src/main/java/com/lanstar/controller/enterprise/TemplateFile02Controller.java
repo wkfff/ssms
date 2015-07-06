@@ -9,10 +9,13 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
+import com.lanstar.common.Asserts;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile02;
 import com.lanstar.model.tenant.TemplateText;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.render.aspose.AsposeRender;
+import com.lanstar.render.aspose.OutputFormat;
 import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile02Controller extends TemplateFileController<TemplateFile02> {
@@ -30,6 +33,14 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
             setAttr( "htmlContent", content );
         }
         setAttr( "file", file );
+    }
+    
+    public void export() {
+        Integer sid = getParaToInt();
+        Asserts.notNull( sid, "非法的参数请求");
+        TemplateFile02 fileItem = TemplateFile02.dao.findById( sid );
+        String content = fileItem.getContentText();
+        render( AsposeRender.me( content, fileItem.getName(), OutputFormat.PDF ) );
     }
 
     @Override

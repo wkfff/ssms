@@ -10,6 +10,8 @@ package com.lanstar.core;
 
 import com.lanstar.core.render.ViewType;
 
+import java.io.File;
+
 public interface Const {
     String RAPIDWARE_VERSION = "1.0";
 
@@ -32,4 +34,6 @@ public interface Const {
     int MIN_SECONDS_OF_TOKEN_TIME_OUT = 300;                // 300 seconds ---> 5 minutes
 
     int DEFAULT_MAX_POST_SIZE = 1024 * 1024 * 10;       // 10M
+
+    String DEFAULT_FILE_RENDER_BASE_PATH = File.separator + "download" + File.separator;
 }

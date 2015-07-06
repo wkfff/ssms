@@ -20,6 +20,12 @@ import com.lanstar.service.enterprise.UniqueTag;
 public class TemplateFile extends TenantModel<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
 
+    public static TemplateFile findFirst( int templateId, int tenantId, int professionId, int srcId ) {
+        return dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "R_TENANT", "P_TENANT", "P_PROFESSION", "SID" ),
+                ListKit.newObjectArrayList( templateId, tenantId, TenantType.ENTERPRISE.getName(), professionId, srcId ) );
+    }
+
     public static TemplateFile findFirst( UniqueTag uniqueTag, Integer id ) {
         return dao.findFirstByColumns(
                 ListKit.newArrayList( "R_TEMPLATE", "R_TENANT", "P_TENANT", "P_PROFESSION", "SID" ),
@@ -227,11 +233,10 @@ public class TemplateFile extends TenantModel<TemplateFile> {
     public void setCycleValue( Integer value ) {
         set( "N_CYCLE", value );
     }
-    
+
     public ArchiveModel<?> getTemplateModel() {
         return (ArchiveModel<?>) getTemplateProp().getModel( ModelType.SYSTEM_ARCHIVE ).getDao().findFirstByColumns(
                 ListKit.newArrayList( "R_TEMPLATE", "R_TMPFILE", "N_VERSION" ),
                 ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
     }
 }
-

@@ -21,7 +21,9 @@
 <div id="kocontainer">
     <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">发布</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-pdf" data-bind="click: function(){}">导出</a>
+        <#if SID??>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-pdf" data-bind="click: function(){ window.open('${BASE_PATH}/export/${SID}') }">导出</a>
+        </#if>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-back" data-bind="click: function(){panelLoad('${BASE_PATH}/?sid=${file.id}')}">返回列表</a>
         <#if file.templateModel.id??>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_02/view?sid=${file.templateModel.id}')}">查看模板</a>

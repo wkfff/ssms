@@ -9,7 +9,11 @@
 package com.lanstar.model.tenant;
 
 import com.lanstar.app.Const;
+import com.lanstar.identity.Tenant;
 import com.lanstar.model.TenantModel;
+import com.lanstar.plugin.template.ModelType;
+import com.lanstar.plugin.template.TemplateProp;
+import com.lanstar.plugin.template.TemplatePropPlugin;
 
 public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantModel<T> {
     public int getId() {
@@ -21,7 +25,8 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantMod
     }
 
     public TemplateFile getTemplateFile() {
-        return TemplateFile.dao.findById( getTemplateFileId() );
+        Tenant tenant = getTenant();
+        return TemplateFile.findFirst( getTemplateFileId(), tenant.getTenantId(), getProfessionId(), getTemplateFileId() );
     }
 
     public FileContentState getStatus() {
@@ -67,5 +72,10 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantMod
      */
     public void setTemplateId( int templateId ) {
         set( "R_TEMPLATE", templateId );
+    }
+    
+    public String getContentText(){
+        TemplateProp templateProp = TemplatePropPlugin.me().get( ModelType.TENANT, getClass() );
+        return TemplateText.getContent( getTemplateId(), getTenant(), getProfessionId(), templateProp.getCode(), getId() );
     }
 }

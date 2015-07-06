@@ -8,6 +8,7 @@
 
 package com.lanstar.config;
 
+import com.lanstar.common.kit.PathKit;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Const;
 import com.lanstar.core.render.ViewType;
@@ -27,6 +28,7 @@ public final class Constants {
     private String freeMarkerViewExtension = Const.DEFAULT_FREEMARKER_VIEW_EXTENSION;
     private Integer maxPostSize = Const.DEFAULT_MAX_POST_SIZE;
     private int freeMarkerTemplateUpdateDelay = Const.DEFAULT_FREEMARKER_TEMPLATE_UPDATE_DELAY;
+    private String fileRenderPath;
     private String uploadedFileSaveDirectory;
     private ITokenCache tokenCache;
 
@@ -164,7 +166,26 @@ public final class Constants {
         this.tokenCache = tokenCache;
     }
 
-    public void setBaseViewPath(String baseViewPath) {
-        Routes.setBaseViewPath(baseViewPath);
+    public void setBaseViewPath( String baseViewPath ) {
+        Routes.setBaseViewPath( baseViewPath );
+    }
+
+    public String getFileRenderPath() {
+        return fileRenderPath;
+    }
+
+    /**
+     * Set the path of file render of controller.
+     * <p>
+     * The path is start with root path of this web application.
+     * The default value is "/download" if you do not config this parameter.
+     */
+    public void setFileRenderPath( String fileRenderPath ) {
+        if ( StrKit.isBlank( fileRenderPath ) )
+            throw new IllegalArgumentException( "The argument fileRenderPath can not be blank" );
+
+        if ( !fileRenderPath.startsWith( "/" ) && !fileRenderPath.startsWith( File.separator ) )
+            fileRenderPath = File.separator + fileRenderPath;
+        this.fileRenderPath = PathKit.getWebRootPath() + fileRenderPath;
     }
 }

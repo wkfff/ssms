@@ -54,6 +54,5 @@ public class TemplateFile06Controller extends SimplateController<TemplateFile06>
 
     @Override
     protected void afterSave( TemplateFile06 model ) {
-        final TemplateFile templateFile = model.getTemplateFile();
     }
 }
