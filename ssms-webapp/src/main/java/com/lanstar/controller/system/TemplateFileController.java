@@ -23,4 +23,13 @@ public class TemplateFileController extends Controller {
         this.forwardAction( "/sys/stdtmp_file_" + file.getTemplateFileCode() + "/" );
     }
 
+    public void view() {
+        Integer fileId = getParaToInt();
+        Asserts.notNull( fileId, "file id is null" );
+
+        com.lanstar.model.system.archive.TemplateFile file = com.lanstar.model.system.archive.TemplateFile.dao.findById( fileId );
+        setAttr( "file", file );
+
+        this.forwardAction( "/sys/stdtmp_file_" + file.getTemplateFileCode() + "/view" );
+    }
 }

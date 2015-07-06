@@ -16,6 +16,10 @@ import java.util.Objects;
 public class TemplateText extends ArchiveModel<TemplateText> {
     public static final TemplateText dao = new TemplateText();
 
+    public static String getContent( TemplateFile file, int recoredId ) {
+        return getContent( file.getTemplateId(), file.getVersion(), file.getTemplateFileCode(), recoredId );
+    }
+
     public static String getContent( int templateId, int version, String templateFileCode, int recoredId ) {
         TemplateText text = dao.findFirstByColumns(
                 ListKit.newArrayList( "R_TEMPLATE", "P_TMPFILE", "R_SID", "N_VERSION" ),

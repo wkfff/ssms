@@ -131,7 +131,7 @@ public class TemplateFile extends TenantModel<TemplateFile> {
     /**
      * 获取文件ID
      */
-    public Integer getId() {
+    public int getId() {
         return getInt( "SID" );
     }
 

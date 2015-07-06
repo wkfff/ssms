@@ -16,7 +16,6 @@ import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.identity.TenantType;
-import com.lanstar.model.system.Template;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.plugin.activerecord.DbPro;
 import com.lanstar.plugin.activerecord.Record;
@@ -89,18 +88,16 @@ public class TemplateController extends Controller {
      */
     public void view() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
-        ProfessionService professionService = identityContext.getEnterpriseService().getProfessionService();
-        Template template = professionService.getSystemTemplate();
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
         DbPro tenantDb = identityContext.getTenantDb();
         int version = this.getParaToInt( 0, 0 );
         List<Record> folder = tenantDb.find( SqlKit.sql( "tenant.templateFolder.getFolderByTemplateIdAndVersion" ),
-                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName(), version,
-                template.getId(), identityContext.getTenantId(), identityContext.getTenantType().getName(), version );
+                uniqueTag.getTemplateId(), uniqueTag.getTenantId(), TenantType.ENTERPRISE.getName(), uniqueTag.getProfessionId(),
+                uniqueTag.getTemplateId(), uniqueTag.getTenantId(), TenantType.ENTERPRISE.getName(), uniqueTag.getProfessionId() );
         List<Map<String, Object>> list = Lists.transform( folder, new Function<Record, Map<String, Object>>() {
             @Override
             public Map<String, Object> apply( Record input ) {
-                Map<String, Object> columns = input.getColumns();
-                return columns;
+                return input.getColumns();
             }
         } );
         List<TreeNode> value = TreeNode.build( "D-0", list, "SID", "R_SID", "C_NAME" );

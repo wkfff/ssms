@@ -13,7 +13,19 @@ import com.lanstar.plugin.activerecord.ModelExt;
 public class ArchiveModel<T extends ArchiveModel<T>> extends ModelExt<T> {
 
     public int getId() {
+        return getInt( "UID" );
+    }
+
+    public int getSid(){
         return getInt( "SID" );
+    }
+
+    public int getTemplateId() {
+        return getInt( "R_TEMPLATE" );
+    }
+
+    public int getVersion() {
+        return getInt( "N_VERSION" );
     }
 
     public void setVersion( int version ) {
