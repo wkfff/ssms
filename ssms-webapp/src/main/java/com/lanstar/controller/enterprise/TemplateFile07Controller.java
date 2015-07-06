@@ -7,12 +7,24 @@
  */
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.app.Const;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile07;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.service.enterprise.UniqueTag;
 
-public class TemplateFile07Controller extends SimplateController<TemplateFile07> {
-
+public class TemplateFile07Controller extends TemplateFileController<TemplateFile07> {
+    @Override
+    public void rec() {
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+        super.rec();
+        Integer pid = getAttrForInt( Const.TEMPLATE_FILE_PARENT_FIELD );
+        boolean isNew = pid == null;
+        if ( isNew ) pid = getParaToInt( "fileId" );
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
+        setAttr( "file", file );
+    }
     @Override
     protected TemplateFile07 getDao() {
         return TemplateFile07.dao;
@@ -20,9 +32,7 @@ public class TemplateFile07Controller extends SimplateController<TemplateFile07>
 
     @Override
     protected SqlBuilder buildWhere() {
-        SqlBuilder sb = new SqlBuilder();
-        sb.WHERE( " R_TMPFILE=?", this.getPara( "R_TMPFILE" ) ).ORDER_BY( "T_CERT_REVIEW DESC" );
-        return sb;
+        return super.buildWhere().WHERE( "R_TMPFILE=?", getPara( "fileId" ) ).ORDER_BY( "T_CERT_REVIEW DESC" );
     }
 
     public void view() {

@@ -30,10 +30,8 @@
         <a class="easyui-linkbutton" plain="true" iconCls="icon-add" data-bind="click: addItem">新建隐患项目</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isReadonly()==false, click: saveClick">保存</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-remove" data-bind="visible:isReadonly()==false, click: remove">删除</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?sid=${R_TMPFILE!pid}')">返回列表</a>
-        <#if TEMPLATE_ID??>
-        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_06/view?sid=${TEMPLATE_ID}')}">查看模板</a>
-        </#if>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?fileid=${file.id}')">返回列表</a>
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_06/view?sid=${file.id}')}">查看模板</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-pre" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">上一条</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-next" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">下一条</a>
     </div>
@@ -122,7 +120,7 @@
         T_ACCEPTANCE: ko.observable('${T_ACCEPTANCE!}'),
         B_FINISH: ko.observable('${B_FINISH!0}'),
         SID: ko.observable('${SID!}'),
-        R_TMPFILE: '${R_TMPFILE!pid}'
+        R_TMPFILE: '${file.id}'
     };
     var settings = {
         levelSource: ko.observableArray([{code: '01', name: '一般隐患'}, {code: '02', name: '重大隐患'}]),
@@ -164,7 +162,7 @@
             }, "json");
         },
         addItem: function () {
-            panelLoad('${BASE_PATH}/rec?pid=${R_TMPFILE!pid}');
+            panelLoad('${BASE_PATH}/rec?fileId=${file.id}');
         },
         remove: function () {
             if (extModel.isReadonly()) return;
@@ -172,6 +170,7 @@
             $.post('${BASE_PATH}/del', {sid: model.SID()}, function (result) {
                 utils.messager.closeProgress();
                 $.messager.alert('提示', result == true ? '删除成功' : '删除失败');
+                panelLoad('${BASE_PATH}/?fileid=${file.id}');
             }, 'json')
         }
     };

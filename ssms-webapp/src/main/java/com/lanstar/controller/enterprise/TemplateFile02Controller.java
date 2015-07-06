@@ -30,7 +30,7 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
 
         if ( isNew == false ) {
             String content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), getAttrForInt( "SID" ) );
-            setAttr( "htmlContent", content );
+            setAttr( "C_CONTENT", content );
         }
         setAttr( "file", file );
     }
@@ -48,6 +48,11 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
         return TemplateFile02.dao;
     }
 
+    @Override
+    protected void afterSave( TemplateFile02 model ) {
+        String content = getPara( "htmlContent" );
+        model.setContentText( content );
+    }
     @Override
     protected SqlBuilder buildWhere() {
         return super.buildWhere().WHERE( "R_TMPFILE=?", getPara( "fileId" ) ).ORDER_BY( "T_DATE_01 DESC" );

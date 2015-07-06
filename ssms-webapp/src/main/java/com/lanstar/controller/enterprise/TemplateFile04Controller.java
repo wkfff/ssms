@@ -10,26 +10,42 @@ package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.identity.Identity;
 import com.lanstar.model.tenant.TemplateFile;
+import com.lanstar.model.tenant.TemplateFile02;
 import com.lanstar.model.tenant.TemplateFile04;
+import com.lanstar.model.tenant.TemplateText;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.service.enterprise.UniqueTag;
 
-public class TemplateFile04Controller extends SimplateController<TemplateFile04> {
+public class TemplateFile04Controller extends TemplateFileController<TemplateFile04> {
 
     @Override
     public void rec() {
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
         super.rec();
         Integer pid = getAttrForInt( Const.TEMPLATE_FILE_PARENT_FIELD );
-        if (pid == null) pid = getParaToInt("pid");
-        TemplateFile file = TemplateFile.dao.findById( pid );
-        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
+        boolean isNew = pid == null;
+        if ( isNew ) pid = getParaToInt( "fileId" );
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
 
-        com.lanstar.model.system.TemplateFile04 sysFile = com.lanstar.model.system.TemplateFile04.dao.findFirstByColumn( Const.TEMPLATE_FILE_PARENT_FIELD, sourceFile
-                .getId() );
-        if (sysFile == null) return;
-        setAttr( "TEMPLATE_ID", sysFile.getId() );
+        if ( isNew == false ) {
+            String content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), getAttrForInt( "SID" ) );
+            setAttr( "C_CONTENT", content );
+        }
+        setAttr( "file", file );
     }
-    
+
+    @Override
+    protected void afterSave( TemplateFile04 model ) {
+        String content = getPara( "htmlContent" );
+        Integer fileId = getParaToInt( "R_TMPFILE" );
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, fileId );
+        Identity identity = identityContext.getIdentity();
+        TemplateText.saveContent( uniqueTag, file.getTemplateFileCode(), model.getId(), content, identity );
+    }
+
     @Override
     protected TemplateFile04 getDao() {
         return TemplateFile04.dao;
@@ -37,12 +53,12 @@ public class TemplateFile04Controller extends SimplateController<TemplateFile04>
 
     @Override
     protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE("R_TMPFILE=?", getParaToInt("R_SID")).ORDER_BY( "T_TIME DESC" );
+        return new SqlBuilder().WHERE( "R_TMPFILE=?", getPara( "fileId" ) ).ORDER_BY( "T_TIME DESC" );
     }
-    
-    public void view(){
+
+    public void view() {
     }
-    
+
     public void detail() {
         super.rec();
     }

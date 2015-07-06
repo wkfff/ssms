@@ -53,7 +53,7 @@
 
             <tr>
                 <td colspan="4">
-                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px"></textarea>
+                    <textarea data-bind="htmleditValue: htmlContent" style="width: 100%; min-height: 400px"></textarea>
                 </td>
             </tr>
 
@@ -95,7 +95,7 @@
         T_DATE_01: ko.observable('${T_DATE_01!}'),
         C_DEPT_02: ko.observable('${C_DEPT_02!}'),
         C_DEPT_03: ko.observable('${C_DEPT_03!}'),
-        htmlContent: ko.observable(${json(htmlContent)}),
+        htmlContent: ko.observable(${json(C_CONTENT)}),
         SID: '${SID!}',
         R_TMPFILE: '${file.id}'
     };
@@ -108,16 +108,13 @@
             utils.messager.showProgress();
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
-                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                    settings.htmleditSettings.save(function (editorResult) {
                         utils.messager.closeProgress();
                         $.messager.alert("提示", "保存成功", "info");
-                    });
-                } else {
-                    $.messager.alert("提示", "保存失败", "warning", function () {
-                        utils.messager.closeProgress();
-                    });
-                }
+                    }else {
+                        $.messager.alert("提示", "保存失败", "warning", function () {
+                            utils.messager.closeProgress();
+                        }); 
+                    }
             }, "json");
         }
     };

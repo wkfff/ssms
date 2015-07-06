@@ -25,7 +25,7 @@
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf"
            data-bind="click: function(){$.messager.alert('提示', '该功能正在开发中...')}">导出</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search"
-           data-bind="click: function(){window.open('/sys/stdtmp_file_01/view?sid=${TEMPLATE_ID!}')}">查看模板</a>
+           data-bind="click: function(){window.open('/sys/stdtmp_file_01/view?sid=${file.templateModel.id}')}">查看模板</a>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
         <table>
@@ -68,7 +68,7 @@
 
             <tr>
                 <td colspan="4">
-                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings"
+                    <textarea data-bind="htmleditValue: htmlContent"
                               style="width: 100%; min-height: 400px"></textarea>
                 </td>
             </tr>
@@ -134,20 +134,12 @@
         T_DATE_02: ko.observable('${T_DATE_02!}'),
         T_DATE_03: ko.observable('${T_DATE_03!}'),
         T_DATE_04: ko.observable('${T_DATE_04!}'),
+        htmlContent: ko.observable(${json(C_CONTENT)}),
         SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!sid}'
+        R_TMPFILE: '${file.id!}'
     };
     var extModel = {
-        htmlContent: ko.observable(),
         readonly: ${@READONLY!'false'}
-    };
-    var settings = {
-        htmleditSettings: {
-            table: "SSM_STDTMP_FILE_01",
-            field: 'C_CONTENT',
-            sid: '${SID!}',
-            readonly: extModel.readonly
-        }
     };
     var events = {
         saveClick: function () {
@@ -155,15 +147,12 @@
             utils.messager.showProgress();
             $.post('${BASE_PATH}/save', model, function (result) {
                 if (result.SID) {
-                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                    settings.htmleditSettings.save(function (editorResult) {
-                        utils.messager.closeProgress();
-                        $.messager.alert("提示", "保存成功", "info");
-                    });
-                } else {
+                    utils.messager.closeProgress();
+                    $.messager.alert("提示", "保存成功", "info");
+                }else {
                     $.messager.alert("提示", "保存失败", "warning", function () {
                         utils.messager.closeProgress();
-                    });
+                    }); 
                 }
             }, "json");
         },
@@ -190,7 +179,7 @@
     };
 
     var onPanelLoad = function () {
-        var vm = $.extend({}, model, settings, extModel, events);
+        var vm = $.extend({}, model,extModel, events);
         ko.applyBindings(vm, document.getElementById('kocontainer'));
     }
 </script>
