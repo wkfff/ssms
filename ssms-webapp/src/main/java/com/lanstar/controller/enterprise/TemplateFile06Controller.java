@@ -53,6 +53,5 @@ public class TemplateFile06Controller extends TemplateFileController<TemplateFil
 
     @Override
     protected void afterSave( TemplateFile06 model ) {
-        final TemplateFile templateFile = model.getTemplateFile();
     }
 }

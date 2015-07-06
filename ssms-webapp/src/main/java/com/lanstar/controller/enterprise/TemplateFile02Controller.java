@@ -9,11 +9,13 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
-import com.lanstar.identity.Identity;
+import com.lanstar.common.Asserts;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile02;
 import com.lanstar.model.tenant.TemplateText;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.render.aspose.AsposeRender;
+import com.lanstar.render.aspose.OutputFormat;
 import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile02Controller extends TemplateFileController<TemplateFile02> {
@@ -32,19 +34,24 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
         }
         setAttr( "file", file );
     }
+    
+    public void export() {
+        Integer sid = getParaToInt();
+        Asserts.notNull( sid, "非法的参数请求");
+        TemplateFile02 fileItem = TemplateFile02.dao.findById( sid );
+        String content = fileItem.getContentText();
+        render( AsposeRender.me( content, fileItem.getName(), OutputFormat.PDF ) );
+    }
 
     @Override
     protected TemplateFile02 getDao() {
         return TemplateFile02.dao;
     }
+
     @Override
     protected void afterSave( TemplateFile02 model ) {
-        String content = getPara("htmlContent");
-        Integer fileId=getParaToInt("R_TMPFILE");
-        UniqueTag  uniqueTag=identityContext.getEnterpriseService().getUniqueTag();
-        TemplateFile file = TemplateFile.findFirst( uniqueTag, fileId );
-        Identity identity=identityContext.getIdentity();
-        TemplateText.saveContent( uniqueTag, file.getTemplateFileCode(), model.getId(), content, identity );
+        String content = getPara( "htmlContent" );
+        model.setContentText( content );
     }
     @Override
     protected SqlBuilder buildWhere() {

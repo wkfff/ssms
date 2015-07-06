@@ -11,6 +11,7 @@ package com.lanstar.model.tenant;
 import com.lanstar.common.ListKit;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.identity.Identity;
+import com.lanstar.identity.Tenant;
 import com.lanstar.model.TenantModel;
 import com.lanstar.service.enterprise.UniqueTag;
 
@@ -18,13 +19,17 @@ public class TemplateText extends TenantModel<TemplateText> {
     public static final TemplateText dao = new TemplateText();
 
     public static String getContent( UniqueTag uniqueTag, String templateFileCode, int recoredId ) {
+        return getContent( uniqueTag.getTemplateId(), uniqueTag.getTenant(), uniqueTag.getProfessionId(), templateFileCode, recoredId );
+    }
+    
+    public static String getContent( int templateId, Tenant tenant, int professionId, String templateFileCode, int recoredId ) {
         TemplateText text = dao.findFirstByColumns(
                 ListKit.newArrayList( "R_TEMPLATE", "P_PROFESSION", "R_TENANT", "P_TENANT", "P_TMPFILE", "R_SID" ),
                 ListKit.newObjectArrayList(
-                        uniqueTag.getTemplateId(),
-                        uniqueTag.getProfessionId(),
-                        uniqueTag.getTenantId(),
-                        uniqueTag.getTenantType().getName(),
+                        templateId,
+                        professionId,
+                        tenant.getTenantId(),
+                        tenant.getTenantType().getName(),
                         templateFileCode,
                         recoredId ) );
         if ( text == null ) return null;

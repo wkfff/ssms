@@ -134,5 +134,12 @@
             <artifactId>jfreechart</artifactId>
             <version>1.0.19</version>
         </dependency>
+        <dependency>
+            <groupId>com.lanstar</groupId>
+            <artifactId>aspwords</artifactId>
+            <version>1.0</version>
+            <systemPath>${basedir}/lib/AspWords_C01.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
     </dependencies>
 </project>

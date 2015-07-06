@@ -58,5 +58,12 @@ public class TemplatePropPlugin implements IPlugin {
         for ( TemplateProp prop : map.values() ) list.add( prop.getParameter() );
         return list;
     }
+    
+    public TemplateProp get( ModelType modelType, Class<?> clazz ) {
+        for ( TemplateProp prop : map.values() ) {
+            if ( clazz.isAssignableFrom( prop.getModel( modelType ).getModelClass() ) ) return prop;
+        }
+        return null;
+    }
 }
 

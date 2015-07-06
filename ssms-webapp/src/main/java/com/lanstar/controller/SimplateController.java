@@ -160,7 +160,7 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
 
     }
 
-    @SuppressWarnings({ "unchecked", "MismatchedQueryAndUpdateOfCollection" })
+    @SuppressWarnings({ "unchecked" })
     protected T getModel() {
         Enumeration<String> paraNames = this.getParaNames();
         Map<String, String> paraMap = new CaseInsensitiveContainerFactory.CaseInsensitiveMap();

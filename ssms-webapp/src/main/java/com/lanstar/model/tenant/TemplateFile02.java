@@ -10,4 +10,12 @@ package com.lanstar.model.tenant;
 
 public class TemplateFile02 extends TemplateFileModel<TemplateFile02> {
     public static TemplateFile02 dao = new TemplateFile02();
+
+    public String getName() {
+        return getStr( "C_NAME" );
+    }
+
+    public void setName( String name ) {
+        set( "C_NAME", name );
+    }
 }

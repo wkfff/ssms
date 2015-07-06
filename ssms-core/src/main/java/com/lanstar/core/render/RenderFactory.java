@@ -8,12 +8,15 @@
 
 package com.lanstar.core.render;
 
+import com.lanstar.common.kit.PathKit;
 import com.lanstar.config.Constants;
 import com.lanstar.core.Const;
 
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.util.Locale;
+
+import static com.lanstar.core.Const.DEFAULT_FILE_RENDER_BASE_PATH;
 
 public class RenderFactory {
     private static RenderFactory instance = new RenderFactory();
@@ -34,6 +37,7 @@ public class RenderFactory {
         // init Render
         Render.init( constants.getEncoding(), constants.getDevMode() );
         initFreeMarkerRender( servletContext );
+        initFileRender( servletContext );
 
         // create mainRenderFactory
         if ( mainRenderFactory == null ) {
@@ -150,6 +154,21 @@ public class RenderFactory {
         } catch ( ClassNotFoundException e ) {
             // System.out.println("freemarker can not be supported!");
         }
+    }
+
+    private void initFileRender( ServletContext servletContext ) {
+        FileRender.init( getFileRenderPath(), servletContext );
+    }
+
+    private String getFileRenderPath() {
+        String result = constants.getFileRenderPath();
+        if ( result == null ) {
+            result = PathKit.getWebRootPath() + DEFAULT_FILE_RENDER_BASE_PATH;
+        }
+        if ( !result.endsWith( File.separator ) && !result.endsWith( "/" ) ) {
+            result = result + File.separator;
+        }
+        return result;
     }
 
     private static final class FreeMarkerRenderFactory implements IMainRenderFactory {
