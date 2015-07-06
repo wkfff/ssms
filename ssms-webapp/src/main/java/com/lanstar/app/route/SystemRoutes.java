@@ -10,6 +10,7 @@ package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
 import com.lanstar.controller.common.KnowledgeController;
+import com.lanstar.controller.government.NoticeReceiverController;
 import com.lanstar.controller.system.*;
 import com.lanstar.controller.system.attachtext.AttachTextController;
 
@@ -52,5 +53,8 @@ public class SystemRoutes extends Routes {
         add( "/sys/tenant_ru", ReviewUserController.class );
         add( "/sys/professions", ProfessionsController.class );
         add( "/knowledge", KnowledgeController.class );
+        
+        add("/sys/notice", NoticeController.class);
+        add("/sys/noticereceiver", NoticeReceiverController.class);
     }
 }

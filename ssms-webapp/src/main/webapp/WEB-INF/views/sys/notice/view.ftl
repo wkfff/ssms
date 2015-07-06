@@ -13,7 +13,6 @@
             font-family: "宋体";
         }
 
-
         .mainBox {
             width: 1000px;
             height: auto;

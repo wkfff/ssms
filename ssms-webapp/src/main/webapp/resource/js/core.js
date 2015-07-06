@@ -42,15 +42,15 @@ var utils;
             layer.close(index);
         };
 
-        messager.alert = function (msg, callback) {
-            layer.alert(msg, function (index) {
+        messager.alert = function (msg, callback,icon) {
+            layer.alert(msg, {icon:icon||0} ,function (index) {
                 if (typeof callback === 'function') callback(index);
                 layer.close(index);
             });
         };
 
         messager.confirm = function (msg, callback) {
-            layer.confirm(msg, callback);
+            layer.confirm(msg,{icon:3}, callback);
         };
         
         messager.showDialog = function (type, width, height, title, id, callback) {
@@ -109,3 +109,16 @@ if (typeof ko !== 'undefined' && ko.utils.copyToModel === undefined) {
         }
     };
 }
+
+/*ko数组添加过滤方法，林峰 2015-07-02*/
+ko.observableArray.fn['filter'] = function (filterFunc) {
+    var underlyingArray = this();
+    var result = [];
+    for (var i = 0; i < underlyingArray.length; i++) {
+        var value = underlyingArray[i];
+        if (filterFunc(value)) {
+            result.push(value);
+        }
+    }
+    return result;
+};

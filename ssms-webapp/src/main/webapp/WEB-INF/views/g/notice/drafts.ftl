@@ -50,9 +50,8 @@
             toolbar: '#toolbar',
             columns: [
                 [
-                    {field: 'S_PUBLISH', title: '发布单位', width: 150},
-                    {field: 'C_TITLE', align: 'center', title: '通知公告主题', width: 500},
-                    {field: 'T_PUBLISH', align: 'center', title: '发布时间', width: 160}
+                    {field: 'C_TITLE', align: 'left', title: '通知公告主题', width: 560},
+                    {field: 'T_CREATE', align: 'center', title: '创建时间', width: 120}
                 ]
             ],
             onDblClickRow: function (index, row) {

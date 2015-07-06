@@ -49,7 +49,9 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_INDUSTRY", "SID", Industry.class );
         addMapping( "SYS_PARA_AREA", "SID", AreaPara.class );
         
-        addMapping( "SSM_NOTICE", "SID", Notice.class );
+        addMapping( "SYS_NOTICE", "SID", Notice.class );
+        addMapping( "SYS_NOTICE_RECEIVER", "SID", NoticeReceiver.class );
+        
         addMapping( "SSM_KNOWLEDGE_SORT", "SID", KnowledgeSort.class );
         addMapping( "SSM_KNOWLEDGE_FILE", "SID", KnowledgeFile.class );
     }

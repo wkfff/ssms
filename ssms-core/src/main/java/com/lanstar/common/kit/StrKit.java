@@ -11,6 +11,7 @@ package com.lanstar.common.kit;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 
 /**
  * StrKit.
@@ -125,5 +126,40 @@ public class StrKit {
         }
 
         return md5StrBuff.toString();
+    }
+    
+    /**
+     * 将对象集合转化成字符串
+     *
+     * @param list
+     * @param split 分隔符
+     * @param quote 是否加单引号
+     * @return
+     */
+    public static String join( Collection<?> list, String split, boolean quote ){
+        if( list == null ) return "";
+        if( split == null ) split = "";
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for( Object o : list ){
+            if( i > 0 ) sb.append( split );
+            if( quote ) sb.append( "'" );
+            sb.append( o );
+            if( quote ) sb.append( "'" );
+            i++;
+        }
+
+        return sb.toString();
+    }
+    
+    /**
+     * 如果字符串为空或者没有内容，则替换成默认的字符串
+     *
+     * @param str        要处理的字符串
+     * @param defaultStr 默认字符串
+     * @return 结果字符串
+     */
+    public static String empty( String str, String defaultStr ){
+        return str == null || str.length() < 1 ? defaultStr : str;
     }
 }

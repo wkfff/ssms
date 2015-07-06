@@ -26,6 +26,11 @@ public class Notice extends Model<Notice>{
     private String S_PUBLIC;
     private String T_PUBLIC;
     
+    
+    public Integer getId(){
+        return this.getInt( "SID");
+    }
+    
     /**
      * @return the c_TITLE
      */
