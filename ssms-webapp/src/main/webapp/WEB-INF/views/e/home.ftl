@@ -18,7 +18,7 @@
                 <li style="padding-top:6px;width:100px;margin-left:5px;margin-right:0;">
                     <a href="/e/stdtmp/query">
                         <p>未创建项/合计项</p>
-                        <span style="color:red;font-size:20px;">${FILE_NO_CREATE}/${FILE_NO_CREATE+FILE_COUNT}</span>
+                        <span style="color:red;font-size:20px;">${FILE_NO_CREATE}/${FILE_COUNT}</span>
                     </a>
                 </li>
                 <li style="padding-top:5px;margin-left:0;"><img src="/resource/images/arrow_right.png"/></li>
@@ -94,7 +94,7 @@
                             <#list rs_todo as rs>
                                 <tr>
                                     <td class="more">
-                                        <a href="${rs.C_URL!"/e/stdtmp/tree?selected=${rs.SID}"}" target="_top" class="matter-title">${rs.C_NAME}</a>
+                                        <a href="${rs.C_URL!"/e/stdtmp/tree?selected=${rs.R_SID}"}" target="_top" class="matter-title">${rs.C_TITLE}</a>
                                     </td>
                                     <td class="matter-time">${rs.T_CREATE?date}</td>
                                 </tr>

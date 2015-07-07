@@ -8,7 +8,12 @@
 
 package com.lanstar.plugin.activerecord;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.lanstar.common.log.Logger;
+
+import java.util.List;
+import java.util.Map;
 
 public class RecordKit {
 
@@ -26,5 +31,18 @@ public class RecordKit {
             model.set( columnName, record.get( "columnName" ) );
         }
         return model;
+    }
+
+    public static Map<String, Object> toMap( Record record ) {
+        return record.getColumns();
+    }
+
+    public static List<Map<String, Object>> toMap( List<Record> todolist ) {
+        return Lists.newArrayList( Lists.transform( todolist, new Function<Record, Map<String, Object>>() {
+            @Override
+            public Map<String, Object> apply( Record input ) {
+                return toMap( input );
+            }
+        } ) );
     }
 }

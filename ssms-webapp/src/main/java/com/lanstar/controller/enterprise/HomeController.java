@@ -11,10 +11,15 @@ package com.lanstar.controller.enterprise;
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Notice;
 import com.lanstar.model.system.Profession;
-import com.lanstar.model.tenant.*;
+import com.lanstar.model.tenant.TemplateFile06;
+import com.lanstar.model.tenant.TemplateFile07;
+import com.lanstar.model.tenant.TemplateFile08;
+import com.lanstar.model.tenant.TemplateFolder;
+import com.lanstar.plugin.activerecord.DbPro;
+import com.lanstar.plugin.activerecord.Record;
+import com.lanstar.plugin.activerecord.RecordKit;
 import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.enterprise.ProfessionService;
 import com.lanstar.service.enterprise.TemplateInitTask;
@@ -57,23 +62,21 @@ public class HomeController extends Controller {
         TemplateFolder folder = professionService.getTenantTemplateFolder();
         setAttr( "FILE_COUNT", folder == null ? 0 : folder.getFileCount() );
 
-        setAttr( "FILE_NO_CREATE", identityContext.getTenantDb()
-                                                  .queryLong( "select COUNT(*) from ssm_stdtmp_file where R_TENANT=? and P_TENANT=? and R_TEMPLATE=? and P_PROFESSION=? and N_COUNT = 0",
-                                                          identityContext.getTenantId(),
-                                                          identityContext.getTenantType().getName(),
-                                                          professionService.getSystemTemplate().getId(),
-                                                          professionService.getId() ) );
+        DbPro db = identityContext.getTenantDb();
+        Long fileCount = db.queryLong( "select COUNT(*) from sys_todo where R_TENANT=? and P_TENANT=? and R_TEMPLATE=? and P_PROFESSION=?",
+                identityContext.getTenantId(),
+                identityContext.getTenantType().getName(),
+                professionService.getSystemTemplate().getId(),
+                professionService.getId() );
+        setAttr( "FILE_NO_CREATE", fileCount );
 
         // TODO 从待办表读取待办
-        List<TemplateFile> files = TemplateFile.dao.find( "SELECT A.*\n"
-                + "FROM SSM_STDTMP_FILE A\n"
-                + "inner join SSM_STDTMP_FOLDER B on a.r_sid = b.sid\n"
-                + "where B.R_TEMPLATE = ? AND B.R_TENANT=? AND B.P_TENANT=?\n"
-                + "and A.N_COUNT = 0 ORDER BY B.N_INDEX, B.SID, A.N_INDEX, SID\n"
-                + "limit 10", professionService.getSystemTemplate()
-                                               .getId(), identityContext.getTenantId(), TenantType.ENTERPRISE
-                .getName() );
-        setAttr( "rs_todo", files );
+        List<Record> todolist = db.find( "select * from sys_todo where R_TENANT=? and P_TENANT=? and R_TEMPLATE=? and P_PROFESSION=? limit 10",
+                identityContext.getTenantId(),
+                identityContext.getTenantType().getName(),
+                professionService.getSystemTemplate().getId(),
+                professionService.getId() );
+        setAttr( "rs_todo", RecordKit.toMap( todolist ) );
 
         List<Notice> rs_notice = Notice.dao.find( "select * from sys_notice" );
         setAttr( "rs_notice", rs_notice );
