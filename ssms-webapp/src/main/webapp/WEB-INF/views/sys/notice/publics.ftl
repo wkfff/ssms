@@ -70,7 +70,7 @@
                 utils.messager.alert("请先选择一行数据！");
                 return;
             }
-            window.location.href = '/g/notice/view?sid=' + value.SID;
+            window.location.href = '/sys/notice/view?sid=' + value.SID;
         };
         self.deleteClick = function () {
             var value = self.selectItem();

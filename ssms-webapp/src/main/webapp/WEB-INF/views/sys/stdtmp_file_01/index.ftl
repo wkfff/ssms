@@ -19,9 +19,6 @@
     <@layout.put block="panel_content">
     <div class="z-toolbar" data-bind="visible: !readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-
-        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo"
-           onclick="window.location.href = '${referer!}'">返回</a>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
         <table>
@@ -64,7 +61,7 @@
 
             <tr>
                 <td colspan="4">
-                <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings"
+                <textarea data-bind="htmleditValue: htmlContent"
                           style="width: 100%; min-height: 400px"></textarea>
                 </td>
             </tr>
@@ -106,47 +103,36 @@
             T_DATE_02: ko.observable('${T_DATE_02!}'),
             T_DATE_03: ko.observable('${T_DATE_03!}'),
             T_DATE_04: ko.observable('${T_DATE_04!}'),
+            htmlContent: ko.observable(${json(C_CONTENT)}),
             SID: '${SID!}',
-            R_TMPFILE: '${R_TMPFILE!sid}'
+            R_TEMPLATE: '${file.templateId}',
+            R_TMPFILE: '${R_TMPFILE!file.id}'
         };
         var extModel = {
-            htmlContent: ko.observable(),
             readonly: ${@READONLY!'false'}
         };
-        var settings = {
-            htmleditSettings: {
-                table: "SYS_STDTMP_FILE_01",
-                field: 'C_CONTENT',
-                sid: '${SID!}',
-                readonly: extModel.readonly
-            }
-        };
-
-        // ${file.id}
+        
         var events = {
             saveClick: function () {
                 if ($form.validate('.form') != true) return;
                 utils.messager.showProgress();
                 $.post('${BASE_PATH}/save', model, function (result) {
                     if (result.SID) {
-                        if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                        settings.htmleditSettings.save(function (editorResult) {
                             utils.messager.closeProgress();
                             $.messager.alert("提示", "保存成功", "info", function () {
-                                window.location.href = 'index?SID=' + result.SID + "&backURL=${backURL!referer!}";
+                                window.location.href = "/sys/stdtmp/file/"+file.id;
                             });
-                        });
-                    } else {
+                      }else {
                         $.messager.alert("提示", "保存失败", "warning", function () {
                             utils.messager.closeProgress();
                         });
-                    }
+                    } 
                 }, "json");
             }
         };
 
         $(function () {
-            ko.applyBindings($.extend({}, model, events, settings, extModel));
+            ko.applyBindings($.extend({}, model, events, extModel));
         });
     </script>
     </@>

@@ -43,10 +43,6 @@ public class FileBean {
         this.index = index;
     }
 
-    public String getTemplateUrl() {
-        return "/sys/stdtmp_file_" + getTemplateFileCode() + "/?sid=" + getId();
-    }
-
     public String getDesc() {
         return desc;
     }

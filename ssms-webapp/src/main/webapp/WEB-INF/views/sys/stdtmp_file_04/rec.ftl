@@ -1,55 +1,5 @@
-<#import "../../layout/_rec.ftl" as layout/>
-<#assign script>
-<script type="text/javascript">
-    var model = {
-        C_NAME: ko.observable('${C_NAME!}'),
-        T_TIME: ko.observable('${T_TIME!}'),
-        C_USER_01: ko.observable('${C_USER_01!}'),
-        C_ADDR: ko.observable('${C_ADDR!}'),
-        S_TYPE: ko.observable('${S_TYPE!}'),
-        N_TIME: ko.observable('${N_TIME!}'),
-        C_USER_02: ko.observable('${C_USER_02!}'),
-        SID: '${SID!}',
-        R_TMPFILE: '${R_TMPFILE!pid}'
-    };
-    var extModel = {
-        htmlContent: ko.observable(),
-        readonly: ${@READONLY!'false'}
-    };
-    var settings = {
-        htmleditSettings: {
-            table: "SYS_STDTMP_FILE_04",
-            field: 'C_CONTENT',
-            sid: '${SID!}',
-            readonly: extModel.readonly
-        }
-    };
-    var events = {
-        saveClick: function () {
-            if ($form.validate('.form') != true) return;
-            utils.messager.showProgress();
-            $.post('save', model, function (result) {
-                if (result.SID) {
-                    if (result.SID != settings.htmleditSettings.sid) settings.htmleditSettings.sid = result.SID;
-                    settings.htmleditSettings.save(function (editorResult) {
-                        utils.messager.closeProgress();
-                        $.messager.alert("提示", "保存成功", "info", function () {
-                            window.location.href = 'rec?sid=' + result.SID + "&backURL=${backURL!referer!}";
-                        });
-                    });
-                } else {
-                    $.messager.alert("提示", "保存失败", "warning", function () {
-                        utils.messager.closeProgress();
-                    });
-                }
-            }, "json");
-        }
-    };
-
-    $(function () {
-        ko.applyBindings($.extend({}, model, events, settings, extModel));
-    });
-</script>
+<@layout.extends name="../../_layouts/stdtmpfile.ftl">
+<@layout.put block="head">
 <style type="text/css">
     .form table {
         width: 100%;
@@ -65,11 +15,11 @@
         width: 90px;
     }
 </style>
-</#assign>
-<@layout.doLayout header=script>
+</@>
+<@layout.put block="panel_content">
 <div class="z-toolbar" data-bind="visible: !readonly">
     <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
-    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '${referer!}'">返回</a>
+    <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="window.location.href = '/sys/stdtmp/file/${R_TMPFILE!pid}'">返回</a>
 </div>
 <form class="form" method="post" style="padding:10px 31px;">
     <table>
@@ -123,9 +73,64 @@
         </tr>
         <tr>
             <td colspan="4">
-                <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px"></textarea>
+                <textarea data-bind="htmleditValue: htmlContent" style="width: 100%; min-height: 400px"></textarea>
             </td>
         </tr>
     </table>
 </form>
 </@>
+<@layout.put block="footer">
+<script type="text/javascript">
+    var model = {
+        C_NAME: ko.observable('${C_NAME!}'),
+        T_TIME: ko.observable('${T_TIME!}'),
+        C_USER_01: ko.observable('${C_USER_01!}'),
+        C_ADDR: ko.observable('${C_ADDR!}'),
+        S_TYPE: ko.observable('${S_TYPE!}'),
+        N_TIME: ko.observable('${N_TIME!}'),
+        C_USER_02: ko.observable('${C_USER_02!}'),
+        htmlContent: ko.observable(${json(C_CONTENT)}),
+        SID: '${SID!}',
+        R_TEMPLATE: '${file.templateId}',
+        R_TMPFILE: '${R_TMPFILE!pid}'
+    };
+    var extModel = {
+        readonly: ${@READONLY!'false'}
+    };
+    var settings = {
+        htmleditSettings: {
+            table: "SYS_STDTMP_FILE_04",
+            field: 'C_CONTENT',
+            sid: '${SID!}',
+            readonly: extModel.readonly
+        }
+    };
+    var events = {
+        saveClick: function () {
+            if ($form.validate('.form') != true) return;
+            utils.messager.showProgress();
+            $.post('${BASE_PATH}/save', model, function (result) {
+                if (result.SID) {
+                        utils.messager.closeProgress();
+                        $.messager.alert("提示", "保存成功", "info", function () {
+                            window.location.href = 'rec?sid=' + result.SID +'&pid=${pid}'+ "&backURL=${backURL!referer!}";
+                        });
+                }else {
+                    $.messager.alert("提示", "保存失败", "warning", function () {
+                        utils.messager.closeProgress();
+                    });
+                }
+            }, "json");
+        }
+    };
+
+    $(function () {
+        ko.applyBindings($.extend({}, model, events, extModel));
+    });
+</script>
+</@>
+</@layout.extends>
+
+
+
+

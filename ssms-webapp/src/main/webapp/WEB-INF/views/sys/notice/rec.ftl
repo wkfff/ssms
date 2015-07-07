@@ -94,9 +94,8 @@
     <!-- 政府对话框 -->
     <div id="gbg" style="display: none;">
         <div class="toolbar">
-            <label>名称</label><input type="text" data-bind=""/>
-            <label>地址</label><input type="text" data-bind=""/>
-            <a href="javascript:void(0)" class="icon-search">搜索</a>
+            <label>名称</label><input type="text" data-bind="value:name_g"/>
+            <a href="javascript:void(0)" class="icon-search" data-bind="click:query_g">搜索</a>
         </div>
         <table class="dialog">
             <thead>
@@ -112,52 +111,39 @@
         </table>
     </div>
     <!-- 评审对话框 -->
-    <div id="rbg" style="display: none">
-        <table style="text-align: left" class="dialog">
-            <colgroup>
-                <col style="width: 5px">
-                <col style="width: 30px">
-                <col style="width: 30px">
-            </colgroup>
-            <tr style="border-bottom: none;">
-                <th></th>
-                <th>名称</th><td><input type="text" data-bind=""/></td>
-                <th>地址</th><td><input type="text" data-bind=""/></td>
-                <td><a href="javascript:void(0)" class="icon-search">搜索</a></td>
-            </tr>
-            <tr style="background-color: #E8F1F7;">
-                <th><input type="checkbox" data-bind=""></th>
-                <th></th><td >名称</td>
-                <th style="text-align: left" colspan="3">地址</th>
-            </tr>
-            <tbody  data-bind="foreach : receivereview">
+    <div id="rbg" style="display: none;">
+        <div class="toolbar">
+            <label>名称</label><input type="text" data-bind="value:name_r"/>
+            <a href="javascript:void(0)" class="icon-search" data-bind="click:query_r">搜索</a>
+        </div>
+        <table class="dialog">
+            <thead>
+                <tr>
+                <th style="width: 30px"><input type="checkbox" data-bind="checked:chkAll"></th>
+                <th style="width: 300px">名称</th>
+                <th>地址</th>
+                </tr>
+            </thead>
+           <tbody  data-bind="foreach : receivereview">
                 <tr data-bind="template: {name:'reviewTemplate' , data: $data}"></tr>
             </tbody>
         </table>
     </div>
     <!-- 企业端对话框 -->
-    <div id="ebg" style="display: none">
-        <table  style="text-align: left" class="dialog">
-            <colgroup>
-                <col style="width: 5px">
-                <col style="width: 30px">
-                <col>
-                <col style="width: 30px">
-                <col>
-                <col>
-            </colgroup>
-            <tr style="border-bottom: none;">
-                <th></th>
-                <th>名称</th><td><input type="text" data-bind=""/></td>
-                <th>地址</th><td><input type="text" data-bind=""/></td>
-                <td><a href="javascript:void(0)" class="icon-search">搜索</a></td>
-            </tr>
-            <tr style="background-color: #E8F1F7;">
-                <th><input type="checkbox" data-bind=""></th>
-                <th></th><td>名称</td>
-                <th  style="text-align: left" colspan="3">地址</th>
-            </tr>
-            <tbody  data-bind="foreach : receiveenterprise">
+    <div id="ebg" style="display: none;">
+        <div class="toolbar">
+            <label>名称</label><input type="text" data-bind="value:name_e"/>
+            <a href="javascript:void(0)" class="icon-search" data-bind="click:query_e">搜索</a>
+        </div>
+        <table class="dialog">
+            <thead>
+                <tr>
+                <th style="width: 30px"><input type="checkbox" data-bind=""></th>
+                <th style="width: 300px">名称</th>
+                <th>地址</th>
+                </tr>
+            </thead>
+           <tbody  data-bind="foreach : receiveenterprise">
                 <tr data-bind="template: {name:'enterpriseTemplate' , data: $data}"></tr>
             </tbody>
         </table>
@@ -172,16 +158,14 @@
 </script>
 
 <script type="text/html" id="reviewTemplate">
-        <th><input type="checkbox" data-bind="checked : CHOOSE"></th>
-        <th></th>
-        <td ><span data-bind="text : S_RECEIVER" ></span></td>
+        <td><input type="checkbox" data-bind="checked : CHOOSE"></td>
+        <td><span data-bind="text : S_RECEIVER" ></span></td>
         <td colspan="3"><span data-bind="text : C_ADDR" ></span></td>
 </script>
 
 <script type="text/html" id="enterpriseTemplate">
-        <th><input type="checkbox" data-bind="checked : CHOOSE"></th>
-        <th></th>
-        <td  ><span data-bind="text : S_RECEIVER" ></span></td>
+        <td><input type="checkbox" data-bind="checked : CHOOSE"></td>
+        <td><span data-bind="text : S_RECEIVER" ></span></td>
         <td colspan="3"><span data-bind="text : C_ADDR" ></span></td>
 </script>
 
@@ -246,9 +230,48 @@ function viewModel(){
     });
     
     //list所有接受单位信息
-    self.receivegovernment=ko.observableArray(${data_g!});
-    self.receivereview=ko.observableArray(${data_r!}); 
-    self.receiveenterprise=ko.observableArray(${data_e!});
+    self.data_g = ${data_g!};
+    self.data_r = ${data_r!};
+    self.data_e = ${data_e!};
+    self.receivegovernment=ko.observableArray(self.data_g);
+    self.receivereview=ko.observableArray(self.data_r); 
+    self.receiveenterprise=ko.observableArray(self.data_e);
+    
+    self.name_g = ko.observable();
+    self.query_g = function(){
+        if(self.name_g()=='') {
+            self.receivegovernment(self.data_g);
+            return;
+        }
+        var gs = self.data_g.filter(function (item) {
+            return (item.S_RECEIVER.indexOf(self.name_g())>-1);
+        });
+        self.receivegovernment(gs);
+    };
+    
+    self.name_r = ko.observable();
+    self.query_r = function(){
+        if(self.name_r()=='') {
+            self.receivereview(self.data_r);
+            return;
+        }
+        var rs = self.data_r.filter(function (item) {
+            return (item.S_RECEIVER.indexOf(self.name_r())>-1);
+        });
+        self.receivereview(rs);
+    };
+    
+    self.name_e = ko.observable();
+    self.query_e = function(){
+        if(self.name_e()=='') {
+            self.receiveenterprise(self.data_e);
+            return;
+        }
+        var es = self.data_e.filter(function (item) {
+            return (item.S_RECEIVER.indexOf(self.name_e())>-1);
+        });
+        self.receiveenterprise(es);
+    };
     
     //确定选中单位的回调function
     self.confirmGovrnment=function(index){
@@ -277,15 +300,15 @@ function viewModel(){
     
     /* 点击弹出对话框的函数 */
     self.doGovernmentClick=function(){
-        utils.messager.showDialog("1","650px","300px","选择接收的政府机关","gbg",self.confirmGovrnment);
+        utils.messager.showDialog("1","650px","500px","选择接收的政府机关","gbg",self.confirmGovrnment);
     };
     
     self.doReviewClick=function(){
-        utils.messager.showDialog("1","650px","300px","选择接收的评审机构","rbg",self.confirmReview);
+        utils.messager.showDialog("1","650px","500px","选择接收的评审机构","rbg",self.confirmReview);
     };
     
     self.doEnterpriseClick=function(){
-        utils.messager.showDialog("1","650px","300px","选择接收的企业单位","ebg",self.confirmEnterprise);
+        utils.messager.showDialog("1","650px","500px","选择接收的企业单位","ebg",self.confirmEnterprise);
     };
 
     self.newClick = function(){

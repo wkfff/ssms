@@ -58,7 +58,7 @@ public class TodoBean {
         return signature;
     }
 
-    public void setSignature( String signature ) {
+    void setSignature( String signature ) {
         this.signature = signature;
     }
 

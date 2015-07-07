@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-function ViewModel(catalogId) {
+function ViewModel(catalogId,path) {
     var model = {
         editItem: ko.observable(),
         selectItem: ko.observable(),
@@ -17,7 +17,7 @@ function ViewModel(catalogId) {
     };
     var settings = {
         viewSettings: {
-            url: "list",
+            url: path+"/list",
             queryParams: {
                 R_SID: catalogId
             },
@@ -47,7 +47,7 @@ function ViewModel(catalogId) {
             settings.viewSettings.datagrid('reload');
         },
         addClick: function () {
-            window.location.href = 'rec?pid=' + catalogId;
+            window.location.href = path+'/rec?pid=' + catalogId;
         },
         editClick: function () {
             var value = model.selectItem();
@@ -55,7 +55,7 @@ function ViewModel(catalogId) {
                 $.messager.alert("警告", "请先选择一行数据！", "warning");
                 return;
             }
-            window.location.href = 'rec?sid=' + value.SID;
+            window.location.href = path+'/rec?sid=' + value.SID+'&pid=' + catalogId;
         },
         deleteClick: function () {
             var value = model.selectItem();
@@ -63,7 +63,7 @@ function ViewModel(catalogId) {
                 $.messager.alert("警告", "请先选择一行数据！", "warning");
                 return;
             }
-            $.post('del', {sid: value.SID}, function () {
+            $.post(path+'/del', {sid: value.SID}, function () {
                 $.messager.alert('消息', '成功删除记录！', "info", function () {
                     events.refreshClick();
                 });

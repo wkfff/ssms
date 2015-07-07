@@ -9,7 +9,11 @@
 package com.lanstar.model.tenant;
 
 import com.lanstar.app.Const;
+import com.lanstar.identity.Tenant;
 import com.lanstar.model.TenantModel;
+import com.lanstar.plugin.template.ModelType;
+import com.lanstar.plugin.template.TemplateProp;
+import com.lanstar.plugin.template.TemplatePropPlugin;
 
 public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantModel<T> {
     public int getId() {
@@ -21,7 +25,8 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantMod
     }
 
     public TemplateFile getTemplateFile() {
-        return TemplateFile.dao.findById( getTemplateFileId() );
+        Tenant tenant = getTenant();
+        return TemplateFile.findFirst( getTemplateFileId(), tenant.getTenantId(), getProfessionId(), getTemplateFileId() );
     }
 
     public FileContentState getStatus() {
@@ -39,5 +44,49 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantMod
 
     public void setVersion( int version ) {
         set( "N_VERSION", version );
+    }
+
+    /**
+     * 获取模板文件所属专业的ID
+     */
+    public int getProfessionId() {
+        return getInt( "P_PROFESSION" );
+    }
+
+    /**
+     * 设置模板文件所属专业的ID
+     */
+    public void setProfessionId( int professionId ) {
+        set( "P_PROFESSION", professionId );
+    }
+
+    /**
+     * 获取所属模板的ID
+     */
+    public int getTemplateId() {
+        return getInt( "R_TEMPLATE" );
+    }
+
+    /**
+     * 设置所属模板的ID
+     */
+    public void setTemplateId( int templateId ) {
+        set( "R_TEMPLATE", templateId );
+    }
+
+    /**
+     * 获取关联的文本内容
+     */
+    public String getContentText() {
+        TemplateProp templateProp = TemplatePropPlugin.me().get( ModelType.TENANT, getClass() );
+        return TemplateText.getContent( getTemplateId(), getTenant(), getProfessionId(), templateProp.getCode(), getId() );
+    }
+
+    /**
+     * 设置关联的文本内容
+     */
+    public void setContentText( String text ) {
+        TemplateProp templateProp = TemplatePropPlugin.me().get( ModelType.TENANT, getClass() );
+        TemplateText.saveContent( getTemplateId(), getTenant(), getProfessionId(), templateProp.getCode(), getId(), text, getOperator() );
     }
 }

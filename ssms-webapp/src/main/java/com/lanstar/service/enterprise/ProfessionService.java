@@ -23,10 +23,8 @@ import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.model.tenant.TemplateVersion;
 import com.lanstar.plugin.activerecord.Db;
-import com.lanstar.plugin.activerecord.IAtom;
 import com.lanstar.plugin.activerecord.ModelKit;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class ProfessionService {
@@ -38,19 +36,6 @@ public class ProfessionService {
     public ProfessionService( Profession profession, TenantContext tenantContext ) {
         this.profession = profession;
         this.tenantContext = tenantContext;
-    }
-
-    /**
-     * 同步专业模板到指定租户上下文中
-     */
-    public void sync( final IdentityContext identityContext ) {
-        Db.tx( new IAtom() {
-            @Override
-            public boolean run() throws SQLException {
-                TemplateSyncProcessor.process( ProfessionService.this, identityContext );
-                return true;
-            }
-        } );
     }
 
     /**

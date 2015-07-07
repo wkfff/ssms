@@ -8,65 +8,100 @@
 
 package com.lanstar.controller.enterprise;
 
-import com.lanstar.common.ModelInjector;
-import com.lanstar.controller.SimplateController;
-import com.lanstar.model.tenant.TemplateFile;
-import com.lanstar.model.tenant.TemplateFile01;
-import com.lanstar.model.tenant.TemplateFile01Item;
-import com.lanstar.plugin.activerecord.ModelKit;
-
 import java.util.Calendar;
 import java.util.Date;
 
-public class TemplateFile01Controller extends SimplateController<TemplateFile01> {
-    @Override
-    protected TemplateFile01 getDao() {
-        return TemplateFile01.dao;
-    }
+import com.lanstar.common.Asserts;
+import com.lanstar.common.ListKit;
+import com.lanstar.common.ModelInjector;
+import com.lanstar.identity.TenantType;
+import com.lanstar.model.tenant.TemplateFile;
+import com.lanstar.model.tenant.TemplateFile01;
+import com.lanstar.model.tenant.TemplateFile01Item;
+import com.lanstar.model.tenant.TemplateText;
+import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.render.aspose.AsposeRender;
+import com.lanstar.render.aspose.OutputFormat;
+import com.lanstar.service.enterprise.UniqueTag;
+
+public class TemplateFile01Controller extends TemplateFileController<TemplateFile01> {
 
     public void index() {
-        String sid = getPara( "sid" );
-        TemplateFile01 templateFile = getDao().findFirstByColumn( "R_TMPFILE", sid );
-        if (templateFile == null) return;
+        Integer templatefileId = getParaToInt();
+        Asserts.notNull( templatefileId, "发现非法的参数请求" );
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+        TemplateFile01 templateFile = getTemplateFile( uniqueTag, templatefileId );
+        if ( templateFile == null ) return;
         setAttrs( ModelKit.toMap( templateFile ) );
-        TemplateFile file = templateFile.getTemplateFile();
-        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
-        if ( sourceFile == null ) return;
-        int sourceId = sourceFile.getId();
-        setAttr( "TEMPLATE_ID", sourceId );
-
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, templatefileId );
+        String content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), templateFile.getId() );
+        setAttr( "C_CONTENT", content );
+        setAttr( "file", file );
         String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ?";
 
-        setAttr("pass", TemplateFile01Item.dao.find(sql, templateFile.get("SID")));
+        setAttr( "pass", TemplateFile01Item.dao.find( sql, templateFile.getId() ) );
+    }
+
+    protected TemplateFile01 getTemplateFile( UniqueTag uniqueTag, Integer templateFileId ) {
+        TemplateFile01 model = getDao().findFirstByColumns(
+            ListKit.newArrayList( "R_TENANT", "P_TENANT", "R_TEMPLATE", "P_PROFESSION", "R_TMPFILE" ),
+            ListKit.newObjectArrayList(
+                uniqueTag.getTenantId(),
+                TenantType.ENTERPRISE.getName(),
+                uniqueTag.getTemplateId(),
+                uniqueTag.getProfessionId(),
+                templateFileId ) );
+        if ( model == null ) return null;
+        return model;
+    }
+
+    @Override
+    protected void afterSave( TemplateFile01 model ) {
+        String content = getPara( "htmlContent" );
+        model.setContentText( content );
+    }
+
+    public void export() {
+        Integer sid = getParaToInt();
+        Asserts.notNull( sid, "非法的参数请求" );
+        TemplateFile01 fileItem = TemplateFile01.dao.findById( sid );
+        String content = fileItem.getContentText();
+        render( AsposeRender.me( content, fileItem.getName(), OutputFormat.PDF ) );
     }
 
     public void pass() {
         TemplateFile01Item model = new TemplateFile01Item();
-        Integer sid = getParaToInt("SID");
+        Integer sid = getParaToInt( "SID" );
 
         Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ? and '" + year + "-01-01' <=T_DATE_01 and T_DATE_01<='" + year + "-12-31'";
+        int year = c.get( Calendar.YEAR );
+        String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ? and '" + year
+                + "-01-01' <=T_DATE_01 and T_DATE_01<='" + year + "-12-31'";
 
-        if (model.findFirst(sql, sid) == null) {
-            model.set("R_TMPFILE_01", sid);
-            model.set("T_DATE_01", new Date());
-            ModelInjector.injectOpreator(model, identityContext);
+        if ( model.findFirst( sql, sid ) == null ) {
+            model.set( "R_TMPFILE_01", sid );
+            model.set( "T_DATE_01", new Date() );
+            ModelInjector.injectOpreator( model, identityContext );
 
-            if (model.save()) {
-                //审核通过
-                renderJson("1");
+            if ( model.save() ) {
+                // 审核通过
+                renderJson( "1" );
             } else {
-                //审核不通过
-                renderJson("0");
+                // 审核不通过
+                renderJson( "0" );
             }
         } else {
-            //已审核通过
-            renderJson("3");
+            // 已审核通过
+            renderJson( "3" );
         }
     }
-    
-    public void view(){
+
+    public void view() {
         super.rec();
+    }
+
+    @Override
+    protected TemplateFile01 getDao() {
+        return TemplateFile01.dao;
     }
 }

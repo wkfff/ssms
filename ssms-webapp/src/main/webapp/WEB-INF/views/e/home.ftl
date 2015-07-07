@@ -60,9 +60,9 @@
                         <#list rs_notice as rs>
                             <tr>
                                 <td class="more">
-                                    <a href="/e/notice/view?sid=${rs.SID}" title="${rs.C_TITLE}" class="notice-title">${rs.C_TITLE}</a>
+                                    <a href="/e/notice/view?sid=${rs.SID}" title="${rs.C_TITLE!}" class="notice-title">${rs.C_TITLE!}</a>
                                 </td>
-                                <td class="notice-time">${rs.T_PUBLISH}</td>
+                                <td class="notice-time">${rs.T_PUBLISH!}</td>
                             </tr>
                         </#list>
                     <#else>
@@ -87,7 +87,7 @@
                 </div>
             <#-- <a href="/e/grade_m/index" class="more">更多</a> -->
             </div>
-            <div id="tbc" class="content" style="height:410px">
+            <div id="tbc" class="content" style="height:280px">
                 <div id="tc1">
                     <table class="matter-list">
                         <#if rs_todo?? && rs_todo?size!=0>

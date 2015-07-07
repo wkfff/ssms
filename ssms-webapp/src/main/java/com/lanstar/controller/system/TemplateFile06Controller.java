@@ -8,14 +8,25 @@
 
 package com.lanstar.controller.system;
 
+import com.lanstar.common.Asserts;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
 import com.lanstar.core.aop.Before;
+import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile06;
+import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile06Controller extends SimplateController<TemplateFile06> {
-    @Before( AttachTokenGenerator.class )
+    @Override
+    public void rec() {
+        Integer pid=getParaToInt( "pid" );
+        Asserts.notNull( pid, "id connot null");
+        TemplateFile file=TemplateFile.dao.findById( pid );
+        setAttr( "file", file );
+        super.rec();
+    }
+    @Before(AttachTokenGenerator.class)
     public void view() {
         super.rec();
         setAttr( "@READONLY", "true" );

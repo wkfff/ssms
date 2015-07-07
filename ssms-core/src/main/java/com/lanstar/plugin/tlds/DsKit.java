@@ -17,7 +17,6 @@ import javax.sql.DataSource;
 public class DsKit {
     public static void switchDs( DataSource dataSource, String dsName ) {
         Asserts.notNull( dataSource, "dataSource can not be null" );
-        Asserts.notEmpty( dsName, "dsName can not be empty" );
 
         if ( dataSource instanceof ThreadLocalDataSource ) {
             ThreadLocalDataSource ds = (ThreadLocalDataSource) dataSource;

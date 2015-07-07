@@ -141,4 +141,13 @@ public class EnterpriseService {
         }
         return true;
     }
+
+    public UniqueTag getUniqueTag() {
+        UniqueTag tag = new UniqueTag();
+        ProfessionService service = getProfessionService();
+        tag.professionId = service.getId();
+        tag.templateId = service.getSystemTemplate().getId();
+        tag.tenant = tenantContext.getTenant();
+        return tag;
+    }
 }

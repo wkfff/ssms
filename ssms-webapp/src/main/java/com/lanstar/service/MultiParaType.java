@@ -10,6 +10,7 @@ package com.lanstar.service;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.lanstar.common.ListKit;
 import com.lanstar.model.system.MultiPara;
 
 import java.util.List;
@@ -20,12 +21,19 @@ public enum MultiParaType {
     private static final Function<MultiPara, Parameter> MODEL_TO_PARA = new Function<MultiPara, Parameter>() {
         @Override
         public Parameter apply( MultiPara input ) {
-            return new Parameter( input.getCode(), input.geValue() );
+            return new Parameter( input.getCode(), input.getValue() );
         }
     };
 
     public List<Parameter> parameters() {
         return Lists.newArrayList( Lists.transform( list(), MODEL_TO_PARA ) );
+    }
+
+    public String getName( String code ) {
+        MultiPara para = MultiPara.dao.findFirstByColumns( ListKit.newArrayList( "C_NAME", "C_CODE" ), ListKit
+                .newObjectArrayList( name().toUpperCase(), code ) );
+        if ( para == null ) return null;
+        return para.getValue();
     }
 
     protected List<MultiPara> list() {

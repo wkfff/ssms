@@ -8,7 +8,7 @@
     <table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table>
 </div>
 <script type="text/javascript">
-    function ViewModel(catalogId) {
+    function ViewModel(fileId) {
         var model = {
             editItem: ko.observable(),
             selectItem: ko.observable(),
@@ -22,7 +22,7 @@
             viewSettings: {
                 url: "${BASE_PATH}/list",
                 queryParams: {
-                    R_SID: catalogId
+                    fileId: fileId
                 },
                 idField: 'SID',
                 rownumbers: true,
@@ -59,7 +59,7 @@
                 settings.viewSettings.datagrid('reload');
             },
             addClick: function () {
-                panelLoad('${BASE_PATH}/rec?pid=${sid}');
+                panelLoad('${BASE_PATH}/rec?fileId=' + fileId);
             },
             editClick: function () {
                 var value = model.selectItem();
@@ -95,6 +95,6 @@
     }
 
     var onPanelLoad = function () {
-        ko.applyBindings(new ViewModel(${sid}), document.getElementById('kocontainer'));
+        ko.applyBindings(new ViewModel(${fileid}), document.getElementById('kocontainer'));
     }
 </script>

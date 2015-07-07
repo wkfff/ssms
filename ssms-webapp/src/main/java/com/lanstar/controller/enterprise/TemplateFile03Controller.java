@@ -8,34 +8,66 @@
 
 package com.lanstar.controller.enterprise;
 
-import com.lanstar.controller.SimplateController;
+import com.lanstar.common.Asserts;
+import com.lanstar.common.ListKit;
+import com.lanstar.identity.TenantType;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile03;
+import com.lanstar.model.tenant.TemplateText;
 import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.render.aspose.AsposeRender;
+import com.lanstar.render.aspose.OutputFormat;
+import com.lanstar.service.enterprise.UniqueTag;
 
-public class TemplateFile03Controller extends SimplateController<TemplateFile03> {
+public class TemplateFile03Controller extends TemplateFileController<TemplateFile03> {
     @Override
     public void index() {
-        String sid = getPara( "sid" );
-        TemplateFile03 templateFile = getDao().findFirstByColumn( "R_TMPFILE", sid );
-        if (templateFile == null) return;
+        super.index();
+        Integer templatefileId = getParaToInt();
+        Asserts.notNull( templatefileId, "发现非法的参数请求" );
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+        TemplateFile03 templateFile = getTemplateFile( uniqueTag, templatefileId );
+        if ( templateFile == null ) return;
         setAttrs( ModelKit.toMap( templateFile ) );
-        TemplateFile file = templateFile.getTemplateFile();
-        com.lanstar.model.system.TemplateFile sourceFile = file.getSourceFile();
-        if ( sourceFile == null ) return;
-        int sourceId = sourceFile.getId();
-        com.lanstar.model.system.TemplateFile03 m = com.lanstar.model.system.TemplateFile03.dao.findFirstByColumn( "R_TMPFILE", sourceId );
-        if ( m == null ) return;
-        int id = m.getId();
-        setAttr( "TEMPLATE_ID", id );
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, templatefileId );
+        String content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), templateFile.getId() );
+        setAttr( "C_CONTENT", content );
+        setAttr( "file", file );
+    }
+
+    @Override
+    protected void afterSave( TemplateFile03 model ) {
+        String content = getPara( "htmlContent" );
+        model.setContentText( content );
+    }
+
+    protected TemplateFile03 getTemplateFile( UniqueTag uniqueTag, Integer templateFileId ) {
+        TemplateFile03 model = getDao().findFirstByColumns(
+            ListKit.newArrayList( "R_TENANT", "P_TENANT", "R_TEMPLATE", "P_PROFESSION", "R_TMPFILE" ),
+            ListKit.newObjectArrayList(
+                uniqueTag.getTenantId(),
+                TenantType.ENTERPRISE.getName(),
+                uniqueTag.getTemplateId(),
+                uniqueTag.getProfessionId(),
+                templateFileId ) );
+        if ( model == null ) return null;
+        return model;
+    }
+
+    public void export() {
+        Integer sid = getParaToInt();
+        Asserts.notNull( sid, "非法的参数请求" );
+        TemplateFile03 fileItem = TemplateFile03.dao.findById( sid );
+        String content = fileItem.getContentText();
+        render( AsposeRender.me( content, fileItem.getName(), OutputFormat.DOC ) );
     }
 
     @Override
     protected TemplateFile03 getDao() {
         return TemplateFile03.dao;
     }
-    
-    public void view(){
+
+    public void view() {
         super.rec();
     }
 }

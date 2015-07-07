@@ -8,15 +8,38 @@
 
 package com.lanstar.controller.system;
 
+import com.lanstar.common.Asserts;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
 import com.lanstar.core.aop.Before;
+import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile04;
+import com.lanstar.model.system.TemplateText;
+import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.sun.tools.javac.util.Assert;
 
 public class TemplateFile04Controller extends SimplateController<TemplateFile04> {
 
-    @Before( AttachTokenGenerator.class )
+    @Override
+    public void rec() {
+        Integer pid = getParaToInt( "pid" );
+        Asserts.notNull( pid, "id connot null" );
+        TemplateFile file = TemplateFile.dao.findById( pid );
+        setAttr( "file", file );
+        String content = null;
+        if ( getParaToInt( "sid" ) != null ) content = TemplateText.getContent( file, getParaToInt( "sid" ) );
+        setAttr( "C_CONTENT", content );
+        super.rec();
+    }
+
+    @Override
+    protected void afterSave( TemplateFile04 model ) {
+        String content = getPara( "htmlContent" );
+        TemplateText.saveContent( model, content, identityContext );
+    }
+
+    @Before(AttachTokenGenerator.class)
     public void view() {
         super.rec();
         setAttr( "@READONLY", "true" );
@@ -30,11 +53,11 @@ public class TemplateFile04Controller extends SimplateController<TemplateFile04>
 
     @Override
     protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE("R_TMPFILE=?", getParaToInt("R_SID"));
+        return new SqlBuilder().WHERE( "R_TMPFILE=?", getParaToInt( "R_SID" ) );
     }
 
     @Override
     protected SqlBuilder buildOrder() {
-        return new SqlBuilder().ORDER_BY("T_CREATE DESC");
+        return new SqlBuilder().ORDER_BY( "T_CREATE DESC" );
     }
 }

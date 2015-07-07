@@ -12,7 +12,6 @@ import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,67 +46,37 @@ public class NoticeController extends SimplateController<Notice> {
         return Notice.dao;
     }
 
-//    public Map<String,Map<String,String>> getAreas(){
-//        Map<String,Map<String,String>> areas = new LinkedHashMap<String,Map<String,String>>();
-//        String sql = "SELECT T1.SID,T1.C_CODE,T1.C_VALUE,T1.R_PARENT,T2.C_CODE PARENT_CODE,T2.C_VALUE PARENT_VALUE FROM SYS_PARA_AREA T1 LEFT JOIN SYS_PARA_AREA T2 ON T1.R_PARENT=T2.SID ORDER BY T1.N_LEVEL,T1.N_INDEX,T1.C_CODE";
-//        List<Record> list = this.tenantDb.find( sql );
-//        for(Record r:list){
-//            String code = r.getStr( "C_CODE" );
-//            String value = r.getStr( "C_VALUE" );
-//            Integer parentId = r.getInt( "R_PARENT" );
-//            String parentCode = r.getStr( "PARENT_CODE" );
-//            if (parentId == null){
-//                areas.put( code, new LinkedHashMap<String,String>() );
-//            }else if (areas.containsKey(parentCode)){
-//                areas.get( parentCode ).put( code,value );
-//            }else{
-//                Map<String,String> map = new LinkedHashMap<String,String>();
-//                map.put( code,value );
-//                areas.put( parentCode, map );
-//            }
-//        }
-//        return areas;
-//    }
-//
-//    public void getFilterCode(List<Integer> codes,int code){
-//        codes.add( code );
-//        Map<String,Map<String,String>> map = getAreas();
-//        for(String s:map.get( code ).keySet()){
-//            getFilterCode(codes,Integer.parseInt( s ));
-//        }
-//    }
-    
     @Override
     public void rec() {
         // 是否显示标题栏
-        String tb = this.getPara("tb");
-        this.setAttr( "tb", StrKit.isBlank( tb )?"1":tb );
+        String tb = this.getPara( "tb" );
+        this.setAttr( "tb", StrKit.isBlank( tb ) ? "1" : tb );
         // 根据辖区过滤
         List<Record> list = null;
         List<Map<String, Object>> models = null;
         String sql = "";
         String where = "";
         String order = " ORDER BY N_INDEX";
-        
-        if (this.identityContext.getTenantType().compareTo( TenantType.GOVERNMENT )==0){
-            Government gov = Government.dao.findById( this.identityContext.getTenantId());
-            
+
+        if ( this.identityContext.getTenantType().compareTo( TenantType.GOVERNMENT ) == 0 ) {
+            Government gov = Government.dao.findById( this.identityContext.getTenantId() );
+
             String code;
-            String level = StrKit.empty( gov.getStr("P_LEVEL"),"");
-            if (level.equals( "1" )){
-               code = gov.getStr( "P_PROVINCE" ) ;
-               where = " where P_PROVINCE ='" +code+"'";
-            }else if (level.equals( "2" )){
-                code = gov.getStr( "P_CITY" ) ;
-                where = " where P_CITY ='" +code+"'";
-            }else {
-                code = gov.getStr( "P_COUNTY" ) ;
-                where = " where P_COUNTY ='" +code+"'";
-            };
-            
-            //政府
-            sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR from sys_tenant_g " +where + order;
-            list = this.tenantDb.find(sql);
+            String level = StrKit.empty( gov.getStr( "P_LEVEL" ), "" );
+            if ( level.equals( "1" ) ) {
+                code = gov.getStr( "P_PROVINCE" );
+                where = " where P_PROVINCE ='" + code + "'";
+            } else if ( level.equals( "2" ) ) {
+                code = gov.getStr( "P_CITY" );
+                where = " where P_CITY ='" + code + "'";
+            } else {
+                code = gov.getStr( "P_COUNTY" );
+                where = " where P_COUNTY ='" + code + "'";
+            }
+
+            // 政府
+            sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR from sys_tenant_g " + where + order;
+            list = this.tenantDb.find( sql );
             models = Lists.transform( list, new Function<Record, Map<String, Object>>() {
                 @Override
                 public Map<String, Object> apply( Record input ) {
@@ -117,9 +86,9 @@ public class NoticeController extends SimplateController<Notice> {
                 }
             } );
             this.setAttr( "data_g", JSON.toJSONString( Lists.newArrayList( models ) ) );
-            
-            //评审
-            sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR  from sys_tenant_r" +where + order;
+
+            // 评审
+            sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR  from sys_tenant_r" + where + order;
             list = this.tenantDb.find( sql );
             models = Lists.transform( list, new Function<Record, Map<String, Object>>() {
                 @Override
@@ -131,9 +100,9 @@ public class NoticeController extends SimplateController<Notice> {
             } );
             this.setAttr( "data_r", JSON.toJSONString( Lists.newArrayList( models ) ) );
         }
-        //企业
-        sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR  from sys_tenant_e" +where + order;
-        list = this.tenantDb.find( sql);
+        // 企业
+        sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR  from sys_tenant_e" + where + order;
+        list = this.tenantDb.find( sql );
         models = Lists.transform( list, new Function<Record, Map<String, Object>>() {
             @Override
             public Map<String, Object> apply( Record input ) {
@@ -207,12 +176,12 @@ public class NoticeController extends SimplateController<Notice> {
         model.set( "T_PUBLISH", new Date() );
         model.update();
         this.setAttr( "SID", model.getInt( "SID" ) );
-        renderJson();
+        this.renderJson();
     }
 
     @Override
     protected void afterSave( Notice model ) {
-        //保存后处理接收者
+        // 保存后处理接收者
         String receiver_g = this.getPara( "C_RECEIVER_G" );
         String receiver_r = this.getPara( "C_RECEIVER_R" );
         String receiver_e = this.getPara( "C_RECEIVER_E" );
@@ -271,8 +240,23 @@ public class NoticeController extends SimplateController<Notice> {
         if ( sid == null ) return;
 
         Notice model = this.getDao().findById( sid );
+        NoticeReceiver receiver = NoticeReceiver.dao.findFirst(
+                "select * from sys_notice_receiver where r_notice = ? and r_receiver=? and n_state=0", sid,
+                this.identityContext.getTenantId() );
+        if ( receiver != null ) {
+            receiver.set( "N_STATE", 1 );
+            receiver.update();
+
+            Record r = this.tenantDb.findFirst( "select count(*) N_READER from sys_notice_receiver where r_notice=? and n_state=1", sid );
+            if ( r != null ) {
+                model.set( "N_READER", r.getLong( "N_READER" ) );
+                model.update();
+            }
+        }
+
         if ( model != null ) this.setAttrs( ModelKit.toMap( model ) );
     }
+
     /**
      * 已发布列表
      */
@@ -285,13 +269,12 @@ public class NoticeController extends SimplateController<Notice> {
      */
     public void publics_list() {
         SqlBuilder select = SQL.SELECT( "*" );
-        SqlBuilder from = new SqlBuilder().FROM( this.table.getName() );
+        SqlBuilder from = new SqlBuilder().FROM( "V_NOTICE SYS_NOTICE" );
         SqlBuilder where = new SqlBuilder();
 
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
-        // R_TENANT
-        where.WHERE( "R_TENANT=?", identityContext.getTenantId() );
-        where.WHERE( "R_PUBLISH is not null" );
+        where.WHERE( "R_RECEIVER=?", identityContext.getTenantId() );
+
         if ( where != null ) from.append( where );
         SqlBuilder order = this.buildOrder();
         if ( order != null ) from.append( order );
@@ -308,6 +291,7 @@ public class NoticeController extends SimplateController<Notice> {
             this.renderJson( list );
         }
     }
+
     /**
      * 草稿列表
      */

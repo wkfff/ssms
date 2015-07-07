@@ -8,12 +8,58 @@
 
 package com.lanstar.model.tenant;
 
+import com.lanstar.common.ListKit;
+import com.lanstar.identity.TenantType;
 import com.lanstar.model.TenantModel;
+import com.lanstar.model.system.archive.ArchiveModel;
+import com.lanstar.plugin.template.ModelType;
 import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplatePropPlugin;
+import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile extends TenantModel<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
+
+    public static TemplateFile findFirst( int templateId, int tenantId, int professionId, int srcId ) {
+        return dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "R_TENANT", "P_TENANT", "P_PROFESSION", "SID" ),
+                ListKit.newObjectArrayList( templateId, tenantId, TenantType.ENTERPRISE.getName(), professionId, srcId ) );
+    }
+
+    public static TemplateFile findFirst( UniqueTag uniqueTag, Integer id ) {
+        return dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "R_TENANT", "P_TENANT", "P_PROFESSION", "SID" ),
+                ListKit.newObjectArrayList(
+                        uniqueTag.getTemplateId(),
+                        uniqueTag.getTenantId(),
+                        TenantType.ENTERPRISE.getName(),
+                        uniqueTag.getProfessionId(),
+                        id ) );
+    }
+
+    public String getParentName() {
+        return getStr( "S_NAME" );
+    }
+
+    public void setParentName( String name ) {
+        set( "S_NAME", name );
+    }
+
+    public Integer getParentId() {
+        return getInt( "R_SID" );
+    }
+
+    public void setParentId( int id ) {
+        set( "R_SID", id );
+    }
+
+    public Integer getIndex() {
+        return getInt( "N_INDEX" );
+    }
+
+    public void setIndex( Integer index ) {
+        set( "N_INDEX", index );
+    }
 
     /**
      * 获取模板文件所属专业的ID
@@ -77,10 +123,15 @@ public class TemplateFile extends TenantModel<TemplateFile> {
         return TemplatePropPlugin.me().get( getTemplateFileCode() );
     }
 
+    public void setTemplateProp( TemplateProp prop ) {
+        set( "P_TMPFILE", prop.getCode() );
+        set( "S_TMPFILE", prop.getName() );
+    }
+
     /**
      * 获取文件ID
      */
-    public Integer getId() {
+    public int getId() {
         return getInt( "SID" );
     }
 
@@ -107,24 +158,10 @@ public class TemplateFile extends TenantModel<TemplateFile> {
     }
 
     /**
-     * 获取来源文件ID，即描述拷贝自哪个文件。
-     */
-    public Integer getSourceFileId() {
-        return getInt( "R_SOURCE" );
-    }
-
-    /**
      * 获取来源文件，即拷贝自的文件
      */
     public com.lanstar.model.system.TemplateFile getSourceFile() {
-        return com.lanstar.model.system.TemplateFile.dao.findById( getSourceFileId() );
-    }
-
-    /**
-     * 设置来源文件
-     */
-    public void setSourceFile( com.lanstar.model.system.TemplateFile file ) {
-        set( "R_SOURCE", file.getId() );
+        return com.lanstar.model.system.TemplateFile.dao.findById( getId() );
     }
 
     /**
@@ -148,5 +185,58 @@ public class TemplateFile extends TenantModel<TemplateFile> {
     public void setVersion( int version ) {
         set( "N_VERSION", version );
     }
-}
 
+    public String getDesc() {
+        return getStr( "C_DESC" );
+    }
+
+    public void setDesc( String desc ) {
+        set( "C_DESC", desc );
+    }
+
+    public String getCycleUnitCode() {
+        return getStr( "P_CYCLE" );
+    }
+
+    public void setCycleUnitCode( String code ) {
+        set( "P_CYCLE", code );
+    }
+
+    public String getCycleUnitName() {
+        return getStr( "S_CYCLE" );
+    }
+
+    public void setCycleUnitName( String name ) {
+        set( "S_CYCLE", name );
+    }
+
+    public String getExplain() {
+        return getStr( "C_EXPLAIN" );
+    }
+
+    public void setExplain( String value ) {
+        set( "C_EXPLAIN", value );
+    }
+
+    public boolean getRemind() {
+        return "1".equals( getStr( "B_REMIND" ) );
+    }
+
+    public void setRemind( boolean remind ) {
+        set( "B_REMIND", remind ? "1" : "0" );
+    }
+
+    public Integer getCycleValue() {
+        return getInt( "N_CYCLE" );
+    }
+
+    public void setCycleValue( Integer value ) {
+        set( "N_CYCLE", value );
+    }
+
+    public ArchiveModel<?> getTemplateModel() {
+        return (ArchiveModel<?>) getTemplateProp().getModel( ModelType.SYSTEM_ARCHIVE ).getDao().findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "R_TMPFILE", "N_VERSION" ),
+                ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
+    }
+}

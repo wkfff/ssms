@@ -11,15 +11,38 @@ package com.lanstar.controller.system;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
 import com.lanstar.core.aop.Before;
+import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile02;
+import com.lanstar.model.system.TemplateText;
+import com.lanstar.model.system.archive.ArchiveModel;
+import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile02Controller extends SimplateController<TemplateFile02> {
-    @Before( AttachTokenGenerator.class )
+    public void index() {
+        TemplateFile file = getAttr( "file" );
+        TemplateFile02 model = getDao().findFirstByColumn( "R_TMPFILE", file.getId() );
+        if ( model != null ) {
+            setAttrs( ModelKit.toMap( model ) );
+            String content = TemplateText.getContent( file, model.getId() );
+            setAttr( "C_CONTENT", content );
+        }
+    }
+
+    @Override
+    protected void afterSave( TemplateFile02 model ) {
+        String content = getPara( "htmlContent" );
+        TemplateText.saveContent( model, content, identityContext );
+    }
+
+    @Before(AttachTokenGenerator.class)
     public void view() {
-        super.rec();
-        setAttr( "@READONLY", "true" );
-        render( "rec.ftl" );
+        com.lanstar.model.system.archive.TemplateFile file = getAttr( "file" );
+        ArchiveModel<?> model = file.getTemplateModel();
+
+        // setAttr("file", file);
+        // setAttr("model", ModelKit.toMap(model));
+        render( "view.ftl" );
     }
 
     @Override

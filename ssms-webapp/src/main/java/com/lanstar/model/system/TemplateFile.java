@@ -10,6 +10,7 @@ package com.lanstar.model.system;
 
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.sqlinxml.SqlKit;
+import com.lanstar.plugin.template.ModelType;
 import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 
@@ -31,7 +32,7 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         // TODO:
         // context.getAttachTextService().del( "STDTMP_FILE_" + code,
         // "C_CONTENT", tmpfileId );
-        getTemplateProp().getSystemModelWrap().getDao()
+        getTemplateProp().getModel( ModelType.SYSTEM ).getDao()
                          .deleteById( getId(), "R_TMPFILE" );
         return super.delete();
     }
@@ -41,7 +42,7 @@ public class TemplateFile extends ModelExt<TemplateFile> {
         // TODO:
         // context.getAttachTextService().del( "STDTMP_FILE_" + code,
         // "C_CONTENT", tmpfileId );
-        getTemplateProp().getSystemModelWrap().getDao()
+        getTemplateProp().getModel( ModelType.SYSTEM ).getDao()
                          .deleteById( getId(), "R_TMPFILE" );
         return super.deleteById( id );
     }

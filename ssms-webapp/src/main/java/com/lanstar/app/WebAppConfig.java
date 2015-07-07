@@ -94,7 +94,7 @@ public class WebAppConfig extends RapidwareConfig {
         // 2)租户数据源配置
         ThreadLocalDataSourcePlugin threadLocalDataSourcePlugin = new ThreadLocalDataSourcePlugin();
         // TODO: add tenant db config
-        threadLocalDataSourcePlugin.set( "tenant0", c3p0Plugin );
+        threadLocalDataSourcePlugin.set( "tenant01", c3p0Plugin );
         me.add( threadLocalDataSourcePlugin );
 
         // 3)主数据库配置
@@ -105,11 +105,11 @@ public class WebAppConfig extends RapidwareConfig {
         new SystemModelMapping().mappingTo( arp );
 
         // 4)租户数据库配置 ds
-        ActiveRecordPlugin arp2 = new ActiveRecordPlugin( Const.TENANT_DB_NAME, c3p0Plugin )
+        ActiveRecordPlugin arp2 = new ActiveRecordPlugin( Const.TENANT_DB_NAME, threadLocalDataSourcePlugin )
                 .setShowSql( true )
                 .setContainerFactory( new CaseInsensitiveContainerFactory() );
         me.add( arp2 );
-        new TenantModelMapping().mappingTo( arp );
+        new TenantModelMapping().mappingTo( arp2 );
         // ================================================
 
         // 静态缓存插件

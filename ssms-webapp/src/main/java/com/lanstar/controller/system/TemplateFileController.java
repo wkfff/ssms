@@ -13,35 +13,23 @@ import com.lanstar.core.Controller;
 import com.lanstar.model.system.TemplateFile;
 
 public class TemplateFileController extends Controller {
-    public void index(){
+    public void index() {
         Integer fileId = getParaToInt();
         Asserts.notNull( fileId, "file id is null" );
 
         TemplateFile file = TemplateFile.dao.findById( fileId );
         setAttr( "file", file );
 
-        this.forwardAction( "/sys/stdtmp_file_"+ file.getTemplateFileCode() +"/");
+        this.forwardAction( "/sys/stdtmp_file_" + file.getTemplateFileCode() + "/" );
     }
 
-    /*@Override
-    public void rec() {
-        if ( isParaBlank( "pid" ) == false ) {
-            TemplateFolder folder = TemplateFolder.dao.findById( getParaToInt( "pid" ) );
-            setAttr( "folder", folder );
-        }
-        setAttr( "SYS_CYCLE", MultiParaType.SYS_CYCLE.parameters() );
-        setAttr( "tmpfiles", TemplatePropPlugin.me().listParameter() );
-        super.rec();
-    }
+    public void view() {
+        Integer fileId = getParaToInt();
+        Asserts.notNull( fileId, "file id is null" );
 
-    @Override
-    protected TemplateFile getDao() {
-        return TemplateFile.dao;
-    }
+        com.lanstar.model.system.archive.TemplateFile file = com.lanstar.model.system.archive.TemplateFile.dao.findById( fileId );
+        setAttr( "file", file );
 
-    @Override
-    protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE()._If( isParaBlank( "R_SID" ) == false,
-                "R_SID=?", getPara( "R_SID" ) ).ORDER_BY( "N_INDEX, SID" );
-    }*/
+        this.forwardAction( "/sys/stdtmp_file_" + file.getTemplateFileCode() + "/view" );
+    }
 }

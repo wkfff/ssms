@@ -1,13 +1,18 @@
-<#import "../../layout/_list.ftl" as layout/>
-<@layout.doLayout script=script>
+<@layout.extends name="../../_layouts/stdtmpfile.ftl">
+<@layout.put block="head">
+</@>
+<@layout.put block="panel_content">
+<div style="width:100%;height:685px;">
 <div id="toolbar">
     <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" data-bind="click: addClick">添加</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" data-bind="click: deleteClick">删除</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-back" plain="true" data-bind="click:function(){window.location.href='${referer!}';}">返回</a>
 </div>
-<table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table>
+<table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table> 
+</div>
+</@>
+<@layout.put block="footer">
 <script type="text/javascript">
     function ViewModel(catalogId) {
         var model = {
@@ -20,7 +25,7 @@
         };
         var settings = {
             viewSettings: {
-                url: "list",
+                url: "${BASE_PATH}/list",
                 queryParams: {
                     R_SID: catalogId
                 },
@@ -55,7 +60,7 @@
                 settings.viewSettings.datagrid('reload');
             },
             addClick: function () {
-                window.location.href = 'rec?pid=' + catalogId;
+                window.location.href = '${BASE_PATH}/rec?pid=' + catalogId;
             },
             editClick: function () {
                 var value = model.selectItem();
@@ -63,7 +68,7 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
-                window.location.href = 'rec?sid=' + value.SID;
+                window.location.href = '${BASE_PATH}/rec?sid=' + value.SID+'&pid='+catalogId;
             },
             deleteClick: function () {
                 var value = model.selectItem();
@@ -71,7 +76,7 @@
                     $.messager.alert("警告", "请先选择一行数据！", "warning");
                     return;
                 }
-                $.post('del', {sid: value.SID}, function () {
+                $.post('${BASE_PATH}/del', {sid: value.SID}, function () {
                     $.messager.alert('消息', '成功删除记录！', "info", function () {
                         events.refreshClick();
                     });
@@ -83,7 +88,8 @@
     }
 
     $(function () {
-        ko.applyBindings(new ViewModel(${sid}));
+        ko.applyBindings(new ViewModel(${file.id!}));
     });
 </script>
 </@>
+</@layout.extends>

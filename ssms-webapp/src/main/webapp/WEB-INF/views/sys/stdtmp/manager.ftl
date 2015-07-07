@@ -10,6 +10,7 @@
             background: url("/resource/images/rmail.png") no-repeat 0 center;
             padding-left: 20px;
         }
+
     </style>
     </@>
 
@@ -28,8 +29,7 @@
             <th style="width: 200px">操作</th>
         </tr>
         </thead>
-        <tbody
-                data-bind="template: {name: 'folderTemplate', foreach: folders}"></tbody>
+        <tbody data-bind="template: {name: 'folderTemplate', foreach: folders}"></tbody>
     </table>
 
     <script type="text/html" id="folderTemplate">
@@ -37,7 +37,7 @@
             <td data-bind="style: {'padding-left': 8+30*level()+'px'}">
                 <span class="icon-folder" data-bind="text:name"></span>
             </td>
-            <td data-bind="text: index"></td>
+            <td data-bind="text: _index"></td>
             <td>
                 <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.addFolder" title="添加子目录">添加目录</a>
                 <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.addFile" title="添加文件">添加文件</a>
@@ -53,7 +53,7 @@
             <td data-bind="style: {'padding-left': 8+30*level()+'px'}">
                 <a class="icon-file" data-bind="text: name, attr: {href: templateUrl}"></a>
             </td>
-            <td data-bind="text: index"></td>
+            <td data-bind="text: _index"></td>
             <td>
                 <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.editFile">编辑</a>
                 <a href="javascript:void(0);" class="icon-remove" data-bind="click: $root.removeFile">删除</a>
@@ -62,28 +62,64 @@
         </tr>
     </script>
     <script type="text/html" id="dlgFolder">
-        <p>目录名称: <input size="52" type="text" data-bind="value: name"/></p>
-        <p>排序: <input size="52" type="text" data-bind="value: index" style="margin-left:28px"/></p>
-        <p>描述: </p>
-        <p>
-            <textarea style="width:520px;height:150px" data-bind="value: desc" style="margin-left:65px;width:175px;"></textarea>
-        </p>
+        <div style="width:570px;">
+            <p>
+                目录名称: <input style="width:400px" type="text" data-bind="value: name"/>
+            </p>
+            <p>
+                目录排序: <span data-bind="text: parent._index()+'-'"></span><input type="number" data-bind="value: index" style="width: 50px"/>
+            </p>
+            <p>描述: </p>
+            <textarea data-bind="value: desc" style="width:100%;height:150px;"></textarea>
+        </div>
     </script>
     <script type="text/html" id="dlgFile">
-        <p>文件名称: <input size="52" type="text" data-bind="value: model.name"/></p>
-        <p>更新周期: <input data-bind="value: model.cycleValue,disable:model.remind()==false" style="width: 100px;"/>
-            <select data-bind="options: $root.cycleSource,optionsText:'name', optionsCaption: '请选择周期...',value: model.cycleUnit"></select>
-        </p>
-        <p>模板文件:
-            <select data-bind="options: $root.tmpfilesSource,optionsText: 'name', optionsValue: 'code', optionsCaption: '请选择模板...', value: model.templateFileCode"></select>
-        </p>
-        <p>是否提醒:<input type="checkbox" data-bind="checked : model.remind"/></p>
-        <p>政测解读: </p>
-        <p><textarea data-bind="value: model.explain" style="width:520px;height:50px"> </textarea></p>
-        <p>描述: </p>
-        <p>
-            <textarea data-bind="value: model.desc" style="width:520px;height:50px"></textarea>
-        </p>
+        <div style="width:570px;" data-bind="with:model">
+            <p>
+                文件名称:
+                <input type="text" data-bind="value: name" style="width: 400px;"/>
+            </p>
+
+            <p>
+                更新周期:
+                <input data-bind="value: (cycleUnit()==null ? null : cycleValue),disable:cycleUnit()==null" style="width: 50px;"/>
+                <select data-bind="options: $root.cycleSource,
+                                   optionsText:'name',
+                                   optionsValue: 'code',
+                                   optionsCaption: '请选择周期...',
+                                   value: cycleUnit">
+                </select>
+                <label><input type="checkbox" data-bind="checked : remind"/>是否提醒</label>
+            </p>
+
+            <p>
+                模板文件:
+                <select data-bind="options: $root.tmpfilesSource,
+                                   optionsText: 'name',
+                                   optionsValue: 'code',
+                                   optionsCaption: '请选择模板...',
+                                   value: templateFileCode"
+                        style="width: 400px;">
+                </select>
+            </p>
+            <p>
+                文件排序: <span data-bind="text: parent._index()+'-'"></span><input type="number" data-bind="value: index" style="width: 50px"/>
+            </p>
+            <p>政测解读:</p>
+            <textarea data-bind="value: explain" style="width:100%;height:50px"> </textarea>
+            <p>描述:</p>
+            <textarea data-bind="value: desc" style="width:100%;height:50px"></textarea>
+        </div>
+    </script>
+
+    <script type="text/html" id="dlgStatus">
+        <div style="height: 300px; width: 450px; overflow: auto; white-space:nowrap;">
+            <!-- ko foreach: logs -->
+            <p data-bind="text: $data"></p>
+            <!-- /ko -->
+        </div>
+        <div class="layui-layer-btn" data-bind="visible: status">
+            <a class="layui-layer-btn0" data-bind="click: finish">确定</a></div>
     </script>
     </@>
     <@layout.put block="footer">
@@ -93,16 +129,44 @@
         }
         function ViewModel(template, folders) {
             this.publish = function () {
-                utils.messager.confirm("确定要发布模板吗？", function () {
-                    $.post('${BASE_PATH}/publish/${template.id}', function (result) {
-                        utils.messager.alert(result != false ? '成功发布模板!' : '模板发布失败,请联系管理人员!', reload);
-                    }, 'json')
+                utils.messager.confirm("确定要发布模板吗？", function (_index) {
+                    layer.close(_index);
+                    var publishResult = {
+                        status: ko.observable(),
+                        logs: ko.observableArray(),
+                        finish: function () {
+                            layer.close(index);
+                            $.post("${BASE_PATH}/finish/${template.id}", reload);
+                        }
+                    };
+
+                    var index = layer.open({
+                        type: 1,
+                        title: "发布状态",
+                        closeBtn: false, //不显示关闭按钮
+                        content: $('#dlgStatus').html(),
+                        maxWidth: 500,
+                        scrollbar: false,
+                        success: function (layero) {
+                            ko.applyBindings(publishResult, layero[0]);
+                        }
+                    });
+
+                    var callback = function (result) {
+                        publishResult.status(result.status == "FINISH");
+                        publishResult.logs(result.logs);
+                        if (publishResult.status()) return;
+                        setTimeout(function () {
+                            $.post('${BASE_PATH}/status/${template.id}', callback, 'json');
+                        }, 3000);
+                    };
+                    $.post('${BASE_PATH}/publish/${template.id}', callback, 'json');
                 });
             };
 
             var fileViewModel = {
-                cycleSource: ko.observableArray(${json(SYS_CYCLE)}),
-                tmpfilesSource: ko.observableArray(${json(tmpfiles)}),
+                cycleSource: ${json(SYS_CYCLE)},
+                tmpfilesSource: ${json(tmpfiles)},
                 getCycle: function (code) {
                     for (var i = 0; i < this.cycleSource.length; i++) {
                         if (this.cycleSource[i].code == code) return this.cycleSource[i];
@@ -119,7 +183,12 @@
 
                 this.name = ko.observable(item.name).extend({required: true});
                 this.desc = ko.observable(item.desc);
-                this.index = ko.observable(item.index);
+                this.index = ko.observable(item.index || 0);
+                this._index = ko.computed(function () {
+                    var parent = this.parent;
+                    if (parent == null) return this.index();
+                    return this.parent._index() + '-' + this.index();
+                }, this);
 
                 this.level = ko.computed(function () {
                     var level = 0;
@@ -149,10 +218,16 @@
                 this.explain = ko.observable(item.explain);
                 this.templateFileCode = ko.observable(item.templateFileCode).extend({required: true});
                 this.remind = ko.observable(item.remind == '1');
-                this.cycleUnit = ko.observable(fileViewModel.getCycle(item.cycleUnitCode));
+                this.cycleUnit = ko.observable(item.cycleUnitCode);
                 this.cycleValue = ko.observable(item.cycleValue);
+                this.index = ko.observable(item.index || 0);
+                this._index = ko.computed(function () {
+                    var parent = this.parent;
+                    if (parent == null) return this.index();
+                    return this.parent._index() + '-' + this.index();
+                }, this);
 
-                this.templateUrl = "${BASE_PATH}/file/"+item.id;
+                this.templateUrl = "${BASE_PATH}/file/" + item.id;
                 this.level = ko.computed(function () {
                     var level = 0;
                     var parent = this.parent;
@@ -162,7 +237,6 @@
                     }
                     return level;
                 }, this);
-                this.index = ko.observable(item.index);
             }
 
 
@@ -185,7 +259,7 @@
                             model.children.push(tmpFolder);
                         });
                     }
-                }, "570px", "360px");
+                });
             };
 
             this.editFolder = function (model) {
@@ -224,7 +298,7 @@
 
             this.addFile = function (model) {
                 // 弹出对话框
-                fileViewModel.model = new FileModel(model)
+                fileViewModel.model = new FileModel(model);
 
                 utils.dialog.open({
                     template: $('#dlgFile').html(),
@@ -237,7 +311,7 @@
                             model.files.push(fileViewModel.model);
                         });
                     }
-                }, "570px", "380px");
+                });
             };
 
             this.editFile = function (model) {
@@ -293,8 +367,8 @@
                     remind: (model.remind() == true ? '1' : '0')
                 };
                 if (model.cycleUnit() != null) {
-                    params.cycleUnitCode = model.cycleUnit().code;
-                    params.cycleUnitName = model.cycleUnit().name;
+                    params.cycleUnitCode = model.cycleUnit();
+                    params.cycleUnitName =fileViewModel.getCycle(model.cycleUnit()).name;
                 }
                 var id = ko.unwrap(model.id);
                 if (id != null) params.id = id;
@@ -302,6 +376,7 @@
                     if (result != null) {
                         utils.messager.alert("保存成功!", function () {
                             model.id(result);
+                            model.templateUrl='${BASE_PATH}/file/'+result;
                             callback(model);
                         });
                     }

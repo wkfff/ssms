@@ -55,7 +55,7 @@
                 ]
             ],
             onDblClickRow: function (index, row) {
-                self.editClick();
+                self.editClick(row.SID);
             }
         };
         
