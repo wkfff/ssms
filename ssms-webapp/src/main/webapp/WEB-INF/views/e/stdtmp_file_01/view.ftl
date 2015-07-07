@@ -113,20 +113,3 @@
         </table>
     </form>
 </div>
-<script type="text/javascript">
-    var extModel = {
-        htmlContent: ko.observable(),
-    };
-    var settings = {
-        htmleditSettings: {
-            table: "SSM_STDTMP_FILE_01",
-            field: 'C_CONTENT',
-            sid: '${SID!}',
-            readonly: 'true'
-        }
-    };
-    var onPanelLoad = function () {
-        var vm = $.extend({}, settings, extModel);
-        ko.applyBindings(vm, document.getElementById('kocontainer'));
-    }
-</script>
