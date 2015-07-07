@@ -31,7 +31,9 @@
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isReadonly()==false, click: saveClick">保存</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-remove" data-bind="visible:isReadonly()==false, click: remove">删除</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?fileid=${file.id}')">返回列表</a>
-        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp_file_06/view?sid=${file.id}')}">查看模板</a>
+        <#if file.templateModel??>
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp/file/view/${file.sourceFile.id}')}">查看模板</a>
+        </#if>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-pre" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">上一条</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-next" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">下一条</a>
     </div>

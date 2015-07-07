@@ -39,9 +39,10 @@ public class TemplateFile02Controller extends SimplateController<TemplateFile02>
     public void view() {
         com.lanstar.model.system.archive.TemplateFile file = getAttr( "file" );
         ArchiveModel<?> model = file.getTemplateModel();
-
-        // setAttr("file", file);
-        // setAttr("model", ModelKit.toMap(model));
+        setAttr( "title",model.getName());
+        String content = com.lanstar.model.system.archive.TemplateText.getContent( file, model.getSid() );
+        setAttr( "C_CONTENT", content );
+        setAttrs( ModelKit.toMap( model ) );
         render( "view.ftl" );
     }
 

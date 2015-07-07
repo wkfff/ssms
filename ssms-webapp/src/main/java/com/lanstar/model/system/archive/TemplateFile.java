@@ -19,16 +19,21 @@ public class TemplateFile extends ArchiveModel<TemplateFile> {
     public String getTemplateFileCode() {
         return getStr( "P_TMPFILE" );
     }
-
+    
+    public int getSid() {
+        return getInt( "SID" );
+    }
+    
     /** 获取模板属性 */
     public TemplateProp getTemplateProp() {
         return TemplatePropPlugin.me().get( getTemplateFileCode() );
     }
 
     public ArchiveModel<?> getTemplateModel() {
-        return (ArchiveModel<?>) getTemplateProp().getModel( ModelType.SYSTEM_ARCHIVE ).getDao().findFirstByColumns(
-                ListKit.newArrayList( "R_TEMPLATE", "R_TMPFILE", "N_VERSION" ),
-                ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
+        ArchiveModel<?> file=(ArchiveModel<?>) getTemplateProp().getModel( ModelType.SYSTEM_ARCHIVE ).getDao().findFirstByColumns(
+            ListKit.newArrayList( "R_TEMPLATE", "R_TMPFILE", "N_VERSION" ),
+            ListKit.newObjectArrayList(getTemplateId(), getSid(),getVersion() ) );
+        return file;
     }
 
     public String getContextText() {

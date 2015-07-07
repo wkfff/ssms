@@ -8,11 +8,22 @@
 package com.lanstar.controller.system;
 
 import com.lanstar.controller.SimplateController;
+import com.lanstar.controller.system.attachtext.AttachTokenGenerator;
+import com.lanstar.core.aop.Before;
 import com.lanstar.model.system.TemplateFile09;
+import com.lanstar.model.system.archive.ArchiveModel;
+import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class TemplateFile09Controller extends SimplateController<TemplateFile09> {
-
+    @Before(AttachTokenGenerator.class)
+    public void view() {
+        com.lanstar.model.system.archive.TemplateFile file = getAttr( "file" );
+        ArchiveModel<?> model = file.getTemplateModel();
+        setAttr( "title", model.getName() );
+        setAttrs( ModelKit.toMap( model ) );
+        render( "view.ftl" );
+    }
     @Override
     protected TemplateFile09 getDao() {
         return TemplateFile09.dao;

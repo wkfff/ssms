@@ -15,6 +15,7 @@ import com.lanstar.core.aop.Before;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile03;
 import com.lanstar.model.system.TemplateText;
+import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
@@ -31,16 +32,22 @@ public class TemplateFile03Controller extends SimplateController<TemplateFile03>
             setAttr( "C_CONTENT", content );
         }
     }
+
     @Override
     protected void afterSave( TemplateFile03 model ) {
-        String content=getPara("htmlContent");
+        String content = getPara( "htmlContent" );
         TemplateText.saveContent( model, content, identityContext );
     }
+
     @Before(AttachTokenGenerator.class)
     public void view() {
-        super.rec();
-        setAttr( "@READONLY", "true" );
-        render( "rec.ftl" );
+        com.lanstar.model.system.archive.TemplateFile file = getAttr( "file" );
+        ArchiveModel<?> model = file.getTemplateModel();
+        setAttr( "title", model.getName() );
+        String content = com.lanstar.model.system.archive.TemplateText.getContent( file, model.getSid() );
+        setAttr( "C_CONTENT", content );
+        setAttrs( ModelKit.toMap( model ) );
+        render( "view.ftl" );
     }
 
     @Override
