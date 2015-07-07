@@ -14,5 +14,8 @@ public class TemplateFile01 extends TemplateFileModel<TemplateFile01> {
     public String getName() {
         return getStr( "C_NAME" );
     }
-}
 
+    public void setName( String name ) {
+        set( "C_NAME", name );
+    }
+}

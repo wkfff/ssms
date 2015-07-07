@@ -75,7 +75,7 @@ public class HomeController extends Controller {
                 .getName() );
         setAttr( "rs_todo", files );
 
-        List<Notice> rs_notice = Notice.dao.find( "select * from ssm_notice" );
+        List<Notice> rs_notice = Notice.dao.find( "select * from sys_notice" );
         setAttr( "rs_notice", rs_notice );
 
         setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 10" ) );

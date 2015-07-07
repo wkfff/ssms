@@ -8,8 +8,10 @@
 
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.common.ListKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.TenantType;
+import com.lanstar.model.tenant.TemplateText;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.service.enterprise.UniqueTag;
@@ -35,4 +37,5 @@ public abstract class TemplateFileController<T extends Model<T>> extends Simplat
         model.set( "R_TEMPLATE", uniqueTag.getTemplateId() );
         model.set( "P_PROFESSION", uniqueTag.getProfessionId() );
     }
+
 }

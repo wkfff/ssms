@@ -14,6 +14,7 @@ import com.lanstar.core.aop.Before;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFile01;
 import com.lanstar.model.system.TemplateText;
+import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.plugin.activerecord.ModelKit;
 
 public class TemplateFile01Controller extends SimplateController<TemplateFile01> {
@@ -36,9 +37,13 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
 
     @Before(AttachTokenGenerator.class)
     public void view() {
-        this.index();
-        setAttr( "@READONLY", "true" );
-        render( "index.ftl" );
+        com.lanstar.model.system.archive.TemplateFile file = getAttr( "file" );
+        ArchiveModel<?> model = file.getTemplateModel();
+        setAttr( "title",model.getName());
+        String content = com.lanstar.model.system.archive.TemplateText.getContent( file, model.getSid() );
+        setAttr( "C_CONTENT", content );
+        setAttrs( ModelKit.toMap( model ) );
+        render( "view.ftl" );
     }
 
     @Override
@@ -46,4 +51,5 @@ public class TemplateFile01Controller extends SimplateController<TemplateFile01>
         String content = getPara( "htmlContent" );
         TemplateText.saveContent( model, content, identityContext );
     }
+    
 }

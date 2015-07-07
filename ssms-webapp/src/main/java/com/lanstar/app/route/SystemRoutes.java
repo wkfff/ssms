@@ -52,5 +52,8 @@ public class SystemRoutes extends Routes {
         add( "/sys/tenant_ru", ReviewUserController.class );
         add( "/sys/professions", ProfessionsController.class );
         add( "/knowledge", KnowledgeController.class );
+        
+        add("/sys/notice", NoticeController.class);
+        add("/sys/noticereceiver", NoticeReceiverController.class);
     }
 }
