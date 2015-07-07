@@ -7,6 +7,8 @@
  */
 
 package com.lanstar.app.model;
+import com.lanstar.model.Done;
+import com.lanstar.model.Todo;
 import com.lanstar.model.tenant.*;
 
 public class TenantModelMapping extends ActiveRecordMapping {
@@ -43,5 +45,9 @@ public class TenantModelMapping extends ActiveRecordMapping {
         addMapping( "SSM_RESULT_CONTENT", "SID", ReviewResultContent.class );   //评审内容结果表
         addMapping( "SSM_RESULT_REPORT", "SID", ReviewResultReport.class );     //评审报告结果表
         addMapping( "SSM_RESULT_CERT", "SID", ReviewResultCert.class );         //评审证书结果表
+
+        // 待办相关
+        addMapping( "SYS_TODO", "SID", Todo.class );
+        addMapping( "SYS_DONE", "SID", Done.class );
     }
 }

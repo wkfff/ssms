@@ -53,7 +53,7 @@ public class TodoService {
     public boolean create( TodoBean bean, Identity operator ) {
         Asserts.notNull( bean, "bean can not be null" );
         // 如果待办已经存在，说明这个是异常逻辑产生的待办，应该要提醒报错。
-        if ( exists( bean.getSignature(), bean.getSrcId() ) == false )
+        if ( exists( bean.getSignature(), bean.getSrcId(), bean.getProfessionId(), bean.getTemplateId() ) == true )
             throw new RuntimeException( "待办已经存在，请确认待办生成逻辑是否正确！" );
 
         Todo todo = new Todo();
@@ -75,7 +75,7 @@ public class TodoService {
         Asserts.notNull( bean, "bean can not be null" );
         Todo todo;
         if ( bean.getId() != null ) todo = Todo.dao.findById( bean.getId() );
-        else todo = getTodo( bean.getSignature(), bean.getSrcId() );
+        else todo = getTodo( bean.getSignature(), bean.getSrcId(), bean.getProfessionId(), bean.getTemplateId() );
         return finishTodo( todo, operator );
     }
 
@@ -100,8 +100,8 @@ public class TodoService {
      *
      * @return 如果成功则返回true，否则返回false。
      */
-    public boolean finish( String signature, int srcId, final Identity operator ) {
-        return finishTodo( getTodo( signature, srcId ), operator );
+    public boolean finish( String signature, int srcId, Integer profession, Integer template, final Identity operator ) {
+        return finishTodo( getTodo( signature, srcId, profession, template ), operator );
     }
 
     /**
@@ -124,8 +124,8 @@ public class TodoService {
      *
      * @return 待办
      */
-    public TodoBean getTodoBean( String signature, int srcId ) {
-        return TodoBean.convert( getTodo( signature, srcId ) );
+    public TodoBean getTodoBean( String signature, int srcId, Integer profession, Integer template ) {
+        return TodoBean.convert( getTodo( signature, srcId, profession, template ) );
     }
 
     /**
@@ -172,10 +172,19 @@ public class TodoService {
      *
      * @return 待办
      */
-    Todo getTodo( String signature, int srcId ) {
+    Todo getTodo( String signature, int srcId, Integer profession, Integer template ) {
         List<String> columns = Lists.newArrayList( "C_CONTROL", "R_SID", "R_TENANT", "P_TENANT" );
         List<Object> objects = Lists.newArrayList( (Object) signature, srcId,
                 tenant.getTenantId(), tenant.getTenantType().getName() );
+
+        if ( profession != null ) {
+            columns.add( "P_PROFESSION" );
+            objects.add( profession );
+        }
+        if ( template != null ) {
+            columns.add( "R_TEMPLATE" );
+            objects.add( template );
+        }
         return Todo.dao.findFirstByColumns( columns, objects );
     }
 
@@ -216,8 +225,8 @@ public class TodoService {
      *
      * @return 如果存在则返回true，否则返回false。
      */
-    public boolean exists( String signature, int srcId ) {
-        return getTodo( signature, srcId ) != null;
+    public boolean exists( String signature, int srcId, Integer profession, Integer template ) {
+        return getTodo( signature, srcId, profession, template ) != null;
     }
 
     /**
