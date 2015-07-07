@@ -23,6 +23,8 @@ public class TodoBean {
     private int srcId;
     private String url;
     private Integer id;
+    private Integer professionId;
+    private Integer templateId;
 
     static TodoBean convert( Todo todo ) {
         if ( todo == null ) return null;
@@ -35,6 +37,8 @@ public class TodoBean {
         bean.notifyTime = todo.getNotifyTime();
         bean.srcId = todo.getSrcId();
         bean.url = todo.getUrl();
+        bean.professionId = todo.getProfessionId();
+        bean.templateId = todo.getTemplateId();
 
         return bean;
     }
@@ -48,6 +52,8 @@ public class TodoBean {
         todo.setUrl( bean.url );
         todo.setSignature( bean.signature );
         todo.setSrcId( bean.srcId );
+        todo.setProfessionId( bean.professionId );
+        todo.setTemplateId( bean.templateId );
     }
 
     public Integer getId() {
@@ -104,5 +110,21 @@ public class TodoBean {
 
     public void setUrl( String url ) {
         this.url = url;
+    }
+
+    public Integer getProfessionId() {
+        return professionId;
+    }
+
+    public void setProfessionId( Integer professionId ) {
+        this.professionId = professionId;
+    }
+
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId( Integer templateId ) {
+        this.templateId = templateId;
     }
 }

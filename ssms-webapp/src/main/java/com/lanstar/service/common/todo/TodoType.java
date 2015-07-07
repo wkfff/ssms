@@ -11,7 +11,8 @@ package com.lanstar.service.common.todo;
 import com.lanstar.identity.Identity;
 
 public enum TodoType {
-    STDFILE;
+    STDFILE,
+    STDFILE01,STDFILE02,STDFILE03,STDFILE04,STDFILE06,STDFILE07,STDFILE08,STDFILE09;
 
     /**
      * 创建待办
