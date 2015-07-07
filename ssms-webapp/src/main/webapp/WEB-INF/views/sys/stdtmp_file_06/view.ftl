@@ -1,5 +1,5 @@
-<@layout.extends name="../../_layouts/stdtmpfile.ftl">
-<@layout.put block="head">
+<#import "../../layout/_rec.ftl" as layout/>
+<#assign script>
 <style type="text/css">
     .kocontainer {
         position: absolute;
@@ -27,8 +27,8 @@
         height: 35px;
     }
 </style>
-</@>
-<@layout.put block="panel_content">
+</#assign>
+<@layout.doLayout script>
     <form class="form">
         <table>
             <tr>
@@ -91,4 +91,4 @@
         </table>
     </form>
 </@>
-</@layout.extends>
+

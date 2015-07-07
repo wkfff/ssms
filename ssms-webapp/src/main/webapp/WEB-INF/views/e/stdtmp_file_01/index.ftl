@@ -25,7 +25,7 @@
         <#if SID??>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf" data-bind="click: function(){window.open('${BASE_PATH}/export/${SID}')}">导出</a>
         </#if>
-        <#if file.templateModel.id??>
+        <#if file.templateModel??>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp/file/view/${file.sourceFile.id}')}">查看模板</a>
         </#if>
     </div>
