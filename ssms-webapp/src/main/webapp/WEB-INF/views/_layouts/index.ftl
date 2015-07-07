@@ -68,7 +68,7 @@
         </@layout.put>
     </#if>
 
-    <@layout.put block="contents">
+    <@layout.put block="contents" type="PREPEND">
     <div id="container">
         <div id="hd">
             <div class="hd-wrap ue-clear">

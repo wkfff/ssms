@@ -16,10 +16,6 @@ import com.lanstar.model.system.Profession;
 import com.lanstar.model.tenant.TemplateFile06;
 import com.lanstar.model.tenant.TemplateFile07;
 import com.lanstar.model.tenant.TemplateFile08;
-import com.lanstar.model.tenant.TemplateFolder;
-import com.lanstar.plugin.activerecord.DbPro;
-import com.lanstar.plugin.activerecord.Record;
-import com.lanstar.plugin.activerecord.RecordKit;
 import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.enterprise.ProfessionService;
 import com.lanstar.service.enterprise.TemplateInitTask;
@@ -57,23 +53,8 @@ public class HomeController extends Controller {
 
     public void home() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
-        EnterpriseService enterpriseService = identityContext.getEnterpriseService();
-        ProfessionService professionService = enterpriseService.getProfessionService();
-        TemplateFolder folder = professionService.getTenantTemplateFolder();
-        setAttr( "FILE_COUNT", folder == null ? 0 : folder.getFileCount() );
 
-        DbPro db = identityContext.getTenantDb();
-        Long fileCount = db.queryLong( "select COUNT(*) from ssm_stdtmp_file where N_COUNT=0 AND R_TEMPLATE=? AND P_PROFESSION=? AND R_TENANT=? AND P_TENANT='E'",
-                professionService.getSystemTemplate().getId(),
-                professionService.getId(),
-                identityContext.getTenantId() );
-        setAttr( "FILE_NO_CREATE", fileCount );
-
-        List<Record> todolist = db.find( "select * from ssm_stdtmp_file where N_COUNT=0 AND R_TEMPLATE=? AND P_PROFESSION=? AND R_TENANT=? AND P_TENANT='E' limit 10",
-                professionService.getSystemTemplate().getId(),
-                professionService.getId(),
-                identityContext.getTenantId() );
-        setAttr( "rs_todo", RecordKit.toMap( todolist ) );
+        setAttr( "todo", new HomeTodo( identityContext ) );
 
         List<Notice> rs_notice = Notice.dao.find( "select * from sys_notice" );
         setAttr( "rs_notice", rs_notice );

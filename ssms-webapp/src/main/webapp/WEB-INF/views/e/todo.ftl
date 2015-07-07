@@ -1,12 +1,13 @@
 <#--未创建要素-->
+<#if todo.createTodo?size!=0>
 <@layout.put block="tabs_title">
 <li id="t1" target="#tc1" class="current">未创建要素</li>
 </@>
 <@layout.put block="tabs_content">
 <div id="tc1">
     <table class="matter-list">
-        <#if rs_todo?? && rs_todo?size!=0>
-            <#list rs_todo as rs>
+        <#if todo.createTodo?? && todo.createTodo?size!=0>
+            <#list todo.createTodo as rs>
                 <tr>
                     <td class="more">
                         <a href="${rs.C_URL!"/e/stdtmp/tree?selected=${rs.SID}"}" target="_top" class="matter-title">${rs.C_NAME}</a>
@@ -26,6 +27,7 @@
     </table>
 </div>
 </@>
+</#if>
 
 <#--未完成要素-->
 
