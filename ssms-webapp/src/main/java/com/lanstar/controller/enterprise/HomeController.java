@@ -63,19 +63,16 @@ public class HomeController extends Controller {
         setAttr( "FILE_COUNT", folder == null ? 0 : folder.getFileCount() );
 
         DbPro db = identityContext.getTenantDb();
-        Long fileCount = db.queryLong( "select COUNT(*) from sys_todo where R_TENANT=? and P_TENANT=? and R_TEMPLATE=? and P_PROFESSION=?",
-                identityContext.getTenantId(),
-                identityContext.getTenantType().getName(),
+        Long fileCount = db.queryLong( "select COUNT(*) from ssm_stdtmp_file where N_COUNT=0 AND R_TEMPLATE=? AND P_PROFESSION=? AND R_TENANT=? AND P_TENANT='E'",
                 professionService.getSystemTemplate().getId(),
-                professionService.getId() );
+                professionService.getId(),
+                identityContext.getTenantId() );
         setAttr( "FILE_NO_CREATE", fileCount );
 
-        // TODO 从待办表读取待办
-        List<Record> todolist = db.find( "select * from sys_todo where R_TENANT=? and P_TENANT=? and R_TEMPLATE=? and P_PROFESSION=? limit 10",
-                identityContext.getTenantId(),
-                identityContext.getTenantType().getName(),
+        List<Record> todolist = db.find( "select * from ssm_stdtmp_file where N_COUNT=0 AND R_TEMPLATE=? AND P_PROFESSION=? AND R_TENANT=? AND P_TENANT='E' limit 10",
                 professionService.getSystemTemplate().getId(),
-                professionService.getId() );
+                professionService.getId(),
+                identityContext.getTenantId() );
         setAttr( "rs_todo", RecordKit.toMap( todolist ) );
 
         List<Notice> rs_notice = Notice.dao.find( "select * from sys_notice" );
