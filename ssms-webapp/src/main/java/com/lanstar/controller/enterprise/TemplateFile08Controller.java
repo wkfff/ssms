@@ -25,19 +25,22 @@ public class TemplateFile08Controller extends TemplateFileController<TemplateFil
         TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
         setAttr( "file", file );
     }
+
     @Override
     protected TemplateFile08 getDao() {
         return TemplateFile08.dao;
     }
+
     @Override
     protected SqlBuilder buildWhere() {
         return super.buildWhere().WHERE( "R_TMPFILE=?", getPara( "fileId" ) ).ORDER_BY( "T_TEST_LAST" );
     }
-    
-    public void view(){
+
+    public void view() {
+        setAttr( "fileid", getParaToInt( "sid" ) );
     }
-    
+
     public void detail() {
-        super.rec();
+        this.rec();
     }
 }

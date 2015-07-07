@@ -59,8 +59,7 @@
 
             <tr>
                 <td colspan="4">
-                    <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings"
-                              style="width: 100%; min-height: 400px"></textarea>
+                    <div style="width: 100%; min-height: 400px;border: 1px dashed  #ccc;" >${C_CONTENT!}</div>
                 </td>
             </tr>
 
@@ -114,20 +113,3 @@
         </table>
     </form>
 </div>
-<script type="text/javascript">
-    var extModel = {
-        htmlContent: ko.observable(),
-    };
-    var settings = {
-        htmleditSettings: {
-            table: "SSM_STDTMP_FILE_01",
-            field: 'C_CONTENT',
-            sid: '${SID!}',
-            readonly: 'true'
-        }
-    };
-    var onPanelLoad = function () {
-        var vm = $.extend({}, settings, extModel);
-        ko.applyBindings(vm, document.getElementById('kocontainer'));
-    }
-</script>

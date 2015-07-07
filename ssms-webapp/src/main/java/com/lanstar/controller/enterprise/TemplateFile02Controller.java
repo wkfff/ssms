@@ -60,9 +60,10 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
     }
 
     public void view() {
+        setAttr( "fileid", getParaToInt( "sid" ));
     }
 
     public void detail() {
-        super.rec();
+        this.rec();
     }
 }

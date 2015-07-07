@@ -25,6 +25,7 @@ public class TemplateFile07Controller extends TemplateFileController<TemplateFil
         TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
         setAttr( "file", file );
     }
+
     @Override
     protected TemplateFile07 getDao() {
         return TemplateFile07.dao;
@@ -36,9 +37,10 @@ public class TemplateFile07Controller extends TemplateFileController<TemplateFil
     }
 
     public void view() {
+        setAttr( "fileid", getParaToInt( "sid" ) );
     }
 
     public void detail() {
-        super.rec();
+        this.rec();
     }
 }

@@ -97,7 +97,16 @@ public class TemplateFile01Controller extends TemplateFileController<TemplateFil
     }
 
     public void view() {
-        super.rec();
+        Integer templatefileId = getParaToInt("sid");
+        Asserts.notNull( templatefileId, "发现非法的参数请求" );
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+        TemplateFile01 templateFile = getTemplateFile( uniqueTag, templatefileId );
+        if ( templateFile == null ) return;
+        setAttrs( ModelKit.toMap( templateFile ) );
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, templatefileId );
+        String content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), templateFile.getId() );
+        setAttr( "C_CONTENT", content );
+        setAttr( "file", file );
     }
 
     @Override
