@@ -83,6 +83,17 @@
                 <td>检验结论</td>
                 <td colspan=3><input data-bind="disable: readonly,textboxValue: C_TEST_CON"/></td>
             </tr>
+            <#if file.explain?? && file.explain?length!=0>
+            <tr>
+            <td colspan="4">
+                <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
+                <div style="background-color: #CCCCCC;">政策解读:</div>
+                <table style="table-layout: auto;"></table>
+                ${file.explain}
+                </div>
+            </td>
+            </tr>
+            </#if>
         </table>
     </form>
 </div>

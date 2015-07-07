@@ -97,6 +97,17 @@
                     <label><input type="radio" name="B_FINISH" data-bind="disable:isReadonly,checked: B_FINISH" value="0"/>未闭环</label>
                 </td>
             </tr>
+            <#if file.explain?? && file.explain?length!=0>
+            <tr>
+            <td colspan="6" >
+                <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
+                <div style="background-color: #CCCCCC;">政策解读:</div>
+                <table style="table-layout: auto;"></table>
+                ${file.explain}
+                </div>
+            </td>
+            </tr>
+            </#if>
             <tr data-bind="visible: SID">
                 <td colspan="6" style="padding: 10px;">
                     <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_06', sid: SID}">[选择文件]</a>
