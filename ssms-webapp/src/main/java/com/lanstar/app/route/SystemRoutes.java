@@ -10,7 +10,6 @@ package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
 import com.lanstar.controller.common.KnowledgeController;
-import com.lanstar.controller.government.NoticeReceiverController;
 import com.lanstar.controller.system.*;
 import com.lanstar.controller.system.attachtext.AttachTextController;
 

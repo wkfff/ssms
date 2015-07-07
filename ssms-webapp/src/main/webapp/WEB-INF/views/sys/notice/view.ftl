@@ -97,11 +97,11 @@
 </head>
 
 <BODY>
-    <DIV id=wrap class="content">
+    <DIV class="content" style="padding-bottom:10px;">
         <div id="tb" class="titlebar_noborder">
                 <img src="/resource/images/blue/star.png"/>&nbsp;通知公告
                 <span class="backing">
-                    <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="window.location.href='${BASE_PATH}/publics';">返回</a>
+                    <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="window.location.href='${referer!}';">返回</a>
                 </span>
         </div>
         <DIV id=container>

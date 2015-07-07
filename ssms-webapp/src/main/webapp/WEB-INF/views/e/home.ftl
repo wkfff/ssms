@@ -52,7 +52,7 @@
         <div class="wrap-l">
             <div class="title ue-clear">
                 <h2>通知公告</h2>
-                <a href="/e/notice/publics" class="more">更多</a>
+                <a href="/sys/notice/publics" class="more">更多</a>
             </div>
             <div class="content">
                 <table class="notice-list">
@@ -60,7 +60,7 @@
                         <#list rs_notice as rs>
                             <tr>
                                 <td class="more">
-                                    <a href="/e/notice/view?sid=${rs.SID}" title="${rs.C_TITLE!}" class="notice-title">${rs.C_TITLE!}</a>
+                                    <a href="/sys/notice/view?sid=${rs.SID}" title="${rs.C_TITLE!}" class="notice-title">${rs.C_TITLE!}</a>
                                 </td>
                                 <td class="notice-time">${rs.T_PUBLISH!}</td>
                             </tr>
