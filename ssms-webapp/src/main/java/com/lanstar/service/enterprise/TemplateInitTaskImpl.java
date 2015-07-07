@@ -233,7 +233,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
                     ListKit.newArrayList( "R_TEMPLATE", "N_VERSION" ),
                     ListKit.newObjectArrayList( systemTemplate.getId(), systemTemplate.getVersion() ) );
             for ( final com.lanstar.model.system.archive.ArchiveModel model : list ) {
-                final int id = model.getId();
+                final int id = model.getSid();
                 model.remove( "UID", "SID" );
                 ModelExt newModel = prop.getModel( ModelType.TENANT ).getModel();
                 ModelKit.clone( model, newModel );
