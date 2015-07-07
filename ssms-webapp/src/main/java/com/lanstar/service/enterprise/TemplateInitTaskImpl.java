@@ -26,7 +26,7 @@ import com.lanstar.plugin.template.ModelType;
 import com.lanstar.plugin.template.ModelWrap;
 import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplatePropPlugin;
-import com.lanstar.service.MultiParaType;
+import com.lanstar.service.CycleType;
 import com.lanstar.service.Parameter;
 
 import java.sql.SQLException;
@@ -41,7 +41,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
     private final FolderBean cacheContent;
     private final TenantContext tenantContext;
     private TemplateInitializerState status = TemplateInitializerState.NONE;
-    private final List<Parameter> cycle = MultiParaType.SYS_CYCLE.parameters();
+    private final List<Parameter> cycle = CycleType.parameters();
 
     private List<String> logs = new ArrayList<>();
     private Map<Class<?>, List<Model>> batchs = new LinkedHashMap<>();

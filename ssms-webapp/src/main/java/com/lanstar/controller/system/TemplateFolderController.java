@@ -19,7 +19,7 @@ import com.lanstar.model.system.Template;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFolder;
 import com.lanstar.plugin.template.TemplatePropPlugin;
-import com.lanstar.service.MultiParaType;
+import com.lanstar.service.CycleType;
 import com.lanstar.service.system.template.PublishTask;
 import com.lanstar.service.system.template.PublishTaskFactory;
 
@@ -31,7 +31,7 @@ public class TemplateFolderController extends Controller {
         final Integer template = getParaToInt( "template" );
         Asserts.notNull( template, "template 不能为空" );
         setAttr( "template", Template.dao.findById( template ) );
-        setAttr( "SYS_CYCLE", MultiParaType.SYS_CYCLE.parameters() );
+        setAttr( "SYS_CYCLE", CycleType.parameters() );
         setAttr( "tmpfiles", TemplatePropPlugin.me().listParameter() );
         setAttr( "items", getTemplate( template ).getChildren() );
     }

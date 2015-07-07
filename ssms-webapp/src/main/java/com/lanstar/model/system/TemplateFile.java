@@ -8,11 +8,13 @@
 
 package com.lanstar.model.system;
 
+import com.lanstar.common.kit.StrKit;
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.plugin.template.ModelType;
 import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplatePropPlugin;
+import com.lanstar.service.CycleType;
 
 import java.util.List;
 
@@ -107,6 +109,12 @@ public class TemplateFile extends ModelExt<TemplateFile> {
 
     public void setCycleUnitName( String name ) {
         set( "S_CYCLE", name );
+    }
+
+    public CycleType getCycleUnit() {
+        String code = getCycleUnitCode();
+        if ( StrKit.isEmpty( code ) ) return null;
+        return CycleType.getByCode( code );
     }
 
     public String getExplain() {

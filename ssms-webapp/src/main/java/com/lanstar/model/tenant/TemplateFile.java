@@ -9,12 +9,14 @@
 package com.lanstar.model.tenant;
 
 import com.lanstar.common.ListKit;
+import com.lanstar.common.kit.StrKit;
 import com.lanstar.identity.TenantType;
 import com.lanstar.model.TenantModel;
 import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.plugin.template.ModelType;
 import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplatePropPlugin;
+import com.lanstar.service.CycleType;
 import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile extends TenantModel<TemplateFile> {
@@ -161,9 +163,9 @@ public class TemplateFile extends TenantModel<TemplateFile> {
      * 获取来源文件，即拷贝自的文件
      */
     public com.lanstar.model.system.archive.TemplateFile getSourceFile() {
-        com.lanstar.model.system.archive.TemplateFile file = com.lanstar.model.system.archive.TemplateFile.dao.findFirstByColumns( 
-            ListKit.newArrayList( "R_TEMPLATE", "SID", "N_VERSION" ),
-            ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
+        com.lanstar.model.system.archive.TemplateFile file = com.lanstar.model.system.archive.TemplateFile.dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "SID", "N_VERSION" ),
+                ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
         return file;
     }
 
@@ -211,6 +213,12 @@ public class TemplateFile extends TenantModel<TemplateFile> {
 
     public void setCycleUnitName( String name ) {
         set( "S_CYCLE", name );
+    }
+
+    public CycleType getCycleUnit() {
+        String code = getCycleUnitCode();
+        if ( StrKit.isEmpty( code ) ) return null;
+        return CycleType.getByCode( code );
     }
 
     public String getExplain() {
