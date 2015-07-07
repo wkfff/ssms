@@ -10,6 +10,8 @@ package com.lanstar.service.common.todo;
 
 import com.lanstar.identity.Identity;
 
+import java.util.List;
+
 public enum TodoType {
     STDFILE,
     STDFILE01,
@@ -49,8 +51,8 @@ public enum TodoType {
      *
      * @param service 待办服务
      */
-    public void listTodo( TodoService service ) {
-        service.listTodoBean( name() );
+    public List<TodoBean> listTodo( TodoService service, Integer profession, Integer template ) {
+        return service.listTodoBean( name(), profession, template );
     }
 
     /**
