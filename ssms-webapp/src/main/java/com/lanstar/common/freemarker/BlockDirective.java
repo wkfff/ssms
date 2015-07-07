@@ -25,31 +25,20 @@ public class BlockDirective implements TemplateDirectiveModel {
     @Override
     public void execute( Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body ) throws TemplateException, IOException {
         String blockName = getBlockName( env, params, BLOCK_NAME_PARAMETER );
-        PutType putType = getPutType( env, blockName );
         String bodyResult = getBodyResult( body );
 
         Writer out = env.getOut();
 
-        String putContents = getPutContents( env, blockName );
+        SimpleSequence putContents = getPutContents( env, blockName );
+        for ( int i = 0; i < putContents.size(); i++ ) {
+            PutObject putObject = (PutObject) putContents.get( i );
 
-        putType.write( out, bodyResult, putContents );
+            bodyResult = putObject.putType.write( bodyResult, putObject.bodyResult );
+        }
+        out.write( bodyResult );
     }
 
-    private PutType getPutType( Environment env, String blockName ) throws TemplateException {
-        SimpleScalar putTypeScalar = (SimpleScalar) env.getVariable( getBlockTypeVarName( blockName ) );
-        if ( putTypeScalar == null ) {
-            return PutType.APPEND;
-        }
-
-        return PutType.valueOf( putTypeScalar.getAsString() );
-    }
-
-    private String getPutContents( Environment env, String blockName ) throws TemplateModelException {
-        SimpleScalar putContentsModel = (SimpleScalar) env.getVariable( getBlockContentsVarName( blockName ) );
-        String putContents = "";
-        if ( putContentsModel != null ) {
-            putContents = putContentsModel.getAsString();
-        }
-        return putContents;
+    private SimpleSequence getPutContents( Environment env, String blockName ) throws TemplateModelException {
+        return (SimpleSequence) env.getVariable( getBlockContentsVarName( blockName ) );
     }
 }

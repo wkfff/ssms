@@ -104,7 +104,7 @@
     </div>
     </@>
 
-    <@layout.put block="footer">
+    <@layout.put block="footer" type="PREPEND">
     <script type="text/javascript">
         $(function () {
             $(window).resize(function (e) {

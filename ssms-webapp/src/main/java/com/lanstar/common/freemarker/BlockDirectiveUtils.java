@@ -43,10 +43,6 @@ public class BlockDirectiveUtils {
         return PutDirective.PUT_DATA_PREFIX + blockName + ".contents";
     }
 
-    public static String getBlockTypeVarName( String blockName ) {
-        return PutDirective.PUT_DATA_PREFIX + blockName + ".type";
-    }
-
     public static String getBlockName( Environment env, Map params, String paramName ) throws TemplateException {
 
         SimpleScalar blockNameScalar = (SimpleScalar) params.get( paramName );

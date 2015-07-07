@@ -108,17 +108,17 @@ if (typeof ko !== 'undefined' && ko.utils.copyToModel === undefined) {
             }
         }
     };
-}
 
-/*ko数组添加过滤方法，林峰 2015-07-02*/
-ko.observableArray.fn['filter'] = function (filterFunc) {
-    var underlyingArray = this();
-    var result = [];
-    for (var i = 0; i < underlyingArray.length; i++) {
-        var value = underlyingArray[i];
-        if (filterFunc(value)) {
-            result.push(value);
+    /*ko数组添加过滤方法，林峰 2015-07-02*/
+    ko.observableArray.fn['filter'] = function (filterFunc) {
+        var underlyingArray = this();
+        var result = [];
+        for (var i = 0; i < underlyingArray.length; i++) {
+            var value = underlyingArray[i];
+            if (filterFunc(value)) {
+                result.push(value);
+            }
         }
-    }
-    return result;
-};
+        return result;
+    };
+}
