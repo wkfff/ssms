@@ -92,6 +92,18 @@
                      <input type="text" class="readonly" <#if B_FINISH?? && B_FINISH=="1">value="已闭环" <#elseif B_FINISH?? && B_FINISH=="0"> value="未闭环" <#else> value="" </#if> readonly/>
                 </td>
             </tr>
+           <#if file.explain?? && file.explain?length!=0>
+            <tr>
+                <td colspan="6">
+                    <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
+                    <div style="background-color: #CCCCCC;">政策解读:</div>
+                    <table style="table-layout: auto;"></table>
+                    ${file.explain}
+                   </div>
+               </td>
+           </tr>
+           </#if>
+            <tr>
         </table>
     </form>
 </div>

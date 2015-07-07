@@ -84,7 +84,17 @@
                     <input style="width:100%" type="text"  class="readonly" value="${T_DATE_04!}" readonly/>
                 </td>
             </tr>
-
+        <#if file.explain?? && file.explain?length!=0>
+            <tr>
+            <td colspan="4">
+                <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
+                <div style="background-color: #CCCCCC;">政策解读:</div>
+                <table style="table-layout: auto;"></table>
+                ${file.explain}
+                </div>
+            </td>
+            </tr>
+        </#if>
         <#if pass?? && pass?size gt 0 >
             <tr>
                 <td colspan="4">
