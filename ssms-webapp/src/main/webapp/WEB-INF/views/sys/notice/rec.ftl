@@ -230,9 +230,9 @@ function viewModel(){
     });
     
     //list所有接受单位信息
-    self.data_g = ${data_g!};
-    self.data_r = ${data_r!};
-    self.data_e = ${data_e!};
+    self.data_g = ${data_g!"[]"};
+    self.data_r = ${data_r!"[]"};
+    self.data_e = ${data_e!"[]"};
     self.receivegovernment=ko.observableArray(self.data_g);
     self.receivereview=ko.observableArray(self.data_r); 
     self.receiveenterprise=ko.observableArray(self.data_e);
@@ -366,9 +366,9 @@ function viewModel(){
                         SID:self.SID,
                         C_TITLE:self.C_TITLE,
                         C_CONTENT:self.htmlContent,
-                        C_RECEIVER_G:ko.toJSON(self.checked_government()),
-                        C_RECEIVER_R:ko.toJSON(self.checked_review()),
-                        C_RECEIVER_E:ko.toJSON(self.checked_enterprise())
+                        C_RECEIVER_G:self.governments()=='全部'?'全部':ko.toJSON(self.checked_government()),
+                        C_RECEIVER_R:self.reviewss()=='全部'?'全部':ko.toJSON(self.checked_review()),
+                        C_RECEIVER_E:self.enterprises()=='全部'?'全部':ko.toJSON(self.checked_enterprise())
              };
              $.post('save', model, function (result) {
                     if (result.SID) {

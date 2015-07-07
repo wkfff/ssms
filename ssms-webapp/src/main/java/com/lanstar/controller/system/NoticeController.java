@@ -188,13 +188,18 @@ public class NoticeController extends SimplateController<Notice> {
 
         List<NoticeReceiver> receivers = new ArrayList<NoticeReceiver>();
         if ( !StrKit.isBlank( receiver_g ) ) {
-            List<NoticeReceiver> list = JSON.parseArray( receiver_g, NoticeReceiver.class );
-            if ( !list.isEmpty() ) {
-                for ( NoticeReceiver rec : list ) {
-                    rec.set( "R_NOTICE", model.getInt( "SID" ) );
-                    rec.set( "Z_TYPE", "G" );
+            if (receiver_g.equals( "全部" )){
+            
+            }
+            else{
+                List<NoticeReceiver> list = JSON.parseArray( receiver_g, NoticeReceiver.class );
+                if ( !list.isEmpty() ) {
+                    for ( NoticeReceiver rec : list ) {
+                        rec.set( "R_NOTICE", model.getInt( "SID" ) );
+                        rec.set( "Z_TYPE", "G" );
+                    }
+                    receivers.addAll( list );
                 }
-                receivers.addAll( list );
             }
         }
 
