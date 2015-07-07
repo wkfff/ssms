@@ -16,6 +16,7 @@ import com.lanstar.model.system.MultiPara;
 import java.util.List;
 
 public enum MultiParaType {
+    @Deprecated
     SYS_CYCLE;
 
     private static final Function<MultiPara, Parameter> MODEL_TO_PARA = new Function<MultiPara, Parameter>() {

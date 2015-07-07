@@ -7,15 +7,12 @@
  */
 package com.lanstar.model;
 
-import com.lanstar.identity.Tenant;
-import com.lanstar.plugin.activerecord.ModelExt;
-
 import java.util.Date;
 
 /**
  * 待办
  */
-public class Todo extends ModelExt<Todo> {
+public class Todo extends TenantModel<Todo> {
     public static final Todo dao = new Todo();
 
     public int getId() {
@@ -87,9 +84,19 @@ public class Todo extends ModelExt<Todo> {
         return getDate( "T_CREATE" );
     }
 
-    public void setTenant( Tenant tenant ) {
-        set( "R_TENANT", tenant.getTenantId() );
-        set( "S_TENANT", tenant.getTenantName() );
-        set( "P_TENANT", tenant.getTenantType().getName() );
+    public Integer getProfessionId() {
+        return getInt( "P_PROFESSION" );
+    }
+
+    public void setProfessionId( Integer professionId ) {
+        set( "P_PROFESSION", professionId );
+    }
+
+    public Integer getTemplateId() {
+        return getInt( "R_TEMPLATE" );
+    }
+
+    public void setTemplateId( Integer professionId ) {
+        set( "R_TEMPLATE", professionId );
     }
 }

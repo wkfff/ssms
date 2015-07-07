@@ -11,7 +11,15 @@ package com.lanstar.service.common.todo;
 import com.lanstar.identity.Identity;
 
 public enum TodoType {
-    STDFILE;
+    STDFILE,
+    STDFILE01,
+    STDFILE02,
+    STDFILE03,
+    STDFILE04,
+    STDFILE06,
+    STDFILE07,
+    STDFILE08,
+    STDFILE09;
 
     /**
      * 创建待办
@@ -32,8 +40,8 @@ public enum TodoType {
      * @param srcId    记录行id
      * @param operator 处理人员
      */
-    public void finishTodo( TodoService service, int srcId, Identity operator ) {
-        service.finish( name(), srcId, operator );
+    public void finishTodo( TodoService service, int srcId, Integer profession, Integer template, Identity operator ) {
+        service.finish( name(), srcId, profession, template, operator );
     }
 
     /**

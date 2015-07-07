@@ -20,7 +20,7 @@ public class HomeController extends Controller {
     }
     
     public void home(){
-        List<Notice> rs_notice = Notice.dao.find("select * from ssm_notice");
+        List<Notice> rs_notice = Notice.dao.find("select * from sys_notice");
         setAttr("rs_notice", rs_notice );
     }
 }

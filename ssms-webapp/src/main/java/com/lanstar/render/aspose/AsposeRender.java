@@ -37,13 +37,12 @@ public class AsposeRender extends Render {
     @Override
     public void render() {
         response.reset();
-        response.setHeader( "Content-disposition",
-                "attachment; filename=" + encodeFileName( fileName + OutputFormat.extension() ) );
-        response.setContentType( OutputFormat.name() );
+        response.setHeader( "Content-disposition", "attachment; filename=" + encodeFileName( fileName ) );
+        response.setContentType( OutputFormat.contentType( getEncoding() ) );
         OutputStream os = null;
         try {
             os = response.getOutputStream();
-            DocumentBuilder builder = new DocumentBuilder(  );
+            DocumentBuilder builder = new DocumentBuilder();
             builder.insertHtml( data );
             builder.getDocument().save( os, OutputFormat.format() );
         } catch ( Exception e ) {
@@ -57,15 +56,15 @@ public class AsposeRender extends Render {
             } catch ( IOException e ) {
                 LOG.error( e.getMessage(), e );
             }
-
         }
     }
 
     private String encodeFileName( String fileName ) {
+        String s = fileName + OutputFormat.extension();
         try {
-            return new String( fileName.getBytes( "GBK" ), "ISO8859-1" );
+            return new String( s.getBytes( "GBK" ), "ISO8859-1" );
         } catch ( UnsupportedEncodingException e ) {
-            return fileName;
+            return s;
         }
     }
 }

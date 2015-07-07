@@ -76,7 +76,7 @@
 
 <div class="mainBox">
     <div class="nCont">
-    ${noticeText.C_CONTENT!}
+    ${C_CONTENT!}
     </div>
     <!-- 内容结束 -->
 </div>

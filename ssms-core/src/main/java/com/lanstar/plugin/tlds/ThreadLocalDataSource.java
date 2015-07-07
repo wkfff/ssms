@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.logging.Logger;
 
-class ThreadLocalDataSource implements DataSource {
+class ThreadLocalDataSource implements DataSource, IDataSourceProviderContainer {
     private ThreadLocal<DataSource> dataSource = new ThreadLocal<>();
     private ThreadLocal<String> dsName = new ThreadLocal<>();
 

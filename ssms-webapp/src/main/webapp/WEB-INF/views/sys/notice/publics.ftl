@@ -52,7 +52,7 @@
                 [
                     {field: 'C_TITLE', align: 'left', title: '通知公告主题', width: 500},
                     {field: 'S_PUBLISH', title: '发布单位', width: 150},
-                    {field: 'T_PUBLISH', align: 'center', title: '发布时间', width: 120}
+                    {field: 'T_PUBLISH', align: 'center', title: '发布时间', width: 130}
                 ]
             ],
             onDblClickRow: function (index, row) {
@@ -67,21 +67,21 @@
         self.editClick = function () {
             var value = self.selectItem();
             if (value == null) {
-                $.messager.alert("警告", "请先选择一行数据！", "warning");
+                utils.messager.alert("请先选择一行数据！");
                 return;
             }
-            window.location.href = '/g/notice/view?sid=' + value.SID;
+            window.location.href = '/sys/notice/view?sid=' + value.SID;
         };
         self.deleteClick = function () {
             var value = self.selectItem();
             if (value == null) {
-                $.messager.alert("警告", "请先选择一行数据！", "warning");
+                utils.messager.alert("请先选择一行数据！");
                 return;
             }
-            $.messager.confirm('确认', '是否确认要删除选中数据？', function (r) {
+            utils.messager.confirm('是否确认要删除选中数据？', function (r) {
                 if (r) {
                     $.post('${BASE_PATH}/del', {sid: value.SID}, function () {
-                        $.messager.alert('消息', '成功删除记录！', "info", function () {
+                        utils.messager.alert('成功删除记录！',function () {
                             self.refreshClick();
                         });
                     });

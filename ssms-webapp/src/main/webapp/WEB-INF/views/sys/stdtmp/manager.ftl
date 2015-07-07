@@ -81,7 +81,7 @@
             </p>
 
             <p>
-                更新周期:
+                提前提醒:
                 <input data-bind="value: (cycleUnit()==null ? null : cycleValue),disable:cycleUnit()==null" style="width: 50px;"/>
                 <select data-bind="options: $root.cycleSource,
                                    optionsText:'name',
@@ -89,7 +89,7 @@
                                    optionsCaption: '请选择周期...',
                                    value: cycleUnit">
                 </select>
-                <label><input type="checkbox" data-bind="checked : remind"/>是否提醒</label>
+                <#--<label><input type="checkbox" data-bind="checked : remind"/>是否提醒</label>-->
             </p>
 
             <p>

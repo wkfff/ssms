@@ -5,7 +5,7 @@
  * 创建时间：2015年6月1日 上午11:55:14
  * 创建用户：林峰
  */
-package com.lanstar.plugin.quartz;
+package com.lanstar.quartz;
 
 import org.quartz.JobDataMap;
 

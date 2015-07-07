@@ -101,3 +101,13 @@ a, a:visited {
     float: right;
     padding-right: 5px;
 }
+
+div.form{
+    padding:10px;
+}
+div.row{
+    padding:5px;
+}
+.clear{
+    clear:both;
+}

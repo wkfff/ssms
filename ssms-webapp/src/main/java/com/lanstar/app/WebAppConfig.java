@@ -116,6 +116,7 @@ public class WebAppConfig extends RapidwareConfig {
         me.add( new StaticCachePlugin( new TenantCache() ) );
 
         // 任务调度插件配置
+        // TaskMap.me().add(  )
         QuartzPlugin quartzPlugin = new QuartzPlugin( "quartz_jobs.properties", "quartz.properties" );
         me.add( quartzPlugin );
 

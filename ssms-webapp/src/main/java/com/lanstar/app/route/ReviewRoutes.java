@@ -29,8 +29,6 @@ public class ReviewRoutes extends Routes {
         add( "/r/tenant_r", ReviewController.class );
         add( "/r/tenant_ru", ReviewUserController.class );
         add( "/r/reviewer", ReviewerController.class );
-        add( "/r/notice", NoticeController.class );
-
 
         add( "/r/grade", GradeController.class );
         add( "/r/reviewplan", ReviewPlanController.class );

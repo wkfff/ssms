@@ -19,6 +19,7 @@ import com.lanstar.common.ModelInjector;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantContext;
+import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.tenant.*;
 import com.lanstar.plugin.activerecord.*;
@@ -26,8 +27,11 @@ import com.lanstar.plugin.template.ModelType;
 import com.lanstar.plugin.template.ModelWrap;
 import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplatePropPlugin;
-import com.lanstar.service.MultiParaType;
+import com.lanstar.service.CycleType;
 import com.lanstar.service.Parameter;
+import com.lanstar.service.common.todo.TodoBean;
+import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoType;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -41,7 +45,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
     private final FolderBean cacheContent;
     private final TenantContext tenantContext;
     private TemplateInitializerState status = TemplateInitializerState.NONE;
-    private final List<Parameter> cycle = MultiParaType.SYS_CYCLE.parameters();
+    private final List<Parameter> cycle = CycleType.parameters();
 
     private List<String> logs = new ArrayList<>();
     private Map<Class<?>, List<Model>> batchs = new LinkedHashMap<>();
@@ -86,6 +90,9 @@ class TemplateInitTaskImpl implements TemplateInitTask {
                     for ( List<Model> batch : batchs.values() ) {
                         ModelKit.batchSave( DbPro.use(), batch );
                     }
+
+                    // 未所有文件创建待办
+                    createTodo();
                 } catch ( Throwable e ) {
                     status = TemplateInitializerState.ERROR;
                     throw e;
@@ -98,6 +105,22 @@ class TemplateInitTaskImpl implements TemplateInitTask {
 
         status = TemplateInitializerState.FINISH;
         System.out.println( Joiner.on( "\n" ).join( logs ) );
+    }
+
+    private void createTodo() {
+        List<TemplateFile> files = TemplateFile.dao.findByColumns(
+                ListKit.newArrayList( "R_TEMPLATE", "R_TENANT", "P_TENANT", "P_PROFESSION" ),
+                ListKit.newObjectArrayList( systemTemplate.getId(), tenant.getTenantId(), TenantType.ENTERPRISE
+                        .getName(), profession.getId() ) );
+        TodoService service = TodoService.with( tenant );
+        for ( TemplateFile file : files ) {
+            TodoBean bean = new TodoBean();
+            bean.setTitle( file.getName() );
+            bean.setSrcId( file.getId() );
+            bean.setProfessionId( profession.getId() );
+            bean.setTemplateId( systemTemplate.getId() );
+            TodoType.STDFILE.createTodo( service, bean, opertaor );
+        }
     }
 
     @Override

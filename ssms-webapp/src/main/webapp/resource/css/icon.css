@@ -1,0 +1,42 @@
+/*新增*/
+.icon-new {
+    background: url('/resource/images/blue/new.png') no-repeat 4px center;
+    background-size: 16px 16px;
+    padding:5 5 5 22;
+}
+/*保存*/
+.icon-save {
+    background: url('/resource/images/saveicon.png') no-repeat 4px center;
+    background-size: 16px 16px;
+    padding:5 5 5 22;
+}
+/*删除*/
+.icon-delete {
+    background: url('/resource/images/delico.png') no-repeat 4px center;
+    background-size: 16px 16px;
+    padding:5 5 5 22;
+}
+/*刷新*/
+.icon-refresh {
+    background: url('/resource/images/blue/refresh.png') no-repeat 4px center;
+    background-size: 16px 16px;
+    padding:5 5 5 22;
+}
+/*发布*/
+.icon-publish {
+    background: url('/resource/images/blue/publish.png') no-repeat 4px center;
+    background-size: 16px 16px;
+    padding:5 5 5 22;
+}
+/*返回*/
+.icon-back {
+    background: url('/resource/images/blue/back.png') no-repeat 4px center;
+    background-size: 16px 16px;
+    padding:5 5 5 22;
+}
+/*查询*/
+.icon-search {
+    background: url('/resource/images/blue/search.png') no-repeat 4px center;
+    background-size: 16px 16px;
+    padding:5 5 5 22;
+}
