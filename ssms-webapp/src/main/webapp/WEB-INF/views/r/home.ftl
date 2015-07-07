@@ -35,9 +35,9 @@
                         <#list rs_notice as rs>
                             <tr>
                                 <td class="more">
-                                    <a href="/sys/notice/view?sid=${rs.SID}" class="notice-title" title="${rs.C_TITLE}">${rs.C_TITLE}</a>
+                                    <a href="/sys/notice/view?sid=${rs.SID!}" class="notice-title" title="${rs.C_TITLE!}">${rs.C_TITLE!}</a>
                                 </td>
-                                <td class="notice-time">${rs.T_PUBLISH}</td>
+                                <td class="notice-time">${rs.T_PUBLISH!}</td>
                             </tr>
                         </#list>
                     <#else>
@@ -62,9 +62,9 @@
                         <#list rs_notice2 as rs>
                             <tr>
                                 <td class="more">
-                                    <a href="/r/notice/view?sid=${rs.SID}" class="notice-title" title="${rs.C_TITLE}">${rs.C_TITLE}</a>
+                                    <a href="/r/notice/view?sid=${rs.SID!}" class="notice-title" title="${rs.C_TITLE}">${rs.C_TITLE}</a>
                                 </td>
-                                <td class="notice-time">${rs.T_PUBLISH}</td>
+                                <td class="notice-time">${rs.T_PUBLISH!}</td>
                             </tr>
                         </#list>
                     <#else>

@@ -8,9 +8,11 @@ table {
 }
 
 tr {
-    line-height: 25px;
+    line-height: 24px;
 }
-
+td {
+	 border-bottom:1px dashed #EFEFEF;
+}
 a, a:visited {
     color: #000;
     font-size: 12px;
@@ -148,8 +150,8 @@ a:hover {
 
 /*通知公告*/
 .notice .content, .matter .content{
-    padding-top: 11px;
-    height: 220px;
+    padding-top: 2px;
+    height: 200px;
 }
 
 .notice-list .notice-title {

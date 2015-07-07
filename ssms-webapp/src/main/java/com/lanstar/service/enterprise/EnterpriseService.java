@@ -129,15 +129,13 @@ public class EnterpriseService {
      * 根据专业从自评报告模板生成自评报告
      */
     public boolean syncReport( int pro, int planId, Identity identity ) {
-        String sql = " SELECT C_CONTENT FROM SYS_REPORT_TEMPLATE T1 INNER JOIN SYS_TEMPLATE T2  ON T1.R_SID = T2.SID INNER JOIN SYS_PROFESSION T3  ON T3.R_TEMPLATE = T2.SID WHERE T3.SID = ? AND T1.Z_TYPE=1";
+        String sql = " SELECT T1.C_CONTENT FROM SYS_REPORT_TEMPLATE T1 INNER JOIN SYS_TEMPLATE T2  ON T1.R_SID = T2.SID INNER JOIN SYS_PROFESSION T3  ON T3.R_TEMPLATE = T2.SID WHERE T3.SID = ? AND T1.Z_TYPE=1";
         TemplateRep template = TemplateRep.dao.findFirst( sql, pro );
         if ( template != null ) {
             GradeReport rep = new GradeReport();
             rep.setContent( template.getStr( "C_CONTENT" ) );
             rep.setPlanId( planId );
             return rep.save();
-//            AttachTextService service = tenantContext.getAttachTextService();
-//            service.save( "SSM_GRADE_REPORT", "C_CONTENT", planId, template.getStr( "C_CONTENT" ), identity);
         }
         return true;
     }

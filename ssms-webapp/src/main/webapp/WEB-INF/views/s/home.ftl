@@ -36,8 +36,8 @@
                   <#if rs_notice?exists && rs_notice?size!=0>
                     <#list rs_notice as rs>
                      <li class="ue-clear">
-                        <a href="javascript:nav('/g/notice/view?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE}</a>
-                        <div class="notice-time">${rs.T_PUBLISH}</div>
+                        <a href="javascript:nav('/g/notice/view?sid=${rs.SID}');" class="notice-title">${rs.C_TITLE!}</a>
+                        <div class="notice-time">${rs.T_PUBLISH!}</div>
                     </li>
                     </#list>
                     <#else>
@@ -60,8 +60,8 @@
                     <#if rs_todo?exists && rs_todo?size!=0>
                     <#list rs_todo as rs>
                      <li class="ue-clear">
-                        <span class="matter-time">${rs.T_BEGIN}</span>
-                        <a href="javascript:nav('${rs.C_URL!}');" class="matter-title">${rs.C_TITLE}</a>
+                        <span class="matter-time">${rs.T_BEGIN!}</span>
+                        <a href="javascript:nav('${rs.C_URL!}');" class="matter-title">${rs.C_TITLE!}</a>
                     </li>
                     </#list>
                     <#else>

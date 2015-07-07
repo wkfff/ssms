@@ -15,6 +15,9 @@ import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Notice;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.tenant.*;
+import com.lanstar.plugin.activerecord.Record;
+import com.lanstar.service.common.todo.TodoBean;
+import com.lanstar.service.common.todo.TodoService;
 import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.enterprise.ProfessionService;
 import com.lanstar.service.enterprise.TemplateInitTask;
@@ -75,12 +78,24 @@ public class HomeController extends Controller {
                 .getName() );
         setAttr( "rs_todo", files );
 
-        List<Notice> rs_notice = Notice.dao.find( "select * from sys_notice" );
+        //接收的通知公告
+        String sql = "SELECT * FROM V_NOTICE WHERE R_RECEIVER=? ORDER BY T_PUBLISH DESC LIMIT 8";
+        List<Record> rs_notice = identityContext.getTenantDb().find( sql,identityContext.getTenantId());
         setAttr( "rs_notice", rs_notice );
 
-        setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 10" ) );
-        setAttr( "rs_yh", TemplateFile06.dao.find( "select * from ssm_stdtmp_file_06 limit 10" ) );
-        setAttr( "rs_ry", TemplateFile07.dao.find( "select * from SSM_STDTMP_FILE_07 limit 10" ) );
+//        setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 10" ) );
+//        setAttr( "rs_yh", TemplateFile06.dao.find( "select * from ssm_stdtmp_file_06 limit 10" ) );
+//        setAttr( "rs_ry", TemplateFile07.dao.find( "select * from SSM_STDTMP_FILE_07 limit 10" ) );
+        
+        //隐患排查
+        List<TodoBean> list_yh = TodoService.with( identityContext.getTenant() ).listTodoBean( "com.lanstar.quartz.tenantdb.TemplateFile06Task", 10 );
+        setAttr( "rs_yh",list_yh);
+        //特种设备
+        List<TodoBean> list_dev = TodoService.with( identityContext.getTenant() ).listTodoBean( "com.lanstar.quartz.tenantdb.TemplateFile07Task", 10 );
+        setAttr( "rs_dev",list_dev);
+        //特种人员
+        List<TodoBean> list_ry = TodoService.with( identityContext.getTenant() ).listTodoBean( "com.lanstar.quartz.tenantdb.TemplateFile08Task", 10 );
+        setAttr( "rs_ry",list_ry);
     }
 
     public void setTemplate() {

@@ -85,7 +85,6 @@
                         <li id="tabz3" target="#tc4">特种人员</li>
                     </ul>
                 </div>
-            <#-- <a href="/e/grade_m/index" class="more">更多</a> -->
             </div>
             <div id="tbc" class="content" style="height:280px">
                 <div id="tc1">
@@ -94,9 +93,9 @@
                             <#list rs_todo as rs>
                                 <tr>
                                     <td class="more">
-                                        <a href="${rs.C_URL!"/e/stdtmp/tree?selected=${rs.SID}"}" target="_top" class="matter-title">${rs.C_NAME}</a>
+                                        <a href="${rs.C_URL!"/e/stdtmp/tree?selected=${rs.SID}"}" target="_top" class="matter-title">${rs.C_NAME!}</a>
                                     </td>
-                                    <td class="matter-time">${rs.T_CREATE?date}</td>
+                                    <td class="matter-time"></td>
                                 </tr>
                             </#list>
                             <tr>
@@ -119,9 +118,9 @@
                             <#list rs_yh as rs>
                                 <tr>
                                     <td class="more">
-                                        <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">“${rs.C_NAME}”（要求整改时间：${rs.T_RECTIFICATION}）</a>
+                                        <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">${rs.title!}</a>
                                     </td>
-                                    <td class="matter-time">${rs.T_CREATE?date}</td>
+                                    <td class="matter-time"><#if rs.notifyTime??>${rs.notifyTime?date}</#if></td>
                                 </tr>
                             </#list>
                             <tr>
@@ -144,9 +143,9 @@
                             <#list rs_dev as rs>
                                 <tr>
                                     <td class="more">
-                                        <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">“${rs.C_NAME}(${rs.C_SPEC!})”临近下次检验(${rs.T_TEST_NEXT!}）</a>
+                                        <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">“${rs.C_NAME!}(${rs.C_SPEC!})”临近下次检验(${rs.T_TEST_NEXT!}）</a>
                                     </td>
-                                    <td class="matter-time">${rs.T_CREATE?date}</td>
+                                    <td class="matter-time"><#if rs.T_CREATE??>${rs.T_CREATE?date}</#if></td>
                                 </tr>
                             </#list>
                             <tr>
@@ -171,7 +170,7 @@
                                     <td class="more">
                                         <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">“${rs.C_DEPT}-${rs.C_NAME}(${rs.C_WORKTYPE})”特种作业人员证书即将到期（复审时间${rs.T_CERT_REVIEW}）</a>
                                     </td>
-                                    <td class="matter-time">${rs.T_CREATE?date}</td>
+                                    <td class="matter-time"><#if rs.T_CREATE??>${rs.T_CREATE?date}</#if></td>
                                 </tr>
                             </#list>
                             <tr>
