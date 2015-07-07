@@ -3,7 +3,6 @@
 <head>
 <title></title>
 <link rel="stylesheet" href="/resource/css/layout.css"/>
-<script type="text/javascript" src="/resource/js/jquery.min.js"></script>
 <style>
     BODY {
         margin: 0;
@@ -41,7 +40,7 @@
         padding: 0;
     }
     #artcon H3.title {
-        font: 700 30px/40px "Microsoft Yahei","冬青黑体简体中文w3";
+        font: 700 30px/40px "Microsoft Yahei";
         padding: 2px 0 0;
         text-align:center;
     }
@@ -59,7 +58,7 @@
         border-bottom: #d2d2d2 solid 2px;
     }
     #arttext {
-        font: 16px/30px "Microsoft Yahei","冬青黑体简体中文w3";
+        font: 16px/30px "Microsoft Yahei";
         position: relative;
         overflow: hidden;
     }
@@ -114,7 +113,7 @@
                         <H5 class=data>
                             <SPAN class=fl>
                                 <SPAN id=pubtime>
-                                    ${T_CREATE!}
+                                    发布时间：${T_CREATE!}
                                 </SPAN>
                                 共计
                                 <A id=count_show>
@@ -122,7 +121,7 @@
                                 </A>
                                 次阅读 发布人：
                                 <SPAN id=source>
-                                    ${S_CREATE!}
+                                   ${S_TENANT!}(${S_CREATE!})
                                 </SPAN>
                             </SPAN>
                             <SPAN class="fontzoom fr">
