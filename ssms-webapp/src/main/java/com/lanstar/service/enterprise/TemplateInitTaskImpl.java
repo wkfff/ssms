@@ -90,9 +90,6 @@ class TemplateInitTaskImpl implements TemplateInitTask {
                     for ( List<Model> batch : batchs.values() ) {
                         ModelKit.batchSave( DbPro.use(), batch );
                     }
-
-                    // 未所有文件创建待办
-                    createTodo();
                 } catch ( Throwable e ) {
                     status = TemplateInitializerState.ERROR;
                     throw e;
@@ -105,22 +102,6 @@ class TemplateInitTaskImpl implements TemplateInitTask {
 
         status = TemplateInitializerState.FINISH;
         System.out.println( Joiner.on( "\n" ).join( logs ) );
-    }
-
-    private void createTodo() {
-        List<TemplateFile> files = TemplateFile.dao.findByColumns(
-                ListKit.newArrayList( "R_TEMPLATE", "R_TENANT", "P_TENANT", "P_PROFESSION" ),
-                ListKit.newObjectArrayList( systemTemplate.getId(), tenant.getTenantId(), TenantType.ENTERPRISE
-                        .getName(), profession.getId() ) );
-        TodoService service = TodoService.with( tenant );
-        for ( TemplateFile file : files ) {
-            TodoBean bean = new TodoBean();
-            bean.setTitle( file.getName() );
-            bean.setSrcId( file.getId() );
-            bean.setProfessionId( profession.getId() );
-            bean.setTemplateId( systemTemplate.getId() );
-            TodoType.STDFILE.createTodo( service, bean, opertaor );
-        }
     }
 
     @Override
@@ -233,7 +214,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
                     ListKit.newArrayList( "R_TEMPLATE", "N_VERSION" ),
                     ListKit.newObjectArrayList( systemTemplate.getId(), systemTemplate.getVersion() ) );
             for ( final com.lanstar.model.system.archive.ArchiveModel model : list ) {
-                final int id = model.getId();
+                final int id = model.getSid();
                 model.remove( "UID", "SID" );
                 ModelExt newModel = prop.getModel( ModelType.TENANT ).getModel();
                 ModelKit.clone( model, newModel );

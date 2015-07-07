@@ -182,7 +182,7 @@ public abstract class SimplateController<T extends Model<T>> extends Controller 
         if ( StrKit.isEmpty( tmp ) == false ) model = getDao().findById( tmp );
         else model = newModel();
         for ( String removePara : removeParas ) {
-            model.set( removePara, null );
+            if (model.get( removePara ) != null) model.set( removePara, null );
         }
 
         ModelInjector.injectActiveRecordModel( model, paraMap );

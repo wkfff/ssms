@@ -48,6 +48,17 @@
             <textarea data-bind="htmleditValue: htmlContent" style="width: 100%; height: 500px"></textarea>
             </td>
         </tr>
+        <#if file.explain?? && file.explain?length!=0>
+        <tr>
+          <td colspan="4">
+              <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
+              <div style="background-color: #CCCCCC;">政策解读:</div>
+              <table style="table-layout: auto;"></table>
+              ${file.explain}
+              </div>
+          </td>
+        </tr>
+        </#if>
         <tr>
             <td colspan="4" data-bind="visible: SID">
             <a href="javascript:void(0);" data-bind="disable: readonly,uploadOptions: {module: 'STDTMP_FILE_03', sid: '${SID!}'}">[选择文件]</a>

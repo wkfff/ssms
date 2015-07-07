@@ -36,33 +36,21 @@
         
         <tr>
             <td colspan="4">
-            <textarea data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; height: 500px"></textarea>
+            <div style="width: 100%; min-height: 400px;border: 1px dashed  #ccc;" >${C_CONTENT!}</div>
             </td>
         </tr>
+        <#if file.explain?? && file.explain?length!=0>
         <tr>
-            <td colspan="4" data-bind="visible: '${SID!}'">
-            <a href="javascript:void(0);" data-bind="disable: 'true',uploadOptions: {module: 'STDTMP_FILE_03', sid: '${SID!}'}">[选择文件]</a>
-            </td>
-        </tr>
-        </table>
+          <td colspan="4">
+                <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
+                <div style="background-color: #CCCCCC;">政策解读:</div>
+                <table style="table-layout: auto;"></table>
+                ${file.explain}
+                </div>
+          </td>
+       </tr>
+       </#if>
+       </table>
     </form>
 </div>
-<script type="text/javascript">
-function ViewModel(catalogId){
-    var extModel = {
-        htmlContent: ko.observable()
-    };
-    var settings = {
-        htmleditSettings: {
-            table: "SSM_STDTMP_FILE_03",
-            field: 'C_CONTENT',
-            sid: '${SID!}',
-            readonly:'true'
-        }
-    };
-        $.extend(this, settings, extModel);
-}
-var onPanelLoad = function () {
-    ko.applyBindings(new ViewModel(${sid}), document.getElementById('kocontainer'));
-};
-</script>
+

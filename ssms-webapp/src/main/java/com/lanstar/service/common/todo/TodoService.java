@@ -135,8 +135,8 @@ public class TodoService {
      *
      * @return 待办列表
      */
-    public List<TodoBean> listTodoBean( String signature ) {
-        return listTodoBean( signature, 0 );
+    public List<TodoBean> listTodoBean( String signature, Integer profession, Integer template ) {
+        return listTodoBean( signature, profession, template, 0 );
     }
 
     /**
@@ -147,11 +147,13 @@ public class TodoService {
      *
      * @return 待办列表
      */
-    public List<TodoBean> listTodoBean( String signature, int size ) {
+    public List<TodoBean> listTodoBean( String signature, Integer profession, Integer template, int size ) {
         SqlBuilder builder = SQL.SELECT( "*" )
                                 .FROM( TableMapping.me().getTable( Todo.class ).getName() )
                                 .WHERE( "C_CONTROL=? AND R_TENANT=? AND P_TENANT=?",
                                         signature, tenant.getTenantId(), tenant.getTenantType().getName() )
+                                ._If( profession != null, "P_PROFESSION=?", profession )
+                                ._If( template != null, "R_TEMPLATE=?", template )
                                 .ORDER_BY( "T_CREATE DESC" )
                                 .LIMIT()._If( size > 0, size );
         SqlStatement statement = builder.toSqlStatement();

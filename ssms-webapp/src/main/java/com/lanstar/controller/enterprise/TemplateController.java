@@ -121,9 +121,11 @@ public class TemplateController extends Controller {
         this.setAttr( "tmpfile", tmpfile );
         this.setAttr( "version", version );
         this.setAttr( "sid", sid );
-        TemplateFile tf = TemplateFile.dao.findById( sid );
-        if ( tf != null )
-            this.setAttr( "title", tf.get( "C_NAME" ) );
+        IdentityContext identityContext=IdentityContext.getIdentityContext( this );
+        UniqueTag uniqueTag=identityContext.getEnterpriseService().getUniqueTag();
+        TemplateFile file = TemplateFile.findFirst( uniqueTag, sid );
+        if ( file != null )
+            this.setAttr( "title", file.get( "C_NAME" ) );
     }
 
     /**

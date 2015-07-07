@@ -79,6 +79,17 @@
                     <input data-bind="disable: readonly,textboxValue: C_DEPT_03"/>
                 </td>
             </tr>
+            <#if file.explain?? && file.explain?length!=0>
+            <tr>
+            <td colspan="4">
+                <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
+                <div style="background-color: #CCCCCC;">政策解读:</div>
+                <table style="table-layout: auto;"></table>
+                ${file.explain}
+                </div>
+            </td>
+            </tr>
+            </#if>
             <tr>
                 <td colspan="4" data-bind="disable: readonly,visible: SID">
                     <a href="javascript:void(0);" data-bind="disable: readonly,uploadOptions: {module: 'STDTMP_FILE_02', sid: '${SID!}'}">[选择文件]</a>

@@ -46,7 +46,7 @@
 
             <tr>
                 <td colspan="4">
-                    <textarea  data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px" ></textarea>
+                    <div style="width: 100%; min-height: 400px;border: 1px dashed  #ccc;" >${C_CONTENT!}</div>
                 </td>
             </tr>
 
@@ -72,28 +72,17 @@
                     <input style="width:100%" type="text" class="readonly" value="${C_DEPT_03!}" readonly/>
                 </td>
             </tr>
+           <#if file.explain?? && file.explain?length!=0>
             <tr>
-                <td colspan="4" data-bind="visible: '${SID!}'">
-                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_02', sid: '${SID!}'}">[选择文件]</a>
-                </td>
+            <td colspan="4">
+                <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
+                <div style="background-color: #CCCCCC;">政策解读:</div>
+                <table style="table-layout: auto;"></table>
+                ${file.explain}
+                </div>
+            </td>
             </tr>
+           </#if>
         </table>
     </form>
 </div>
-<script type="text/javascript">
-    var extModel = {
-        htmlContent: ko.observable()
-    };
-    var settings = {
-        htmleditSettings: {
-            table: "SSM_STDTMP_FILE_02",
-            field: 'C_CONTENT',
-            sid: '${SID!}',
-            readonly: 'true'
-        }
-    };
-    var onPanelLoad = function () {
-        var vm = $.extend({}, settings, extModel);
-        ko.applyBindings(vm, document.getElementById('kocontainer'));
-    }
-</script>

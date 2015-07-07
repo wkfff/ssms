@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="/resource/css/home.css"/>
     </@>
 
+    <#include "todo.ftl">
+
     <@layout.put block="contents">
     <div class="article toolbar">
         <div class="content">
@@ -18,7 +20,7 @@
                 <li style="padding-top:6px;width:100px;margin-left:5px;margin-right:0;">
                     <a href="/e/stdtmp/query">
                         <p>未创建项/合计项</p>
-                        <span style="color:red;font-size:20px;">${FILE_NO_CREATE}/${FILE_NO_CREATE+FILE_COUNT}</span>
+                        <span style="color:red;font-size:20px;">${todo.notCreateFileCount}/${todo.fileCount}</span>
                     </a>
                 </li>
                 <li style="padding-top:5px;margin-left:0;"><img src="/resource/images/arrow_right.png"/></li>
@@ -78,111 +80,11 @@
                 <h2 style="margin-right:10px;width:200px;">工作提醒</h2>
 
                 <div style="float: right">
-                    <ul class="tabs">
-                        <li id="t1" target="#tc1" class="current">未完成要素</li>
-                        <li id="tabz1" target="#tc2">隐患排查</li>
-                        <li id="tabz2" target="#tc3">特种设备</li>
-                        <li id="tabz3" target="#tc4">特种人员</li>
-                    </ul>
+                    <ul class="tabs"><@layout.block name="tabs_title"/></ul>
                 </div>
             </div>
             <div id="tbc" class="content" style="height:280px">
-                <div id="tc1">
-                    <table class="matter-list">
-                        <#if rs_todo?? && rs_todo?size!=0>
-                            <#list rs_todo as rs>
-                                <tr>
-                                    <td class="more">
-                                        <a href="${rs.C_URL!"/e/stdtmp/tree?selected=${rs.SID}"}" target="_top" class="matter-title">${rs.C_NAME!}</a>
-                                    </td>
-                                    <td class="matter-time"></td>
-                                </tr>
-                            </#list>
-                            <tr>
-                                <td colspan="2" style="text-align: right; padding-right: 10px"><a href="/e/stdtmp/tree" target="_top" style="color: #ff0000;">>>更多</a></td>
-                            </tr>
-                        <#else>
-                            <tr class="ue-clear">
-                                <td colspan="2" style="padding-left:5px;">暂时还没有待办。</td>
-                            </tr>
-                        </#if>
-                    </table>
-                </div>
-                <div id="tc2" style="display: none">
-                    <table class="matter-list">
-                        <colgroup>
-                            <col>
-                            <col width="80px">
-                        </colgroup>
-                        <#if rs_yh?? && rs_yh?size!=0>
-                            <#list rs_yh as rs>
-                                <tr>
-                                    <td class="more">
-                                        <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">${rs.title!}</a>
-                                    </td>
-                                    <td class="matter-time"><#if rs.notifyTime??>${rs.notifyTime?date}</#if></td>
-                                </tr>
-                            </#list>
-                            <tr>
-                                <td colspan="2" style="text-align: right; padding-right: 10px"><a href="/e/stdtmp/tree" target="_top" style="color: #ff0000;">>>更多</a></td>
-                            </tr>
-                        <#else>
-                            <tr class="ue-clear">
-                                <td colspan="2" style="padding-left:5px;">暂时还没有待办。</td>
-                            </tr>
-                        </#if>
-                    </table>
-                </div>
-                <div id="tc3" style="display: none">
-                    <table class="matter-list">
-                        <colgroup>
-                            <col>
-                            <col width="80px">
-                        </colgroup>
-                        <#if rs_dev?? && rs_dev?size!=0>
-                            <#list rs_dev as rs>
-                                <tr>
-                                    <td class="more">
-                                        <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">“${rs.C_NAME!}(${rs.C_SPEC!})”临近下次检验(${rs.T_TEST_NEXT!}）</a>
-                                    </td>
-                                    <td class="matter-time"><#if rs.T_CREATE??>${rs.T_CREATE?date}</#if></td>
-                                </tr>
-                            </#list>
-                            <tr>
-                                <td colspan="2" style="text-align: right; padding-right: 10px"><a href="/e/stdtmp/tree" target="_top" style="color: #ff0000;">>>更多</a></td>
-                            </tr>
-                        <#else>
-                            <tr class="ue-clear">
-                                <td colspan="2" style="padding-left:5px;">暂时还没有待办。</td>
-                            </tr>
-                        </#if>
-                    </table>
-                </div>
-                <div id="tc4" style="display: none">
-                    <table class="matter-list">
-                        <colgroup>
-                            <col>
-                            <col width="80px">
-                        </colgroup>
-                        <#if rs_ry?? && rs_ry?size!=0>
-                            <#list rs_ry as rs>
-                                <tr>
-                                    <td class="more">
-                                        <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">“${rs.C_DEPT}-${rs.C_NAME}(${rs.C_WORKTYPE})”特种作业人员证书即将到期（复审时间${rs.T_CERT_REVIEW}）</a>
-                                    </td>
-                                    <td class="matter-time"><#if rs.T_CREATE??>${rs.T_CREATE?date}</#if></td>
-                                </tr>
-                            </#list>
-                            <tr>
-                                <td colspan="2" style="text-align: right; padding-right: 10px"><a href="/e/stdtmp/tree" target="_top" style="color: #ff0000;">>>更多</a></td>
-                            </tr>
-                        <#else>
-                            <tr class="ue-clear">
-                                <td colspan="2" style="padding-left:5px;">暂时还没有待办。</td>
-                            </tr>
-                        </#if>
-                    </table>
-                </div>
+                <@layout.block name="tabs_content"/>
             </div>
         </div>
     </div>
@@ -207,12 +109,6 @@
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
 
     <script type="text/javascript">
-        $(".duty").find("tbody").find("tr:even").css("backgroundColor", "#eff6fa");
-
-        $("#more").on("click", function () {
-            window.location.href = "/e/" + (aIndex == 0 ? "todo" : "done") + "/index";
-        });
-
         $(function () {
             $('.title .tabs>li').click(function () {
                 $('#tbc>div').hide();
@@ -220,26 +116,6 @@
                 $($(this).addClass('current').attr('target')).show();
             });
         });
-
-        function nav(url) {
-            window.location.href = url;
-        }
-
-        function nav2(url) {
-            window.top.location.href = url;
-        }
-
-        function doCreate() {
-            window.location.href = '/e/grade_m/rec_new';
-        }
-
-        function doChangePwd() {
-
-        }
-
-        function doConfig() {
-
-        }
     </script>
     </@>
 

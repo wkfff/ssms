@@ -16,32 +16,95 @@ import com.lanstar.plugin.template.TemplateProp;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 
 public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantModel<T> {
+    @Override
+    public boolean save() {
+        boolean result = super.save();
+        TemplateFile file = getTemplateFile();
+        file.setFileCount( file.getFileCount() + 1 );
+        file.update();
+        return result;
+    }
+
+    @Override
+    public boolean update() {
+        boolean result = super.update();
+        TemplateFile file = getTemplateFile();
+        if ( file.getFileCount() == 0 ) {
+            file.setFileCount( 1 );
+            file.update();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean delete() {
+        boolean result = super.delete();
+        TemplateFile file = getTemplateFile();
+        if ( file.getFileCount() > 0 ) {
+            file.setFileCount( file.getFileCount() - 1 );
+            file.update();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean deleteById( Object id ) {
+        boolean result = super.deleteById( id );
+        TemplateFile file = getTemplateFile();
+        if ( file.getFileCount() > 0 ) {
+            file.setFileCount( file.getFileCount() - 1 );
+            file.update();
+        }
+        return result;
+    }
+
+    /**
+     * 获取文件ID
+     */
     public int getId() {
         return getInt( "SID" );
     }
 
+    /**
+     * 获取模板文件ID
+     */
     public int getTemplateFileId() {
         return getInt( Const.TEMPLATE_FILE_PARENT_FIELD );
     }
 
+    /**
+     * 获取关联的文件
+     */
     public TemplateFile getTemplateFile() {
         Tenant tenant = getTenant();
-        return TemplateFile.findFirst( getTemplateFileId(), tenant.getTenantId(), getProfessionId(), getTemplateFileId() );
+        return TemplateFile.findFirst( getTemplateId(), tenant.getTenantId(), getProfessionId(), getTemplateFileId() );
     }
 
+    /**
+     * 获取状态
+     */
     public FileContentState getStatus() {
         return FileContentState.valueOf( getInt( "N_STATE" ) );
     }
 
+    /**
+     * 设置状态
+     */
     public void setStatus( FileContentState status ) {
         set( "N_STATE", status.getValue() );
     }
 
+    /**
+     * 获取版本号
+     */
     public int getVersion() {
         Integer version = getInt( "N_VERSION" );
         return version == null ? 0 : version;
     }
 
+    /**
+     * 设置版本号
+     */
     public void setVersion( int version ) {
         set( "N_VERSION", version );
     }

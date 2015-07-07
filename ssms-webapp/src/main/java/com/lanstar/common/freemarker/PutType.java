@@ -8,30 +8,25 @@
 
 package com.lanstar.common.freemarker;
 
-import java.io.IOException;
-import java.io.Writer;
-
 public enum PutType {
     APPEND {
         @Override
-        public void write( Writer out, String bodyResult, String putContents ) throws IOException {
-            out.write( bodyResult );
-            out.write( putContents );
+        public String write( String bodyResult, String putContents ) {
+            return bodyResult + putContents;
         }
     },
     PREPEND {
         @Override
-        public void write( Writer out, String bodyResult, String putContents ) throws IOException {
-            out.write( putContents );
-            out.write( bodyResult );
+        public String write( String bodyResult, String putContents ) {
+            return putContents + bodyResult;
         }
     },
     REPLACE {
         @Override
-        public void write( Writer out, String bodyResult, String putContents ) throws IOException {
-            out.write( putContents );
+        public String write( String bodyResult, String putContents ) {
+            return putContents;
         }
     };
 
-    public abstract void write( Writer out, String bodyResult, String putContents ) throws IOException;
+    public abstract String write( String bodyResult, String putContents );
 }

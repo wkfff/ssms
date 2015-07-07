@@ -11,13 +11,11 @@ package com.lanstar.controller.enterprise;
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Notice;
 import com.lanstar.model.system.Profession;
-import com.lanstar.model.tenant.*;
-import com.lanstar.plugin.activerecord.Record;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.model.tenant.TemplateFile06;
+import com.lanstar.model.tenant.TemplateFile07;
+import com.lanstar.model.tenant.TemplateFile08;
 import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.enterprise.ProfessionService;
 import com.lanstar.service.enterprise.TemplateInitTask;
@@ -55,47 +53,15 @@ public class HomeController extends Controller {
 
     public void home() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
-        EnterpriseService enterpriseService = identityContext.getEnterpriseService();
-        ProfessionService professionService = enterpriseService.getProfessionService();
-        TemplateFolder folder = professionService.getTenantTemplateFolder();
-        setAttr( "FILE_COUNT", folder == null ? 0 : folder.getFileCount() );
 
-        setAttr( "FILE_NO_CREATE", identityContext.getTenantDb()
-                                                  .queryLong( "select COUNT(*) from ssm_stdtmp_file where R_TENANT=? and P_TENANT=? and R_TEMPLATE=? and P_PROFESSION=? and N_COUNT = 0",
-                                                          identityContext.getTenantId(),
-                                                          identityContext.getTenantType().getName(),
-                                                          professionService.getSystemTemplate().getId(),
-                                                          professionService.getId() ) );
+        setAttr( "todo", new HomeTodo( identityContext ) );
 
-        // TODO 从待办表读取待办
-        List<TemplateFile> files = TemplateFile.dao.find( "SELECT A.*\n"
-                + "FROM SSM_STDTMP_FILE A\n"
-                + "inner join SSM_STDTMP_FOLDER B on a.r_sid = b.sid\n"
-                + "where B.R_TEMPLATE = ? AND B.R_TENANT=? AND B.P_TENANT=?\n"
-                + "and A.N_COUNT = 0 ORDER BY B.N_INDEX, B.SID, A.N_INDEX, SID\n"
-                + "limit 10", professionService.getSystemTemplate()
-                                               .getId(), identityContext.getTenantId(), TenantType.ENTERPRISE
-                .getName() );
-        setAttr( "rs_todo", files );
-
-        //接收的通知公告
-        String sql = "SELECT * FROM V_NOTICE WHERE R_RECEIVER=? ORDER BY T_PUBLISH DESC LIMIT 8";
-        List<Record> rs_notice = identityContext.getTenantDb().find( sql,identityContext.getTenantId());
+        List<Notice> rs_notice = Notice.dao.find( "select * from sys_notice" );
         setAttr( "rs_notice", rs_notice );
 
-//        setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 10" ) );
-//        setAttr( "rs_yh", TemplateFile06.dao.find( "select * from ssm_stdtmp_file_06 limit 10" ) );
-//        setAttr( "rs_ry", TemplateFile07.dao.find( "select * from SSM_STDTMP_FILE_07 limit 10" ) );
-        
-        //隐患排查
-        List<TodoBean> list_yh = TodoService.with( identityContext.getTenant() ).listTodoBean( "com.lanstar.quartz.tenantdb.TemplateFile06Task", 10 );
-        setAttr( "rs_yh",list_yh);
-        //特种设备
-        List<TodoBean> list_dev = TodoService.with( identityContext.getTenant() ).listTodoBean( "com.lanstar.quartz.tenantdb.TemplateFile07Task", 10 );
-        setAttr( "rs_dev",list_dev);
-        //特种人员
-        List<TodoBean> list_ry = TodoService.with( identityContext.getTenant() ).listTodoBean( "com.lanstar.quartz.tenantdb.TemplateFile08Task", 10 );
-        setAttr( "rs_ry",list_ry);
+        setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 10" ) );
+        setAttr( "rs_yh", TemplateFile06.dao.find( "select * from ssm_stdtmp_file_06 limit 10" ) );
+        setAttr( "rs_ry", TemplateFile07.dao.find( "select * from SSM_STDTMP_FILE_07 limit 10" ) );
     }
 
     public void setTemplate() {

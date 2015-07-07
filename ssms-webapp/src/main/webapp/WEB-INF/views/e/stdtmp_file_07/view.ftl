@@ -6,7 +6,7 @@
     <table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table>
 </div>
 <script type="text/javascript">
-    function ViewModel(catalogId) {
+    function ViewModel(fileId) {
         var model = {
             editItem: ko.observable(),
             selectItem: ko.observable(),
@@ -19,7 +19,7 @@
             viewSettings: {
                 url: "${BASE_PATH}/list",
                 queryParams: {
-                    R_TMPFILE: catalogId
+                    fileId: fileId
                 },
                 idField: 'SID',
                 rownumbers: true,

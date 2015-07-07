@@ -12,6 +12,8 @@ import freemarker.core.Environment;
 import freemarker.template.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.lanstar.common.freemarker.BlockDirectiveUtils.*;
@@ -24,17 +26,31 @@ public class PutDirective implements TemplateDirectiveModel {
 
     @Override
     public void execute( Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body ) throws TemplateException, IOException {
+        // <@layout.put block="footer">
+        // 获取block变量里面的名字
         String blockName = getBlockName( env, params, PUT_BLOCK_NAME_PARAMETER );
+        // 获取putType
         PutType putType = getPutType( params );
+        // 获取put的内容
         String bodyResult = getBodyResult( body );
+        String fileName = ((Template) env.getParent()).getName();
 
+        // 获取block内容部分的变量名
         String blockContentsVarName = getBlockContentsVarName( blockName );
-        SimpleScalar oldBodyResult = (SimpleScalar) env.getVariable( blockContentsVarName );
-        if ( oldBodyResult != null ) {
-            bodyResult = bodyResult + oldBodyResult.getAsString();
+        // 获取表示内容的map
+        SimpleHash fileContents = (SimpleHash) env.getVariable( blockContentsVarName );
+        // 如果内容为空，则初始化一个新的map
+        if ( fileContents == null ) {
+            fileContents = new SimpleHash( new LinkedHashMap(), null );
         }
-        env.setVariable( blockContentsVarName, new SimpleScalar( bodyResult ) );
-        env.setVariable( getBlockTypeVarName( blockName ), new SimpleScalar( putType.name() ) );
+        SimpleSequence contents = (SimpleSequence) fileContents.get( fileName );
+        if ( contents == null ) {
+            contents = new SimpleSequence( new ArrayList(), null );
+            fileContents.put( fileName, contents );
+        }
+        contents.add( new PutObject( putType, bodyResult ) );
+
+        env.setVariable( blockContentsVarName, fileContents );
     }
 
     private PutType getPutType( Map params ) {
