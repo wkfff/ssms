@@ -13,6 +13,7 @@ import freemarker.template.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static com.lanstar.common.freemarker.BlockDirectiveUtils.*;
@@ -32,18 +33,24 @@ public class PutDirective implements TemplateDirectiveModel {
         PutType putType = getPutType( params );
         // 获取put的内容
         String bodyResult = getBodyResult( body );
+        String fileName = ((Template) env.getParent()).getName();
 
         // 获取block内容部分的变量名
         String blockContentsVarName = getBlockContentsVarName( blockName );
         // 获取表示内容的map
-        SimpleSequence contents = (SimpleSequence) env.getVariable( blockContentsVarName );
+        SimpleHash fileContents = (SimpleHash) env.getVariable( blockContentsVarName );
         // 如果内容为空，则初始化一个新的map
+        if ( fileContents == null ) {
+            fileContents = new SimpleHash( new LinkedHashMap(), null );
+        }
+        SimpleSequence contents = (SimpleSequence) fileContents.get( fileName );
         if ( contents == null ) {
             contents = new SimpleSequence( new ArrayList(), null );
+            fileContents.put( fileName, contents );
         }
         contents.add( new PutObject( putType, bodyResult ) );
 
-        env.setVariable( blockContentsVarName, contents );
+        env.setVariable( blockContentsVarName, fileContents );
     }
 
     private PutType getPutType( Map params ) {

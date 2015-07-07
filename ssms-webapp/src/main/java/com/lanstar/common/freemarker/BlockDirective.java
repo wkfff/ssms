@@ -8,16 +8,18 @@
 
 package com.lanstar.common.freemarker;
 
+import com.google.common.collect.Lists;
 import freemarker.core.Environment;
 import freemarker.template.*;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 import java.util.Map;
 
 import static com.lanstar.common.freemarker.BlockDirectiveUtils.*;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class BlockDirective implements TemplateDirectiveModel {
 
     public static final String BLOCK_NAME_PARAMETER = "name";
@@ -29,16 +31,21 @@ public class BlockDirective implements TemplateDirectiveModel {
 
         Writer out = env.getOut();
 
-        SimpleSequence putContents = getPutContents( env, blockName );
-        for ( int i = 0; i < putContents.size(); i++ ) {
-            PutObject putObject = (PutObject) putContents.get( i );
-
-            bodyResult = putObject.putType.write( bodyResult, putObject.bodyResult );
+        SimpleHash putContents = getPutContents( env, blockName );
+        if ( putContents == null ) return;
+        List<String> keys = Lists.reverse( Lists.newArrayList( putContents.toMap().keySet() ) );
+        for ( String key : keys ) {
+            SimpleSequence contents = (SimpleSequence) putContents.get( key );
+            if ( contents == null ) continue;
+            for ( int i = 0; i < contents.size(); i++ ) {
+                PutObject putObject = (PutObject) contents.get( i );
+                bodyResult = putObject.putType.write( bodyResult, putObject.bodyResult );
+            }
         }
         out.write( bodyResult );
     }
 
-    private SimpleSequence getPutContents( Environment env, String blockName ) throws TemplateModelException {
-        return (SimpleSequence) env.getVariable( getBlockContentsVarName( blockName ) );
+    private SimpleHash getPutContents( Environment env, String blockName ) throws TemplateModelException {
+        return (SimpleHash) env.getVariable( getBlockContentsVarName( blockName ) );
     }
 }
