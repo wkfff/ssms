@@ -78,11 +78,6 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" data-bind="visible: '${SID!}'">
-                    <a href="javascript:void(0);" data-bind="disable: 'true',uploadOptions: {module: 'STDTMP_FILE_04', sid: '${SID!}'}">[选择文件]</a>
-                </td>
-            </tr>
-            <tr>
                 <td colspan="4">
                     操作指南
                 </td>

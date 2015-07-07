@@ -39,12 +39,7 @@
             <div style="width: 100%; min-height: 400px;border: 1px dashed  #ccc;" >${C_CONTENT!}</div>
             </td>
         </tr>
-        <tr>
-            <td colspan="4" data-bind="visible: '${SID!}'">
-            <a href="javascript:void(0);" data-bind="disable: 'true',uploadOptions: {module: 'STDTMP_FILE_03', sid: '${SID!}'}">[选择文件]</a>
-            </td>
-        </tr>
-        </table>
+       </table>
     </form>
 </div>
 

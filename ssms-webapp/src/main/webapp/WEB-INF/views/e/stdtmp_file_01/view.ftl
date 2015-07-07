@@ -84,11 +84,6 @@
                     <input style="width:100%" type="text"  class="readonly" value="${T_DATE_04!}" readonly/>
                 </td>
             </tr>
-            <tr data-bind="visible: '${SID!}'">
-                <td colspan="4">
-                    <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_01', sid: '${SID!}'}">[选择文件]</a>
-                </td>
-            </tr>
 
         <#if pass?? && pass?size gt 0 >
             <tr>

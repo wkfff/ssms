@@ -92,11 +92,6 @@
                      <input type="text" class="readonly" <#if B_FINISH?? && B_FINISH=="1">value="已闭环" <#elseif B_FINISH?? && B_FINISH=="0"> value="未闭环" <#else> value="" </#if> readonly/>
                 </td>
             </tr>
-            <tr data-bind="visible: '${SID!}'">
-                <td colspan="6" style="padding: 10px;">
-                    <a href="javascript:void(0);" data-bind="visible:'true',uploadOptions: {module: 'STDTMP_FILE_06', sid: $data.SID}">[选择文件]</a>
-                </td>
-            </tr>
         </table>
     </form>
 </div>
