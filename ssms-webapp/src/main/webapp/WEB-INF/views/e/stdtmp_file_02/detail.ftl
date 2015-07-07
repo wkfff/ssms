@@ -46,7 +46,7 @@
 
             <tr>
                 <td colspan="4">
-                    <textarea  data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings" style="width: 100%; min-height: 400px" ></textarea>
+                    <div style="width: 100%; min-height: 400px;border: 1px dashed  #ccc;" >${C_CONTENT!}</div>
                 </td>
             </tr>
 
