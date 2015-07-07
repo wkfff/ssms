@@ -9,13 +9,29 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.core.Controller;
+import com.lanstar.identity.IdentityContext;
+import com.lanstar.model.tenant.TemplateFolder;
+import com.lanstar.plugin.activerecord.DbPro;
 import com.lanstar.render.jfreechart.JFreeChartRender;
+import com.lanstar.service.enterprise.EnterpriseService;
+import com.lanstar.service.enterprise.ProfessionService;
 
 public class ChartsController extends Controller {
     public void chart01() {
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        EnterpriseService enterpriseService = identityContext.getEnterpriseService();
+        ProfessionService professionService = enterpriseService.getProfessionService();
+        TemplateFolder folder = professionService.getTenantTemplateFolder();
+
+        DbPro db = identityContext.getTenantDb();
+        Long fileCount = db.queryLong( "select COUNT(*) from ssm_stdtmp_file where N_COUNT=0 AND R_TEMPLATE=? AND P_PROFESSION=? AND R_TENANT=? AND P_TENANT='E'",
+                professionService.getSystemTemplate().getId(),
+                professionService.getId(),
+                identityContext.getTenantId() );
+
         render( JFreeChartRender.PIE( "达标体系完成情况分析" )
-                                .setValue( "苹果", 100 )
-                                .setValue( "梨子", 200 )
+                                .setValue( "已完成", folder.getFileCount() - fileCount )
+                                .setValue( "未完成", fileCount )
                                 .setWidth( 350 )
                                 .setHeight( 200 )
                                 .render() );

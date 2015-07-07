@@ -94,7 +94,7 @@
                             <#list rs_todo as rs>
                                 <tr>
                                     <td class="more">
-                                        <a href="${rs.C_URL!"/e/stdtmp/tree?selected=${rs.R_SID}"}" target="_top" class="matter-title">${rs.C_TITLE}</a>
+                                        <a href="${rs.C_URL!"/e/stdtmp/tree?selected=${rs.SID}"}" target="_top" class="matter-title">${rs.C_NAME}</a>
                                     </td>
                                     <td class="matter-time">${rs.T_CREATE?date}</td>
                                 </tr>
