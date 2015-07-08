@@ -11,6 +11,8 @@ package com.lanstar.app.route;
 import com.lanstar.config.Routes;
 import com.lanstar.controller.enterprise.*;
 import com.lanstar.controller.enterprise.todo.TemplateFile06TodoController;
+import com.lanstar.controller.enterprise.todo.TemplateFile07TodoController;
+import com.lanstar.controller.enterprise.todo.TemplateFile08TodoController;
 
 public class EnterpriseRoutes extends Routes {
     private static final Routes me = new EnterpriseRoutes();
@@ -50,5 +52,7 @@ public class EnterpriseRoutes extends Routes {
 
         // 待办相关
         add( "/e/todo/stdtmp06", TemplateFile06TodoController.class );
+        add( "/e/todo/stdtmp07", TemplateFile07TodoController.class );
+        add( "/e/todo/stdtmp08", TemplateFile08TodoController.class );
     }
 }

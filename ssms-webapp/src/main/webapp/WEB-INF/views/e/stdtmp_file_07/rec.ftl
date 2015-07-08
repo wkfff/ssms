@@ -20,7 +20,9 @@
 <div id="kocontainer">
     <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+        <#if !todo??>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?fileid=${file.id}');">返回</a>
+        </#if>
         <#if file.templateModel??>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp/file/view/${file.sourceFile.id}')}">查看模板</a>
         </#if>

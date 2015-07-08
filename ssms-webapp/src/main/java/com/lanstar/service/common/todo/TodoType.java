@@ -54,6 +54,10 @@ public enum TodoType {
     public List<TodoBean> listTodo( TodoService service, Integer profession, Integer template ) {
         return service.listTodoBean( name(), profession, template );
     }
+    
+    public List<TodoBean> listTodo( TodoService service, Integer profession, Integer template,int size ) {
+        return service.listTodoBean( name(), profession, template,size );
+    }
 
     /**
      * 取消待办

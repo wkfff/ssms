@@ -10,9 +10,9 @@
             <#list todo.createTodo as rs>
                 <tr>
                     <td class="more">
-                        <a href="${rs.C_URL!"/e/stdtmp/tree?selected=${rs.SID}"}" target="_top" class="matter-title">${rs.C_NAME}</a>
+                        <a href="${rs.C_URL!"/e/stdtmp/tree?selected=${rs.SID!}"}" target="_top" class="matter-title">${rs.C_NAME!}</a>
                     </td>
-                    <td class="matter-time">${rs.T_CREATE?date}</td>
+                    <td class="matter-time">${(rs.T_CREATE?date)!}</td>
                 </tr>
             </#list>
             <tr>
@@ -46,9 +46,9 @@
             <#list rs_yh as rs>
                 <tr>
                     <td class="more">
-                        <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">“${rs.C_NAME}”（要求整改时间：${rs.T_RECTIFICATION}）</a>
+                        <a href="/e/todo/stdtmp06/rec?sid=${rs.srcId!}" target="_top" class="matter-title">${rs.title!}</a>
                     </td>
-                    <td class="matter-time">${rs.T_CREATE?date}</td>
+                    <td class="matter-time">${(rs.notifyTime?date)!}</td>
                 </tr>
             </#list>
             <tr>
@@ -80,9 +80,9 @@
             <#list rs_dev as rs>
                 <tr>
                     <td class="more">
-                        <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">“${rs.C_NAME}(${rs.C_SPEC!})”临近下次检验(${rs.T_TEST_NEXT!}）</a>
+                        <a href="/e/todo/stdtmp08/rec?sid=${rs.srcId!}" target="_top" class="matter-title">${rs.title!}</a>
                     </td>
-                    <td class="matter-time">${rs.T_CREATE?date}</td>
+                    <td class="matter-time">${(rs.notifyTime?date)!}</td>
                 </tr>
             </#list>
             <tr>
@@ -113,9 +113,9 @@
             <#list rs_ry as rs>
                 <tr>
                     <td class="more">
-                        <a href="${rs.C_URL!"/e/stdtmp/tree"}" target="_top" class="matter-title">“${rs.C_DEPT}-${rs.C_NAME}(${rs.C_WORKTYPE})”特种作业人员证书即将到期（复审时间${rs.T_CERT_REVIEW}）</a>
+                        <a href="/e/todo/stdtmp07/rec?sid=${rs.srcId!}" target="_top" class="matter-title">${rs.title!}</a>
                     </td>
-                    <td class="matter-time">${rs.T_CREATE?date}</td>
+                    <td class="matter-time">${(rs.notifyTime?date)!}</td>
                 </tr>
             </#list>
             <tr>
