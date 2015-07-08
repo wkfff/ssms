@@ -11,6 +11,7 @@ import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.ReviewCert;
 import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 /**
  * 评审方案控制器
@@ -24,6 +25,12 @@ public class ReviewCertController extends SimplateController<ReviewCert> {
     }
 
     @Override
+    protected SqlBuilder buildWhere() {
+        Integer tenantId=identityContext.getTenant().getTenantId();
+        return new SqlBuilder().WHERE("R_TENANT=?",tenantId);
+    }
+
+    @Override
     public void rec() {
         ReviewCert model = null;
         String sid = getPara( "sid" );
@@ -31,13 +38,12 @@ public class ReviewCertController extends SimplateController<ReviewCert> {
         if ( sid == null ) {
             sid = getPara( "R_SID" );
             model = getDao().findFirst( "select * from ssm_review_cert where r_sid=?", sid );
-        }else
-            model = getDao().findById( sid );
-        
+        } else model = getDao().findById( sid );
+
         if ( model != null ) setAttrs( ModelKit.toMap( model ) );
     }
 
-    public void view(){
+    public void view() {
         this.rec();
         render( "view.ftl" );
     }

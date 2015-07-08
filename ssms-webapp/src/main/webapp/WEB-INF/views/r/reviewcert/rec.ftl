@@ -62,6 +62,7 @@
 <body>
 <div class="toolbar">
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="click: saveClick">保存</a>
+        <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-back" onclick="window.location.href = '${referer!}'">返回列表</a>
 </div>
 <div class="container">
  <form class="form">

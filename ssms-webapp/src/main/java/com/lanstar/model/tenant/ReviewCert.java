@@ -7,14 +7,14 @@
  */
 package com.lanstar.model.tenant;
 
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.model.TenantModel;
 
 /**
  * 评审证书
  *
  */
-public class ReviewCert extends Model<ReviewCert> {
-    public static ReviewCert dao = new ReviewCert();
+public class ReviewCert extends TenantModel<ReviewCert> {
+    public static final ReviewCert dao = new ReviewCert();
 
     public Integer getId() {
         return getInt( "SID" );
