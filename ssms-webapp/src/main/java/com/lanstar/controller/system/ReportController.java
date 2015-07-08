@@ -7,11 +7,15 @@
  */
 package com.lanstar.controller.system;
 
+import com.lanstar.common.Asserts;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.core.render.JsonRender;
 import com.lanstar.model.system.TemplateRep;
+import com.lanstar.model.tenant.TemplateFile02;
 import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.render.aspose.AsposeRender;
+import com.lanstar.render.aspose.OutputFormat;
 
 /**
  * 自评、评审报告
@@ -47,5 +51,13 @@ public class ReportController  extends SimplateController<TemplateRep> {
         sid = model.getInt( "SID" );
         setAttr( "SID",sid );
         render( new JsonRender( sid ).forIE() );
+    }
+    
+    public void export() {
+        Integer sid = getParaToInt();
+        Asserts.notNull( sid, "非法的参数请求" );
+        TemplateRep rep = TemplateRep.dao.findById( sid );
+        String content = rep.getStr("C_CONTENT");
+        render( AsposeRender.me( content, "报告模板", OutputFormat.PDF ) );
     }
 }

@@ -44,6 +44,11 @@
     border-bottom: 1px solid #CCCCCC;
 }
 
+.toolbar-bg{
+    border:0;
+    background: url(/resource/images/toolbarbg.png) repeat-x;
+}
+
 /*列表*/
 .table {
     width: 100%;
