@@ -9,10 +9,8 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
-import com.lanstar.controller.SimplateController;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile06;
-import com.lanstar.model.tenant.TemplateText;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.service.enterprise.UniqueTag;
 
@@ -28,6 +26,12 @@ public class TemplateFile06Controller extends TemplateFileController<TemplateFil
         setAttr( "file", file );
     }
 
+    public void rec_todo(){
+        this.setAttr( "todo", "1" );
+        this.rec();
+        render( "rec.ftl" );
+    }
+    
     @Override
     protected TemplateFile06 getDao() {
         return TemplateFile06.dao;

@@ -325,7 +325,9 @@ function viewModel(){
             return false;
         }
         */
-        if (self.checked_government().length==0 && self.checked_review().length==0 && self.checked_enterprise().length==0) {
+        if ((self.governments()!='全部' && self.checked_government().length==0) 
+            && (self.reviews()!='全部' && self.checked_review().length==0)
+            && (self.enterprises()!='全部' &&self.checked_enterprise().length==0)) {
             utils.messager.alert("接收者不能为空，请选择！");
             return false;
         }
@@ -365,11 +367,23 @@ function viewModel(){
             var model = {
                         SID:self.SID,
                         C_TITLE:self.C_TITLE,
-                        C_CONTENT:self.htmlContent,
+                        C_CONTENT:self.htmlContent
+                        /*,
                         C_RECEIVER_G:self.governments()=='全部'?'全部':ko.toJSON(self.checked_government()),
-                        C_RECEIVER_R:self.reviewss()=='全部'?'全部':ko.toJSON(self.checked_review()),
+                        C_RECEIVER_R:self.reviews()=='全部'?'全部':ko.toJSON(self.checked_review()),
                         C_RECEIVER_E:self.enterprises()=='全部'?'全部':ko.toJSON(self.checked_enterprise())
+                        */
              };
+             if (self.at_government()){
+                model['C_RECEIVER_G'] = self.governments()=='全部'?'全部':ko.toJSON(self.checked_government());
+             }
+             if (self.at_review()){
+                model['C_RECEIVER_R'] = self.reviews()=='全部'?'全部':ko.toJSON(self.checked_review());
+             }
+             if (self.at_enterprise()){
+                model['C_RECEIVER_E'] = self.enterprises()=='全部'?'全部':ko.toJSON(self.checked_enterprise());
+             }
+             
              $.post('save', model, function (result) {
                     if (result.SID) {
                         self.SID(result.SID);

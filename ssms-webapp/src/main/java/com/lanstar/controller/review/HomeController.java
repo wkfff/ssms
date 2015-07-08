@@ -10,11 +10,11 @@ package com.lanstar.controller.review;
 
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
+import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.Done;
 import com.lanstar.model.system.Notice;
 import com.lanstar.model.Todo;
-
-import java.util.ArrayList;
+import com.lanstar.plugin.activerecord.Record;
 import java.util.List;
 
 public class HomeController extends Controller {
@@ -23,10 +23,18 @@ public class HomeController extends Controller {
     }
 
     public void home(){
-        List<Notice> rs_notice = Notice.dao.find("select * from sys_notice");
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        int tenantId = identityContext.getTenantId();
+        int pageSize = 8;
+        //接收的通知公告
+        String sql = "select * from v_notice where r_reserver=? order by t_publish desc limit ?";
+        List<Record> rs_notice = identityContext.getTenantDb().find( sql,tenantId,pageSize );
+       
+//        List<Notice> rs_notice = Notice.dao.find("select * from sys_notice where t_publish is not null order by t_publish desc limit 8");
         setAttr("rs_notice", rs_notice );
         
-        List<Notice> rs_notice2 = new ArrayList<Notice>();
+        //发布的通知公告
+        List<Notice> rs_notice2 = Notice.dao.find("select * from sys_notice where t_publish is not null and r_tenant=? order by t_publish desc limit 8",tenantId);
         setAttr("rs_notice2", rs_notice2 );
         
         List<Todo> rs_todo = Todo.dao.find("select * from sys_todo where c_control='REVIEW'");

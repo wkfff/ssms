@@ -26,6 +26,12 @@ public class TemplateFile08Controller extends TemplateFileController<TemplateFil
         setAttr( "file", file );
     }
 
+    public void rec_todo(){
+        this.setAttr( "todo", "1" );
+        this.rec();
+        render( "rec.ftl" );
+    }
+    
     @Override
     protected TemplateFile08 getDao() {
         return TemplateFile08.dao;

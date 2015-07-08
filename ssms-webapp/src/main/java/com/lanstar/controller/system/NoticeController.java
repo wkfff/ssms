@@ -12,6 +12,7 @@ import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Government;
 import com.lanstar.model.system.Notice;
 import com.lanstar.model.system.NoticeReceiver;
+import com.lanstar.model.system.Review;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.Page;
 import com.lanstar.plugin.activerecord.Record;
@@ -40,24 +42,19 @@ import com.lanstar.plugin.activerecord.statement.SqlStatement;
  *
  */
 public class NoticeController extends SimplateController<Notice> {
-
     @Override
     protected Notice getDao() {
         return Notice.dao;
     }
-
-    @Override
-    public void rec() {
-        // 是否显示标题栏
-        String tb = this.getPara( "tb" );
-        this.setAttr( "tb", StrKit.isBlank( tb ) ? "1" : tb );
-        // 根据辖区过滤
-        List<Record> list = null;
-        List<Map<String, Object>> models = null;
+    
+    public Map<String,List<Record>> getAllReceiver(){
         String sql = "";
         String where = "";
         String order = " ORDER BY N_INDEX";
-
+        List<Record> list = null;
+        Map<String,List<Record>> map = new HashMap<String,List<Record>>();
+        
+        //政府端需要列出所有类型的接收者，并且根据行政等级过滤
         if ( this.identityContext.getTenantType().compareTo( TenantType.GOVERNMENT ) == 0 ) {
             Government gov = Government.dao.findById( this.identityContext.getTenantId() );
 
@@ -77,6 +74,36 @@ public class NoticeController extends SimplateController<Notice> {
             // 政府
             sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR from sys_tenant_g " + where + order;
             list = this.tenantDb.find( sql );
+            map.put( "G", list );
+
+            // 评审
+            sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR  from sys_tenant_r" + where + order;
+            list = this.tenantDb.find( sql );
+            map.put( "R", list );
+        }
+        //评审端只要列出辖区内企业
+        if ( this.identityContext.getTenantType().compareTo( TenantType.REVIEW ) == 0 ) {
+            Review review = Review.dao.findById( this.identityContext.getTenantId() );
+            where = " where P_PROVINCE ='" + review.getStr( "P_PROVINCE" ) + "' and P_CITY='"+review.getStr( "P_CITY" )+"' and P_COUNTY='"+review.getStr( "P_COUNTY" )+"'";
+        }
+        // 企业
+        sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR  from sys_tenant_e" + where + order;
+        list = this.tenantDb.find( sql );
+        map.put( "E", list );
+        return map;
+    }
+    
+    @Override
+    public void rec() {
+        // 是否显示标题栏
+        String tb = this.getPara( "tb" );
+        this.setAttr( "tb", StrKit.isBlank( tb ) ? "1" : tb );
+        List<Record> list = null;
+        List<Map<String, Object>> models = null;
+
+        Map<String,List<Record>> map = getAllReceiver();
+        list = map.get( "G" );
+        if (!list.isEmpty()){
             models = Lists.transform( list, new Function<Record, Map<String, Object>>() {
                 @Override
                 public Map<String, Object> apply( Record input ) {
@@ -86,10 +113,10 @@ public class NoticeController extends SimplateController<Notice> {
                 }
             } );
             this.setAttr( "data_g", JSON.toJSONString( Lists.newArrayList( models ) ) );
-
-            // 评审
-            sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR  from sys_tenant_r" + where + order;
-            list = this.tenantDb.find( sql );
+        }
+        
+        list = map.get( "R" );
+        if (!list.isEmpty()){
             models = Lists.transform( list, new Function<Record, Map<String, Object>>() {
                 @Override
                 public Map<String, Object> apply( Record input ) {
@@ -100,19 +127,20 @@ public class NoticeController extends SimplateController<Notice> {
             } );
             this.setAttr( "data_r", JSON.toJSONString( Lists.newArrayList( models ) ) );
         }
-        // 企业
-        sql = "select SID R_RECEIVER,C_NAME S_RECEIVER,C_ADDR  from sys_tenant_e" + where + order;
-        list = this.tenantDb.find( sql );
-        models = Lists.transform( list, new Function<Record, Map<String, Object>>() {
-            @Override
-            public Map<String, Object> apply( Record input ) {
-                Map<String, Object> map = input.getColumns();
-                map.put( "CHOOSE", false );
-                return map;
-            }
-        } );
-        this.setAttr( "data_e", JSON.toJSONString( Lists.newArrayList( models ) ) );
-
+        list = map.get( "E" );
+        if (!list.isEmpty()){
+            models = Lists.transform( list, new Function<Record, Map<String, Object>>() {
+                @Override
+                public Map<String, Object> apply( Record input ) {
+                    Map<String, Object> map = input.getColumns();
+                    map.put( "CHOOSE", false );
+                    return map;
+                }
+            } );
+            this.setAttr( "data_e", JSON.toJSONString( Lists.newArrayList( models ) ) );
+        }
+        
+        //取当前通知公告的所有接收者
         Integer sid = this.getModel().getId();
         if ( sid != null ) {
             list = this.tenantDb.find( "select R_NOTICE,R_RECEIVER,S_RECEIVER,Z_TYPE from sys_notice_receiver where r_notice=?",
@@ -185,11 +213,27 @@ public class NoticeController extends SimplateController<Notice> {
         String receiver_g = this.getPara( "C_RECEIVER_G" );
         String receiver_r = this.getPara( "C_RECEIVER_R" );
         String receiver_e = this.getPara( "C_RECEIVER_E" );
-
+        
+        List<Record> tenants = null;
+        Map<String,List<Record>> map = getAllReceiver();
         List<NoticeReceiver> receivers = new ArrayList<NoticeReceiver>();
         if ( !StrKit.isBlank( receiver_g ) ) {
             if (receiver_g.equals( "全部" )){
-            
+                tenants = map.get( "G" );
+                if(!tenants.isEmpty()){
+                    List<NoticeReceiver> list = Lists.transform( tenants, new Function<Record, NoticeReceiver>() {
+                        @Override
+                        public NoticeReceiver apply( Record input ) {
+                            NoticeReceiver receiver = new NoticeReceiver();
+                            receiver.setR_RECEIVER( input.getInt( "R_RECEIVER" ) );
+                            receiver.setS_RECEIVER( input.getStr( "S_RECEIVER" ) );
+                            receiver.set( "R_NOTICE", input.getInt( "SID" ) );
+                            receiver.set( "Z_TYPE", "G" );
+                            return receiver;
+                        }
+                    } );
+                    receivers.addAll( list );
+                }
             }
             else{
                 List<NoticeReceiver> list = JSON.parseArray( receiver_g, NoticeReceiver.class );
@@ -204,24 +248,62 @@ public class NoticeController extends SimplateController<Notice> {
         }
 
         if ( !StrKit.isBlank( receiver_r ) ) {
-            List<NoticeReceiver> list = JSON.parseArray( receiver_r, NoticeReceiver.class );
-            if ( !list.isEmpty() ) {
-                for ( NoticeReceiver rec : list ) {
-                    rec.set( "R_NOTICE", model.getInt( "SID" ) );
-                    rec.set( "Z_TYPE", "R" );
+            if (receiver_r.equals( "全部" )){
+                tenants = map.get( "R" );
+                if (!tenants.isEmpty()){
+                    List<NoticeReceiver> list = Lists.transform( tenants, new Function<Record, NoticeReceiver>() {
+                        @Override
+                        public NoticeReceiver apply( Record input ) {
+                            NoticeReceiver receiver = new NoticeReceiver();
+                            receiver.setR_RECEIVER( input.getInt( "R_RECEIVER" ) );
+                            receiver.setS_RECEIVER( input.getStr( "S_RECEIVER" ) );
+                            receiver.set( "R_NOTICE", input.getInt( "SID" ) );
+                            receiver.set( "Z_TYPE", "R" );
+                            return receiver;
+                        }
+                    } );
+                    receivers.addAll( list );
                 }
-                receivers.addAll( list );
+            }
+            else{
+                List<NoticeReceiver> list = JSON.parseArray( receiver_r, NoticeReceiver.class );
+                if ( !list.isEmpty() ) {
+                    for ( NoticeReceiver rec : list ) {
+                        rec.set( "R_NOTICE", model.getInt( "SID" ) );
+                        rec.set( "Z_TYPE", "R" );
+                    }
+                    receivers.addAll( list );
+                }
             }
         }
 
         if ( !StrKit.isBlank( receiver_e ) ) {
-            List<NoticeReceiver> list = JSON.parseArray( receiver_e, NoticeReceiver.class );
-            if ( !list.isEmpty() ) {
-                for ( NoticeReceiver rec : list ) {
-                    rec.set( "R_NOTICE", model.getInt( "SID" ) );
-                    rec.set( "Z_TYPE", "E" );
+            if (receiver_e.equals( "全部" )){
+                tenants = map.get( "E" );
+                if (!tenants.isEmpty()){
+                    List<NoticeReceiver> list = Lists.transform( tenants, new Function<Record, NoticeReceiver>() {
+                        @Override
+                        public NoticeReceiver apply( Record input ) {
+                            NoticeReceiver receiver = new NoticeReceiver();
+                            receiver.setR_RECEIVER( input.getInt( "R_RECEIVER" ) );
+                            receiver.setS_RECEIVER( input.getStr( "S_RECEIVER" ) );
+                            receiver.set( "R_NOTICE", input.getInt( "SID" ) );
+                            receiver.set( "Z_TYPE", "E" );
+                            return receiver;
+                        }
+                    } );
+                    receivers.addAll( list );
                 }
-                receivers.addAll( list );
+            }
+            else{
+                List<NoticeReceiver> list = JSON.parseArray( receiver_e, NoticeReceiver.class );
+                if ( !list.isEmpty() ) {
+                    for ( NoticeReceiver rec : list ) {
+                        rec.set( "R_NOTICE", model.getInt( "SID" ) );
+                        rec.set( "Z_TYPE", "E" );
+                    }
+                    receivers.addAll( list );
+                }
             }
         }
         if ( !receivers.isEmpty() ) {

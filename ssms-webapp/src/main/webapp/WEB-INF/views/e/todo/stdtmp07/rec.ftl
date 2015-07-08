@@ -30,7 +30,7 @@
             if (isFunction(onPanelLoad)) onPanelLoad();
         }
         $(document).ready(function(){
-            var url = '/e/stdtmp_file_06/rec_todo?sid=${sid}';
+            var url = '/e/stdtmp_file_07/rec_todo?sid=${sid}';
             $("#content").panel("setTitle", "").panel("refresh",url);
         });
     </script>

@@ -11,12 +11,9 @@ package com.lanstar.service.review;
 import com.lanstar.controller.review.ReviewGradeState;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.TenantContext;
-import com.lanstar.model.system.AttachText;
 import com.lanstar.model.system.TemplateRep;
-import com.lanstar.model.tenant.GradeReport;
 import com.lanstar.model.tenant.ReviewPlan;
 import com.lanstar.model.tenant.ReviewReport;
-import com.lanstar.service.AttachTextService;
 
 public class ReviewService {
     private final TenantContext reviewContext;
@@ -38,10 +35,6 @@ public class ReviewService {
     public void setEnterpriseContext( TenantContext enterpriseContext ) {
         this.enterpriseContext = enterpriseContext;
     }
-
-//    public boolean sync(int r_sid,int sid){
-//        return ReviewSyncService.sync( enterpriseContext, reviewContext,r_sid,sid );
-//    }
     
     public int syncContentFromEnterprise(int srcPlanId,int descPlanId){
         return ReviewSyncService.syncContentFromEnterprise( enterpriseContext, reviewContext,srcPlanId,descPlanId );
@@ -113,11 +106,7 @@ public class ReviewService {
             rep.setContent( template.getStr( "C_CONTENT" ) );
             rep.setPlanId( planId );
             return rep.save();
-//            AttachTextService service = reviewContext.getAttachTextService();
-//            service.save( "SSM_REVIEW_REPORT", "C_CONTENT", planId, template.getStr( "C_CONTENT" ), identity);
         }
         return true;
     }
 }
-
-

@@ -82,7 +82,6 @@
                 <div style="float: right">
                     <ul class="tabs"><@layout.block name="tabs_title"/></ul>
                 </div>
-            <#-- <a href="/e/grade_m/index" class="more">更多</a> -->
             </div>
             <div id="tbc" class="content" style="height:280px">
                 <@layout.block name="tabs_content"/>
