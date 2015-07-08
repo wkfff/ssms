@@ -29,27 +29,30 @@
         .fileCount {
             color: blue;
         }
+
+        .leftWrap {
+            position: relative;
+            width: 250px;
+            display: none;
+        }
+
+        .leftWrap .treeWrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
     </style>
     </@>
 
     <@layout.put block="containers">
     <div class="easyui-layout" data-options="fit:true">
-        <div data-options="region:'west', title:'达标体系', split:true" style="width: 250px; display: none">
-            <table id="ttt" style="height: 100%; width: 100%; table-layout: fixed;">
-                <tr>
-                    <td>
-                    <#-- TODO 放点工具 -->
-                    <#--<input class="easyui-textbox" id="searchTree" data-options="icons: [{ iconCls:'icon-search', handler: doSearch}], onChange: doSearch" >-->
-                    </td>
-                </tr>
-                <tr style="height:100%;">
-                    <td>
-                        <div style="height:100%; overflow: auto">
-                            <@buildTree tree true/>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+        <div data-options="region:'west', title:'达标体系', split:true" class="leftWrap">
+            <div></div>
+            <div class="treeWrap">
+                <@buildTree tree true/>
+            </div>
         </div>
         <div data-options="region:'center', border:false">
             <div id="content" class="easyui-panel" style="position: relative;" data-options="onLoad: onLoad" fit="true">
@@ -118,7 +121,7 @@
         }
         var selected = <#if selected??>'F-${selected}'<#else>null</#if>;
         $(function () {
-            $('#ttt').parent().show();
+            $('.treeWrap').parent().show();
             setTimeout(function () {
                 var $tree = $('#std_tree');
                 if (selected != null) {
