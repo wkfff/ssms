@@ -163,10 +163,9 @@ public class TemplateFile extends TenantModel<TemplateFile> {
      * 获取来源文件，即拷贝自的文件
      */
     public com.lanstar.model.system.archive.TemplateFile getSourceFile() {
-        com.lanstar.model.system.archive.TemplateFile file = com.lanstar.model.system.archive.TemplateFile.dao.findFirstByColumns(
+        return com.lanstar.model.system.archive.TemplateFile.dao.findFirstByColumns(
                 ListKit.newArrayList( "R_TEMPLATE", "SID", "N_VERSION" ),
                 ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
-        return file;
     }
 
     /**

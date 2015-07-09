@@ -8,7 +8,11 @@
 
 package com.lanstar.model.system.archive;
 
+import com.lanstar.app.Const;
 import com.lanstar.plugin.activerecord.ModelExt;
+import com.lanstar.plugin.template.ModelType;
+import com.lanstar.plugin.template.TemplateProp;
+import com.lanstar.plugin.template.TemplatePropPlugin;
 
 public class ArchiveModel<T extends ArchiveModel<T>> extends ModelExt<T> {
 
@@ -34,5 +38,17 @@ public class ArchiveModel<T extends ArchiveModel<T>> extends ModelExt<T> {
 
     public void setVersion( int version ) {
         set( "N_VERSION", version );
+    }
+
+    public final int getTemplateFileId() {
+        return getInt( Const.TEMPLATE_FILE_PARENT_FIELD );
+    }
+
+    /**
+     * 获取关联的文本内容
+     */
+    public String getContentText() {
+        TemplateProp templateProp = TemplatePropPlugin.me().get( ModelType.SYSTEM_ARCHIVE, getClass() );
+        return TemplateText.getContent( getTemplateId(), getVersion(), templateProp.getCode(), getSid() );
     }
 }

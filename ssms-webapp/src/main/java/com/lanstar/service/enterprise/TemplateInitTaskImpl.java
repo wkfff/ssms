@@ -14,24 +14,22 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.lanstar.beans.system.FileBean;
 import com.lanstar.beans.system.FolderBean;
-import com.lanstar.common.ListKit;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantContext;
-import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Profession;
-import com.lanstar.model.tenant.*;
-import com.lanstar.plugin.activerecord.*;
-import com.lanstar.plugin.template.ModelType;
-import com.lanstar.plugin.template.ModelWrap;
-import com.lanstar.plugin.template.TemplateProp;
+import com.lanstar.model.tenant.Template;
+import com.lanstar.model.tenant.TemplateFile;
+import com.lanstar.model.tenant.TemplateFolder;
+import com.lanstar.model.tenant.TemplateText;
+import com.lanstar.plugin.activerecord.DbPro;
+import com.lanstar.plugin.activerecord.IAtom;
+import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 import com.lanstar.service.CycleType;
 import com.lanstar.service.Parameter;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
-import com.lanstar.service.common.todo.TodoType;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -85,7 +83,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
                     initTemplateVersion();
                     // 拷贝目录
                     cloneFolders();
-                    cloneFileContetns();
+                    //cloneFileContetns();
 
                     for ( List<Model> batch : batchs.values() ) {
                         ModelKit.batchSave( DbPro.use(), batch );
@@ -201,7 +199,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
         else return parameter.getName();
     }
 
-    private void cloneFileContetns() {
+    /*private void cloneFileContetns() {
         TemplatePropPlugin plugin = TemplatePropPlugin.me();
 
         // 文本列表
@@ -251,5 +249,5 @@ class TemplateInitTaskImpl implements TemplateInitTask {
         return com.lanstar.model.system.archive.TemplateText.dao.findByColumns(
                 ListKit.newArrayList( "R_TEMPLATE", "N_VERSION" ),
                 ListKit.newObjectArrayList( systemTemplate.getId(), systemTemplate.getVersion() ) );
-    }
+    }*/
 }
