@@ -22,12 +22,13 @@
             $.post('save',$("#formMain").serialize(),function(result){
                  utils.messager.closeProgress();
                  utils.messager.alert('保存成功！');
+                 $("#SID").attr("value",result);
                  $('#btn_exp').show();
             });
         }
     
         function doExport(){
-            window.location.href='${BASE_PATH}/export/${SID!}';
+            window.location.href='${BASE_PATH}/export/'+$("#SID").attr("value");
         }
     
         function doBack(){
@@ -78,7 +79,7 @@
             <textarea id="C_CONTENT" name="C_CONTENT" style="display:none;">${C_CONTENT!}</textarea>
              <input type="hidden" name="Z_TYPE" value="${type!}" />
             <input type="hidden" name="R_SID" value="${R_SID!}" />
-            <input type="hidden" name="SID" value="${SID!}" />
+            <input type="hidden" id="SID" name="SID" value="${SID!}" />
      </form>
 </div>
 </body>
