@@ -40,6 +40,10 @@
         <a class="easyui-linkbutton" plain="true" iconCls="icon-pre" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">上一条</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-next" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">下一条</a>
         </#if>
+        
+        <span style="position: absolute; right: 30px;">
+            编辑状态：<span style="font-size: 12px; font-weight: bold; color: red"><#if SID??>编辑<#else>新增</#if></span>
+        </span>
     </div>
     <form class="form">
         <table>
@@ -171,6 +175,7 @@
                     $.messager.alert("提示", "保存成功", "info", function () {
                         model.SID(result.SID);
                     });
+                    panelLoad('${BASE_PATH}/rec?SID=' + result.SID);
                 } else {
                     $.messager.alert("提示", "保存失败", "warning", function () {
                         utils.messager.closeProgress();

@@ -9,8 +9,10 @@ package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
 import com.lanstar.controller.SimplateController;
+import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile08;
+import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.service.enterprise.UniqueTag;
 
@@ -23,6 +25,13 @@ public class TemplateFile08Controller extends TemplateFileController<TemplateFil
         boolean isNew = pid == null;
         if ( isNew ) pid = getParaToInt( "fileId" );
         TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
+        if ( isNew ) {
+            ArchiveModel<?> archiveModel = file.getTemplateModel();
+            if(archiveModel!=null){
+                setAttrs( ModelKit.toMap( archiveModel ) );
+                removeAttr( "SID" );
+            }
+        }
         setAttr( "file", file );
     }
 
