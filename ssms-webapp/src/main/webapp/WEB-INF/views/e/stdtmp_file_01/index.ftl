@@ -28,6 +28,10 @@
         <#if file.templateModel??>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp/file/view/${file.sourceFile.id}')}">查看模板</a>
         </#if>
+        
+        <span style="position: absolute; right: 30px;">
+            编辑状态：<span style="font-size: 12px; font-weight: bold; color: red"><#if SID??>编辑<#else>新增</#if></span>
+        </span>
     </div>
     <form class="form" method="post" style="padding:10px 31px;">
         <table>
@@ -162,6 +166,7 @@
                 if (result.SID) {
                     utils.messager.closeProgress();
                     $.messager.alert("提示", "保存成功", "info");
+                    panelLoad('${BASE_PATH}/${file.id}');
                 }else {
                     $.messager.alert("提示", "保存失败", "warning", function () {
                         utils.messager.closeProgress();

@@ -24,6 +24,7 @@ public class HomeTodo {
     private final EnterpriseService enterpriseService;
     private final ProfessionService professionService;
     private final DbPro db;
+    private List<Record> todolist;
 
     public HomeTodo( IdentityContext identityContext ) {
         this.identityContext = identityContext;
@@ -47,10 +48,11 @@ public class HomeTodo {
     }
 
     public List<Map<String, Object>> getCreateTodo() {
-        List<Record> todolist = db.find( "select * from ssm_stdtmp_file where N_COUNT=0 AND R_TEMPLATE=? AND P_PROFESSION=? AND R_TENANT=? AND P_TENANT='E' limit 10",
-                professionService.getSystemTemplate().getId(),
-                professionService.getId(),
-                identityContext.getTenantId() );
+        if ( todolist == null )
+            todolist = db.find( "select * from ssm_stdtmp_file where N_COUNT=0 AND R_TEMPLATE=? AND P_PROFESSION=? AND R_TENANT=? AND P_TENANT='E' limit 10",
+                    professionService.getSystemTemplate().getId(),
+                    professionService.getId(),
+                    identityContext.getTenantId() );
         return RecordKit.toMap( todolist );
     }
 }

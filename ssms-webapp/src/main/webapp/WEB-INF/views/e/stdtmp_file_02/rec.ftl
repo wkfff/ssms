@@ -125,6 +125,7 @@
                 if (result.SID) {
                         utils.messager.closeProgress();
                         $.messager.alert("提示", "保存成功", "info");
+                        panelLoad('${BASE_PATH}/rec?SID=' + result.SID);
                     }else {
                         $.messager.alert("提示", "保存失败", "warning", function () {
                             utils.messager.closeProgress();

@@ -30,12 +30,14 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
         if ( isNew ) pid = getParaToInt( "fileId" );
         TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
 
-        String content;
+        String content=null;
         if ( isNew ) {
             ArchiveModel<?> archiveModel = file.getTemplateModel();
-            setAttrs( ModelKit.toMap( archiveModel ) );
-            removeAttr( "SID" );
-            content = archiveModel.getContentText();
+            if(archiveModel!=null){
+                setAttrs( ModelKit.toMap( archiveModel ) );
+                removeAttr( "SID" );
+                content = archiveModel.getContentText();
+            }
         }
         else content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), getAttrForInt( "SID" ) );
 

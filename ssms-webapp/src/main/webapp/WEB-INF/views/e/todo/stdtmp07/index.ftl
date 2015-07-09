@@ -4,7 +4,7 @@
     <div id="kocontainer" class="easyui-panel" border="false" fit="true">
         <div id="toolbar" class="z-toolbar">
             <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">打开</a>
         </div>
         <table data-bind="datagridValue:selectItem,easyuiOptions: viewSettings"></table>
     </div>
