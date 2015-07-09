@@ -8,13 +8,11 @@
 
 package com.lanstar.controller.enterprise;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import com.lanstar.common.Asserts;
 import com.lanstar.common.ListKit;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.identity.TenantType;
+import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile01;
 import com.lanstar.model.tenant.TemplateFile01Item;
@@ -24,33 +22,47 @@ import com.lanstar.render.aspose.AsposeRender;
 import com.lanstar.render.aspose.OutputFormat;
 import com.lanstar.service.enterprise.UniqueTag;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class TemplateFile01Controller extends TemplateFileController<TemplateFile01> {
 
     public void index() {
+        super.index();
         Integer templatefileId = getParaToInt();
         Asserts.notNull( templatefileId, "发现非法的参数请求" );
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-        TemplateFile01 templateFile = getTemplateFile( uniqueTag, templatefileId );
-        if ( templateFile == null ) return;
-        setAttrs( ModelKit.toMap( templateFile ) );
         TemplateFile file = TemplateFile.findFirst( uniqueTag, templatefileId );
-        String content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), templateFile.getId() );
+
+        TemplateFile01 templateFile = getTemplateFile( uniqueTag, templatefileId );
+        String content = "";
+        if ( templateFile == null ) {
+            ArchiveModel<?> templateModel = file.getTemplateModel();
+            if ( templateModel != null ) {
+                setAttrs( ModelKit.toMap( templateModel ) );
+                removeAttr( "SID" );
+                content = templateModel.getContentText();
+            }
+        } else {
+            setAttrs( ModelKit.toMap( templateFile ) );
+            content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), templateFile.getId() );
+            String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ?";
+            setAttr( "pass", TemplateFile01Item.dao.find( sql, templateFile.getId() ) );
+        }
+
         setAttr( "C_CONTENT", content );
         setAttr( "file", file );
-        String sql = "select * from SSM_STDTMP_FILE_01_ITEM where R_TMPFILE_01= ?";
-
-        setAttr( "pass", TemplateFile01Item.dao.find( sql, templateFile.getId() ) );
     }
 
     protected TemplateFile01 getTemplateFile( UniqueTag uniqueTag, Integer templateFileId ) {
         TemplateFile01 model = getDao().findFirstByColumns(
-            ListKit.newArrayList( "R_TENANT", "P_TENANT", "R_TEMPLATE", "P_PROFESSION", "R_TMPFILE" ),
-            ListKit.newObjectArrayList(
-                uniqueTag.getTenantId(),
-                TenantType.ENTERPRISE.getName(),
-                uniqueTag.getTemplateId(),
-                uniqueTag.getProfessionId(),
-                templateFileId ) );
+                ListKit.newArrayList( "R_TENANT", "P_TENANT", "R_TEMPLATE", "P_PROFESSION", "R_TMPFILE" ),
+                ListKit.newObjectArrayList(
+                        uniqueTag.getTenantId(),
+                        TenantType.ENTERPRISE.getName(),
+                        uniqueTag.getTemplateId(),
+                        uniqueTag.getProfessionId(),
+                        templateFileId ) );
         if ( model == null ) return null;
         return model;
     }
@@ -97,7 +109,7 @@ public class TemplateFile01Controller extends TemplateFileController<TemplateFil
     }
 
     public void view() {
-        Integer templatefileId = getParaToInt("sid");
+        Integer templatefileId = getParaToInt( "sid" );
         Asserts.notNull( templatefileId, "发现非法的参数请求" );
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
         TemplateFile01 templateFile = getTemplateFile( uniqueTag, templatefileId );
