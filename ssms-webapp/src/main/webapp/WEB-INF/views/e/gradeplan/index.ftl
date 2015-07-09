@@ -39,7 +39,7 @@
                 utils.messager.closeProgress();
                 if (result.SID) {
                     utils.messager.alert("初始化成功! 点击确认开始自评。",function () {
-                        window.location.href = 'tabs/' + result.SID;
+                        window.location.href = '/e/gradeplan/tabs/' + result.SID;
                     });
                 } else {
                     utils.messager.alert("初始化失败:"+result);
