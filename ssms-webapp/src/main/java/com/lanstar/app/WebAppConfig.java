@@ -32,7 +32,9 @@ import com.lanstar.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.lanstar.plugin.attachfile.ResourcePlugin;
 import com.lanstar.plugin.attachfile.SimpleResourceService;
 import com.lanstar.plugin.druid.DruidPlugin;
+import com.lanstar.plugin.jsconstants.AreaGetter;
 import com.lanstar.plugin.jsconstants.JsConstantBuilder;
+import com.lanstar.plugin.jsconstants.ProfessionGetter;
 import com.lanstar.plugin.quartz.QuartzPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
 import com.lanstar.plugin.staticcache.StaticCachePlugin;
@@ -123,7 +125,10 @@ public class WebAppConfig extends RapidwareConfig {
         TemplatePropPlugin templatePropPlugin = TemplatePropPlugin.me().add( new TemplatePropsConfig() );
         me.add( templatePropPlugin );
 
-        JsConstantBuilder.me().setFilePath( ServletKit.getRealPath( "/resource/js/costants.js" ) );
+        JsConstantBuilder.me()
+                         .add( new AreaGetter() )
+                         .add( new ProfessionGetter() )
+                         .setFilePath( ServletKit.getRealPath( "/resource/js/costants.js" ) );
         me.add( JsConstantBuilder.me() );
     }
 
