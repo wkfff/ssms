@@ -12,7 +12,6 @@ import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.core.render.JsonRender;
 import com.lanstar.model.tenant.GradeReport;
-import com.lanstar.model.tenant.TemplateFile02;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.render.aspose.AsposeRender;
 import com.lanstar.render.aspose.OutputFormat;
