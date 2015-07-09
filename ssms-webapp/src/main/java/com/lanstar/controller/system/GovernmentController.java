@@ -8,10 +8,12 @@
 
 package com.lanstar.controller.system;
 
+import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Government;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.plugin.staticcache.CacheManager;
 import com.lanstar.service.TenantService;
 
 public class GovernmentController extends SimplateController<Government> {
@@ -44,5 +46,15 @@ public class GovernmentController extends SimplateController<Government> {
             service.addAdminUser( model );
             handled[0] = true;
         }
+    }
+
+    @Override
+    protected void afterSave( Government model ) {
+        CacheManager.me().getCache( TenantCache.class ).refresh();
+    }
+
+    @Override
+    protected void afterDel( Government model ) {
+        CacheManager.me().getCache( TenantCache.class ).refresh();
     }
 }
