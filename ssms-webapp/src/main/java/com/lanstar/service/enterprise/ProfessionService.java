@@ -132,7 +132,7 @@ public class ProfessionService {
             this.template = Template.getByProfession( profession.getId() );
             return template;
         }
-        return Template.getByProfession( profession.getId() );
+        return template;
     }
 
     public TemplateFolder getTenantTemplateFolder() {

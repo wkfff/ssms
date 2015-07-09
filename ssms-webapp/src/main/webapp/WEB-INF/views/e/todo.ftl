@@ -53,7 +53,7 @@
             </#list>
             <tr>
                 <td colspan="2" style="text-align: right; padding-right: 10px">
-                    <a href="/e/stdtmp/tree" target="_top" style="color: #ff0000;">>>更多</a></td>
+                    <a href="/e/todo/stdtmp06/" target="_top" style="color: #ff0000;">>>更多</a></td>
             </tr>
         <#else>
             <tr class="ue-clear">
@@ -87,7 +87,7 @@
             </#list>
             <tr>
                 <td colspan="2" style="text-align: right; padding-right: 10px">
-                    <a href="/e/stdtmp/tree" target="_top" style="color: #ff0000;">>>更多</a></td>
+                    <a href="/e/todo/stdtmp08/" target="_top" style="color: #ff0000;">>>更多</a></td>
             </tr>
         <#else>
             <tr class="ue-clear">
@@ -120,7 +120,7 @@
             </#list>
             <tr>
                 <td colspan="2" style="text-align: right; padding-right: 10px">
-                    <a href="/e/stdtmp/tree" target="_top" style="color: #ff0000;">>>更多</a></td>
+                    <a href="/e/todo/stdtmp07/" target="_top" style="color: #ff0000;">>>更多</a></td>
             </tr>
         <#else>
             <tr class="ue-clear">

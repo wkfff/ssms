@@ -70,26 +70,29 @@ function ViewModel(catalogId) {
                 }, deleteClick: function () {
                     var row = model.selectItem();
                     if (row) {
-                        if (!row.SID.toString().startsWith("_"))
-                            $.post('del', {sid: row.SID}, function () {
-                                $.messager.alert('消息', '成功删除记录！', 'info', function () {
-                                    settings.gridSettings.datagrid('reload');
+                        utils.messager.confirm('是否确认删除选中的记录？',function(){
+                            if (row.SID && !row.SID.toString().startsWith("_")){
+                                $.post('del', {sid: row.SID}, function () {
+                                    utils.messager.alert('成功删除记录！', function () {
+                                        settings.gridSettings.datagrid('reload');
+                                    });
                                 });
-                            });
-                        else {
-                            settings.gridSettings.datagrid('deleteRow', model.selectIndex());
-                        }
-                    }
+                            }else {
+                                settings.gridSettings.datagrid('deleteRow', model.selectIndex());
+                            }
+                        });
+                    }else
+                        utils.messager.alert('请选择要删除的记录！');
                 }, saveClick: function () {
                     model.editItem(null);
                     if (model.editItem()) {
-                        $.messager.alert('警告', '当前编辑行数据不正确', 'warning');
+                        utils.messager.alert('当前编辑行数据不正确！');
                         return;
                     }
                     var changes = settings.gridSettings.datagrid('getChanges');
                     if (changes.length > 0) {
                         $.post("batchSave", {data: $.toJSON(changes)}, function () {
-                            $.messager.alert('消息', '成功保存记录！', "info", function () {
+                            utils.messager.alert('成功保存记录！', function () {
                                 settings.gridSettings.datagrid('reload');
                             });
                         });
@@ -99,7 +102,7 @@ function ViewModel(catalogId) {
                 }, downClick: function () {
                     events.gridEvents.sort(model.selectIndex(), 'down');
                 },sort:function(index,type){
-                    if (typeof(index)=="undefined") {$.messager.alert('提示', '请先选择要移动的记录行！', 'info');return;};
+                    if (typeof(index)=="undefined") {utils.messager.alert('请先选择要移动的记录行！');return;};
                     if ("up" == type) {
                         if (index != 0) {
                             var toup = settings.gridSettings.datagrid('getData').rows[index];
