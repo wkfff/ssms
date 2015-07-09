@@ -10,9 +10,11 @@ package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
 import com.lanstar.common.Asserts;
+import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile02;
 import com.lanstar.model.tenant.TemplateText;
+import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.render.aspose.AsposeRender;
 import com.lanstar.render.aspose.OutputFormat;
@@ -28,10 +30,16 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
         if ( isNew ) pid = getParaToInt( "fileId" );
         TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
 
-        if ( isNew == false ) {
-            String content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), getAttrForInt( "SID" ) );
-            setAttr( "C_CONTENT", content );
+        String content;
+        if ( isNew ) {
+            ArchiveModel<?> archiveModel = file.getTemplateModel();
+            setAttrs( ModelKit.toMap( archiveModel ) );
+            removeAttr( "SID" );
+            content = archiveModel.getContentText();
         }
+        else content = TemplateText.getContent( uniqueTag, file.getTemplateFileCode(), getAttrForInt( "SID" ) );
+
+        setAttr( "C_CONTENT", content );
         setAttr( "file", file );
     }
 
@@ -60,7 +68,7 @@ public class TemplateFile02Controller extends TemplateFileController<TemplateFil
     }
 
     public void view() {
-        setAttr( "fileid", getParaToInt( "sid" ));
+        setAttr( "fileid", getParaToInt( "sid" ) );
     }
 
     public void detail() {

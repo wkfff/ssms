@@ -152,7 +152,7 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantMod
         TemplateProp templateProp = TemplatePropPlugin.me().get( ModelType.TENANT, getClass() );
         TemplateText.saveContent( getTemplateId(), getTenant(), getProfessionId(), templateProp.getCode(), getId(), text, getOperator() );
     }
-    
+
     public String getName() {
         return getStr( "C_NAME" );
     }
