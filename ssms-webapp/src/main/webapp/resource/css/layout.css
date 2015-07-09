@@ -43,7 +43,12 @@
     line-height:37px; 
     border-bottom: 1px solid #CCCCCC;
 }
-
+.toolbar-border{
+    border-left:1px solid #CCCCCC;
+    border-right:1px solid #CCCCCC;
+    border-bottom:0;
+    background: url(/resource/images/toolbarbg.png) repeat-x;
+}
 .toolbar-bg{
     border:0;
     background: url(/resource/images/toolbarbg.png) repeat-x;
