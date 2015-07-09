@@ -40,3 +40,9 @@
     background-size: 16px 16px;
     padding:5 5 5 22;
 }
+/*导出PDF*/
+.icon-pdf {
+    background: url('/resource/images/blue/pdf.png') no-repeat 4px center;
+    background-size: 16px 16px;
+    padding:5 5 5 22;
+}

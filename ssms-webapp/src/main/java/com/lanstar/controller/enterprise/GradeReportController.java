@@ -7,11 +7,14 @@
  */
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.common.Asserts;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.core.render.JsonRender;
 import com.lanstar.model.tenant.GradeReport;
 import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.render.aspose.AsposeRender;
+import com.lanstar.render.aspose.OutputFormat;
 
 /**
  * 自评报告
@@ -53,5 +56,13 @@ public class GradeReportController extends SimplateController<GradeReport> {
     
     public void view(){
         rec();
+    }
+    
+    public void export() {
+        Integer sid = getParaToInt();
+        Asserts.notNull( sid, "非法的参数请求" );
+        GradeReport rep = GradeReport.dao.findById( sid );
+        String content = rep.getContent();
+        render( AsposeRender.me( content, "自评报告", OutputFormat.PDF ) );
     }
 }

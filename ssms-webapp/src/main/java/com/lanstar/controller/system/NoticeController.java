@@ -103,7 +103,7 @@ public class NoticeController extends SimplateController<Notice> {
 
         Map<String,List<Record>> map = getAllReceiver();
         list = map.get( "G" );
-        if (!list.isEmpty()){
+        if (list!=null && !list.isEmpty()){
             models = Lists.transform( list, new Function<Record, Map<String, Object>>() {
                 @Override
                 public Map<String, Object> apply( Record input ) {
@@ -116,7 +116,7 @@ public class NoticeController extends SimplateController<Notice> {
         }
         
         list = map.get( "R" );
-        if (!list.isEmpty()){
+        if (list!=null && !list.isEmpty()){
             models = Lists.transform( list, new Function<Record, Map<String, Object>>() {
                 @Override
                 public Map<String, Object> apply( Record input ) {
@@ -128,7 +128,7 @@ public class NoticeController extends SimplateController<Notice> {
             this.setAttr( "data_r", JSON.toJSONString( Lists.newArrayList( models ) ) );
         }
         list = map.get( "E" );
-        if (!list.isEmpty()){
+        if (list!=null && !list.isEmpty()){
             models = Lists.transform( list, new Function<Record, Map<String, Object>>() {
                 @Override
                 public Map<String, Object> apply( Record input ) {
