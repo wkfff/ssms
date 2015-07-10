@@ -21,6 +21,7 @@ import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile extends TenantModel<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
+    private ArchiveModel<?> archiveModel;
 
     public static TemplateFile findFirst( int templateId, int tenantId, int professionId, int srcId ) {
         return dao.findFirstByColumns(
@@ -245,8 +246,12 @@ public class TemplateFile extends TenantModel<TemplateFile> {
     }
 
     public ArchiveModel<?> getTemplateModel() {
-        return (ArchiveModel<?>) getTemplateProp().getModel( ModelType.SYSTEM_ARCHIVE ).getDao().findFirstByColumns(
-                ListKit.newArrayList( "R_TEMPLATE", "R_TMPFILE", "N_VERSION" ),
-                ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
+        if ( archiveModel == null )
+            archiveModel = (ArchiveModel<?>) getTemplateProp().getModel( ModelType.SYSTEM_ARCHIVE )
+                                                              .getDao()
+                                                              .findFirstByColumns(
+                                                                      ListKit.newArrayList( "R_TEMPLATE", "R_TMPFILE", "N_VERSION" ),
+                                                                      ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
+        return archiveModel;
     }
 }

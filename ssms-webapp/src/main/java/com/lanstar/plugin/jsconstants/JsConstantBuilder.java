@@ -10,6 +10,7 @@ package com.lanstar.plugin.jsconstants;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Charsets;
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.io.Closeables;
@@ -23,14 +24,18 @@ import org.mozilla.javascript.EvaluatorException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 public class JsConstantBuilder implements IPlugin {
     private static final JsConstantBuilder me = new JsConstantBuilder();
-    private final Map<String, Object> map = new ConcurrentSkipListMap<>();
     private final Logger log = Logger.getLogger( JsConstantBuilder.class );
     private String filePath = "constants.js";
+    private List<ParametersGetter<?>> getters = new ArrayList<>();
+    private final Function<ParametersGetter<?>, String> getterStringFunction = new Function<ParametersGetter<?>, String>() {
+        @Override
+        public String apply( ParametersGetter<?> input ) {
+            return "var " + input.getName() + " = " + JSON.toJSONString( input.getParameters() );
+        }
+    };
 
     private JsConstantBuilder() {
     }
@@ -39,18 +44,15 @@ public class JsConstantBuilder implements IPlugin {
         return me;
     }
 
-    public JsConstantBuilder put( String key, Object value ) {
-        map.put( key, value );
+    public JsConstantBuilder add( ParametersGetter<?> getter ) {
+        getters.add( getter );
         return this;
     }
 
     public boolean build() {
-        ArrayList<String> list = Lists.newArrayList();
-        for ( String key : map.keySet() ) {
-            list.add( "var " + key + " = " + JSON.toJSONString( map.get( key ) ) );
-        }
+        List<String> list = Lists.transform( getters, getterStringFunction );
         try {
-            compress( list, Files.newWriter( new File( filePath ),  Charsets.UTF_8 ));
+            compress( list, Files.newWriter( new File( filePath ), Charsets.UTF_8 ) );
             return true;
         } catch ( IOException e ) {
             log.error( "生成js文件的时候发生了错误...", e );
@@ -61,8 +63,6 @@ public class JsConstantBuilder implements IPlugin {
     @Override
     public boolean start() {
         log.debug( "正在生成常量脚本..." );
-        put( "$areas", AreaParas.getAreas() );
-        put( "$professions", ProfessionParas.getProfessions() );
         boolean success = build();
         if ( success ) log.debug( "生成常量脚本完成..." );
         return success;
@@ -117,3 +117,4 @@ public class JsConstantBuilder implements IPlugin {
         }
     }
 }
+

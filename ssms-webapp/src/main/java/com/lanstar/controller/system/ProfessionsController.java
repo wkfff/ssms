@@ -17,6 +17,7 @@ import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
 import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.Record;
+import com.lanstar.plugin.jsconstants.JsConstantBuilder;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
 import java.util.ArrayList;
@@ -81,18 +82,24 @@ public class ProfessionsController extends Controller {
         if ( id == null ) profession.save();
         else profession.update();
         renderJson( profession.getId() );
+
+        JsConstantBuilder.me().build();
     }
 
     public void delProfession() {
         Integer id = getParaToInt( "id" );
         if ( id != null ) renderJson( Profession.dao.deleteById( id ) );
         else renderJson( false );
+
+        JsConstantBuilder.me().build();
     }
 
     public void removeIndustry() {
         Integer id = getParaToInt( "id" );
         if ( id != null ) renderJson( Industry.dao.deleteById( id ) );
         else renderJson( false );
+
+        JsConstantBuilder.me().build();
     }
 
     public void saveIndustry() {
@@ -109,5 +116,7 @@ public class ProfessionsController extends Controller {
         if ( id == null ) industry.save();
         else industry.update();
         renderJson( industry.getId() );
+
+        JsConstantBuilder.me().build();
     }
 }

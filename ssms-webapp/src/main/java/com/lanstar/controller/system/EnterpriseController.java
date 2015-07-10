@@ -10,11 +10,13 @@ package com.lanstar.controller.system;
 
 import com.google.common.base.Splitter;
 import com.google.common.primitives.Ints;
+import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.Enterprise;
 import com.lanstar.model.system.EnterpriseProfession;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.plugin.staticcache.CacheManager;
 import com.lanstar.service.enterprise.EnterpriseProfessionService;
 import com.lanstar.service.TenantService;
 
@@ -82,5 +84,12 @@ public class EnterpriseController extends SimplateController<Enterprise> {
             professionList.add( Integer.valueOf( professionId ) );
         }
         service.setProfession( Ints.toArray( professionList ) );
+
+        CacheManager.me().getCache( TenantCache.class ).refresh();
+    }
+
+    @Override
+    protected void afterDel( Enterprise model ) {
+        CacheManager.me().getCache( TenantCache.class ).refresh();
     }
 }

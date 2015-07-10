@@ -11,21 +11,21 @@
         <div class="content">
             <ul class="toollist ue-clear">
                 <li>
-                    <a href="/e/stdtmp/" target="_top" class="img">
+                    <a href="/e/stdtmp/tree" target="_top" class="img">
                         <img src="/resource/images/icon01.png"/>
 
                         <p>体系创建</p>
                     </a>
                 </li>
                 <li style="padding-top:6px;width:100px;margin-left:5px;margin-right:0;">
-                    <a href="/e/stdtmp/query">
+                    <a href="/e/stdtmp/view/0-0">
                         <p>未创建项/合计项</p>
                         <span style="color:red;font-size:20px;">${todo.notCreateFileCount}/${todo.fileCount}</span>
                     </a>
                 </li>
                 <li style="padding-top:5px;margin-left:0;"><img src="/resource/images/arrow_right.png"/></li>
                 <li>
-                    <a href="/e/grade_m/" class="img">
+                    <a href="/e/gradeplan/" class="img">
                         <img src="/resource/images/icon04.png"/>
 
                         <p>在线自评</p>
@@ -41,7 +41,7 @@
                 </li>
                 <li style="padding-top:5px;"><img src="/resource/images/arrow_right.png"/></li>
                 <li>
-                    <a href="/e/grade_m/review_result" class="img">
+                    <a href="/e/reviewresult/" class="img">
                         <img src="/resource/images/icon09.png"/>
 
                         <p>评审管理</p>

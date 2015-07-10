@@ -18,7 +18,7 @@ import com.lanstar.render.CaptchaRender;
 
 public class HomeController extends Controller {
     /**是否需要验证码*/
-    boolean bCheckCode = false;
+    boolean bCheckCode = true;
     
     public void index() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
