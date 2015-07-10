@@ -138,7 +138,7 @@
             <groupId>com.lanstar</groupId>
             <artifactId>aspwords</artifactId>
             <version>1.0</version>
-            <systemPath>${basedir}/lib/AspWords_C01.jar</systemPath>
+            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/AspWords_C01.jar</systemPath>
             <scope>system</scope>
         </dependency>
     </dependencies>
