@@ -31,14 +31,12 @@
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isReadonly()==false, click: saveClick">保存</a>
         <#else>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-add" data-bind="click: addItem">新建隐患项目</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isReadonly()==false, click: saveClick">保存</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-remove" data-bind="visible:isReadonly()==false, click: remove">删除</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isSave==false, click: saveClick">保存</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-remove" data-bind="visible:isSave==false, click: remove">删除</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="panelLoad('${BASE_PATH}/?fileid=${file.id}')">返回列表</a>
         <#if file.templateModel??>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp/file/view/${file.sourceFile.id}')}">查看模板</a>
         </#if>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-pre" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">上一条</a>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-next" onclick="$.messager.alert('提示','该功能正在开发中，暂不支持...')">下一条</a>
         </#if>
         
         <span style="position: absolute; right: 30px;">
@@ -101,8 +99,8 @@
             <tr>
                 <td class="label">隐患闭环情况</td>
                 <td>
-                    <label><input type="radio" name="B_FINISH" data-bind="disable:isReadonly,checked: B_FINISH, enable: hasEmpty" value="1"/>已闭环</label>
-                    <label><input type="radio" name="B_FINISH" data-bind="disable:isReadonly,checked: B_FINISH" value="0"/>未闭环</label>
+                    <label><input type="radio" name="B_FINISH" data-bind="disable:isSave,checked: B_FINISH, enable: hasEmpty" value="1"/>已闭环</label>
+                    <label><input type="radio" name="B_FINISH" data-bind="disable:isSave,checked: B_FINISH" value="0"/>未闭环</label>
                 </td>
             </tr>
             <#if file.explain?? && file.explain?length!=0>
@@ -143,6 +141,7 @@
         SID: ko.observable('${SID!}'),
         R_TMPFILE: '${file.id}'
     };
+    var isSave=model.B_FINISH()=='1'
     var settings = {
         levelSource: ko.observableArray([{code: '01', name: '一般隐患'}, {code: '02', name: '重大隐患'}]),
         typeSource: ko.observableArray([{code: '01', name: '预防'}, {code: '02', name: '纠正'}]),
