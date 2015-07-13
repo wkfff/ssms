@@ -68,7 +68,7 @@
                             </tr>
                         </#list>
                     <#else>
-                        <tr class="ue-clear">
+                        <tr>
                             <td colspan="2"><span style="padding-left:5px;">暂时还没有通知公告。</span></td>
                         </tr>
                     </#if>
