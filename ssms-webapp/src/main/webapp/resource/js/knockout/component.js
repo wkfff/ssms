@@ -883,8 +883,10 @@ ko.bindingHandlers.formValue = {
                 funName = "";
                 updateValFunc = utils.debounce(function () {
                     var _ref;
-                    value($(element).datagrid('getSelected'));
-                    return (_ref = events[funName]) != null ? _ref.apply($(element), arguments) : void 0;
+                    if ($.data(element, "datagrid")) {
+                        value($(element).datagrid('getSelected'));
+                        return (_ref = events[funName]) != null ? _ref.apply($(element), arguments) : void 0;
+                    }
                 }, 1);
                 options.onSelect = function () {
                     funName = "onSelect";
