@@ -23,6 +23,7 @@ import com.lanstar.common.kit.JsonKit;
 import com.lanstar.common.kit.ServletKit;
 import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.config.*;
+import com.lanstar.controller.BrowerController;
 import com.lanstar.controller.HomeController;
 import com.lanstar.core.Rapidware;
 import com.lanstar.core.render.FreeMarkerRender;
@@ -72,11 +73,13 @@ public class WebAppConfig extends RapidwareConfig {
 
     @Override
     public void configRoute( Routes me ) {
-        me.add( "/", HomeController.class );
         me.add( EnterpriseRoutes.me() );
         me.add( ReviewRoutes.me() );
         me.add( GovernmentRoutes.me() );
         me.add( SystemRoutes.me() );
+
+        me.add( "/", HomeController.class );
+        me.add( "/browsers", BrowerController.class );
     }
 
     @Override
@@ -134,6 +137,7 @@ public class WebAppConfig extends RapidwareConfig {
 
     @Override
     public void configInterceptor( Interceptors me ) {
+        me.add( new UserAgentInterceptor() );
         me.add( new IdentityInterceptor() );
         me.add( new TenantDsSwitcher() );
         me.add( new TemplateVariableInjector() );
@@ -142,6 +146,7 @@ public class WebAppConfig extends RapidwareConfig {
 
     @Override
     public void configHandler( Handlers me ) {
+        //me.add( new UserAgentHandle() );
         me.add( new ActionJsHandle() );
     }
 
