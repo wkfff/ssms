@@ -65,19 +65,47 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantMod
         return getInt( "SID" );
     }
 
+    public String getName() {
+        return getStr( "C_NAME" );
+    }
+
+    public void setName( String name ) {
+        set( "C_NAME", name );
+    }
+
+    /**
+     * 获取模板文件所属专业的ID
+     */
+    public int getProfessionId() {
+        return getInt( "P_PROFESSION" );
+    }
+
+    /**
+     * 设置模板文件所属专业的ID
+     */
+    public void setProfessionId( int professionId ) {
+        set( "P_PROFESSION", professionId );
+    }
+
+    /**
+     * 获取所属模板的ID
+     */
+    public int getTemplateId() {
+        return getInt( "R_TEMPLATE" );
+    }
+
+    /**
+     * 设置所属模板的ID
+     */
+    public void setTemplateId( int templateId ) {
+        set( "R_TEMPLATE", templateId );
+    }
+
     /**
      * 获取模板文件ID
      */
     public int getTemplateFileId() {
         return getInt( Const.TEMPLATE_FILE_PARENT_FIELD );
-    }
-
-    /**
-     * 获取关联的文件
-     */
-    public TemplateFile getTemplateFile() {
-        Tenant tenant = getTenant();
-        return TemplateFile.findFirst( getTemplateId(), tenant.getTenantId(), getProfessionId(), getTemplateFileId() );
     }
 
     /**
@@ -110,31 +138,11 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantMod
     }
 
     /**
-     * 获取模板文件所属专业的ID
+     * 获取关联的文件
      */
-    public int getProfessionId() {
-        return getInt( "P_PROFESSION" );
-    }
-
-    /**
-     * 设置模板文件所属专业的ID
-     */
-    public void setProfessionId( int professionId ) {
-        set( "P_PROFESSION", professionId );
-    }
-
-    /**
-     * 获取所属模板的ID
-     */
-    public int getTemplateId() {
-        return getInt( "R_TEMPLATE" );
-    }
-
-    /**
-     * 设置所属模板的ID
-     */
-    public void setTemplateId( int templateId ) {
-        set( "R_TEMPLATE", templateId );
+    public TemplateFile getTemplateFile() {
+        Tenant tenant = getTenant();
+        return TemplateFile.findFirst( getTemplateId(), tenant.getTenantId(), getProfessionId(), getTemplateFileId() );
     }
 
     /**
@@ -151,13 +159,5 @@ public class TemplateFileModel<T extends TemplateFileModel<T>> extends TenantMod
     public void setContentText( String text ) {
         TemplateProp templateProp = TemplatePropPlugin.me().get( ModelType.TENANT, getClass() );
         TemplateText.saveContent( getTemplateId(), getTenant(), getProfessionId(), templateProp.getCode(), getId(), text, getOperator() );
-    }
-
-    public String getName() {
-        return getStr( "C_NAME" );
-    }
-
-    public void setName( String name ) {
-        set( "C_NAME", name );
     }
 }

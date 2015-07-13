@@ -93,10 +93,17 @@ public class TemplateFile extends TenantModel<TemplateFile> {
     }
 
     /**
+     * 获取所属目录ID
+     */
+    public int getFolderId() {
+        return getInt( "R_SID" );
+    }
+
+    /**
      * 获取所属目录
      */
     public TemplateFolder getFolder() {
-        return TemplateFolder.dao.findById( getFolderId() );
+        return TemplateFolder.findFolder( getTenant(), getTemplateId(), getProfessionId(), getFolderId() );
     }
 
     /**
@@ -170,13 +177,6 @@ public class TemplateFile extends TenantModel<TemplateFile> {
     }
 
     /**
-     * 获取所属目录ID
-     */
-    public int getFolderId() {
-        return getInt( "R_SID" );
-    }
-
-    /**
      * 获取文件版本号
      */
     public int getVersion() {
@@ -247,11 +247,10 @@ public class TemplateFile extends TenantModel<TemplateFile> {
 
     public ArchiveModel<?> getTemplateModel() {
         if ( archiveModel == null )
-            archiveModel = (ArchiveModel<?>) getTemplateProp().getModel( ModelType.SYSTEM_ARCHIVE )
-                                                              .getDao()
-                                                              .findFirstByColumns(
-                                                                      ListKit.newArrayList( "R_TEMPLATE", "R_TMPFILE", "N_VERSION" ),
-                                                                      ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
+            archiveModel = (ArchiveModel<?>) getTemplateProp()
+                    .getModel( ModelType.SYSTEM_ARCHIVE ).getDao().findFirstByColumns(
+                            ListKit.newArrayList( "R_TEMPLATE", "R_TMPFILE", "N_VERSION" ),
+                            ListKit.newObjectArrayList( getTemplateId(), getId(), getVersion() ) );
         return archiveModel;
     }
 }

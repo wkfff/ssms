@@ -8,11 +8,23 @@
 
 package com.lanstar.model.tenant;
 
+import com.lanstar.common.ListKit;
 import com.lanstar.identity.Tenant;
 import com.lanstar.plugin.activerecord.ModelExt;
 
 public class TemplateFolder extends ModelExt<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
+
+    public static TemplateFolder findFolder( Tenant tenant, int templateId, int professionId, int folderId ) {
+        return dao.findFirstByColumns(
+                ListKit.newArrayList( "R_TENANT", "P_TENANT", "R_TEMPLATE", "P_PROFESSION", "SID" ),
+                ListKit.newObjectArrayList(
+                        tenant.getTenantId(),
+                        tenant.getTenantType().getName(),
+                        templateId,
+                        professionId,
+                        folderId ) );
+    }
 
     public int getVersion() {
         return getInt( "N_VERSION" );
