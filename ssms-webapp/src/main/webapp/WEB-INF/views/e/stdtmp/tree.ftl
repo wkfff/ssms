@@ -67,9 +67,11 @@
 
     <@layout.put block="footer">
     <script type="text/javascript" src="/resource/js/plupload/plupload.min.js"></script>
+    <link rel="stylesheet" href="/resource/js/kindeditor/themes/default/default.css" />
         <#if DEV_MODE>
         <script type="text/javascript" src="/resource/js/kindeditor/kindeditor.js"></script>
         <script type="text/javascript" src="/resource/js/kindeditor/plugins/autoheight/autoheight.js"></script>
+        <script type="text/javascript" src="/resource/js/kindeditor/lang/zh_CN.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/htmleditor.js"></script>
@@ -83,6 +85,11 @@
     <script type="text/javascript">
         function doSelect(node) {
             if (node.url != null && node.url.length > 0) {
+
+                var $content = $("#content");
+                var options = $content.panel('options');
+                if (options.href === node.url) return;
+
                 var title = '<span>' + $(node.target).find('.title').text() + '</span>';
                 var parent = $(this).tree('getParent', node.target);
                 while (parent != null) {
@@ -90,7 +97,7 @@
                     parent = $(this).tree('getParent', parent.target);
                 }
                 $('#content_title').html(title);
-                $("#content").panel("refresh", node.url);
+                $content.panel("refresh", node.url);
 
                 if ($(node.target).find(".icon-new").length > 0) {
                     $.messager.confirm("提醒", "达标体系模板新增加了【" + $(node.target).find('.title').text() + "】文件。请确认是否同步添加？");

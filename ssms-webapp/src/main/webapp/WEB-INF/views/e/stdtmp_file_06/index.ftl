@@ -81,7 +81,7 @@
                 }
                 $.messager.confirm('确认', '是否确认要删除选中数据？', function (r) {
                     if (r) {
-                        $.post('del', {sid: value.SID}, function () {
+                        $.post('${BASE_PATH}/del', {sid: value.SID}, function () {
                             $.messager.alert('消息', '成功删除记录！', "info", function () {
                                 events.refreshClick();
                             });

@@ -20,7 +20,7 @@
                     <a href="/e/stdtmp/tree" target="_top" style="color: #ff0000;">>>更多</a></td>
             </tr>
         <#else>
-            <tr class="ue-clear">
+            <tr>
                 <td colspan="2" style="padding-left:5px;">暂时还没有待办。</td>
             </tr>
         </#if>
@@ -56,7 +56,7 @@
                     <a href="/e/todo/stdtmp06/" target="_top" style="color: #ff0000;">>>更多</a></td>
             </tr>
         <#else>
-            <tr class="ue-clear">
+            <tr>
                 <td colspan="2" style="padding-left:5px;">暂时还没有待办。</td>
             </tr>
         </#if>
@@ -90,7 +90,7 @@
                     <a href="/e/todo/stdtmp08/" target="_top" style="color: #ff0000;">>>更多</a></td>
             </tr>
         <#else>
-            <tr class="ue-clear">
+            <tr>
                 <td colspan="2" style="padding-left:5px;">暂时还没有待办。</td>
             </tr>
         </#if>
@@ -123,7 +123,7 @@
                     <a href="/e/todo/stdtmp07/" target="_top" style="color: #ff0000;">>>更多</a></td>
             </tr>
         <#else>
-            <tr class="ue-clear">
+            <tr>
                 <td colspan="2" style="padding-left:5px;">暂时还没有待办。</td>
             </tr>
         </#if>

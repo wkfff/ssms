@@ -23,6 +23,7 @@ import com.lanstar.common.kit.JsonKit;
 import com.lanstar.common.kit.ServletKit;
 import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.config.*;
+import com.lanstar.controller.BrowerController;
 import com.lanstar.controller.HomeController;
 import com.lanstar.core.Rapidware;
 import com.lanstar.core.render.FreeMarkerRender;
@@ -32,7 +33,9 @@ import com.lanstar.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.lanstar.plugin.attachfile.ResourcePlugin;
 import com.lanstar.plugin.attachfile.SimpleResourceService;
 import com.lanstar.plugin.druid.DruidPlugin;
+import com.lanstar.plugin.jsconstants.AreaGetter;
 import com.lanstar.plugin.jsconstants.JsConstantBuilder;
+import com.lanstar.plugin.jsconstants.ProfessionGetter;
 import com.lanstar.plugin.quartz.QuartzPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
 import com.lanstar.plugin.staticcache.StaticCachePlugin;
@@ -70,11 +73,13 @@ public class WebAppConfig extends RapidwareConfig {
 
     @Override
     public void configRoute( Routes me ) {
-        me.add( "/", HomeController.class );
         me.add( EnterpriseRoutes.me() );
         me.add( ReviewRoutes.me() );
         me.add( GovernmentRoutes.me() );
         me.add( SystemRoutes.me() );
+
+        me.add( "/", HomeController.class );
+        me.add( "/browsers", BrowerController.class );
     }
 
     @Override
@@ -123,12 +128,16 @@ public class WebAppConfig extends RapidwareConfig {
         TemplatePropPlugin templatePropPlugin = TemplatePropPlugin.me().add( new TemplatePropsConfig() );
         me.add( templatePropPlugin );
 
-        JsConstantBuilder.me().setFilePath( ServletKit.getRealPath( "/resource/js/costants.js" ) );
+        JsConstantBuilder.me()
+                         .add( new AreaGetter() )
+                         .add( new ProfessionGetter() )
+                         .setFilePath( ServletKit.getRealPath( "/resource/js/costants.js" ) );
         me.add( JsConstantBuilder.me() );
     }
 
     @Override
     public void configInterceptor( Interceptors me ) {
+        me.add( new UserAgentInterceptor() );
         me.add( new IdentityInterceptor() );
         me.add( new TenantDsSwitcher() );
         me.add( new TemplateVariableInjector() );
@@ -137,6 +146,7 @@ public class WebAppConfig extends RapidwareConfig {
 
     @Override
     public void configHandler( Handlers me ) {
+        //me.add( new UserAgentHandle() );
         me.add( new ActionJsHandle() );
     }
 

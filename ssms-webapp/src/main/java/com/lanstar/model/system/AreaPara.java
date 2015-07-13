@@ -21,6 +21,10 @@ public class AreaPara extends ModelExt<AreaPara> {
         return find( "select * from sys_para_area where R_PARENT=? order by N_INDEX,C_CODE", getId() );
     }
 
+    public Object getParentCode() {
+        return getStr( "R_CODE" );
+    }
+
     public String getCode() {
         return getStr( "C_CODE" );
     }
