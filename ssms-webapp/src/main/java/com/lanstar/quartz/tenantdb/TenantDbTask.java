@@ -30,7 +30,7 @@ public class TenantDbTask extends AbstractTask {
             for ( String dsName : allProvider.keySet() ) {
                 DsKit.switchDs( dataSource, dsName );
 
-                for ( Class<Task> task : TaskMap.me().tasks() ) {
+                for ( Class<? extends Task> task : TaskMap.me().tasks() ) {
                     Task instance = task.newInstance();
                     instance.execute( dataSource );
                 }

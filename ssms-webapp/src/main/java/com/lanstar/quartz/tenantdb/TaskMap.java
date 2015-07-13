@@ -9,8 +9,10 @@
 package com.lanstar.quartz.tenantdb;
 
 import com.google.common.collect.Lists;
+import com.lanstar.common.kit.BeanKit;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class TaskMap {
     private static TaskMap me = new TaskMap();
@@ -19,14 +21,22 @@ public class TaskMap {
         return me;
     }
 
-    private List<Class<Task>> list = Lists.newArrayList();
+    private List<Class<? extends Task>> list = Lists.newArrayList();
 
-    public List<Class<Task>> tasks() {
+    public List<Class<? extends Task>> tasks() {
         return list;
     }
 
-    public TaskMap add( Class<Task> task ) {
+    public TaskMap add( Class<? extends Task> task ) {
         list.add( task );
         return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Task> T getTask( Class<T> task ) {
+        for ( Class<? extends Task> taskClass : list ) {
+            if ( task.isAssignableFrom( taskClass ) ) return (T) BeanKit.newInstance( taskClass );
+        }
+        throw new NoSuchElementException( "无法找到匹配的任务元素" );
     }
 }

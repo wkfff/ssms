@@ -12,9 +12,10 @@ import com.lanstar.app.Const;
 import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile06;
-import com.lanstar.model.tenant.TemplateText;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.quartz.tenantdb.TaskMap;
+import com.lanstar.quartz.tenantdb.TemplateFile06Task;
 import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile06Controller extends TemplateFileController<TemplateFile06> {
@@ -67,5 +68,7 @@ public class TemplateFile06Controller extends TemplateFileController<TemplateFil
 
     @Override
     protected void afterSave( TemplateFile06 model ) {
+        TemplateFile06Task task = TaskMap.me().getTask( TemplateFile06Task.class );
+        // TODO 创建待办
     }
 }

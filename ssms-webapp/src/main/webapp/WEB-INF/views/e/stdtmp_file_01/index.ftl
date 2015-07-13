@@ -21,14 +21,14 @@
 <div id="kocontainer">
     <div class="z-toolbar" data-bind="visible:!readonly">
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">发布</a>
-        <#if SID??>
+    <#if SID??>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: passClick">年审通过</a>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf" data-bind="click: function(){window.location.href='${BASE_PATH}/export/${SID}'}">导出</a>
-        </#if>
-        <#if file.templateModel??>
+    </#if>
+    <#if file.templateModel??>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp/file/view/${file.sourceFile.id}')}">查看模板</a>
-        </#if>
-        
+    </#if>
+
         <span style="position: absolute; right: 30px;">
             编辑状态：<span style="font-size: 12px; font-weight: bold; color: red"><#if SID??>编辑<#else>新增</#if></span>
         </span>
@@ -82,35 +82,35 @@
             <tr>
                 <td>编制日期:</td>
                 <td>
-                    <input data-bind="disable: readonly,dateboxValue: T_DATE_01"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_DATE_01" required/>
                 </td>
                 <td>审核日期:</td>
                 <td>
-                    <input data-bind="disable: readonly,dateboxValue: T_DATE_02"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_DATE_02" required/>
                 </td>
             </tr>
 
             <tr>
                 <td>批准日期:</td>
                 <td>
-                    <input data-bind="disable: readonly,dateboxValue: T_DATE_03"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_DATE_03" required/>
                 </td>
                 <td>生效日期:</td>
                 <td>
-                    <input data-bind="disable: readonly,dateboxValue: T_DATE_04"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_DATE_04" required/>
                 </td>
             </tr>
-            <#if file.explain?? && file.explain?length!=0>
+        <#if file.explain?? && file.explain?length!=0>
             <tr>
-            <td colspan="4">
-                <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
-                <div style="background-color: #CCCCCC;">政策解读:</div>
-                <table style="table-layout: auto;"></table>
-                ${file.explain}
-                </div>
-            </td>
+                <td colspan="4">
+                    <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
+                        <div style="background-color: #CCCCCC;">政策解读:</div>
+                        <table style="table-layout: auto;"></table>
+                    ${file.explain}
+                    </div>
+                </td>
             </tr>
-            </#if>
+        </#if>
             <tr data-bind="visible: SID">
                 <td colspan="4">
                     <a href="javascript:void(0);" data-bind="uploadOptions: {module: 'STDTMP_FILE_01', sid: '${SID!}'}">[选择文件]</a>
@@ -122,15 +122,15 @@
                 <td colspan="4">
                     <table id="item">
                         <tr>
-                        <td>序号</td>
-                        <td>年审时间</td>
-                        <td>操作人</td>
+                            <td>序号</td>
+                            <td>年审时间</td>
+                            <td>操作人</td>
                         </tr>
                         <#list pass as list>
                             <tr>
-                            <td>${list_index+1}</td>
-                            <td>${list.T_DATE_01!}</td>
-                            <td>${list.S_CREATE!}</td>
+                                <td>${list_index+1}</td>
+                                <td>${list.T_DATE_01!}</td>
+                                <td>${list.S_CREATE!}</td>
                             </tr>
                         </#list>
                     </table>
@@ -167,10 +167,10 @@
                     utils.messager.closeProgress();
                     $.messager.alert("提示", "保存成功", "info");
                     panelLoad('${BASE_PATH}/${file.id}');
-                }else {
+                } else {
                     $.messager.alert("提示", "保存失败", "warning", function () {
                         utils.messager.closeProgress();
-                    }); 
+                    });
                 }
             }, "json");
         },
@@ -197,7 +197,7 @@
     };
 
     var onPanelLoad = function () {
-        var vm = $.extend({}, model,extModel, events);
+        var vm = $.extend({}, model, extModel, events);
         ko.applyBindings(vm, document.getElementById('kocontainer'));
     }
 </script>

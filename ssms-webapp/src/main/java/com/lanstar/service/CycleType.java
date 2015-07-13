@@ -97,5 +97,8 @@ public enum CycleType {
         throw new IllegalArgumentException( "无法找到值" );
     }
 
+    /**
+     * 获取提前天数
+     */
     public abstract Date advance( int days, Date date );
 }

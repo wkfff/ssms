@@ -8,9 +8,11 @@
 
 package com.lanstar.controller.enterprise;
 
+import com.lanstar.app.Const;
 import com.lanstar.common.Asserts;
 import com.lanstar.common.ListKit;
 import com.lanstar.common.ModelInjector;
+import com.lanstar.core.aop.Before;
 import com.lanstar.identity.TenantType;
 import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
@@ -18,8 +20,14 @@ import com.lanstar.model.tenant.TemplateFile01;
 import com.lanstar.model.tenant.TemplateFile01Item;
 import com.lanstar.model.tenant.TemplateText;
 import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.plugin.activerecord.tx.Tx;
+import com.lanstar.plugin.activerecord.tx.TxConfig;
+import com.lanstar.quartz.tenantdb.TaskMap;
+import com.lanstar.quartz.tenantdb.TemplateFile01Task;
 import com.lanstar.render.aspose.AsposeRender;
 import com.lanstar.render.aspose.OutputFormat;
+import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoType;
 import com.lanstar.service.enterprise.UniqueTag;
 
 import java.util.Calendar;
@@ -71,6 +79,9 @@ public class TemplateFile01Controller extends TemplateFileController<TemplateFil
     protected void afterSave( TemplateFile01 model ) {
         String content = getPara( "htmlContent" );
         model.setContentText( content );
+
+        // 处理待办逻辑
+        TaskMap.me().getTask( TemplateFile01Task.class ).createTodo( model );
     }
 
     public void export() {
@@ -81,6 +92,11 @@ public class TemplateFile01Controller extends TemplateFileController<TemplateFil
         render( AsposeRender.me( content, fileItem.getName(), OutputFormat.PDF ) );
     }
 
+    /**
+     * 年审
+     */
+    @Before(Tx.class)
+    @TxConfig(Const.TENANT_DB_NAME)
     public void pass() {
         TemplateFile01Item model = new TemplateFile01Item();
         Integer sid = getParaToInt( "SID" );
@@ -96,6 +112,11 @@ public class TemplateFile01Controller extends TemplateFileController<TemplateFil
             ModelInjector.injectOpreator( model, identityContext );
 
             if ( model.save() ) {
+                UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+                TodoType.STDFILE01.finishTodo(
+                        TodoService.with( identityContext.getTenant() ),
+                        sid,
+                        uniqueTag.getProfessionId(), uniqueTag.getTemplateId(), identityContext.getIdentity() );
                 // 审核通过
                 renderJson( "1" );
             } else {

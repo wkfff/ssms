@@ -7,21 +7,20 @@
  */
 package com.lanstar.quartz.tenantdb;
 
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import com.lanstar.identity.Tenant;
 import com.lanstar.model.tenant.TemplateFile06;
 import com.lanstar.service.common.todo.TodoBean;
 import com.lanstar.service.common.todo.TodoService;
 import com.lanstar.service.common.todo.TodoType;
 
+import javax.sql.DataSource;
+import java.util.List;
+
 /**
  * 隐患排查
  *
  */
-public class TemplateFile06Task implements Task {
+public class TemplateFile06Task extends TemplateFileTask<TemplateFile06> {
     @Override
     public void execute( DataSource dataSource ) {
         List<TemplateFile06> all = TemplateFile06.dao.find("select * from SSM_STDTMP_FILE_06 where datediff(t_test_next,now())=90");
@@ -39,6 +38,26 @@ public class TemplateFile06Task implements Task {
             // 生成待办
             TodoType.STDFILE06.createTodo( TodoService.with( tenant ), bean, TodoUser.INST );
         }
+    }
+
+    @Override
+    public List<TemplateFile06> list() {
+        return null;
+    }
+
+    @Override
+    public boolean validate( TemplateFile06 item ) {
+        return false;
+    }
+
+    @Override
+    protected TodoBean genTodoBean( TemplateFile06 item ) {
+        return null;
+    }
+
+    @Override
+    protected void createTodo( TemplateFile06 item, TodoBean bean ) {
+
     }
 
 }

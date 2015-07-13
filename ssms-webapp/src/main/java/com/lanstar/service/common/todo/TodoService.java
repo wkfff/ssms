@@ -207,7 +207,7 @@ public class TodoService {
                 done.setTitle( bean.getTitle() );
                 done.setEndTime( bean.getEndTime() );
                 done.setBeginTime( bean.getBeginTime() );
-                done.setNotifyTime( bean.getNotifyTime() );
+                //done.setNotifyTime( bean.getNotifyTime() );
                 done.setSignature( bean.getSignature() );
                 done.setSrcId( bean.getSrcId() );
                 ModelInjector.injectOpreator( done, operator, true );

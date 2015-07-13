@@ -41,6 +41,7 @@ import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
 import com.lanstar.plugin.staticcache.StaticCachePlugin;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
+import com.lanstar.quartz.tenantdb.*;
 import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateMethodModelEx;
@@ -121,7 +122,13 @@ public class WebAppConfig extends RapidwareConfig {
         me.add( new StaticCachePlugin( new TenantCache() ) );
 
         // 任务调度插件配置
-        // TaskMap.me().add(  )
+        TaskMap.me()
+               .add( TemplateFile01Task.class )
+               .add( TemplateFile06Task.class )
+               .add( TemplateFile07Task.class )
+               .add( TemplateFile08Task.class )
+               .add( TemplateFile09Task.class );
+
         QuartzPlugin quartzPlugin = new QuartzPlugin( "quartz_jobs.properties", "quartz.properties" );
         me.add( quartzPlugin );
 
