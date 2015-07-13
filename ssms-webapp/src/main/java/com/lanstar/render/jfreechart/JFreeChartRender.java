@@ -11,9 +11,14 @@ package com.lanstar.render.jfreechart;
 import com.lanstar.common.log.Logger;
 import com.lanstar.core.render.Render;
 import com.lanstar.core.render.RenderException;
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.StandardChartTheme;
+import org.jfree.chart.plot.PieLabelLinkStyle;
+import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.chart.renderer.xy.StandardXYBarPainter;
+import org.jfree.ui.RectangleInsets;
 
 import java.awt.*;
 import java.io.IOException;
@@ -26,15 +31,40 @@ public class JFreeChartRender extends Render {
     private final Chart<?> chart;
     private static final StandardChartTheme standardChartTheme;
 
+    private static Font FONT = new Font( "宋体", Font.PLAIN, 12 );
+
     static {
         //创建主题样式
         standardChartTheme = new StandardChartTheme( "CN" );
-        //设置标题字体
-        standardChartTheme.setExtraLargeFont( new Font( "宋书", Font.BOLD, 20 ) );
-        //设置图例的字体
-        standardChartTheme.setRegularFont( new Font( "宋书", Font.PLAIN, 15 ) );
-        //设置轴向的字体
-        standardChartTheme.setLargeFont( new Font( "宋书", Font.PLAIN, 15 ) );
+        standardChartTheme.setExtraLargeFont( FONT );
+        standardChartTheme.setRegularFont( FONT );
+        standardChartTheme.setLargeFont( FONT );
+        standardChartTheme.setSmallFont( FONT );
+        standardChartTheme.setTitlePaint( new Color( 51, 51, 51 ) );
+        standardChartTheme.setSubtitlePaint( new Color( 85, 85, 85 ) );
+        standardChartTheme.setChartBackgroundPaint( Color.WHITE );
+        standardChartTheme.setLegendBackgroundPaint( Color.WHITE );// 设置标注
+        standardChartTheme.setLegendItemPaint( Color.BLACK );//
+        standardChartTheme.setChartBackgroundPaint( Color.WHITE );
+        standardChartTheme.setPlotBackgroundPaint( Color.WHITE );// 绘制区域
+        standardChartTheme.setPlotOutlinePaint( Color.WHITE );// 绘制区域外边框
+        standardChartTheme.setLabelLinkPaint( new Color( 8, 55, 114 ) );// 链接标签颜色
+        standardChartTheme.setLabelLinkStyle( PieLabelLinkStyle.CUBIC_CURVE );
+
+        standardChartTheme.setAxisOffset( new RectangleInsets( 5, 12, 5, 12 ) );
+        standardChartTheme.setDomainGridlinePaint( new Color( 192, 208, 224 ) );// X坐标轴垂直网格颜色
+        standardChartTheme.setRangeGridlinePaint( new Color( 192, 192, 192 ) );// Y坐标轴水平网格颜色
+
+        standardChartTheme.setBaselinePaint( Color.WHITE );
+        standardChartTheme.setCrosshairPaint( Color.BLUE );// 不确定含义
+        standardChartTheme.setAxisLabelPaint( new Color( 51, 51, 51 ) );// 坐标轴标题文字颜色
+        standardChartTheme.setTickLabelPaint( new Color( 67, 67, 72 ) );// 刻度数字
+        standardChartTheme.setBarPainter( new StandardBarPainter() );// 设置柱状图渲染
+        standardChartTheme.setXYBarPainter( new StandardXYBarPainter() );// XYBar 渲染
+
+        standardChartTheme.setItemLabelPaint( Color.black );
+        standardChartTheme.setThermometerPaint( Color.white );// 温度计
+        ChartFactory.setChartTheme( standardChartTheme );
     }
 
     JFreeChartRender( Chart<?> chart ) {
@@ -49,7 +79,7 @@ public class JFreeChartRender extends Render {
         try {
             os = response.getOutputStream();
             JFreeChart chart = this.chart.getChart();
-            standardChartTheme.apply( chart );
+            chart.setTextAntiAlias(false);
             ChartUtilities.writeChartAsJPEG( os, chart, this.chart.width, this.chart.height );
         } catch ( Exception e ) {
             throw new RenderException( e );

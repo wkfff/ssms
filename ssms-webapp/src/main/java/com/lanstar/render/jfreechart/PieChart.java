@@ -10,7 +10,12 @@ package com.lanstar.render.jfreechart;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class PieChart extends Chart<PieChart> {
     DefaultPieDataset dataset = new DefaultPieDataset();
@@ -31,6 +36,11 @@ public class PieChart extends Chart<PieChart> {
 
     @Override
     protected JFreeChart getChart() {
-        return ChartFactory.createPieChart( title, dataset, legend, tooltips, false );
+        JFreeChart chart = ChartFactory.createPieChart3D( title, dataset, legend, tooltips, false );
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setLabelGenerator( new StandardPieSectionLabelGenerator( "{0}({2})",
+                NumberFormat.getNumberInstance(),
+                new DecimalFormat( "0.00%" ) ) );
+        return chart;
     }
 }

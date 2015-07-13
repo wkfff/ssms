@@ -88,18 +88,14 @@
             </div>
         </div>
     </div>
-    <div class="article hright matter">
+    <div class="article hright">
         <div class="wrap-r">
             <div class="title ue-clear">
                 <h2>统计分析</h2>
             </div>
-            <div class="content" style="height:200px;text-align:center;">
-                <#--<img src="/resource/images/chart_e01.png"/>-->
-                <img src="/e/charts/chart01" width="100%"/>
-            </div>
-            <div class="content" style="height:200px;text-align:center;">
-                <#--<img src="/resource/images/chart_e02.png"/>-->
-                <img src="/e/charts/chart02" width="100%"/>
+            <div class="content" style="text-align: center">
+                <img src="/e/charts/chart01" />
+                <img src="/e/charts/chart02" />
             </div>
         </div>
     </div>
