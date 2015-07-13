@@ -27,7 +27,7 @@ public class HomeController extends Controller {
         int tenantId = identityContext.getTenantId();
         int pageSize = 8;
         //接收的通知公告
-        String sql = "select * from v_notice where r_reserver=? order by t_publish desc limit ?";
+        String sql = "select * from v_notice where r_receiver=? order by t_publish desc limit ?";
         List<Record> rs_notice = identityContext.getTenantDb().find( sql,tenantId,pageSize );
        
 //        List<Notice> rs_notice = Notice.dao.find("select * from sys_notice where t_publish is not null order by t_publish desc limit 8");
