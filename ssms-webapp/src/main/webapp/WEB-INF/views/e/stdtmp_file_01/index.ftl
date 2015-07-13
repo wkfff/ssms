@@ -23,7 +23,7 @@
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-save" data-bind="click: saveClick">发布</a>
         <#if SID??>
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-search" data-bind="click: passClick">年审通过</a>
-        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf" data-bind="click: function(){window.open('${BASE_PATH}/export/${SID}')}">导出</a>
+        <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf" data-bind="click: function(){window.location.href='${BASE_PATH}/export/${SID}'}">导出</a>
         </#if>
         <#if file.templateModel??>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp/file/view/${file.sourceFile.id}')}">查看模板</a>
