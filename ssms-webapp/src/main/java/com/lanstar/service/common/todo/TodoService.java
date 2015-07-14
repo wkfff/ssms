@@ -241,6 +241,8 @@ public class TodoService {
      * @return 如果成功完成则返回true，否则返回false。
      */
     boolean finishTodo( final Todo bean, final Identity operator ) {
+        // 待办如果不存在则返回false。
+        if ( bean == null ) return false;
         return Db.use( DbKit.getConfig( Todo.class ).getName() ).tx( new IAtom() {
             @Override
             public boolean run() throws SQLException {

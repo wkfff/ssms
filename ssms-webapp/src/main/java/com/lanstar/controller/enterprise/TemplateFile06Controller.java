@@ -9,6 +9,7 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
+import com.lanstar.identity.Identity;
 import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile06;
@@ -71,30 +72,25 @@ public class TemplateFile06Controller extends TemplateFileController<TemplateFil
 
     @Override
     protected void afterSave( TemplateFile06 model ) {
-        // TODO 创建待办 数据不存在待办
-        Integer sid = getParaToInt( "SID" );
-        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-        boolean falg=TaskMap.me().getTask( TemplateFile06Task.class ).validate( model );
-        if(falg){
-            TodoBean bean=null;
-            bean=TaskMap.me().getTask( TemplateFile06Task.class ).genTodoBean( model );
-            TodoType.STDFILE06.saveTodo( TodoService.with( identityContext.getTenant() ), bean, identityContext.getIdentity() );
-        }
-        if ( getParaToBoolean( "B_FINISH" ) ) {
-            if (TodoService.with( identityContext.getTenant() ).exists( "STDFILE06", sid, uniqueTag.getProfessionId(), uniqueTag.getTemplateId() )){
-                TodoType.STDFILE06.finishTodo(
-                    TodoService.with( identityContext.getTenant() ),
-                    sid,
-                    uniqueTag.getProfessionId(), uniqueTag.getTemplateId(), identityContext.getIdentity() );
-            } 
+        TodoService service = identityContext.getTodoService();
+        Identity operator = identityContext.getIdentity();
+        // 如果任务状态为已完成，那么要将代表完成（如果有待办的话）
+        if ( model.isFinish() ) {
+            UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+            TodoType.STDFILE06.finishTodo( service, model.getId(), uniqueTag.getProfessionId(), uniqueTag.getTemplateId(), operator );
+        } else {
+            TemplateFile06Task task = TaskMap.me().getTask( TemplateFile06Task.class );
+            // 否则要考虑创建待办了，通过待办创建的验证才可以创建待办
+            if ( task.validate( model ) ) {
+                TodoBean bean = task.genTodoBean( model );
+                TodoType.STDFILE06.saveTodo( service, bean, operator );
+            }
         }
     }
+
     @Override
     protected void afterDel( TemplateFile06 model ) {
-        Integer sid = model.getId();
-        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-        if ( TodoService.with( identityContext.getTenant() ).exists( "STDFILE06", sid, uniqueTag.getProfessionId(), uniqueTag.getTemplateId() ) ) 
-            TodoType.STDFILE06.cancelTodo( TodoService.with( identityContext.getTenant()) , sid );
+        TodoType.STDFILE06.cancelTodo( TodoService.with( identityContext.getTenant() ), model.getId() );
     }
 
 }

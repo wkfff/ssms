@@ -17,6 +17,7 @@ import com.lanstar.service.common.todo.TodoBean;
 import com.lanstar.service.common.todo.TodoService;
 import com.lanstar.service.common.todo.TodoType;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +45,10 @@ public class TemplateFile01Task extends TemplateFileTask<TemplateFile01> {
         Date date = item.getDate( "T_DATE_04" );
         if ( cycleType != null ) {
             date = cycleType.advance( file.getCycleValue(), date );
+        } else { // 制度文件默认一年一更新
+            Calendar cd = Calendar.getInstance();
+            cd.setTime( date );
+            cd.add( Calendar.YEAR, 1 );
         }
         return date;
     }

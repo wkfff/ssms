@@ -7,38 +7,36 @@
  */
 package com.lanstar.quartz.tenantdb;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
+import com.lanstar.common.kit.DateKit;
 import com.lanstar.model.tenant.TemplateFile06;
 import com.lanstar.service.common.todo.TodoBean;
 import com.lanstar.service.common.todo.TodoService;
 import com.lanstar.service.common.todo.TodoType;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 /**
  * 隐患排查
- *
  */
 public class TemplateFile06Task extends TemplateFileTask<TemplateFile06> {
     @Override
     public List<TemplateFile06> list() {
-        return TemplateFile06.dao.find( "tenant.todo.02" );
+        return TemplateFile06.dao.find( "tenant.todo.06" );
     }
 
     @Override
     public boolean validate( TemplateFile06 item ) {
-        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd" );
-        java.util.Date time = null;
-        try {
-            time = sdf.parse( sdf.format( new Date() ) );
-        } catch ( ParseException e ) {
-            e.printStackTrace();
-        }
-        long t = (item.getAcceptance().getTime() / 86400000L) - (time.getTime() / 86400000L);
-        if ( t == 90 && item.getFinish() ) return true;
-        else return false;
+        // 已完成就不创建待办了
+        if ( item.isFinish() ) return false;
+        // 90天内的要提醒
+        Calendar cd = Calendar.getInstance();
+        cd.setTime( item.getAcceptance() );
+        cd.add( Calendar.DATE, 90 );
+        String d1 = DateKit.toStr( cd.getTime() );
+        String d2 = DateKit.toStr( new Date() );
+        return d1.compareTo( d2 ) >= 0;
     }
 
     @Override
@@ -57,7 +55,7 @@ public class TemplateFile06Task extends TemplateFileTask<TemplateFile06> {
 
     @Override
     protected void createTodo( TemplateFile06 item, TodoBean bean ) {
-        TodoType.STDFILE06.saveTodo( TodoService.with( item.getTenant() ), bean, TodoUser.INST );
+        TodoType.STDFILE06.createTodo( TodoService.with( item.getTenant() ), bean, TodoUser.INST );
     }
 
 }

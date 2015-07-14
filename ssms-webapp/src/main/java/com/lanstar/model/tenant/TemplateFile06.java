@@ -18,9 +18,8 @@ public class TemplateFile06 extends TemplateFileModel<TemplateFile06> {
 
     }
 
-    public boolean getFinish() {
-        String finish=getStr( "B_FINISH" );
-        if(finish.equals( "0" )) return true;
-        else return false;
+    public boolean isFinish() {
+        String finish = getStr( "B_FINISH" );
+        return finish.equals( "0" );
     }
 }

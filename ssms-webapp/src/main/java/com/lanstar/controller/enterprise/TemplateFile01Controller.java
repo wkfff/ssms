@@ -77,11 +77,14 @@ public class TemplateFile01Controller extends TemplateFileController<TemplateFil
 
     @Override
     protected void afterSave( TemplateFile01 model ) {
+        // 保存富文本内容
         String content = getPara( "htmlContent" );
         model.setContentText( content );
+    }
 
-        // 处理待办逻辑
-        TaskMap.me().getTask( TemplateFile01Task.class ).createTodo( model );
+    @Override
+    protected void afterDel( TemplateFile01 model ) {
+        TodoType.STDFILE01.cancelTodo( identityContext.getTodoService(), model.getId() );
     }
 
     public void export() {
@@ -114,7 +117,7 @@ public class TemplateFile01Controller extends TemplateFileController<TemplateFil
             if ( model.save() ) {
                 UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
                 TodoType.STDFILE01.finishTodo(
-                        TodoService.with( identityContext.getTenant() ),
+                        identityContext.getTodoService(),
                         sid,
                         uniqueTag.getProfessionId(), uniqueTag.getTemplateId(), identityContext.getIdentity() );
                 // 审核通过
