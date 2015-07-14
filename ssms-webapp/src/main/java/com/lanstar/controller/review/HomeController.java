@@ -27,20 +27,20 @@ public class HomeController extends Controller {
         int tenantId = identityContext.getTenantId();
         int pageSize = 8;
         //接收的通知公告
-        String sql = "select * from v_notice where r_receiver=? order by t_publish desc limit ?";
-        List<Record> rs_notice = identityContext.getTenantDb().find( sql,tenantId,pageSize );
+        String sql = "SELECT * FROM V_NOTICE WHERE R_RECEIVER=? AND Z_TYPE=? ORDER BY T_PUBLISH DESC LIMIT ?";
+        List<Record> rs_notice = identityContext.getTenantDb().find( sql,tenantId,identityContext.getTenantType().getName(),pageSize );
        
 //        List<Notice> rs_notice = Notice.dao.find("select * from sys_notice where t_publish is not null order by t_publish desc limit 8");
         setAttr("rs_notice", rs_notice );
         
         //发布的通知公告
-        List<Notice> rs_notice2 = Notice.dao.find("select * from sys_notice where t_publish is not null and r_tenant=? order by t_publish desc limit 8",tenantId);
+        List<Notice> rs_notice2 = Notice.dao.find("SELECT * FROM SYS_NOTICE WHERE T_PUBLISH IS NOT NULL AND R_TENANT=? AND P_TENANT=? ORDER BY T_PUBLISH DESC LIMIT 8",tenantId,identityContext.getTenantType().getName());
         setAttr("rs_notice2", rs_notice2 );
         
-        List<Todo> rs_todo = Todo.dao.find("select * from sys_todo where c_control='REVIEW'");
+        List<Todo> rs_todo = Todo.dao.find("SELECT * FROM SYS_TODO WHERE C_CONTROL='REVIEW'");
         setAttr("rs_todo", rs_todo );
         
-        List<Done> rs_done = Done.dao.find("select * from sys_done where c_control='REVIEW'");
+        List<Done> rs_done = Done.dao.find("SELECT * FROM SYS_DONE WHERE C_CONTROL='REVIEW'");
         setAttr("rs_done", rs_done );
     }
 }

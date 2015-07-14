@@ -7,16 +7,20 @@
     <link rel="stylesheet" href="/resource/css/base.css"/>
     <link rel="stylesheet" href="/resource/css/common.css"/>
     <link rel="stylesheet" href="/resource/css/fix.css"/>
-    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
-    
     <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/resource/js/layui/layer.js"></script>
+    <script type="text/javascript" src="/resource/js/jquery.json.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/resource/js/core.js"></script>
     <script type="text/javascript" src="/resource/js/common.js"></script>
+    <script type="text/javascript" src="/resource/js/plupload/plupload.min.js"></script>
+    <script type="text/javascript" src="/resource/js/kindeditor/kindeditor.js"></script>
+    <script type="text/javascript" src="/resource/js/kindeditor/plugins/autoheight/autoheight.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/upload.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/dataPager.js"></script>
@@ -25,7 +29,7 @@
 <div class="easyui-panel" border="false" fit="true">
     <div id="toolbar" class="z-toolbar">
         <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-new" plain="true" data-bind="click: newClick">发布新的通知公告</a>
+        <a href="#" class="easyui-linkbutton" plain="true" data-bind="click: editClick">查看</a>
     </div>
     <table data-bind="datagridValue:selectItem, easyuiOptions: viewSettings"></table>
 </div>
@@ -36,8 +40,8 @@
         self.selectItem = ko.observable();
 
         self.viewSettings = {
-            url: "${BASE_PATH}/drafts_list",
-            title: "草稿箱",
+            url: "${BASE_PATH}/receives_list",
+            title: "收到的通知公告",
             idField: 'SID',
             rownumbers: true,
             pagination: true,
@@ -46,55 +50,48 @@
             toolbar: '#toolbar',
             columns: [
                 [
-                    {field: 'C_TITLE', align: 'left', title: '通知公告主题', width: 560},
-                    {field: 'T_CREATE', align: 'center', title: '创建时间', width: 130},
-                    {field: 'SID', align: 'center', title: '操作', width: 100,
-                        formatter:function(value,row){
-                            return "<a href='#' onclick='vm.editClick("+value+")'><img src='/resource/images/edtico.png'/>编辑</a>&nbsp;&nbsp;<a href='#' onclick='vm.delClick("+value+")'><img src='/resource/images/delico.png'/>删除</a>";
-                        }},
+                    {field: 'C_TITLE', align: 'left', title: '通知公告主题', width: 500},
+                    {field: 'S_PUBLISH', title: '发布单位', width: 150},
+                    {field: 'T_PUBLISH', align: 'center', title: '发布时间', width: 130}
                 ]
             ],
             onDblClickRow: function (index, row) {
-                self.editClick(row.SID);
+                self.editClick();
             }
         };
-        
+
         self.refreshClick = function () {
             self.viewSettings.datagrid('reload');
         };
 
-        self.editClick = function (sid) {
-            var index = layer.open({
-                type: 2,
-                area: ['970px', '530px'],
-                maxmin: false,
-                title:'发布通知公告',
-                content: '/sys/notice/rec?tb=0&sid=' + sid,
-                cancel: function(layero, index){alert();
-                    self.refreshClick();
-                }
-            });
-            layer.full(index);
+        self.editClick = function () {
+            var value = self.selectItem();
+            if (value == null) {
+                utils.messager.alert("请先选择一行数据！");
+                return;
+            }
+            window.location.href = '/sys/notice/view?sid=' + value.SID;
         };
-        
-        self.newClick = function(){
-            self.editClick('');
-        };
-        
-        self.delClick = function (sid) {
+        self.deleteClick = function () {
+            var value = self.selectItem();
+            if (value == null) {
+                utils.messager.alert("请先选择一行数据！");
+                return;
+            }
             utils.messager.confirm('是否确认要删除选中数据？', function (r) {
-                    $.post('${BASE_PATH}/del', {sid: sid}, function () {
-                            utils.messager.alert('成功删除记录！',function () {
-                                self.refreshClick();
-                            });
+                if (r) {
+                    $.post('${BASE_PATH}/del', {sid: value.SID}, function () {
+                        utils.messager.alert('成功删除记录！',function () {
+                            self.refreshClick();
+                        });
                     });
+                }
             });
         }
     }
-    
-    var vm = new ViewModel();
+
     $(function () {
-        ko.applyBindings(vm);
+        ko.applyBindings(new ViewModel());
     })
 </script>
 

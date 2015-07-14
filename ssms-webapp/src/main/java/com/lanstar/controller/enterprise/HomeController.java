@@ -69,8 +69,8 @@ public class HomeController extends Controller {
 //        setAttr( "rs_ry", TemplateFile07.dao.find( "select * from SSM_STDTMP_FILE_07 limit 10" ) );
         
         //接收的通知公告
-        String sql = "SELECT * FROM V_NOTICE WHERE R_RECEIVER=? ORDER BY T_PUBLISH DESC LIMIT 8";
-        List<Record> rs_notice = identityContext.getTenantDb().find( sql,identityContext.getTenantId());
+        String sql = "SELECT * FROM V_NOTICE WHERE R_RECEIVER=? AND Z_TYPE=? ORDER BY T_PUBLISH DESC LIMIT 8";
+        List<Record> rs_notice = identityContext.getTenantDb().find( sql,identityContext.getTenantId(),identityContext.getTenantType().getName());
         setAttr( "rs_notice", rs_notice );
         
         TodoService service = TodoService.with( identityContext.getTenant() );

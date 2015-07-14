@@ -1,9 +1,9 @@
-/*жф╤хнд╪Ч╢Щ╟Лйсм╪*/
+/*О©╫ф╤О©╫О©╫д╪О©╫О©╫О©╫О©╫О©╫О©╫м╪*/
 CREATE OR REPLACE  VIEW TODO_STDTMP_FILE_01
     AS
 (SELECT * FROM SSM_STDTMP_FILE_01 WHERE SID NOT IN ( SELECT R_TMPFILE_01 FROM ssm_stdtmp_file_01_item WHERE YEAR(T_DATE_01) = YEAR(NOW()) ));
 
-/*рЧ╩╪ее╡И╢Щ╟Лйсм╪*/
+/*О©╫О©╫О©╫О©╫О©╫е╡О©╫О©╫О©╫О©╫О©╫м╪*/
 CREATE OR REPLACE  VIEW  TODO_STDTMP_FILE_06 
     AS
 (SELECT * FROM SSM_STDTMP_FILE_06 WHERE DATEDIFF(T_ACCEPTANCE,NOW())=90 AND B_FINISH = '0');

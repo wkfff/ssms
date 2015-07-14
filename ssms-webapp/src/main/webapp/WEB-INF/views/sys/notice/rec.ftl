@@ -60,7 +60,10 @@
                         </li>
                         </#if>
                         <li>
-                        <input type="checkbox" data-bind="checked : at_enterprise"> <span>辖区内企业单位</span>
+                        <input type="checkbox" data-bind="checked : at_enterprise"> 
+                            <span>
+                            <#if LANSTAR_IDENTITY.tenantType='R'>归属本单位评审的企业<#else>辖区内企业单位</#if>
+                            </span>
                         <input class="button" type="button" value="选择企业单位" data-bind="click : doEnterpriseClick, disable: at_enterprise()==false"/>
                         </li>
                     </ul>
@@ -85,7 +88,8 @@
                 <div class="row clear">
                     <label>通知公告内容：</label>
                     <div style="padding-top: 10px;">
-                         <textarea id="C_CONTENT" style="width: 100%; height: 300px" data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings"></textarea>
+                         <textarea id="C_CONTENT" style="width: 100%; height: 300px" data-bind="htmleditValue: htmlContent, htmleditOptions:htmleditSettings">
+                         </textarea>
                     </div>
                 </div>
             </div>
@@ -180,7 +184,7 @@ function viewModel(){
     self.showdel = ko.observable(${SID!'-1'}!=-1);
     self.C_TITLE=ko.observable('${C_TITLE!}');
     //富文本
-    self.htmlContent = ko.observable('${C_CONTENT!}');
+    self.htmlContent = ko.observable('${json(C_CONTENT)}');
     self.htmleditSettings = {
         table: 'SYS_NOTICE',
         field: 'C_CONTENT',
