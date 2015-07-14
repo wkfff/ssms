@@ -31,8 +31,22 @@ public enum TodoType {
      * @param operator 处理人员
      */
     public final void createTodo( TodoService service, TodoBean bean, Identity operator ) {
-        bean.setSignature( name() );
+        bean.setSignature( getName() );
         service.create( bean, operator );
+    }
+
+    /**
+     * 创建或更新已经存在的待办
+     *
+     * @param service  待办服务
+     * @param bean     待办对象
+     * @param operator 处理人员
+     */
+    public final void saveTodo( TodoService service, TodoBean bean, Identity operator ) {
+        bean.setSignature( getName() );
+
+        if ( service.exists( bean ) == false ) service.create( bean, operator, true );
+        else service.update( bean, operator, true );
     }
 
     /**
@@ -43,7 +57,7 @@ public enum TodoType {
      * @param operator 处理人员
      */
     public void finishTodo( TodoService service, int srcId, Integer profession, Integer template, Identity operator ) {
-        service.finish( name(), srcId, profession, template, operator );
+        service.finish( getName(), srcId, profession, template, operator );
     }
 
     /**
@@ -52,11 +66,14 @@ public enum TodoType {
      * @param service 待办服务
      */
     public List<TodoBean> listTodo( TodoService service, Integer profession, Integer template ) {
-        return service.listTodoBean( name(), profession, template );
+        return service.listTodoBean( getName(), profession, template );
     }
-    
-    public List<TodoBean> listTodo( TodoService service, Integer profession, Integer template,int size ) {
-        return service.listTodoBean( name(), profession, template,size );
+
+    /**
+     * 获取待办列表
+     */
+    public List<TodoBean> listTodo( TodoService service, Integer profession, Integer template, int size ) {
+        return service.listTodoBean( getName(), profession, template, size );
     }
 
     /**
@@ -66,6 +83,10 @@ public enum TodoType {
      * @param srcId   记录行id
      */
     public void cancelTodo( TodoService service, int srcId ) {
-        service.cancelTodo( this.name(), srcId );
+        service.cancelTodo( this.getName(), srcId );
+    }
+
+    private String getName() {
+        return name().toUpperCase();
     }
 }
