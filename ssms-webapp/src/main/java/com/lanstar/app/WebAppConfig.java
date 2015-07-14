@@ -190,6 +190,7 @@ public class WebAppConfig extends RapidwareConfig {
         public Object exec( List arguments ) throws TemplateModelException {
             if ( arguments.size() != 1 ) return "";
             Object object = arguments.get( 0 );
+            if (object==null) return "";
             if ( object instanceof WrapperTemplateModel ) {
                 object = ((WrapperTemplateModel) object).getWrappedObject();
             }

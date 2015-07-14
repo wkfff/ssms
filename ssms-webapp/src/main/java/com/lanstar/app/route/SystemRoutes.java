@@ -23,7 +23,6 @@ public class SystemRoutes extends Routes {
     @Override
     public void config() {
         add( "/s", HomeController.class );
-
         add( "/sys/attachtext", AttachTextController.class );
         add( "/sys/attachfile", AttachFileController.class );
         add( "/sys/nav", NavgateController.class );
@@ -52,8 +51,8 @@ public class SystemRoutes extends Routes {
         add( "/sys/tenant_ru", ReviewUserController.class );
         add( "/sys/professions", ProfessionsController.class );
         add( "/knowledge", KnowledgeController.class );
-        
-        add("/sys/notice", NoticeController.class);
-        add("/sys/noticereceiver", NoticeReceiverController.class);
+        add( "/sys/notice", NoticeController.class );
+        add( "/sys/noticereceiver", NoticeReceiverController.class );
+        add( "/sys/pwd", PasswordController.class );
     }
 }

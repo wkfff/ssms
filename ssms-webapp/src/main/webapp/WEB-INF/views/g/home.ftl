@@ -14,7 +14,7 @@
         <div class="wrap-l">
             <div class="title ue-clear">
                 <h2>收到的公告</h2>
-                <a href="/sys/notice/publics" class="more">更多</a>
+                <a href="/sys/notice/receives" class="more">更多</a>
             </div>
             <div class="content">
                 <table class="notice-list">
@@ -40,7 +40,7 @@
         <div class="wrap-r">
             <div class="title ue-clear">
                 <h2>发布的公告</h2>
-                <a href="/r/notice/publics" class="more">更多</a>
+                <a href="/sys/notice/publics" class="more">更多</a>
             </div>
             <div class="content">
                 <table class="notice-list">
@@ -48,9 +48,9 @@
                         <#list rs_notice as rs>
                             <tr>
                                 <td class="more">
-                                    <a href="/g/notice/view?sid=${rs.SID}" class="notice-title" title="${rs.C_TITLE}">${rs.C_TITLE}</a>
+                                    <a href="/sys/notice/view?sid=${rs.SID}" class="notice-title" title="${rs.C_TITLE!}">${rs.C_TITLE!}</a>
                                 </td>
-                                <td class="notice-time">${rs.T_PUBLISH}</td>
+                                <td class="notice-time">${rs.T_PUBLISH!}</td>
                             </tr>
                         </#list>
                     <#else>

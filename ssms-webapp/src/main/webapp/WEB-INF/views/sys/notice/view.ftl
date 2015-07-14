@@ -136,6 +136,9 @@
                         <DIV id=arttext class=bort>
                             ${C_CONTENT!}
                         </DIV>
+                        <DIV style="padding-top:10px;">
+                                                     接收单位：${RECEIVERS!}
+                        </DIV>
                     </DIV>
                 </DIV>
             </DIV>

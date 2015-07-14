@@ -187,7 +187,13 @@ public class NoticeController extends SimplateController<Notice> {
             List<Map<String, Object>> models_e = FluentIterable.from( list ).filter( predicate_e ).transform( func ).toList();
             this.setAttr( "enterprises", JSON.toJSONString( Lists.newArrayList( models_e ) ) );
         }
-        super.rec();
+//        super.rec();
+
+        Notice model = getModel();
+        if ( model != null ) {
+            model.setContent( model.getContent() );
+            setAttrs( ModelKit.toMap( model ) );
+        }
     }
 
     /**
@@ -208,7 +214,7 @@ public class NoticeController extends SimplateController<Notice> {
     }
 
     @Override
-    protected void afterSave( Notice model ) {
+    protected void afterSave( final Notice model ) {
         // 保存后处理接收者
         String receiver_g = this.getPara( "C_RECEIVER_G" );
         String receiver_r = this.getPara( "C_RECEIVER_R" );
@@ -227,7 +233,7 @@ public class NoticeController extends SimplateController<Notice> {
                             NoticeReceiver receiver = new NoticeReceiver();
                             receiver.setR_RECEIVER( input.getInt( "R_RECEIVER" ) );
                             receiver.setS_RECEIVER( input.getStr( "S_RECEIVER" ) );
-                            receiver.set( "R_NOTICE", input.getInt( "SID" ) );
+                            receiver.set( "R_NOTICE", model.getInt( "SID" ) );
                             receiver.set( "Z_TYPE", "G" );
                             return receiver;
                         }
@@ -257,7 +263,7 @@ public class NoticeController extends SimplateController<Notice> {
                             NoticeReceiver receiver = new NoticeReceiver();
                             receiver.setR_RECEIVER( input.getInt( "R_RECEIVER" ) );
                             receiver.setS_RECEIVER( input.getStr( "S_RECEIVER" ) );
-                            receiver.set( "R_NOTICE", input.getInt( "SID" ) );
+                            receiver.set( "R_NOTICE", model.getInt( "SID" ) );
                             receiver.set( "Z_TYPE", "R" );
                             return receiver;
                         }
@@ -287,7 +293,7 @@ public class NoticeController extends SimplateController<Notice> {
                             NoticeReceiver receiver = new NoticeReceiver();
                             receiver.setR_RECEIVER( input.getInt( "R_RECEIVER" ) );
                             receiver.setS_RECEIVER( input.getStr( "S_RECEIVER" ) );
-                            receiver.set( "R_NOTICE", input.getInt( "SID" ) );
+                            receiver.set( "R_NOTICE", model.getInt( "SID" ) );
                             receiver.set( "Z_TYPE", "E" );
                             return receiver;
                         }
@@ -340,6 +346,13 @@ public class NoticeController extends SimplateController<Notice> {
                 model.update();
             }
         }
+        
+        StringBuffer sb = new StringBuffer();
+        List<NoticeReceiver> receivers = NoticeReceiver.dao.find( "select * from sys_notice_receiver where r_notice=?" ,sid);
+        for(NoticeReceiver r:receivers){
+            sb.append( r.getStr( "S_RECEIVER" ) ).append( " " );
+        }
+        this.setAttr( "RECEIVERS", sb.toString() );
 
         if ( model != null ) this.setAttrs( ModelKit.toMap( model ) );
     }
@@ -356,11 +369,13 @@ public class NoticeController extends SimplateController<Notice> {
      */
     public void publics_list() {
         SqlBuilder select = SQL.SELECT( "*" );
-        SqlBuilder from = new SqlBuilder().FROM( "V_NOTICE SYS_NOTICE" );
+        SqlBuilder from = new SqlBuilder().FROM( this.table.getName() );
         SqlBuilder where = new SqlBuilder();
 
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
-        where.WHERE( "R_RECEIVER=?", identityContext.getTenantId() );
+        where.WHERE( "R_TENANT=?", identityContext.getTenantId() );
+        where.WHERE( "P_TENANT=?", identityContext.getTenantType().getName() );
+        where.WHERE( "R_PUBLISH is not null" );
 
         if ( where != null ) from.append( where );
         SqlBuilder order = this.buildOrder();
@@ -396,6 +411,7 @@ public class NoticeController extends SimplateController<Notice> {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         // R_TENANT
         where.WHERE( "R_TENANT=?", identityContext.getTenantId() );
+        where.WHERE( "P_TENANT=?", identityContext.getTenantType().getName() );
         where.WHERE( "R_PUBLISH is null" );
 
         if ( where != null ) from.append( where );
@@ -414,4 +430,50 @@ public class NoticeController extends SimplateController<Notice> {
             this.renderJson( list );
         }
     }
+    
+    
+    /**
+     * 收到的通知公告列表
+     */
+    public void receives() {
+
+    }
+
+    /**
+     * 收到的通知公告列表
+     */
+    public void receives_list() {
+        SqlBuilder select = SQL.SELECT( "*" );
+        SqlBuilder from = new SqlBuilder().FROM( "V_NOTICE SYS_NOTICE" );
+        SqlBuilder where = new SqlBuilder();
+
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        where.WHERE( "R_RECEIVER=?", identityContext.getTenantId() );
+        where.WHERE( "Z_TYPE=?", identityContext.getTenantType().getName() );
+
+        if ( where != null ) from.append( where );
+        SqlBuilder order = this.buildOrder();
+        if ( order != null ) from.append( order );
+
+        SqlStatement selectStatement = select.toSqlStatement();
+        SqlStatement fromStatement = from.toSqlStatement();
+
+        if ( this.isParaExists( PAGE_INDEX ) && this.isParaExists( PAGE_SIZE ) ) {
+            Page<Notice> paginate = this.getDao().paginate( this.getParaToInt( PAGE_INDEX ), this.getParaToInt( PAGE_SIZE ),
+                    selectStatement.getSql(), fromStatement.getSql(), fromStatement.getParams() );
+            this.renderJson( EasyUIControllerHelper.toDatagridResult( paginate ) );
+        } else {
+            List<Notice> list = this.getDao().find( selectStatement.getSql() + " " + fromStatement.getSql(), fromStatement.getParams() );
+            this.renderJson( list );
+        }
+    }
+
+    @Override
+    protected SqlBuilder buildOrder() {
+        SqlBuilder order = new SqlBuilder();
+        order.ORDER_BY( "T_PUBLISH DESC,T_UPDATE DESC" );
+        return order;
+    }
+    
+    
 }

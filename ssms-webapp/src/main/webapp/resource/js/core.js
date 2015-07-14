@@ -54,11 +54,11 @@ var utils;
         };
         
         messager.showDialog = function (type, width, height, title, id, callback) {
-            parent.layer.open({
+            layer.open({
                 type: type, //page层
                 area: [width, height],
                 title: title,
-                maxmin: true,
+                maxmin: false,
                 btn: ['确认', '取消'],
                 yes: callback,
                 content: $('#' + id)

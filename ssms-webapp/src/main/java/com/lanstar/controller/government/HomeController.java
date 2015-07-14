@@ -10,7 +10,9 @@ package com.lanstar.controller.government;
 
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
+import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Notice;
+import com.lanstar.plugin.activerecord.Record;
 
 import java.util.List;
 
@@ -20,7 +22,14 @@ public class HomeController extends Controller {
     }
     
     public void home(){
-        List<Notice> rs_notice = Notice.dao.find("select * from sys_notice");
-        setAttr("rs_notice", rs_notice );
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+
+        //接收的通知公告
+        String sql = "SELECT * FROM V_NOTICE WHERE R_RECEIVER=? AND Z_TYPE=? ORDER BY T_PUBLISH DESC LIMIT 8";
+        List<Record> rs_notice = identityContext.getTenantDb().find( sql,identityContext.getTenantId(),identityContext.getTenantType().getName());
+        setAttr( "rs_notice", rs_notice );
+        //发布的通知公告
+        List<Notice> rs_publics = Notice.dao.find("SELECT * FROM SYS_NOTICE WHERE R_TENANT=? AND P_TENANT=? AND T_PUBLISH IS NOT NULL ORDER BY T_PUBLISH DESC LIMIT 8",identityContext.getTenantId(),identityContext.getTenantType().getName());
+        setAttr("rs_publics", rs_publics );
     }
 }
