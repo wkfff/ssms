@@ -11,5 +11,6 @@
 <sqlGroup name="tenant">
     <sqlGroup name="todo">
         <sql id="01">select * from ssm_stdtmp_file_01 where SID not in ( select R_TMPFILE_01 from ssm_stdtmp_file_01_item where year(T_DATE_01) = year(now()) )</sql>
+        <sql id="02">select * from SSM_STDTMP_FILE_06 where datediff(T_RECTIFICATION,now())=90</sql>
     </sqlGroup>
 </sqlGroup>

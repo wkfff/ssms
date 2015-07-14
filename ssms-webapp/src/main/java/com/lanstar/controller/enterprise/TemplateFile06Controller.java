@@ -16,6 +16,9 @@ import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.quartz.tenantdb.TaskMap;
 import com.lanstar.quartz.tenantdb.TemplateFile06Task;
+import com.lanstar.service.common.todo.TodoBean;
+import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoType;
 import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile06Controller extends TemplateFileController<TemplateFile06> {
@@ -29,7 +32,7 @@ public class TemplateFile06Controller extends TemplateFileController<TemplateFil
         TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
         if ( isNew ) {
             ArchiveModel<?> archiveModel = file.getTemplateModel();
-            if(archiveModel!=null){
+            if ( archiveModel != null ) {
                 setAttrs( ModelKit.toMap( archiveModel ) );
                 removeAttr( "SID" );
             }
@@ -37,12 +40,12 @@ public class TemplateFile06Controller extends TemplateFileController<TemplateFil
         setAttr( "file", file );
     }
 
-    public void rec_todo(){
+    public void rec_todo() {
         this.setAttr( "todo", "1" );
         this.rec();
         render( "rec.ftl" );
     }
-    
+
     @Override
     protected TemplateFile06 getDao() {
         return TemplateFile06.dao;
@@ -68,7 +71,30 @@ public class TemplateFile06Controller extends TemplateFileController<TemplateFil
 
     @Override
     protected void afterSave( TemplateFile06 model ) {
-        TemplateFile06Task task = TaskMap.me().getTask( TemplateFile06Task.class );
-        // TODO 创建待办
+        // TODO 创建待办 数据不存在待办
+        Integer sid = getParaToInt( "SID" );
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+        boolean falg=TaskMap.me().getTask( TemplateFile06Task.class ).validate( model );
+        if(falg){
+            TodoBean bean=null;
+            bean=TaskMap.me().getTask( TemplateFile06Task.class ).genTodoBean( model );
+            TodoType.STDFILE06.saveTodo( TodoService.with( identityContext.getTenant() ), bean, identityContext.getIdentity() );
+        }
+        if ( getParaToBoolean( "B_FINISH" ) ) {
+            if (TodoService.with( identityContext.getTenant() ).exists( "STDFILE06", sid, uniqueTag.getProfessionId(), uniqueTag.getTemplateId() )){
+                TodoType.STDFILE06.finishTodo(
+                    TodoService.with( identityContext.getTenant() ),
+                    sid,
+                    uniqueTag.getProfessionId(), uniqueTag.getTemplateId(), identityContext.getIdentity() );
+            } 
+        }
     }
+    @Override
+    protected void afterDel( TemplateFile06 model ) {
+        Integer sid = model.getId();
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+        if ( TodoService.with( identityContext.getTenant() ).exists( "STDFILE06", sid, uniqueTag.getProfessionId(), uniqueTag.getTemplateId() ) ) 
+            TodoType.STDFILE06.cancelTodo( TodoService.with( identityContext.getTenant()) , sid );
+    }
+
 }

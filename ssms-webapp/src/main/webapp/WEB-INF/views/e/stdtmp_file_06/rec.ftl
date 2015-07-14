@@ -94,12 +94,12 @@
                 <td class="label">验收人</td>
                 <td><input data-bind="disable:isReadonly,textboxValue: C_ACCEPTANCE"/></td>
                 <td class="label">验收时间</td>
-                <td><input data-bind="disable:isReadonly,dateboxValue: T_ACCEPTANCE"/></td>
+                <td><input data-bind="disable:isReadonly,dateboxValue: T_ACCEPTANCE" required/></td>
             </tr>
             <tr>
                 <td class="label">隐患闭环情况</td>
                 <td>
-                    <label><input type="radio" name="B_FINISH" data-bind="disable:isSave,checked: B_FINISH, enable: hasEmpty" value="1"/>已闭环</label>
+                    <label><input type="radio" name="B_FINISH" data-bind="disable:isSave,checked: B_FINISH" value="1"/>已闭环</label>
                     <label><input type="radio" name="B_FINISH" data-bind="disable:isSave,checked: B_FINISH" value="0"/>未闭环</label>
                 </td>
             </tr>
@@ -148,18 +148,6 @@
         levelSettings: {valueField: 'code', textField: 'name'}
     };
     var extModel = {
-        hasEmpty: ko.computed(function () {
-            var hasEmpty;
-            for (var obj in model) {
-                var value = model[obj];
-                if (typeof value === 'function') {
-                    if (value() == null || value().length == 0) {
-                        hasEmpty = true;
-                    }
-                }
-            }
-            return !hasEmpty;
-        }),
         isReadonly: ko.computed(function () {
             return model.B_FINISH() == '1';
         })

@@ -7,14 +7,15 @@
  */
 package com.lanstar.quartz.tenantdb;
 
-import com.lanstar.identity.Tenant;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import com.lanstar.model.tenant.TemplateFile06;
 import com.lanstar.service.common.todo.TodoBean;
 import com.lanstar.service.common.todo.TodoService;
 import com.lanstar.service.common.todo.TodoType;
-
-import javax.sql.DataSource;
-import java.util.List;
 
 /**
  * 隐患排查
@@ -22,42 +23,41 @@ import java.util.List;
  */
 public class TemplateFile06Task extends TemplateFileTask<TemplateFile06> {
     @Override
-    public void execute( DataSource dataSource ) {
-        List<TemplateFile06> all = TemplateFile06.dao.find("select * from SSM_STDTMP_FILE_06 where datediff(t_test_next,now())=90");
-
-        for ( TemplateFile06 file : all ) {
-            Tenant tenant = file.getTenant();
-            int professionId = file.getProfessionId();
-            int templateFileId = file.getTemplateFileId();
-            TodoBean bean = new TodoBean();
-            bean.setTemplateId( templateFileId );
-            bean.setProfessionId( professionId );
-            bean.setSrcId( file.getId() );
-//            bean.setUrl( "" );
-            bean.setTitle( "<<" + file.getName() + ">>临近下次检验("+file.getDate( "T_TEST_NEXT" )+")" );
-            // 生成待办
-            TodoType.STDFILE06.createTodo( TodoService.with( tenant ), bean, TodoUser.INST );
-        }
-    }
-
-    @Override
     public List<TemplateFile06> list() {
-        return null;
+        return TemplateFile06.dao.find( "tenant.todo.02" );
     }
 
     @Override
     public boolean validate( TemplateFile06 item ) {
-        return false;
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd" );
+        java.util.Date time = null;
+        try {
+            time = sdf.parse( sdf.format( new Date() ) );
+        } catch ( ParseException e ) {
+            e.printStackTrace();
+        }
+        long t = (item.getAcceptance().getTime() / 86400000L) - (time.getTime() / 86400000L);
+        if ( t == 90 && item.getFinish() ) return true;
+        else return false;
     }
 
     @Override
-    protected TodoBean genTodoBean( TemplateFile06 item ) {
-        return null;
+    public TodoBean genTodoBean( TemplateFile06 file ) {
+        int professionId = file.getProfessionId();
+        int templateId = file.getTemplateId();
+        TodoBean bean = new TodoBean();
+        bean.setTemplateId( templateId );
+        bean.setProfessionId( professionId );
+        bean.setSrcId( file.getId() );
+        bean.setUrl( "..." );
+        bean.setTitle( "<<" + file.getName() + ">>临近下次检验(" + file.getDate( "T_RECTIFICATION" ) + ")" );
+        // 生成待办
+        return bean;
     }
 
     @Override
     protected void createTodo( TemplateFile06 item, TodoBean bean ) {
-
+        TodoType.STDFILE06.saveTodo( TodoService.with( item.getTenant() ), bean, TodoUser.INST );
     }
 
 }

@@ -8,6 +8,19 @@
 
 package com.lanstar.model.tenant;
 
+import java.util.Date;
+
 public class TemplateFile06 extends TemplateFileModel<TemplateFile06> {
     public static final TemplateFile06 dao = new TemplateFile06();
+
+    public Date getAcceptance() {
+        return getDate( "T_ACCEPTANCE" );
+
+    }
+
+    public boolean getFinish() {
+        String finish=getStr( "B_FINISH" );
+        if(finish.equals( "0" )) return true;
+        else return false;
+    }
 }
