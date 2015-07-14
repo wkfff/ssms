@@ -174,7 +174,7 @@ public class WebAppConfig extends RapidwareConfig {
 
     private void configTemplate( Configuration me, Boolean devMode ) {
         try {
-            me.setSharedVariable( "_TITLE_", "安全生产标准化管理系统" );
+            me.setSharedVariable( "_TITLE_", "安全生产标准化服务平台" );
             me.setSharedVariable( "CONTEXT_PATH", Rapidware.me().getContextPath() );
             me.setSharedVariable( "DEV_MODE", devMode );
             // 添加JSON扩展方法               by 张铮彬#2015-5-7
