@@ -54,10 +54,10 @@
                 <td><input data-bind="disable:isReadonly,textboxValue: C_EXAMINER" required/></td>
                 <td class="label">检查时间</td>
                 <td><input data-bind="disable:isReadonly,dateboxValue: T_EXAMINE" required/></td>
-                <td class="label">隐患类型</td>
+                <#--<td class="label">隐患类型</td>
                 <td>
                     <input data-bind="disable:isReadonly,comboboxSource: typeSource, comboboxValue: P_TYPE, easyuiOptions: levelSettings" required/>
-                </td>
+                </td>-->
             </tr>
             <tr>
                 <td class="label">隐患所在区域/部门</td>
@@ -71,7 +71,7 @@
             </tr>
 
             <tr>
-                <td class="label">整改措施（包括<br/>工程技术措施、<br/>管理措施、<br/>教育措施、<br/>防护措施、<br/>应急措施）</td>
+                <td class="label">整改措施（包括整改资金）</td>
                 <td colspan="5">
                     <textarea data-bind="disable:isReadonly,textareaValue: C_MEASURE, easyuiOptions: {validType:['length[0,2000]']}" required style="height: 300px;"></textarea>
                 </td>
@@ -83,7 +83,7 @@
                 <td><input data-bind="disable:isReadonly,dateboxValue: T_RECTIFICATION" required/></td>
             </tr>
             <tr>
-                <td class="label">治理方案</td>
+                <td class="label">预案</td>
                 <td colspan="5">
                     <textarea data-bind="disable:isReadonly,textareaValue: C_PLANT, easyuiOptions: {validType:['length[0,2000]']}" required style="height: 300px;"></textarea>
                 </td>
@@ -94,7 +94,7 @@
                 <td class="label">验收人</td>
                 <td><input data-bind="disable:isReadonly,textboxValue: C_ACCEPTANCE"/></td>
                 <td class="label">验收时间</td>
-                <td><input data-bind="disable:isReadonly,dateboxValue: T_ACCEPTANCE" required/></td>
+                <td><input data-bind="disable:isReadonly,dateboxValue: T_ACCEPTANCE"/></td>
             </tr>
             <tr>
                 <td class="label">隐患闭环情况</td>
