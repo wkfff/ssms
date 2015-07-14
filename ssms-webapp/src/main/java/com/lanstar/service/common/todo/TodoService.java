@@ -51,9 +51,21 @@ public class TodoService {
      * @return 如果创建成功则返回true，否则返回false。
      */
     public boolean create( TodoBean bean, Identity operator ) {
+        return create( bean, operator, false );
+    }
+
+    /**
+     * 根据待办bean创建一个待办任务。
+     *
+     * @param bean     待办bean
+     * @param operator 操作人员
+     *
+     * @return 如果创建成功则返回true，否则返回false。
+     */
+    public boolean create( TodoBean bean, Identity operator, boolean skipExists ) {
         Asserts.notNull( bean, "bean can not be null" );
         // 如果待办已经存在，说明这个是异常逻辑产生的待办，应该要提醒报错。
-        if ( exists( bean.getSignature(), bean.getSrcId(), bean.getProfessionId(), bean.getTemplateId() ) == true )
+        if ( skipExists == false && exists( bean ) == true )
             throw new RuntimeException( "待办已经存在，请确认待办生成逻辑是否正确！" );
 
         Todo todo = new Todo();
@@ -61,6 +73,29 @@ public class TodoService {
         todo.setTenant( tenant );
         ModelInjector.injectOpreator( todo, operator, true );
         return todo.save();
+    }
+
+    /**
+     * 更新待办信息
+     */
+    public boolean update( TodoBean bean, Identity operator ) {
+        return update( bean, operator, false );
+    }
+
+    /**
+     * 更新待办信息
+     */
+    public boolean update( TodoBean bean, Identity operator, boolean skipExists ) {
+        Asserts.notNull( bean, "bean can not be null" );
+        // 如果待办已经存在，说明这个是异常逻辑产生的待办，应该要提醒报错。
+        if ( skipExists == false && exists( bean ) == true )
+            throw new RuntimeException( "待办已经存在，请确认待办生成逻辑是否正确！" );
+
+        Todo todo = getTodo( bean );
+        TodoBean.inject( bean, todo );
+        todo.setTenant( tenant );
+        ModelInjector.injectOpreator( todo, operator, true );
+        return todo.update();
     }
 
     /**
@@ -167,6 +202,13 @@ public class TodoService {
     }
 
     /**
+     * 根据Bean获取待办
+     */
+    Todo getTodo( TodoBean bean ) {
+        return getTodo( bean.getSignature(), bean.getSrcId(), bean.getProfessionId(), bean.getTemplateId() );
+    }
+
+    /**
      * 根据特征码和记录行id或者待办
      *
      * @param signature 特征码
@@ -217,6 +259,13 @@ public class TodoService {
                 return true;
             }
         } );
+    }
+
+    /**
+     * 判断待办是否存在
+     */
+    public boolean exists( TodoBean bean ) {
+        return getTodo( bean.getSignature(), bean.getSrcId(), bean.getProfessionId(), bean.getTemplateId() ) != null;
     }
 
     /**

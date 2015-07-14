@@ -49,7 +49,7 @@ public class TemplateFile01Task extends TemplateFileTask<TemplateFile01> {
     }
 
     @Override
-    protected TodoBean genTodoBean( TemplateFile01 file ) {
+    public TodoBean genTodoBean( TemplateFile01 file ) {
         int professionId = file.getProfessionId();
         int templateFileId = file.getTemplateId();
         TodoBean bean = new TodoBean();

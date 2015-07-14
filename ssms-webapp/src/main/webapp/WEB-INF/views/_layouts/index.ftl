@@ -91,7 +91,7 @@
                 </div>
                 <div style="position:absolute;right:20px;top:40px;">
                     <span>在线客服：</span>
-                    <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&uin=2055419486&site=&Menu=yes">
+                    <a target="_blank" href="http://wpa.qq.com/msgrd?v=1&uin=3256934060&site=&Menu=yes">
                         <img border="0" align="absmiddle" src="/resource/images/icon_kefu.png" alt="点击这里获取客户服务" title="点击这里获取客户服务">
                     </a>
                     <span style="padding-left:30px;">热线电话：0591-87762196  传真：0591-87275136</span>
