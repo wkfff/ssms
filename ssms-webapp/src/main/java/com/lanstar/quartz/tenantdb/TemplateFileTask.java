@@ -49,7 +49,7 @@ public abstract class TemplateFileTask<T> implements Task {
     /**
      * 获取待办Bean
      */
-    protected abstract TodoBean genTodoBean( T item );
+    public abstract TodoBean genTodoBean( T item );
 
     /**
      * 创建待办
