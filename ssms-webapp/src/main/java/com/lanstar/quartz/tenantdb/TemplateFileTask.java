@@ -25,17 +25,15 @@ public abstract class TemplateFileTask<T> implements Task {
     /**
      * 获取所有要创建待办的项目
      */
-    public abstract List<T> list();
+    protected abstract List<T> list();
 
     /**
      * 创建待办。
      */
-    public final void createTodo( T item ) {
+    protected final void createTodo( T item ) {
         if ( validate( item ) ) {
             TodoBean bean = genTodoBean( item );
-            try {
-                createTodo( item, bean );
-            } catch ( RuntimeException ignored ) {}
+            createTodo( item, bean );
         }
     }
 
