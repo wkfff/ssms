@@ -53,6 +53,5 @@ public class SystemRoutes extends Routes {
         add( "/knowledge", KnowledgeController.class );
         add( "/sys/notice", NoticeController.class );
         add( "/sys/noticereceiver", NoticeReceiverController.class );
-        add( "/sys/pwd", PasswordController.class );
     }
 }
