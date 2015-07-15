@@ -38,9 +38,26 @@ public class ChartsController extends Controller {
     }
 
     public void chart02() {
+        // 当年已检
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        EnterpriseService enterpriseService = identityContext.getEnterpriseService();
+        ProfessionService professionService = enterpriseService.getProfessionService();
+
+        DbPro db = identityContext.getTenantDb();
+        Long c1 = db.queryLong( "select COUNT(*) from ssm_stdtmp_file_08 where YEAR(T_TEST_LAST) = YEAR(now()) AND R_TEMPLATE=? AND P_PROFESSION=? AND R_TENANT=? AND P_TENANT='E'",
+                professionService.getSystemTemplate().getId(),
+                professionService.getId(),
+                identityContext.getTenantId() );
+
+        Long c2 = db.queryLong( "select COUNT(*) from ssm_stdtmp_file_08 where YEAR(T_TEST_NEXT) = YEAR(now()) AND R_TEMPLATE=? AND P_PROFESSION=? AND R_TENANT=? AND P_TENANT='E'",
+                professionService.getSystemTemplate().getId(),
+                professionService.getId(),
+                identityContext.getTenantId() );
+
+
         render( JFreeChartRender.PIE( "特种设备年检率" )
-                                .setValue( "苹果", 100 )
-                                .setValue( "梨子", 200 )
+                                .setValue( "当年未检", c2 )
+                                .setValue( "当年已检", c1 )
                                 .setWidth( 350 )
                                 .setHeight( 200 )
                                 .render() );

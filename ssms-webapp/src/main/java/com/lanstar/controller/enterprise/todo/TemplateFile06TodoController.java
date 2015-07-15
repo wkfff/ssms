@@ -9,18 +9,17 @@
 package com.lanstar.controller.enterprise.todo;
 
 import com.lanstar.service.common.todo.TodoType;
-import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile06TodoController extends TodoController {
     public void index() {
     }
 
-    public void list() {
-        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-        renderJson( TodoType.STDFILE06.listTodo( todoService, uniqueTag.getProfessionId(), uniqueTag.getTemplateId() ) );
-    }
-
     public void rec() {
 
+    }
+
+    @Override
+    protected TodoType getTodoType() {
+        return TodoType.STDFILE06;
     }
 }

@@ -29,11 +29,11 @@ public class Todo extends TenantModel<Todo> {
     }
 
     /** 获取待办记录表单的SID */
-    public int getSrcId() {
+    public int getRelationalId() {
         return getInt( "R_SID" );
     }
 
-    public void setSrcId( int id ) {
+    public void setRelationalId( int id ) {
         set( "R_SID", id );
     }
 

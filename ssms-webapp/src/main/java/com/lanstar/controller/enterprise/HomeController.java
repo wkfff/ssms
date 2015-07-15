@@ -11,14 +11,9 @@ package com.lanstar.controller.enterprise;
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.model.system.Notice;
 import com.lanstar.model.system.Profession;
-import com.lanstar.model.tenant.TemplateFile06;
-import com.lanstar.model.tenant.TemplateFile07;
-import com.lanstar.model.tenant.TemplateFile08;
 import com.lanstar.plugin.activerecord.Record;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoDataFetcher;
 import com.lanstar.service.common.todo.TodoType;
 import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.enterprise.ProfessionService;
@@ -67,24 +62,29 @@ public class HomeController extends Controller {
 //        setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 10" ) );
 //        setAttr( "rs_yh", TemplateFile06.dao.find( "select * from ssm_stdtmp_file_06 limit 10" ) );
 //        setAttr( "rs_ry", TemplateFile07.dao.find( "select * from SSM_STDTMP_FILE_07 limit 10" ) );
-        
+
         //接收的通知公告
         String sql = "SELECT * FROM V_NOTICE WHERE R_RECEIVER=? AND Z_TYPE=? ORDER BY T_PUBLISH DESC LIMIT 8";
-        List<Record> rs_notice = identityContext.getTenantDb().find( sql,identityContext.getTenantId(),identityContext.getTenantType().getName());
+        List<Record> rs_notice = identityContext.getTenantDb().find( sql, identityContext.getTenantId(), identityContext
+                .getTenantType()
+                .getName() );
         setAttr( "rs_notice", rs_notice );
-        
-        TodoService service = TodoService.with( identityContext.getTenant() );
-        
+
         //隐患排查
-        
-        List<TodoBean> list_yh = TodoType.STDFILE06.listTodo( service, pro, tmpId,10 );
-        setAttr( "rs_yh",list_yh);
+        setAttr( "rs_yh", TodoDataFetcher.with( identityContext.getTenant(), TodoType.STDFILE06 )
+                                         .withProfessionId( pro )
+                                         .withTemplateId( tmpId )
+                                         .fetch( 10 ) );
         //特种人员
-        List<TodoBean> list_ry = TodoType.STDFILE07.listTodo( service, pro, tmpId,10 );
-        setAttr( "rs_ry",list_ry);
+        setAttr( "rs_ry", TodoDataFetcher.with( identityContext.getTenant(), TodoType.STDFILE07 )
+                                         .withProfessionId( pro )
+                                         .withTemplateId( tmpId )
+                                         .fetch( 10 ) );
         //特种设备
-        List<TodoBean> list_dev = TodoType.STDFILE08.listTodo( service, pro, tmpId,10 );
-        setAttr( "rs_dev",list_dev);
+        setAttr( "rs_dev", TodoDataFetcher.with( identityContext.getTenant(), TodoType.STDFILE08 )
+                                          .withProfessionId( pro )
+                                          .withTemplateId( tmpId )
+                                          .fetch( 10 ) );
     }
 
     public void setTemplate() {

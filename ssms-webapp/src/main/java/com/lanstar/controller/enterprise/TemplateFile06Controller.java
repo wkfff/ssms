@@ -9,6 +9,7 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
+import com.lanstar.identity.Identity;
 import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile06;
@@ -16,12 +17,12 @@ import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.quartz.tenantdb.TaskMap;
 import com.lanstar.quartz.tenantdb.TemplateFile06Task;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
-import com.lanstar.service.common.todo.TodoType;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile06Controller extends TemplateFileController<TemplateFile06> {
+    private TemplateFile06Task task = TaskMap.me().getTask( TemplateFile06Task.class );
+
     @Override
     public void rec() {
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
@@ -71,30 +72,17 @@ public class TemplateFile06Controller extends TemplateFileController<TemplateFil
 
     @Override
     protected void afterSave( TemplateFile06 model ) {
-        // TODO 创建待办 数据不存在待办
-        Integer sid = getParaToInt( "SID" );
-        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-        boolean falg=TaskMap.me().getTask( TemplateFile06Task.class ).validate( model );
-        if(falg){
-            TodoBean bean=null;
-            bean=TaskMap.me().getTask( TemplateFile06Task.class ).genTodoBean( model );
-            TodoType.STDFILE06.saveTodo( TodoService.with( identityContext.getTenant() ), bean, identityContext.getIdentity() );
-        }
-        if ( getParaToBoolean( "B_FINISH" ) ) {
-            if (TodoService.with( identityContext.getTenant() ).exists( "STDFILE06", sid, uniqueTag.getProfessionId(), uniqueTag.getTemplateId() )){
-                TodoType.STDFILE06.finishTodo(
-                    TodoService.with( identityContext.getTenant() ),
-                    sid,
-                    uniqueTag.getProfessionId(), uniqueTag.getTemplateId(), identityContext.getIdentity() );
-            } 
-        }
+        Identity operator = identityContext.getIdentity();
+        TodoData todoData = task.buildTodoData( model );
+        // 如果任务状态为已完成，那么要将代表完成（如果有待办的话）
+        // 否则要考虑创建待办了，通过待办创建的验证才可以创建待办
+        if ( model.isFinish() ) todoData.finish( operator );
+        else if ( task.validate( model ) ) todoData.save( operator );
     }
+
     @Override
     protected void afterDel( TemplateFile06 model ) {
-        Integer sid = model.getId();
-        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-        if ( TodoService.with( identityContext.getTenant() ).exists( "STDFILE06", sid, uniqueTag.getProfessionId(), uniqueTag.getTemplateId() ) ) 
-            TodoType.STDFILE06.cancelTodo( TodoService.with( identityContext.getTenant()) , sid );
+        task.buildTodoData( model ).cancel();
     }
 
 }

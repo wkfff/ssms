@@ -13,10 +13,10 @@ import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile01;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.CycleType;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoType;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +33,11 @@ public class TemplateFile01Task extends TemplateFileTask<TemplateFile01> {
     }
 
     @Override
+    protected TodoType getTodoType() {
+        return TodoType.STDFILE01;
+    }
+
+    @Override
     public boolean validate( TemplateFile01 item ) {
         Date date = getDate( item );
         return DateKit.toStr( date ).compareTo( NOW ) >= 0;
@@ -44,25 +49,16 @@ public class TemplateFile01Task extends TemplateFileTask<TemplateFile01> {
         Date date = item.getDate( "T_DATE_04" );
         if ( cycleType != null ) {
             date = cycleType.advance( file.getCycleValue(), date );
+        } else { // 制度文件默认一年一更新
+            Calendar cd = Calendar.getInstance();
+            cd.setTime( date );
+            cd.add( Calendar.YEAR, 1 );
         }
         return date;
     }
 
     @Override
-    public TodoBean genTodoBean( TemplateFile01 file ) {
-        int professionId = file.getProfessionId();
-        int templateFileId = file.getTemplateId();
-        TodoBean bean = new TodoBean();
-        bean.setTemplateId( templateFileId );
-        bean.setProfessionId( professionId );
-        bean.setSrcId( file.getId() );
-        bean.setUrl( "..." );
-        bean.setTitle( "<<" + file.getName() + ">>将于" + DateKit.toStr( getDate( file ) ) + "到期" );
-        return bean;
-    }
-
-    @Override
-    protected void createTodo( TemplateFile01 item, TodoBean bean ) {
-        TodoType.STDFILE01.createTodo( TodoService.with( item.getTenant() ), bean, TodoUser.INST );
+    protected void buildTodoData( TemplateFile01 file, TodoData data ) {
+        data.setTitle( "<<" + file.getName() + ">>将于" + DateKit.toStr( getDate( file ) ) + "到期" );
     }
 }

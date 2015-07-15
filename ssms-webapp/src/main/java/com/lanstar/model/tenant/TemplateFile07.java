@@ -7,6 +7,16 @@
  */
 package com.lanstar.model.tenant;
 
+import java.util.Date;
+
 public class TemplateFile07  extends TemplateFileModel<TemplateFile07> {
     public static final TemplateFile07 dao = new TemplateFile07();
+
+    /**
+     * @return
+     */
+    public Date getCertreview() {
+        // TODO Auto-generated method stub
+        return getDate( "T_CERT_REVIEW" );
+    }
 }

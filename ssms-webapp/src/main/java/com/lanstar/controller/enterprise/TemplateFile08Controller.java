@@ -8,15 +8,20 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
-import com.lanstar.controller.SimplateController;
+import com.lanstar.identity.Identity;
 import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile08;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.quartz.tenantdb.TaskMap;
+import com.lanstar.quartz.tenantdb.TemplateFile08Task;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile08Controller extends TemplateFileController<TemplateFile08> {
+    private TemplateFile08Task task = TaskMap.me().getTask( TemplateFile08Task.class );
+
     @Override
     public void rec() {
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
@@ -27,7 +32,7 @@ public class TemplateFile08Controller extends TemplateFileController<TemplateFil
         TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
         if ( isNew ) {
             ArchiveModel<?> archiveModel = file.getTemplateModel();
-            if(archiveModel!=null){
+            if ( archiveModel != null ) {
                 setAttrs( ModelKit.toMap( archiveModel ) );
                 removeAttr( "SID" );
             }
@@ -35,12 +40,12 @@ public class TemplateFile08Controller extends TemplateFileController<TemplateFil
         setAttr( "file", file );
     }
 
-    public void rec_todo(){
+    public void rec_todo() {
         this.setAttr( "todo", "1" );
         this.rec();
         render( "rec.ftl" );
     }
-    
+
     @Override
     protected TemplateFile08 getDao() {
         return TemplateFile08.dao;
@@ -57,5 +62,18 @@ public class TemplateFile08Controller extends TemplateFileController<TemplateFil
 
     public void detail() {
         this.rec();
+    }
+
+    @Override
+    protected void afterSave( TemplateFile08 model ) {
+        Identity operator = identityContext.getIdentity();
+        TodoData todo = task.buildTodoData( model );
+        if ( task.validate( model ) ) todo.save( operator );
+        if ( task.isFinishTodo( model ) ) todo.finish( operator );
+    }
+
+    @Override
+    protected void afterDel( TemplateFile08 model ) {
+        task.buildTodoData( model ).cancel();
     }
 }

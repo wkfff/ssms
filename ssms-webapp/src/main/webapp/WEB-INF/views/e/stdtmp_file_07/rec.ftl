@@ -88,7 +88,7 @@
             <tr>
                 <td>复审时间:</td>
                 <td>
-                    <input data-bind="disable: readonly,dateboxValue: T_CERT_REVIEW"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_CERT_REVIEW" required/>
                 </td>
                 <td></td>
                 <td></td>

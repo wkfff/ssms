@@ -28,7 +28,7 @@
 <div id="kocontainer">
     <div class="z-toolbar">
         <#if todo??>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isReadonly()==false, click: saveClick">保存</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isReadonly==false, click: saveClick">保存</a>
         <#else>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-add" data-bind="click: addItem">新建隐患项目</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isSave==false, click: saveClick">保存</a>
@@ -54,10 +54,10 @@
                 <td><input data-bind="disable:isReadonly,textboxValue: C_EXAMINER" required/></td>
                 <td class="label">检查时间</td>
                 <td><input data-bind="disable:isReadonly,dateboxValue: T_EXAMINE" required/></td>
-                <td class="label">隐患类型</td>
+                <#--<td class="label">隐患类型</td>
                 <td>
                     <input data-bind="disable:isReadonly,comboboxSource: typeSource, comboboxValue: P_TYPE, easyuiOptions: levelSettings" required/>
-                </td>
+                </td>-->
             </tr>
             <tr>
                 <td class="label">隐患所在区域/部门</td>
@@ -71,7 +71,7 @@
             </tr>
 
             <tr>
-                <td class="label">整改措施（包括<br/>工程技术措施、<br/>管理措施、<br/>教育措施、<br/>防护措施、<br/>应急措施）</td>
+                <td class="label">整改措施（包括整改资金）</td>
                 <td colspan="5">
                     <textarea data-bind="disable:isReadonly,textareaValue: C_MEASURE, easyuiOptions: {validType:['length[0,2000]']}" required style="height: 300px;"></textarea>
                 </td>
@@ -83,7 +83,7 @@
                 <td><input data-bind="disable:isReadonly,dateboxValue: T_RECTIFICATION" required/></td>
             </tr>
             <tr>
-                <td class="label">治理方案</td>
+                <td class="label">预案</td>
                 <td colspan="5">
                     <textarea data-bind="disable:isReadonly,textareaValue: C_PLANT, easyuiOptions: {validType:['length[0,2000]']}" required style="height: 300px;"></textarea>
                 </td>
@@ -94,7 +94,7 @@
                 <td class="label">验收人</td>
                 <td><input data-bind="disable:isReadonly,textboxValue: C_ACCEPTANCE"/></td>
                 <td class="label">验收时间</td>
-                <td><input data-bind="disable:isReadonly,dateboxValue: T_ACCEPTANCE" required/></td>
+                <td><input data-bind="disable:isReadonly,dateboxValue: T_ACCEPTANCE"/></td>
             </tr>
             <tr>
                 <td class="label">隐患闭环情况</td>
@@ -141,16 +141,14 @@
         SID: ko.observable('${SID!}'),
         R_TMPFILE: '${file.id}'
     };
-    var isSave=model.B_FINISH()=='1'
+    var isSave=model.B_FINISH()=='1';
     var settings = {
         levelSource: ko.observableArray([{code: '01', name: '一般隐患'}, {code: '02', name: '重大隐患'}]),
         typeSource: ko.observableArray([{code: '01', name: '预防'}, {code: '02', name: '纠正'}]),
         levelSettings: {valueField: 'code', textField: 'name'}
     };
     var extModel = {
-        isReadonly: ko.computed(function () {
-            return model.B_FINISH() == '1';
-        })
+        isReadonly: model.B_FINISH() == '1'
     };
     var events = {
         saveClick: function () {
@@ -174,7 +172,7 @@
             panelLoad('${BASE_PATH}/rec?fileId=${file.id}');
         },
         remove: function () {
-            if (extModel.isReadonly()) return;
+            if (extModel.isReadonly) return;
             utils.messager.showProgress();
             $.post('${BASE_PATH}/del', {sid: model.SID()}, function (result) {
                 utils.messager.closeProgress();

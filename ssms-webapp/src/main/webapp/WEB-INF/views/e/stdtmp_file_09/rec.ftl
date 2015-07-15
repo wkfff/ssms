@@ -69,7 +69,7 @@
                 </td>
                 <td>下次检验日期:</td>
                 <td>
-                    <input data-bind="disable: readonly,dateboxValue: T_TEST_NEXT"/>
+                    <input data-bind="disable: readonly,dateboxValue: T_TEST_NEXT" required/>
                 </td>
             </tr>
             

@@ -7,38 +7,50 @@
  */
 package com.lanstar.quartz.tenantdb;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import com.lanstar.identity.Tenant;
+import com.lanstar.common.kit.DateKit;
 import com.lanstar.model.tenant.TemplateFile08;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoType;
 
 /**
  * 特种设备
- *
  */
-public class TemplateFile08Task implements Task {
+public class TemplateFile08Task extends TemplateFileTask<TemplateFile08> {
     @Override
-    public void execute( DataSource dataSource ) {
-        List<TemplateFile08> all = TemplateFile08.dao.find("select * from SSM_STDTMP_FILE_08 where datediff(t_test_next,now())=30");
+    protected List<TemplateFile08> list() {
+        return null;
+    }
 
-        for ( TemplateFile08 file : all ) {
-            Tenant tenant = file.getTenant();
-            int professionId = file.getProfessionId();
-            int templateFileId = file.getTemplateFileId();
-            TodoBean bean = new TodoBean();
-            bean.setTemplateId( templateFileId );
-            bean.setProfessionId( professionId );
-            bean.setSrcId( file.getId() );
-//            bean.setUrl( "" );
-            bean.setTitle( "<<" + file.getName() + ">>临近下次检验("+file.getDate( "T_TEST_NEXT" )+")" );
-            // 生成待办
-            TodoType.STDFILE08.createTodo( TodoService.with( tenant ), bean, TodoUser.INST );
-        }
+    @Override
+    protected TodoType getTodoType() {
+        return TodoType.STDFILE08;
+    }
+
+    @Override
+    public boolean validate( TemplateFile08 item ) {
+        // 提前30天
+        Calendar cd = Calendar.getInstance();
+        cd.setTime( item.getTextnext() );
+        cd.add( Calendar.DATE, -30);
+        String d1 = DateKit.toStr( cd.getTime() );
+        String d2 = DateKit.toStr( new Date() );
+        return d1.compareTo( d2 ) >= 0;
+    }
+    //是否完成代办
+    public boolean isFinishTodo(TemplateFile08 item){
+        Calendar cd = Calendar.getInstance();
+        cd.setTime( item.getTextnext() );
+        String d1 = DateKit.toStr( cd.getTime() );
+        String d2 = DateKit.toStr( new Date() );
+        return d1.compareTo( d2 )<=0;
+    }
+    @Override
+    protected void buildTodoData( TemplateFile08 file, TodoData data ) {
+        data.setTitle( "<<" + file.getName() + ">>临近下次检验(" + DateKit.toStr( file.getTextnext() ) + ")" );
     }
 
 }

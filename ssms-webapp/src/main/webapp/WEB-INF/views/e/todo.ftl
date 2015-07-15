@@ -46,7 +46,7 @@
             <#list rs_yh as rs>
                 <tr>
                     <td class="more">
-                        <a href="/e/todo/stdtmp06/rec?sid=${rs.srcId!}" target="_top" class="matter-title">${rs.title!}</a>
+                        <a href="/e/todo/stdtmp06/rec?sid=${rs.relationalId!}" target="_top" class="matter-title">${rs.title!}</a>
                     </td>
                     <td class="matter-time">${(rs.notifyTime?date)!}</td>
                 </tr>
@@ -80,7 +80,7 @@
             <#list rs_dev as rs>
                 <tr>
                     <td class="more">
-                        <a href="/e/todo/stdtmp08/rec?sid=${rs.srcId!}" target="_top" class="matter-title">${rs.title!}</a>
+                        <a href="/e/todo/stdtmp08/rec?sid=${rs.relationalId!}" target="_top" class="matter-title">${rs.title!}</a>
                     </td>
                     <td class="matter-time">${(rs.notifyTime?date)!}</td>
                 </tr>
