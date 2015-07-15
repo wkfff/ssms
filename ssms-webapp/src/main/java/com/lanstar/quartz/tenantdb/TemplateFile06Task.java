@@ -23,7 +23,7 @@ import java.util.List;
 public class TemplateFile06Task extends TemplateFileTask<TemplateFile06> {
     @Override
     public List<TemplateFile06> list() {
-        return TemplateFile06.dao.find( "tenant.todo.06" );
+        return TemplateFile06.dao.find( "select *from todo_stdtmp_file_06 " );
     }
 
     @Override
