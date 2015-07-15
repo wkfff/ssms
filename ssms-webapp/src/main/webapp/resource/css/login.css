@@ -43,4 +43,6 @@ body{ font-family:'微软雅黑';background: #2074bb;}
 
 #ft{ position:absolute;left:0;right:0;bottom:40px; color:#10486b; text-align:center; z-index:2;}
 
-
+.forget{
+    line-height:36px; padding-left:16px; color:#000000; font-size:14px; 
+}

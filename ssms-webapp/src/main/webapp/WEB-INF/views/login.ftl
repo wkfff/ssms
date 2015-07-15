@@ -38,6 +38,9 @@
                     <em></em>
                     <label for="remember">记住密码</label>
                 </div>
+                <div class="forget ue-clear">
+                    <a id="forget" href="/pwd">忘记密码？</a>
+                </div>
             </div>
         </div>
     </div>
@@ -117,7 +120,11 @@
         };
         $.post('login', parms, function (result) {
             if (result.state == "success") window.location.href = "/";
-            else alert(result.msg);
+            else {
+                alert(result.msg);
+                //$('#vcodeImg').attr("src", '');
+                $('#vcodeImg').attr("src", '/vcode?_t='+new Date().valueOf());
+            }
         }, "json")
     });
 

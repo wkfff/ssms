@@ -11,6 +11,7 @@ package com.lanstar.app;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
+
 import com.lanstar.app.model.SystemModelMapping;
 import com.lanstar.app.model.TenantModelMapping;
 import com.lanstar.app.route.EnterpriseRoutes;
@@ -25,6 +26,7 @@ import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.config.*;
 import com.lanstar.controller.BrowerController;
 import com.lanstar.controller.HomeController;
+import com.lanstar.controller.PasswordController;
 import com.lanstar.core.Rapidware;
 import com.lanstar.core.render.FreeMarkerRender;
 import com.lanstar.identity.IdentityInterceptor;
@@ -42,10 +44,12 @@ import com.lanstar.plugin.staticcache.StaticCachePlugin;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
 import com.lanstar.quartz.tenantdb.*;
+
 import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
+
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
@@ -81,6 +85,7 @@ public class WebAppConfig extends RapidwareConfig {
 
         me.add( "/", HomeController.class );
         me.add( "/browsers", BrowerController.class );
+        me.add( "/pwd", PasswordController.class );
     }
 
     @Override
@@ -123,7 +128,7 @@ public class WebAppConfig extends RapidwareConfig {
 
         // 任务调度插件配置
         TaskMap.me()
-               .add( TemplateFile01Task.class )
+//               .add( TemplateFile01Task.class )
                .add( TemplateFile06Task.class )
                .add( TemplateFile07Task.class )
                .add( TemplateFile08Task.class )
