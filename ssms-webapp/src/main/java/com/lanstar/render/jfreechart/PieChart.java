@@ -41,6 +41,7 @@ public class PieChart extends Chart<PieChart> {
         plot.setLabelGenerator( new StandardPieSectionLabelGenerator( "{0}({2})",
                 NumberFormat.getNumberInstance(),
                 new DecimalFormat( "0.00%" ) ) );
+        plot.setNoDataMessage( "无相关数据" );
         return chart;
     }
 }
