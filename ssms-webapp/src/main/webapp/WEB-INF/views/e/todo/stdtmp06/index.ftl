@@ -52,7 +52,7 @@
                         $.messager.alert("警告", "请先选择一行数据！", "warning");
                         return;
                     }
-                    panelLoad('${BASE_PATH}/rec?sid=' + value.srcId);
+                    panelLoad('${BASE_PATH}/rec?sid=' + value.relationalId);
                 }
             };
 
