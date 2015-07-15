@@ -28,7 +28,7 @@
 <div id="kocontainer">
     <div class="z-toolbar">
         <#if todo??>
-        <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isReadonly()==false, click: saveClick">保存</a>
+        <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isReadonly==false, click: saveClick">保存</a>
         <#else>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-add" data-bind="click: addItem">新建隐患项目</a>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-save" data-bind="visible:isSave==false, click: saveClick">保存</a>
@@ -141,16 +141,14 @@
         SID: ko.observable('${SID!}'),
         R_TMPFILE: '${file.id}'
     };
-    var isSave=model.B_FINISH()=='1'
+    var isSave=model.B_FINISH()=='1';
     var settings = {
         levelSource: ko.observableArray([{code: '01', name: '一般隐患'}, {code: '02', name: '重大隐患'}]),
         typeSource: ko.observableArray([{code: '01', name: '预防'}, {code: '02', name: '纠正'}]),
         levelSettings: {valueField: 'code', textField: 'name'}
     };
     var extModel = {
-        isReadonly: ko.computed(function () {
-            return model.B_FINISH() == '1';
-        })
+        isReadonly: model.B_FINISH() == '1'
     };
     var events = {
         saveClick: function () {
@@ -174,7 +172,7 @@
             panelLoad('${BASE_PATH}/rec?fileId=${file.id}');
         },
         remove: function () {
-            if (extModel.isReadonly()) return;
+            if (extModel.isReadonly) return;
             utils.messager.showProgress();
             $.post('${BASE_PATH}/del', {sid: model.SID()}, function (result) {
                 utils.messager.closeProgress();

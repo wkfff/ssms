@@ -32,7 +32,7 @@ public class TemplateFile06Task extends TemplateFileTask<TemplateFile06> {
         if ( item.isFinish() ) return false;
         // 90天内的要提醒
         Calendar cd = Calendar.getInstance();
-        cd.setTime( item.getAcceptance() );
+        cd.setTime( item.getRectification() );
         cd.add( Calendar.DATE, 90 );
         String d1 = DateKit.toStr( cd.getTime() );
         String d2 = DateKit.toStr( new Date() );

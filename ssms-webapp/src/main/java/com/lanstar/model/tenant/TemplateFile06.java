@@ -15,11 +15,14 @@ public class TemplateFile06 extends TemplateFileModel<TemplateFile06> {
 
     public Date getAcceptance() {
         return getDate( "T_ACCEPTANCE" );
+    }
 
+    public Date getRectification() {
+        return getDate( "T_RECTIFICATION" );
     }
 
     public boolean isFinish() {
         String finish = getStr( "B_FINISH" );
-        return finish.equals( "0" );
+        return finish.equals( "1" );
     }
 }
