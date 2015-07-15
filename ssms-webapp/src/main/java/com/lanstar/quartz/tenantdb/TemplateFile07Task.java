@@ -7,14 +7,14 @@
  */
 package com.lanstar.quartz.tenantdb;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import com.lanstar.common.kit.DateKit;
 import com.lanstar.model.tenant.TemplateFile07;
 import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoType;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 特种人员
@@ -35,23 +35,16 @@ public class TemplateFile07Task extends TemplateFileTask<TemplateFile07> {
     public boolean validate( TemplateFile07 item ) {
         // 提前90天
         Calendar cd = Calendar.getInstance();
-        cd.setTime( item.getCertreview() );
+        cd.setTime( item.getCertReview() );
         cd.add( Calendar.DATE, -90 );
         String d1 = DateKit.toStr( cd.getTime() );
         String d2 = DateKit.toStr( new Date() );
         return d1.compareTo( d2 ) >= 0;
     }
-    //完成待办的时间条件
-    public boolean isFinishTodo(TemplateFile07 item) {
-        Calendar cd = Calendar.getInstance();
-        cd.setTime( item.getCertreview() );
-        String d1 = DateKit.toStr( cd.getTime() );
-        String d2 = DateKit.toStr( new Date() );
-        return d1.compareTo( d2 ) <= 0;
-    }
+
     @Override
     protected void buildTodoData( TemplateFile07 file, TodoData data ) {
-        data.setTitle( "<<" + file.getName() + ">>特种作业人员证书即将到期(复审时间" + DateKit.toStr( file.getCertreview() ) + ")" );
+        data.setTitle( "<<" + file.getName() + ">>特种作业人员证书即将到期(复审时间" + DateKit.toStr( file.getCertReview() ) + ")" );
     }
 
 }

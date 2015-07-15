@@ -12,11 +12,7 @@ import java.util.Date;
 public class TemplateFile09 extends TemplateFileModel<TemplateFile09> {
     public static final TemplateFile09 dao = new TemplateFile09();
 
-    /**
-     * @return
-     */
-    public Date getTextnext() {
-        // TODO Auto-generated method stub
+    public Date getTestNext() {
         return getDate( "T_TEST_NEXT" );
     }
 }
