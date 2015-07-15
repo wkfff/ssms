@@ -13,8 +13,7 @@ import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile01;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.CycleType;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoType;
 
 import java.util.Calendar;
@@ -31,6 +30,11 @@ public class TemplateFile01Task extends TemplateFileTask<TemplateFile01> {
     @Override
     public List<TemplateFile01> list() {
         return TemplateFile01.dao.find( SqlKit.sql( "tenant.todo.01" ) );
+    }
+
+    @Override
+    protected TodoType getTodoType() {
+        return TodoType.STDFILE01;
     }
 
     @Override
@@ -54,20 +58,7 @@ public class TemplateFile01Task extends TemplateFileTask<TemplateFile01> {
     }
 
     @Override
-    public TodoBean genTodoBean( TemplateFile01 file ) {
-        int professionId = file.getProfessionId();
-        int templateFileId = file.getTemplateId();
-        TodoBean bean = new TodoBean();
-        bean.setTemplateId( templateFileId );
-        bean.setProfessionId( professionId );
-        bean.setSrcId( file.getId() );
-        bean.setUrl( "..." );
-        bean.setTitle( "<<" + file.getName() + ">>将于" + DateKit.toStr( getDate( file ) ) + "到期" );
-        return bean;
-    }
-
-    @Override
-    protected void createTodo( TemplateFile01 item, TodoBean bean ) {
-        TodoType.STDFILE01.createTodo( TodoService.with( item.getTenant() ), bean, TodoUser.INST );
+    protected void buildTodoData( TemplateFile01 file, TodoData data ) {
+        data.setTitle( "<<" + file.getName() + ">>将于" + DateKit.toStr( getDate( file ) ) + "到期" );
     }
 }

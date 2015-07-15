@@ -12,16 +12,37 @@ import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantType;
-import com.lanstar.plugin.activerecord.ModelExt;
-import com.lanstar.plugin.activerecord.Table;
-import com.lanstar.plugin.activerecord.TableMapping;
+import com.lanstar.plugin.activerecord.*;
 import com.lanstar.plugin.staticcache.CacheManager;
 
 import java.util.Date;
+import java.util.Objects;
+import java.util.Set;
 
 public abstract class TenantModel<T extends TenantModel<T>> extends ModelExt<T> {
     public Tenant getTenant() {
         return CacheManager.me().getCache( TenantCache.class ).getValue( getTenantId(), getTenantType() );
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<String> modifyFlag = new CaseInsensitiveContainerFactory.CaseInsensitiveSet();
+
+    private Config getConfig() {
+        return DbKit.getConfig( getClass() );
+    }
+
+    public boolean isModified() {
+        return modifyFlag.isEmpty() == false;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public T set( String attr, Object value ) {
+        Object oldValue = get( attr );
+        if ( !Objects.equals( oldValue, value ) ) return (T) this;
+        T set = super.set( attr, value );
+        modifyFlag.add( attr );
+        return set;
     }
 
     /**

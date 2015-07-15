@@ -17,12 +17,12 @@ import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.quartz.tenantdb.TaskMap;
 import com.lanstar.quartz.tenantdb.TemplateFile06Task;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
-import com.lanstar.service.common.todo.TodoType;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile06Controller extends TemplateFileController<TemplateFile06> {
+    private TemplateFile06Task task = TaskMap.me().getTask( TemplateFile06Task.class );
+
     @Override
     public void rec() {
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
@@ -72,25 +72,17 @@ public class TemplateFile06Controller extends TemplateFileController<TemplateFil
 
     @Override
     protected void afterSave( TemplateFile06 model ) {
-        TodoService service = identityContext.getTodoService();
         Identity operator = identityContext.getIdentity();
+        TodoData todoData = task.buildTodoData( model );
         // 如果任务状态为已完成，那么要将代表完成（如果有待办的话）
-        if ( model.isFinish() ) {
-            UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-            TodoType.STDFILE06.finishTodo( service, model.getId(), uniqueTag.getProfessionId(), uniqueTag.getTemplateId(), operator );
-        } else {
-            TemplateFile06Task task = TaskMap.me().getTask( TemplateFile06Task.class );
-            // 否则要考虑创建待办了，通过待办创建的验证才可以创建待办
-            if ( task.validate( model ) ) {
-                TodoBean bean = task.genTodoBean( model );
-                TodoType.STDFILE06.saveTodo( service, bean, operator );
-            }
-        }
+        // 否则要考虑创建待办了，通过待办创建的验证才可以创建待办
+        if ( model.isFinish() ) todoData.finish( operator );
+        else if ( task.validate( model ) ) todoData.save( operator );
     }
 
     @Override
     protected void afterDel( TemplateFile06 model ) {
-        TodoType.STDFILE06.cancelTodo( TodoService.with( identityContext.getTenant() ), model.getId() );
+        task.buildTodoData( model ).cancel();
     }
 
 }

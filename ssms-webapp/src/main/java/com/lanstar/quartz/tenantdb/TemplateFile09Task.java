@@ -7,38 +7,35 @@
  */
 package com.lanstar.quartz.tenantdb;
 
-import java.util.List;
-
-import javax.sql.DataSource;
-
-import com.lanstar.identity.Tenant;
 import com.lanstar.model.tenant.TemplateFile09;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoType;
+
+import java.util.List;
 
 /**
  * 安全附件
- *
  */
-public class TemplateFile09Task implements Task {
-    @Override
-    public void execute( DataSource dataSource ) {
-        List<TemplateFile09> all = TemplateFile09.dao.find("select * from SSM_STDTMP_FILE_09 where datediff(t_test_next,now())=90");
+public class TemplateFile09Task extends TemplateFileTask<TemplateFile09> {
 
-        for ( TemplateFile09 file : all ) {
-            Tenant tenant = file.getTenant();
-            int professionId = file.getProfessionId();
-            int templateFileId = file.getTemplateFileId();
-            TodoBean bean = new TodoBean();
-            bean.setTemplateId( templateFileId );
-            bean.setProfessionId( professionId );
-            bean.setSrcId( file.getId() );
-//            bean.setUrl( "" );
-            bean.setTitle( "<<" + file.getName() + ">>临近下次检验("+file.getDate( "T_TEST_NEXT" )+")" );
-            // 生成待办
-            TodoType.STDFILE09.createTodo( TodoService.with( tenant ), bean, TodoUser.INST );
-        }
+    @Override
+    protected List<TemplateFile09> list() {
+        return null;
+    }
+
+    @Override
+    protected TodoType getTodoType() {
+        return TodoType.STDFILE09;
+    }
+
+    @Override
+    public boolean validate( TemplateFile09 item ) {
+        return false;
+    }
+
+    @Override
+    protected void buildTodoData( TemplateFile09 file, TodoData data ) {
+        data.setTitle( "<<" + file.getName() + ">>临近下次检验(" + file.getDate( "T_TEST_NEXT" ) + ")" );
     }
 
 }

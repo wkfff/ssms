@@ -7,38 +7,35 @@
  */
 package com.lanstar.quartz.tenantdb;
 
-import java.util.List;
-
-import javax.sql.DataSource;
-
-import com.lanstar.identity.Tenant;
 import com.lanstar.model.tenant.TemplateFile07;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoType;
+
+import java.util.List;
 
 /**
  * 特种人员
- *
  */
-public class TemplateFile07Task implements Task {
-    @Override
-    public void execute( DataSource dataSource ) {
-        List<TemplateFile07> all = TemplateFile07.dao.find("select * from SSM_STDTMP_FILE_07 where datediff(t_test_next,now())=90");
+public class TemplateFile07Task extends TemplateFileTask<TemplateFile07> {
 
-        for ( TemplateFile07 file : all ) {
-            Tenant tenant = file.getTenant();
-            int professionId = file.getProfessionId();
-            int templateFileId = file.getTemplateFileId();
-            TodoBean bean = new TodoBean();
-            bean.setTemplateId( templateFileId );
-            bean.setProfessionId( professionId );
-            bean.setSrcId( file.getId() );
-//            bean.setUrl( "" );
-            bean.setTitle( "<<" + file.getName() + ">>特种作业人员证书即将到期(复审时间"+file.getDate( "T_TEST_NEXT" )+")" );
-            // 生成待办
-            TodoType.STDFILE07.createTodo( TodoService.with( tenant ), bean, TodoUser.INST );
-        }
+    @Override
+    protected List<TemplateFile07> list() {
+        return null;
+    }
+
+    @Override
+    protected TodoType getTodoType() {
+        return TodoType.STDFILE07;
+    }
+
+    @Override
+    public boolean validate( TemplateFile07 item ) {
+        return false;
+    }
+
+    @Override
+    protected void buildTodoData( TemplateFile07 file, TodoData data ) {
+        data.setTitle( "<<" + file.getName() + ">>特种作业人员证书即将到期(复审时间" + file.getDate( "T_TEST_NEXT" ) + ")" );
     }
 
 }

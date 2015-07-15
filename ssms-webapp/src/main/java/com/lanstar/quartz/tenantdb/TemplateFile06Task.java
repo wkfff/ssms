@@ -9,8 +9,7 @@ package com.lanstar.quartz.tenantdb;
 
 import com.lanstar.common.kit.DateKit;
 import com.lanstar.model.tenant.TemplateFile06;
-import com.lanstar.service.common.todo.TodoBean;
-import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoType;
 
 import java.util.Calendar;
@@ -27,6 +26,11 @@ public class TemplateFile06Task extends TemplateFileTask<TemplateFile06> {
     }
 
     @Override
+    protected TodoType getTodoType() {
+        return TodoType.STDFILE06;
+    }
+
+    @Override
     public boolean validate( TemplateFile06 item ) {
         // 已完成就不创建待办了
         if ( item.isFinish() ) return false;
@@ -40,22 +44,7 @@ public class TemplateFile06Task extends TemplateFileTask<TemplateFile06> {
     }
 
     @Override
-    public TodoBean genTodoBean( TemplateFile06 file ) {
-        int professionId = file.getProfessionId();
-        int templateId = file.getTemplateId();
-        TodoBean bean = new TodoBean();
-        bean.setTemplateId( templateId );
-        bean.setProfessionId( professionId );
-        bean.setSrcId( file.getId() );
-        bean.setUrl( "..." );
-        bean.setTitle( "<<" + file.getName() + ">>临近下次检验(" + file.getDate( "T_RECTIFICATION" ) + ")" );
-        // 生成待办
-        return bean;
+    protected void buildTodoData( TemplateFile06 file, TodoData data ) {
+        data.setTitle( "<<" + file.getName() + ">>临近下次检验(" + DateKit.toStr( file.getRectification() ) + ")" );
     }
-
-    @Override
-    protected void createTodo( TemplateFile06 item, TodoBean bean ) {
-        TodoType.STDFILE06.createTodo( TodoService.with( item.getTenant() ), bean, TodoUser.INST );
-    }
-
 }

@@ -8,14 +8,16 @@
 
 package com.lanstar.quartz.tenantdb;
 
-import com.lanstar.service.common.todo.TodoBean;
+import com.lanstar.model.tenant.TemplateFileModel;
+import com.lanstar.service.common.todo.TodoData;
+import com.lanstar.service.common.todo.TodoType;
 
 import javax.sql.DataSource;
 import java.util.List;
 
-public abstract class TemplateFileTask<T> implements Task {
+public abstract class TemplateFileTask<T extends TemplateFileModel<T>> implements Task {
     @Override
-    public void execute( DataSource dataSource ) {
+    public final void execute( DataSource dataSource ) {
         List<T> list = list();
         for ( T item : list ) {
             createTodo( item );
@@ -32,10 +34,20 @@ public abstract class TemplateFileTask<T> implements Task {
      */
     protected final void createTodo( T item ) {
         if ( validate( item ) ) {
-            TodoBean bean = genTodoBean( item );
-            createTodo( item, bean );
+            TodoData data = buildTodoData( item );
+            data.save( TodoUser.INST );
         }
     }
+
+    public final TodoData buildTodoData( T item ) {
+        TodoData data = TodoData.with( item.getTenant(), getTodoType(), item.getId() )
+                                .withProfessionId( item.getProfessionId() )
+                                .withTemplateId( item.getTemplateId() );
+        buildTodoData( item, data );
+        return data;
+    }
+
+    protected abstract TodoType getTodoType();
 
     /**
      * 判断是否需要创建待办。
@@ -47,12 +59,7 @@ public abstract class TemplateFileTask<T> implements Task {
     public abstract boolean validate( T item );
 
     /**
-     * 获取待办Bean
+     * 获取待办数据
      */
-    public abstract TodoBean genTodoBean( T item );
-
-    /**
-     * 创建待办
-     */
-    protected abstract void createTodo( T item, TodoBean bean );
+    protected abstract void buildTodoData( T item, TodoData data );
 }

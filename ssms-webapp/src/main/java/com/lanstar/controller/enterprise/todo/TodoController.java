@@ -8,22 +8,42 @@
 
 package com.lanstar.controller.enterprise.todo;
 
+import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.plugin.activerecord.Page;
+import com.lanstar.service.common.todo.TodoData;
+import com.lanstar.service.common.todo.TodoDataFetcher;
+import com.lanstar.service.common.todo.TodoType;
+import com.lanstar.service.enterprise.UniqueTag;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class TodoController extends Controller {
+import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
+import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
+
+public abstract class TodoController extends Controller {
     protected IdentityContext identityContext;
-    protected TodoService todoService;
 
     @Override
     public void init( HttpServletRequest request, HttpServletResponse response, String urlPara ) {
         super.init( request, response, urlPara );
 
         identityContext = IdentityContext.getIdentityContext( this );
-        todoService = TodoService.with( identityContext.getTenant() );
     }
+
+    public void list() {
+        UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
+        TodoDataFetcher fetcher = TodoDataFetcher.with( uniqueTag.getTenant(), getTodoType() )
+                                                 .withProfessionId( uniqueTag.getProfessionId() )
+                                                 .withTemplateId( uniqueTag.getTemplateId() );
+
+        if ( this.isParaExists( PAGE_INDEX ) && this.isParaExists( PAGE_SIZE ) ) {
+            Page<TodoData> page = fetcher.paginate( getParaToInt( PAGE_INDEX ), getParaToInt( PAGE_SIZE ) );
+            renderJson( EasyUIControllerHelper.toDatagridResult( page ) );
+        } else renderJson( fetcher.fetch() );
+    }
+
+    protected abstract TodoType getTodoType();
 }

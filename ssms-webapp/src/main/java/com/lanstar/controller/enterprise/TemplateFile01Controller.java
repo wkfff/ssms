@@ -26,7 +26,7 @@ import com.lanstar.quartz.tenantdb.TaskMap;
 import com.lanstar.quartz.tenantdb.TemplateFile01Task;
 import com.lanstar.render.aspose.AsposeRender;
 import com.lanstar.render.aspose.OutputFormat;
-import com.lanstar.service.common.todo.TodoService;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoType;
 import com.lanstar.service.enterprise.UniqueTag;
 
@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class TemplateFile01Controller extends TemplateFileController<TemplateFile01> {
+    private TemplateFile01Task task = TaskMap.me().getTask( TemplateFile01Task.class );
 
     public void index() {
         super.index();
@@ -84,7 +85,8 @@ public class TemplateFile01Controller extends TemplateFileController<TemplateFil
 
     @Override
     protected void afterDel( TemplateFile01 model ) {
-        TodoType.STDFILE01.cancelTodo( identityContext.getTodoService(), model.getId() );
+        // 取消待办
+        task.buildTodoData( model ).cancel();
     }
 
     public void export() {
@@ -116,10 +118,11 @@ public class TemplateFile01Controller extends TemplateFileController<TemplateFil
 
             if ( model.save() ) {
                 UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-                TodoType.STDFILE01.finishTodo(
-                        identityContext.getTodoService(),
-                        sid,
-                        uniqueTag.getProfessionId(), uniqueTag.getTemplateId(), identityContext.getIdentity() );
+                // 完成待办
+                TodoData.with( identityContext.getTenant(), TodoType.STDFILE01, sid )
+                        .withProfessionId( uniqueTag.getProfessionId() )
+                        .withTemplateId( uniqueTag.getTemplateId() )
+                        .finish( identityContext.getIdentity() );
                 // 审核通过
                 renderJson( "1" );
             } else {
