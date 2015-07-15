@@ -148,6 +148,7 @@ public class TodoData {
         data.setEndTime( endTime );
         data.setTenant( tenant );
         data.setOperator( operator );
+        if (data.isModified() == false) return true;
 
         return data.update();
     }
@@ -206,6 +207,11 @@ public class TodoData {
         return endTime;
     }
 
+    public Date getNotifyTime() {
+        if (data == null) return null;
+        return data.getNotifyTime();
+    }
+
     public String getUrl() {
         return url;
     }
@@ -228,7 +234,7 @@ public class TodoData {
         if ( data == null ) {
             List<String> columns = Lists.newArrayList( "C_CONTROL", "R_SID", "R_TENANT", "P_TENANT" );
             List<Object> objects = Lists.newArrayList(
-                    (Object) signature, relationalId, tenant.getTenantId(), tenant.getTenantType().getName() );
+                    (Object) signature.name().toUpperCase(), relationalId, tenant.getTenantId(), tenant.getTenantType().getName() );
 
             if ( professionId != null ) {
                 columns.add( "P_PROFESSION" );

@@ -45,6 +45,7 @@ public class TemplateFile06Task extends TemplateFileTask<TemplateFile06> {
 
     @Override
     protected void buildTodoData( TemplateFile06 file, TodoData data ) {
-        data.setTitle( "<<" + file.getName() + ">>临近下次检验(" + DateKit.toStr( file.getRectification() ) + ")" );
+        // “隐患名称”（要求整改时间：XXXX年XX月XX日）
+        data.setTitle( "“" + file.getName() + "”(要求整改时间：" + DateKit.toStr( file.getRectification() ) + ")" );
     }
 }

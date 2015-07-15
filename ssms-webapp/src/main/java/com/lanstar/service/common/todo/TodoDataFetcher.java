@@ -76,7 +76,7 @@ public class TodoDataFetcher {
 
     private SqlBuilder buildSql( SqlBuilder sqlBuilder ) {
         return sqlBuilder.FROM( "SYS_TODO" )
-                         .WHERE( "C_CONTROL=?", signature )
+                         .WHERE( "C_CONTROL=?", signature.name().toUpperCase() )
                          ._( "R_TENANT=? AND P_TENANT=?", tenant.getTenantId(), tenant.getTenantType().getName() )
                          ._If( professionId != null, "P_PROFESSION=?", professionId )
                          ._If( templateId != null, "R_TEMPLATE=?", templateId )

@@ -39,7 +39,7 @@ public abstract class TenantModel<T extends TenantModel<T>> extends ModelExt<T> 
     @Override
     public T set( String attr, Object value ) {
         Object oldValue = get( attr );
-        if ( !Objects.equals( oldValue, value ) ) return (T) this;
+        if ( Objects.equals( oldValue, value ) ) return (T) this;
         T set = super.set( attr, value );
         modifyFlag.add( attr );
         return set;
