@@ -8,14 +8,20 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
+import com.lanstar.identity.Identity;
 import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile07;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
+import com.lanstar.quartz.tenantdb.TaskMap;
+import com.lanstar.quartz.tenantdb.TemplateFile07Task;
+import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.enterprise.UniqueTag;
 
 public class TemplateFile07Controller extends TemplateFileController<TemplateFile07> {
+    private TemplateFile07Task task = TaskMap.me().getTask( TemplateFile07Task.class );
+
     @Override
     public void rec() {
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
@@ -26,20 +32,20 @@ public class TemplateFile07Controller extends TemplateFileController<TemplateFil
         TemplateFile file = TemplateFile.findFirst( uniqueTag, pid );
         if ( isNew ) {
             ArchiveModel<?> archiveModel = file.getTemplateModel();
-            if(archiveModel!=null){
+            if ( archiveModel != null ) {
                 setAttrs( ModelKit.toMap( archiveModel ) );
                 removeAttr( "SID" );
             }
         }
         setAttr( "file", file );
     }
-    
-    public void rec_todo(){
+
+    public void rec_todo() {
         this.setAttr( "todo", "1" );
         this.rec();
         render( "rec.ftl" );
     }
-    
+
     @Override
     protected TemplateFile07 getDao() {
         return TemplateFile07.dao;
@@ -56,5 +62,18 @@ public class TemplateFile07Controller extends TemplateFileController<TemplateFil
 
     public void detail() {
         this.rec();
+    }
+
+    @Override
+    protected void afterSave( TemplateFile07 model ) {
+        Identity operator = identityContext.getIdentity();
+        TodoData todo = task.buildTodoData( model );
+        if ( task.validate( model ) ) todo.save( operator );
+        if ( task.isFinishTodo( model ) ) todo.finish( operator );
+    }
+
+    @Override
+    protected void afterDel( TemplateFile07 model ) {
+        task.buildTodoData( model ).cancel();
     }
 }
