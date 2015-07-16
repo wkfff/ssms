@@ -72,7 +72,7 @@ public class PasswordController extends Controller {
 
         String k = tenantType+"#"+userId+"#"+DateKit.toStr( new Date(), DateKit.timeFormat );
         k = Base64Encoder.encode( k );
-        EmailUtils.sendHtml( EmailConst.SMTP_163, "flinsoft@163.com", "flin0000", "19990653@qq.com", "安全生产标准化管理系统重置密码邮件", "尊敬的用户：<br>您的账号进行了重置密码操作,请点击以下链接设置新密码（1小时内有效）<br> <a href='http://localhost/pwd/reset/"+k+"'>http://localhost/pwd/reset/"+k+"</a> <br>若您没有做过此操作，请忽略此邮件，谢谢！<br>本邮件为系统邮件，请勿直接回复！" );
+        EmailUtils.sendHtml( EmailConst.SMTP_163, "flinsoft@163.com", "flin0000", mail, "安全生产标准化管理系统重置密码邮件", "尊敬的用户：<br>您的账号进行了重置密码操作,请点击以下链接设置新密码（1小时内有效）<br> <a href='http://localhost/pwd/reset/"+k+"'>http://localhost/pwd/reset/"+k+"</a> <br>若您没有做过此操作，请忽略此邮件，谢谢！<br>本邮件为系统邮件，请勿直接回复！" );
         //this.render( new JsonRender( "OK" ).forIE() );
         setAttr( "state", "success" ).setAttr( "msg", "发送成功。" );
         this.renderJson();
