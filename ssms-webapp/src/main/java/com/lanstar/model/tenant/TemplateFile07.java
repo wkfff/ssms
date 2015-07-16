@@ -15,4 +15,8 @@ public class TemplateFile07 extends TemplateFileModel<TemplateFile07> {
     public Date getCertReview() {
         return getDate( "T_CERT_REVIEW" );
     }
+
+    public void setCertReview( Date value ) {
+        set( "T_CERT_REVIEW", value );
+    }
 }

@@ -68,4 +68,6 @@
             }
         }
     };
+
+    if (ko.validation) ko.validation.makeBindingHandlerValidatable('htmleditValue');
 })();
