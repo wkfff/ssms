@@ -5,7 +5,7 @@
         <div data-options="region:'north'" style="overflow:hidden;">
             <div class="titlebar_noborder">
                 <img src="/resource/images/blue/star.png"/>&nbsp;${title!'查看'}
-                <span class="backing"><a href="/index"}">返回</a></span>
+                <span class="backing"><a href="/index">返回</a></span>
             </div>
         </div>
         <div data-options="region:'center', border:false">

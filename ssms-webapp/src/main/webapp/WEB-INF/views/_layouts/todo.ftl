@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="/resource/css/common.css"/>
     <link rel="stylesheet" href="/resource/css/fix.css"/>
     <link rel="stylesheet" href="/resource/css/layout.css"/>
+    <script type="text/javascript" src="/resource/js/My97DatePicker/WdatePicker.js"></script>
     <#--knockout-->
     <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
     <#--jquery-->
