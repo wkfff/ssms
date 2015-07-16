@@ -7,14 +7,14 @@
  */
 package com.lanstar.quartz.tenantdb;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import com.lanstar.common.kit.DateKit;
 import com.lanstar.model.tenant.TemplateFile08;
 import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoType;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 特种设备
@@ -34,23 +34,16 @@ public class TemplateFile08Task extends TemplateFileTask<TemplateFile08> {
     public boolean validate( TemplateFile08 item ) {
         // 提前30天
         Calendar cd = Calendar.getInstance();
-        cd.setTime( item.getTextnext() );
-        cd.add( Calendar.DATE, -30);
+        cd.setTime( item.getTestNext() );
+        cd.add( Calendar.DATE, -30 );
         String d1 = DateKit.toStr( cd.getTime() );
         String d2 = DateKit.toStr( new Date() );
         return d1.compareTo( d2 ) >= 0;
     }
-    //是否完成代办
-    public boolean isFinishTodo(TemplateFile08 item){
-        Calendar cd = Calendar.getInstance();
-        cd.setTime( item.getTextnext() );
-        String d1 = DateKit.toStr( cd.getTime() );
-        String d2 = DateKit.toStr( new Date() );
-        return d1.compareTo( d2 )<=0;
-    }
+
     @Override
     protected void buildTodoData( TemplateFile08 file, TodoData data ) {
-        data.setTitle( "<<" + file.getName() + ">>临近下次检验(" + DateKit.toStr( file.getTextnext() ) + ")" );
+        data.setTitle( "<<" + file.getName() + ">>临近下次检验(" + DateKit.toStr( file.getTestNext() ) + ")" );
     }
 
 }

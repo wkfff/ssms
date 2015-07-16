@@ -8,6 +8,7 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
+import com.lanstar.common.kit.DateKit;
 import com.lanstar.identity.Identity;
 import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
@@ -18,6 +19,9 @@ import com.lanstar.quartz.tenantdb.TaskMap;
 import com.lanstar.quartz.tenantdb.TemplateFile09Task;
 import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.enterprise.UniqueTag;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class TemplateFile09Controller extends TemplateFileController<TemplateFile09> {
     private TemplateFile09Task task = TaskMap.me().getTask( TemplateFile09Task.class );
@@ -63,7 +67,12 @@ public class TemplateFile09Controller extends TemplateFileController<TemplateFil
         Identity operator = identityContext.getIdentity();
         TodoData todo = task.buildTodoData( model );
         if ( task.validate( model ) ) todo.save( operator );
-        if ( task.isFinishTodo( model ) ) todo.finish( operator );
+
+        Calendar cd = Calendar.getInstance();
+        cd.setTime( model.getTestNext() );
+        String d1 = DateKit.toStr( cd.getTime() );
+        String d2 = DateKit.toStr( new Date() );
+        if ( d1.compareTo( d2 ) <= 0 ) todo.finish( operator );
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Date;
 public class TemplateFile08 extends TemplateFileModel<TemplateFile08> {
     public static final TemplateFile08 dao = new TemplateFile08();
 
-    public Date getTextnext() {
+    public Date getTestNext() {
         return getDate( "T_TEST_NEXT" );
     }
 }
