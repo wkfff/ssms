@@ -2,6 +2,7 @@
     <@layout.put block="head">
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
     <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/resource/css/form.css">
     <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
     <script type="text/javascript" src="/resource/js/common.js"></script>
@@ -72,9 +73,13 @@
         <script type="text/javascript" src="/resource/js/kindeditor/kindeditor.js"></script>
         <script type="text/javascript" src="/resource/js/kindeditor/plugins/autoheight/autoheight.js"></script>
         <script type="text/javascript" src="/resource/js/kindeditor/lang/zh_CN.js"></script>
+        <script type="text/javascript" src="/resource/js/My97DatePicker/WdatePicker.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
+        <script type="text/javascript" src="/resource/js/knockout/knockout.validation.js"></script>
+        <script type="text/javascript" src="/resource/js/knockout/knockout.validation.zh-CN.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/htmleditor.js"></script>
+        <script type="text/javascript" src="/resource/js/knockout/date.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/upload.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/dataPager.js"></script>
