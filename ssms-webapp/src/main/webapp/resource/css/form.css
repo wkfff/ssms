@@ -1,0 +1,42 @@
+label {
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+input {
+    border: 1px solid #c3d9e0;
+    height: 20px;
+    line-height: 20px;
+    background-color: #FFF;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+input[type="radio"], input[type="checkbox"] {
+    width: auto;
+}
+
+input[disabled], input:disabled {
+    border: 0;
+    background: transparent;
+    color: #ACA899;
+    border-bottom: #c3d9e0 1px solid;
+}
+
+input[required], input:required {
+    background: red;
+}
+
+span.validationMessage {
+    color: red;
+    font-weight: bold;
+}
+
+.must {
+    color: red;
+    font-weight: bold;
+}
