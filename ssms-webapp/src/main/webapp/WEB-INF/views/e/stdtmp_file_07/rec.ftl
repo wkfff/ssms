@@ -174,7 +174,7 @@
                 ok: function () {
                     if (isValid(model)) {
                         utils.messager.showProgress();
-                        $.post('${BASE_PATH}/review', {id: ${SID}, next: model.nextTime}, function (result) {
+                        $.post('${BASE_PATH}/review', {id: ${SID!"undefined"}, next: model.nextTime}, function (result) {
                             utils.messager.closeProgress();
                             if (result.SID) {
                                 utils.messager.alert("保存成功", function () {

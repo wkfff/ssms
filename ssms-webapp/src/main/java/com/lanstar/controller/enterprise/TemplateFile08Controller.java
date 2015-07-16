@@ -8,6 +8,7 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.app.Const;
+
 import com.lanstar.common.kit.DateKit;
 import com.lanstar.identity.Identity;
 import com.lanstar.model.system.archive.ArchiveModel;
@@ -67,19 +68,31 @@ public class TemplateFile08Controller extends TemplateFileController<TemplateFil
     public void detail() {
         this.rec();
     }
+    
+    public void test() {
+        int id = getParaToInt( "id" );
+        Date next = getParaToDate( "next" );
+        Date last = getParaToDate("last");
+        
+        TemplateFile08 model = TemplateFile08.dao.findById( id );
+        model.setTestNext( next );
+        model.setTestLast(last);
+        model.update();
+        
+        // 完成待办
+        task.buildTodoData( model ).finish( identityContext.getIdentity() );
+        
+        setAttr( "SID", model.getId() );
+        renderJson();
+    }
 
     @Override
     protected void afterSave( TemplateFile08 model ) {
         Identity operator = identityContext.getIdentity();
         TodoData todo = task.buildTodoData( model );
         if ( task.validate( model ) ) todo.save( operator );
-
-        Calendar cd = Calendar.getInstance();
-        cd.setTime( model.getTestNext() );
-        String d1 = DateKit.toStr( cd.getTime() );
-        String d2 = DateKit.toStr( new Date() );
-        if ( d1.compareTo( d2 ) <= 0 ) todo.finish( operator );
     }
+    
 
     @Override
     protected void afterDel( TemplateFile08 model ) {

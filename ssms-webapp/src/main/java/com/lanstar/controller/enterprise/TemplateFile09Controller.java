@@ -7,8 +7,9 @@
  */
 package com.lanstar.controller.enterprise;
 
+import java.util.Date;
+
 import com.lanstar.app.Const;
-import com.lanstar.common.kit.DateKit;
 import com.lanstar.identity.Identity;
 import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.tenant.TemplateFile;
@@ -19,9 +20,6 @@ import com.lanstar.quartz.tenantdb.TaskMap;
 import com.lanstar.quartz.tenantdb.TemplateFile09Task;
 import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.enterprise.UniqueTag;
-
-import java.util.Calendar;
-import java.util.Date;
 
 public class TemplateFile09Controller extends TemplateFileController<TemplateFile09> {
     private TemplateFile09Task task = TaskMap.me().getTask( TemplateFile09Task.class );
@@ -62,17 +60,28 @@ public class TemplateFile09Controller extends TemplateFileController<TemplateFil
         this.rec();
     }
 
+    public void test() {
+        int id = getParaToInt( "id" );
+        Date next = getParaToDate( "next" );
+        Date last = getParaToDate( "last" );
+
+        TemplateFile09 model = TemplateFile09.dao.findById( id );
+        model.setTestNext( next );
+        model.setTestLast( last );
+        model.update();
+
+        // 完成待办
+        task.buildTodoData( model ).finish( identityContext.getIdentity() );
+
+        setAttr( "SID", model.getId() );
+        renderJson();
+    }
+
     @Override
     protected void afterSave( TemplateFile09 model ) {
         Identity operator = identityContext.getIdentity();
         TodoData todo = task.buildTodoData( model );
         if ( task.validate( model ) ) todo.save( operator );
-
-        Calendar cd = Calendar.getInstance();
-        cd.setTime( model.getTestNext() );
-        String d1 = DateKit.toStr( cd.getTime() );
-        String d2 = DateKit.toStr( new Date() );
-        if ( d1.compareTo( d2 ) <= 0 ) todo.finish( operator );
     }
 
     @Override

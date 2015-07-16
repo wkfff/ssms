@@ -15,4 +15,12 @@ public class TemplateFile09 extends TemplateFileModel<TemplateFile09> {
     public Date getTestNext() {
         return getDate( "T_TEST_NEXT" );
     }
+
+    public void setTestNext( Date next ) {
+        set( "T_TEST_NEXT", next );
+    }
+
+    public void setTestLast( Date last ) {
+        set( "T_TEST_LAST", last );
+    }
 }
