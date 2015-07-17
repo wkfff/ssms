@@ -120,8 +120,10 @@
         <#if pass?? && pass?size gt 0 >
             <tr>
                 <td colspan="4">
+                <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
+                    <div style="background-color: #CCCCCC;">年审情况:</div>
                     <table id="item">
-                        <tr>
+                        <tr style="border:1px dashed  #ccc;">
                             <td>序号</td>
                             <td>年审时间</td>
                             <td>操作人</td>
@@ -134,6 +136,7 @@
                             </tr>
                         </#list>
                     </table>
+                    </div>
                 </td>
             </tr>
         </#if>
@@ -181,16 +184,14 @@
                 if (result == '1') {
                     utils.messager.closeProgress();
                     $.messager.alert("提示", "年审通过", "info", function () {
-
+                        panelLoad('${BASE_PATH}/${file.id}');
                     });
                 } else if (result == '3') {
-                    $.messager.alert("提示", "该制度文件已通过年审，不要重复年审。", "warning", function () {
-                        utils.messager.closeProgress();
-                    });
+                    utils.messager.closeProgress();
+                    $.messager.alert("提示", "该制度文件已通过年审，不要重复年审。", "warning");
                 } else {
-                    $.messager.alert("提示", "年审不通过。", "warning", function () {
-                        utils.messager.closeProgress();
-                    });
+                    utils.messager.closeProgress();
+                    $.messager.alert("提示", "年审不通过。", "warning");
                 }
             }, "json");
         }
