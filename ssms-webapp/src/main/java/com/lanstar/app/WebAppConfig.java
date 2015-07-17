@@ -128,7 +128,9 @@ public class WebAppConfig extends RapidwareConfig {
 
         // 任务调度插件配置
         TaskMap.me()
-//               .add( TemplateFile01Task.class )
+               .add( TemplateFile01Task.class )
+               .add( TemplateFile03Task.class )
+               .add( TemplateFile04Task.class )
                .add( TemplateFile06Task.class )
                .add( TemplateFile07Task.class )
                .add( TemplateFile08Task.class )
