@@ -85,7 +85,6 @@
             <td colspan="4">
                 <div style="border: 1px dashed  #ccc; margin-bottom: 5px;position: relative;">
                 <div style="background-color: #CCCCCC;">政策解读:</div>
-                <table style="table-layout: auto;"></table>
                 ${file.explain}
                 </div>
             </td>
