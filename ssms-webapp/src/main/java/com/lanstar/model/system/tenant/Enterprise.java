@@ -6,10 +6,11 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.model.system;
+package com.lanstar.model.system.tenant;
 
 import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantType;
+import com.lanstar.model.system.EnterpriseProfession;
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
@@ -108,9 +109,6 @@ public class Enterprise extends ModelExt<Enterprise> implements Tenant {
         this.set( "N_STATE", value );
     }
 
-    /**
-     * @param tenant
-     */
     public void setReview( Tenant tenant ) {
         this.set( "R_REVIEW", tenant.getTenantId() );
         this.set( "S_REVIEW", tenant.getTenantName() );

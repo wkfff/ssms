@@ -12,14 +12,15 @@ import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
 import com.lanstar.core.aop.ClearInterceptor;
 import com.lanstar.core.aop.ClearLayer;
+import com.lanstar.identity.Identity;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.model.system.TenantUser;
+import com.lanstar.identity.TenantType;
 import com.lanstar.render.CaptchaRender;
 
 public class HomeController extends Controller {
-    /**是否需要验证码*/
+    /** 是否需要验证码 */
     boolean bCheckCode = true;
-    
+
     public void index() {
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         setAttr( "nav", identityContext.getSystemNavgate() );
@@ -65,12 +66,13 @@ public class HomeController extends Controller {
         render( CaptchaRender.getInstance() );
     }
 
-    public static boolean login( Controller controller, String tenentCode, String username, String password ) {
-        TenantUser tenantUser = TenantUser.getUser( tenentCode, username, password );
-        if ( tenantUser != null ) {
-            IdentityContext.bindIdentityContext( controller, tenantUser );
+    private static boolean login( Controller controller, String tenentCode, String username, String password ) {
+        try {
+            Identity identity = TenantType.getIdentity( tenentCode, username, password );
+            IdentityContext.bindIdentityContext( controller, identity );
             return true;
+        } catch ( Exception e ) {
+            return false;
         }
-        return false;
     }
 }

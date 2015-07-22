@@ -10,10 +10,8 @@ package com.lanstar.controller.system;
 
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
-import com.lanstar.core.render.JsonRender;
-import com.lanstar.model.system.GovernmentUser;
-import com.lanstar.model.system.Review;
-import com.lanstar.model.system.ReviewUser;
+import com.lanstar.model.system.tenant.Review;
+import com.lanstar.model.system.tenant.ReviewUser;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class ReviewUserController extends SimplateController<ReviewUser> {

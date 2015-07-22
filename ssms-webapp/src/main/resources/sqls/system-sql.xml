@@ -37,15 +37,38 @@
         <sql id="getProfession">SELECT * FROM SYS_TENANT_E_PROFESSION WHERE R_TENANT=? and P_PROFESSION=?</sql>
     </sqlGroup>
 
+    <!-- begin 用户信息相关的SQL -->
     <sqlGroup name="enterpriseUser">
-        <sql id="getUserBySidAndPwd">SELECT * FROM SYS_TENANT_E_USER WHERE SID=? and UPPER(C_PASSWD)=?</sql>
+        <sql id="getUserByNameAndPwd">
+            SELECT A.*
+            FROM SYS_TENANT_E_USER A
+            INNER JOIN SYS_TENANT_E B ON A.R_SID = B.SID
+            WHERE IFNULL(A.B_DELETE, 0)=0 AND IFNULL(B.B_DELETE, 0)=0
+            AND UPPER(B.C_CODE)=? AND UPPER(A.C_USER)=? AND UPPER(A.C_PASSWD)=?
+        </sql>
     </sqlGroup>
     <sqlGroup name="governmentUser">
-        <sql id="getUserBySidAndPwd">SELECT * FROM SYS_TENANT_G_USER WHERE SID=? and UPPER(C_PASSWD)=?</sql>
+        <sql id="getUserByNameAndPwd">
+            SELECT A.*
+            FROM SYS_TENANT_G_USER A
+            INNER JOIN SYS_TENANT_G B ON A.R_SID = B.SID
+            WHERE IFNULL(A.B_DELETE, 0)=0 AND IFNULL(B.B_DELETE, 0)=0
+            AND UPPER(B.C_CODE)=? AND UPPER(A.C_USER)=? AND UPPER(A.C_PASSWD)=?
+        </sql>
     </sqlGroup>
     <sqlGroup name="reviewUser">
-        <sql id="getUserBySidAndPwd">SELECT * FROM SYS_TENANT_R_USER WHERE SID=? and UPPER(C_PASSWD)=?</sql>
+        <sql id="getUserByNameAndPwd">
+            SELECT A.*
+            FROM SYS_TENANT_R_USER A
+            INNER JOIN SYS_TENANT_R B ON A.R_SID = B.SID
+            WHERE IFNULL(A.B_DELETE, 0)=0 AND IFNULL(B.B_DELETE, 0)=0
+            AND UPPER(B.C_CODE)=? AND UPPER(A.C_USER)=? AND UPPER(A.C_PASSWD)=?
+        </sql>
     </sqlGroup>
+    <sqlGroup name="systemUser">
+        <sql id="getUserByNameAndPwd">SELECT * FROM SYS_USER WHERE IFNULL(B_DELETE, 0)=0 AND UPPER(C_NAME)=? and UPPER(C_PASSWD)=?</sql>
+    </sqlGroup>
+    <!-- end 用户信息相关的SQL -->
 
     <sqlGroup name="multiPara">
         <sql id="listParaByName">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=?</sql>

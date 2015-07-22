@@ -11,22 +11,15 @@ package com.lanstar.app;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
-
 import com.lanstar.app.model.SystemModelMapping;
 import com.lanstar.app.model.TenantModelMapping;
-import com.lanstar.app.route.EnterpriseRoutes;
-import com.lanstar.app.route.GovernmentRoutes;
-import com.lanstar.app.route.ReviewRoutes;
-import com.lanstar.app.route.SystemRoutes;
+import com.lanstar.app.route.*;
 import com.lanstar.app.template.TemplatePropsConfig;
 import com.lanstar.common.freemarker.BlockDirectiveUtils;
 import com.lanstar.common.kit.JsonKit;
 import com.lanstar.common.kit.ServletKit;
 import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.config.*;
-import com.lanstar.controller.BrowerController;
-import com.lanstar.controller.HomeController;
-import com.lanstar.controller.PasswordController;
 import com.lanstar.core.Rapidware;
 import com.lanstar.core.render.FreeMarkerRender;
 import com.lanstar.identity.IdentityInterceptor;
@@ -44,12 +37,10 @@ import com.lanstar.plugin.staticcache.StaticCachePlugin;
 import com.lanstar.plugin.template.TemplatePropPlugin;
 import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
 import com.lanstar.quartz.tenantdb.*;
-
 import freemarker.ext.util.WrapperTemplateModel;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
-
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
@@ -82,10 +73,7 @@ public class WebAppConfig extends RapidwareConfig {
         me.add( ReviewRoutes.me() );
         me.add( GovernmentRoutes.me() );
         me.add( SystemRoutes.me() );
-
-        me.add( "/", HomeController.class );
-        me.add( "/browsers", BrowerController.class );
-        me.add( "/pwd", PasswordController.class );
+        me.add( CommonRoutes.me() );
     }
 
     @Override

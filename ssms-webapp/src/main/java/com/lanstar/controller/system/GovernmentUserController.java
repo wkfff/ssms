@@ -10,9 +10,8 @@ package com.lanstar.controller.system;
 
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
-import com.lanstar.model.system.EnterpriseUser;
-import com.lanstar.model.system.Government;
-import com.lanstar.model.system.GovernmentUser;
+import com.lanstar.model.system.tenant.Government;
+import com.lanstar.model.system.tenant.GovernmentUser;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class GovernmentUserController extends SimplateController<GovernmentUser> {

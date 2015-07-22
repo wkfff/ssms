@@ -18,7 +18,7 @@ public class IdentityContext extends TenantContext {
     private final Identity identity;
 
     private IdentityContext( Identity identity ) {
-        super( identity );
+        super( identity.getTenant() );
         this.identity = identity;
     }
 

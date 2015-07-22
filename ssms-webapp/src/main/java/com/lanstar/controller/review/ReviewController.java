@@ -10,7 +10,7 @@ package com.lanstar.controller.review;
 
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.model.system.Review;
+import com.lanstar.model.system.tenant.Review;
 import com.lanstar.plugin.activerecord.ModelKit;
 
 public class ReviewController extends SimplateController<Review> {

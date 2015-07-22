@@ -11,7 +11,7 @@ package com.lanstar.service.enterprise;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
-import com.lanstar.model.system.Enterprise;
+import com.lanstar.model.system.tenant.Enterprise;
 import com.lanstar.model.system.EnterpriseProfession;
 import com.lanstar.model.system.Profession;
 

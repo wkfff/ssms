@@ -10,9 +10,8 @@ package com.lanstar.controller.system;
 
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
-import com.lanstar.core.render.JsonRender;
-import com.lanstar.model.system.Enterprise;
-import com.lanstar.model.system.EnterpriseUser;
+import com.lanstar.model.system.tenant.Enterprise;
+import com.lanstar.model.system.tenant.EnterpriseUser;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 public class EnterpriseUserController extends SimplateController<EnterpriseUser> {

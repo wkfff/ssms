@@ -13,12 +13,10 @@ import java.util.Map;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.lanstar.common.TreeNode;
-import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.model.system.Enterprise;
+import com.lanstar.model.system.tenant.Enterprise;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
 import com.lanstar.model.tenant.TemplateFile;

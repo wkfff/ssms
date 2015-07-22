@@ -8,7 +8,7 @@
 
 package com.lanstar.identity;
 
-public interface Identity extends Tenant {
+public interface Identity {
     /**
      * 获取用户ID
      */
@@ -23,4 +23,29 @@ public interface Identity extends Tenant {
      * 获取用户编码
      */
     String getCode();
+
+    /**
+     * 获取租户信息
+     */
+    Tenant getTenant();
+
+    /**
+     * 获取租户ID
+     */
+    int getTenantId();
+
+    /**
+     * 获取租户名称
+     */
+    String getTenantName();
+
+    /**
+     * 获取租户编码
+     */
+    String getTenantCode();
+
+    /**
+     * 获取租户类型
+     */
+    TenantType getTenantType();
 }

@@ -8,6 +8,7 @@
 
 package com.lanstar.model.system;
 
+import com.lanstar.model.system.tenant.Enterprise;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 

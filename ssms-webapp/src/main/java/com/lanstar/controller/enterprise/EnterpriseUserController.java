@@ -9,63 +9,41 @@ package com.lanstar.controller.enterprise;
 
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.model.system.EnterpriseUser;
+import com.lanstar.model.system.tenant.EnterpriseUser;
 import com.lanstar.plugin.activerecord.ModelKit;
 
 /**
  * @author Administrator
- *
  */
-public class EnterpriseUserController extends SimplateController<EnterpriseUser>{
+public class EnterpriseUserController extends SimplateController<EnterpriseUser> {
 
     @Override
     protected EnterpriseUser getDao() {
         // TODO Auto-generated method stub
         return EnterpriseUser.dao;
     }
-    
-    public void rec(){
-        IdentityContext identityContext= IdentityContext.getIdentityContext( this );
-        int id=identityContext.getId();
+
+    public void rec() {
+        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        int id = identityContext.getId();
         String tenantName = identityContext.getTenantName();
         int tenantId = identityContext.getTenantId();
         EnterpriseUser model = getDao().findById( id );
-        if(model!=null){
+        if ( model != null ) {
             setAttr( "tenantId", tenantId );
             setAttr( "tenantName", tenantName );
-            setAttrs( ModelKit.toMap( model) );
+            setAttrs( ModelKit.toMap( model ) );
         }
     }
+
     @Override
-    public void save(){
-        EnterpriseUser model=getModel();
-        
-        if(model!=null){
+    public void save() {
+        EnterpriseUser model = getModel();
+
+        if ( model != null ) {
             model.update();
             setAttr( "SID", model.getInt( "SID" ) );
             renderJson();
-        }
-    }
-    //密码重置
-   public void repsw(){
-        
-    }
-    
-    public void password() {
-        render( "/WEB-INF/views/common/password.ftl" );
-    }
-
-    public void changePassword() {
-        int id=IdentityContext.getIdentityContext( this ).getId();
-        String oldPwd = getPara( "oldPwd" );
-        String newPwd = getPara( "newPwd" );
-        EnterpriseUser user = EnterpriseUser.getUser( String.valueOf( id ), oldPwd );
-        if ( user != null ) {
-            user.setPassword( newPwd );
-            user.update();
-            renderJson( true );
-        } else {
-            renderJson( false );
         }
     }
 }

@@ -8,26 +8,45 @@
 
 package com.lanstar.identity;
 
+import com.lanstar.model.system.tenant.*;
+
 public enum TenantType {
     /**
      * 系统
      */
-    SYSTEM("S"),
-
+    SYSTEM( "S" ) {
+        @Override
+        protected UserModel<?> findUser( String tenantCode, String username, String password ) {
+            return SystemUser.getUser( username, password );
+        }
+    },
     /**
      * 政府
      */
-    GOVERNMENT("G"),
-
+    GOVERNMENT( "G" ) {
+        @Override
+        protected UserModel<?> findUser( String tenantCode, String username, String password ) {
+            return GovernmentUser.getUser( tenantCode, username, password );
+        }
+    },
     /**
      * 评审
      */
-    REVIEW("R"),
-
+    REVIEW( "R" ) {
+        @Override
+        protected UserModel<?> findUser( String tenantCode, String username, String password ) {
+            return ReviewUser.getUser( tenantCode, username, password );
+        }
+    },
     /**
      * 企业
      */
-    ENTERPRISE("E");
+    ENTERPRISE( "E" ) {
+        @Override
+        protected UserModel<?> findUser( String tenantCode, String username, String password ) {
+            return EnterpriseUser.getUser( tenantCode, username, password );
+        }
+    };
 
     private String name;
 
@@ -35,23 +54,37 @@ public enum TenantType {
         this.name = name;
     }
 
+    /**
+     * 根据租户编码，用户名，密码获取身份标识信息。
+     */
+    public static Identity getIdentity( String tenantCode, String username, String password ) {
+        TenantType type;
+        if ( tenantCode.equalsIgnoreCase( SYSTEM.name() ) ) type = SYSTEM;
+        else {
+            String name = String.valueOf( tenantCode.charAt( 0 ) );
+            type = getValue( name );
+        }
+        UserModel<?> user = type.findUser( tenantCode, username, password );
+        return IdentityKit.toIdentity( user );
+    }
+
+    protected abstract UserModel<?> findUser( String tenantCode, String username, String password );
+
     public String getName() {
         return name;
     }
 
-    public static TenantType getValue(String name){
-        if ( SYSTEM.name.equalsIgnoreCase( name )) {
+    public static TenantType getValue( String name ) {
+        if ( SYSTEM.name.equalsIgnoreCase( name ) ) {
             return SYSTEM;
-        }
-        else if ( GOVERNMENT.name.equalsIgnoreCase( name )) {
+        } else if ( GOVERNMENT.name.equalsIgnoreCase( name ) ) {
             return GOVERNMENT;
-        }
-        else if ( REVIEW.name.equalsIgnoreCase( name )) {
+        } else if ( REVIEW.name.equalsIgnoreCase( name ) ) {
             return REVIEW;
-        }else if ( ENTERPRISE.name.equalsIgnoreCase( name )) {
+        } else if ( ENTERPRISE.name.equalsIgnoreCase( name ) ) {
             return ENTERPRISE;
         }
-        return null;
+        throw new IllegalArgumentException( "租户类型[" + name + "]未知" );
     }
 
     @Override

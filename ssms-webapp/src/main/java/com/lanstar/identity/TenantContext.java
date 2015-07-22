@@ -11,7 +11,7 @@ package com.lanstar.identity;
 import com.lanstar.app.Const;
 import com.lanstar.common.Asserts;
 import com.lanstar.common.TreeNode;
-import com.lanstar.model.system.Enterprise;
+import com.lanstar.model.system.tenant.Enterprise;
 import com.lanstar.model.system.Navgate;
 import com.lanstar.model.system.Profession;
 import com.lanstar.plugin.activerecord.*;

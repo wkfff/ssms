@@ -13,7 +13,7 @@ import com.google.common.primitives.Ints;
 import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.TenantType;
-import com.lanstar.model.system.Enterprise;
+import com.lanstar.model.system.tenant.Enterprise;
 import com.lanstar.model.system.EnterpriseProfession;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.staticcache.CacheManager;

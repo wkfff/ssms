@@ -9,9 +9,12 @@
 package com.lanstar.app.model;
 
 import com.lanstar.model.system.*;
+import com.lanstar.model.system.tenant.*;
 
 public class SystemModelMapping extends ActiveRecordMapping {
     public SystemModelMapping() {
+        ////////////////////////////////////////
+        // begin tenant info
         addMapping( "SYS_TENANT_E_USER", "SID", EnterpriseUser.class );
         addMapping( "SYS_TENANT_E", "SID", Enterprise.class );
         addMapping( "SYS_TENANT_E_PROFESSION", "SID", EnterpriseProfession.class );
@@ -22,7 +25,10 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_TENANT_R_USER", "SID", ReviewUser.class );
         addMapping( "SYS_TENANT_R", "SID", Review.class );
 
-        addMapping( "TENANT_USER", TenantUser.class );
+        addMapping( "SYS_USER", "SID", SystemUser.class );
+        // end tenant info
+        ////////////////////////////////////////
+
         addMapping( "SYS_NAV", "SID", Navgate.class );
         addMapping( "SYS_PROFESSION", "SID", Profession.class );
 
@@ -62,10 +68,10 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_PARA_MULTI", "SID", MultiPara.class );
         addMapping( "SYS_INDUSTRY", "SID", Industry.class );
         addMapping( "SYS_PARA_AREA", "SID", AreaPara.class );
-        
+
         addMapping( "SYS_NOTICE", "SID", Notice.class );
         addMapping( "SYS_NOTICE_RECEIVER", "SID", NoticeReceiver.class );
-        
+
         addMapping( "SSM_KNOWLEDGE_SORT", "SID", KnowledgeSort.class );
         addMapping( "SSM_KNOWLEDGE_FILE", "SID", KnowledgeFile.class );
     }

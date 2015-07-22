@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.model.system;
+package com.lanstar.model.system.tenant;
 
 import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantType;

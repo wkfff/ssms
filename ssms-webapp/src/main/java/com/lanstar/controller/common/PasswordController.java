@@ -5,9 +5,7 @@
  * 创建时间：2015年7月14日 上午11:02:45
  * 创建用户：林峰
  */
-package com.lanstar.controller;
-
-import java.util.Date;
+package com.lanstar.controller.common;
 
 import com.lanstar.common.kit.DateKit;
 import com.lanstar.common.kit.StrKit;
@@ -17,29 +15,31 @@ import com.lanstar.core.aop.ClearLayer;
 import com.lanstar.core.mail.EmailConst;
 import com.lanstar.core.mail.EmailUtils;
 import com.lanstar.identity.TenantType;
-import com.lanstar.model.system.EnterpriseUser;
-import com.lanstar.model.system.GovernmentUser;
-import com.lanstar.model.system.ReviewUser;
-import com.lanstar.model.system.TenantUser;
+import com.lanstar.model.system.tenant.EnterpriseUser;
+import com.lanstar.model.system.tenant.GovernmentUser;
+import com.lanstar.model.system.tenant.ReviewUser;
 import com.lanstar.render.CaptchaRender;
 import com.oreilly.servlet.Base64Decoder;
 import com.oreilly.servlet.Base64Encoder;
+
+import java.util.Date;
 
 /**
  * 密码
  *
  */
-@ClearInterceptor(ClearLayer.ALL)
 public class PasswordController extends Controller {
     /**
      * 重置密码发送邮件页面
      */
+    @ClearInterceptor(ClearLayer.ALL)
     public void index(){
 //        render( "index.ftl" );
     }
     /**
      * 发送重置密码邮件
      */
+    @ClearInterceptor(ClearLayer.ALL)
     public void send(){
         String tenantType = "E";
         int userId = -1;
@@ -59,15 +59,16 @@ public class PasswordController extends Controller {
             this.renderJson();
             return;
         }else{
-            TenantUser user = TenantUser.dao.findFirst( "SELECT * FROM TENANT_USER WHERE C_EMAIL=? ",mail );
-            if (user==null){
+            // TODO
+            //TenantUser user = TenantUser.dao.findFirst( "SELECT * FROM TENANT_USER WHERE C_EMAIL=? ",mail );
+            /*if (user==null){
                 setAttr( "state", "error" ).setAttr( "msg", "邮箱地址不正确。" );
                 this.renderJson();
                 return;
             }else{
                 userId = user.getId();
                 tenantType = user.getTenantType().getName();
-            }
+            }*/
         }
 
         String k = tenantType+"#"+userId+"#"+DateKit.toStr( new Date(), DateKit.timeFormat );
@@ -80,6 +81,7 @@ public class PasswordController extends Controller {
     /**
      * 发送成功提示页面
      */
+    @ClearInterceptor(ClearLayer.ALL)
     public void success(){
         this.render( "success.ftl" );
     }
@@ -87,6 +89,7 @@ public class PasswordController extends Controller {
     /**
      * 重置密码页面
      */
+    @ClearInterceptor(ClearLayer.ALL)
     public void reset(){
         String k = this.getPara( 0 );
         if (StrKit.isBlank( k )) {

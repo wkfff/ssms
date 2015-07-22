@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.controller;
+package com.lanstar.controller.common;
 
 import com.lanstar.core.Controller;
 import com.lanstar.core.aop.ClearInterceptor;

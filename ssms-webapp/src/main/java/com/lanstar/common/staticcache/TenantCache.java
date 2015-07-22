@@ -10,9 +10,9 @@ package com.lanstar.common.staticcache;
 
 import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantType;
-import com.lanstar.model.system.Enterprise;
-import com.lanstar.model.system.Government;
-import com.lanstar.model.system.Review;
+import com.lanstar.model.system.tenant.Enterprise;
+import com.lanstar.model.system.tenant.Government;
+import com.lanstar.model.system.tenant.Review;
 import com.lanstar.plugin.staticcache.Cache;
 
 import java.util.List;

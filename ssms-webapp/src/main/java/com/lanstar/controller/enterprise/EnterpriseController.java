@@ -14,7 +14,7 @@ import com.google.common.base.Splitter;
 import com.google.common.primitives.Ints;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.model.system.Enterprise;
+import com.lanstar.model.system.tenant.Enterprise;
 import com.lanstar.model.system.EnterpriseProfession;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.service.enterprise.EnterpriseProfessionService;

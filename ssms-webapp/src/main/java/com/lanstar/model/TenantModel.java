@@ -25,7 +25,7 @@ public abstract class TenantModel<T extends TenantModel<T>> extends ModelExt<T> 
     }
 
     @SuppressWarnings("unchecked")
-    private Set<String> modifyFlag = new CaseInsensitiveContainerFactory.CaseInsensitiveSet();
+    protected Set<String> modifyFlag = new CaseInsensitiveContainerFactory.CaseInsensitiveSet();
 
     private Config getConfig() {
         return DbKit.getConfig( getClass() );
@@ -99,6 +99,11 @@ public abstract class TenantModel<T extends TenantModel<T>> extends ModelExt<T> 
         @Override
         public String getCode() {
             throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public Tenant getTenant() {
+            return tenant;
         }
 
         @Override

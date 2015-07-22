@@ -9,7 +9,7 @@
 package com.lanstar.service;
 
 import com.lanstar.identity.TenantType;
-import com.lanstar.model.system.*;
+import com.lanstar.model.system.tenant.*;
 import com.lanstar.plugin.activerecord.Db;
 
 public class TenantService {
@@ -32,7 +32,7 @@ public class TenantService {
         EnterpriseUser user = new EnterpriseUser();
         user.setName( "管理员" );
         user.setUsername( "admin" );
-        user.setEnterprise( model );
+        user.setOwner( model );
         user.initPassword();
         user.save();
     }
@@ -41,7 +41,7 @@ public class TenantService {
         GovernmentUser user = new GovernmentUser();
         user.setName( "管理员" );
         user.setUsername( "admin" );
-        user.setGovernment( model );
+        user.setOwner( model );
         user.initPassword();
         user.save();
     }
@@ -50,7 +50,7 @@ public class TenantService {
         ReviewUser user = new ReviewUser();
         user.setName( "管理员" );
         user.setUsername( "admin" );
-        user.setReview( model );
+        user.setOwner( model );
         user.initPassword();
         user.save();
     }

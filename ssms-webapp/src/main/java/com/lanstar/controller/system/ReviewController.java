@@ -11,7 +11,7 @@ package com.lanstar.controller.system;
 import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.TenantType;
-import com.lanstar.model.system.Review;
+import com.lanstar.model.system.tenant.Review;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.staticcache.CacheManager;
 import com.lanstar.service.TenantService;
