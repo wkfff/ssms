@@ -12,8 +12,20 @@ import com.lanstar.common.ListKit;
 import com.lanstar.identity.Tenant;
 import com.lanstar.plugin.activerecord.ModelExt;
 
+import java.util.List;
+
 public class TemplateFolder extends ModelExt<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
+
+    public static List<TemplateFolder> listFolders( Tenant tenant, int templateId, int professionId ) {
+        return dao.findByColumns(
+                ListKit.newArrayList( "R_TENANT", "P_TENANT", "R_TEMPLATE", "P_PROFESSION" ),
+                ListKit.newObjectArrayList(
+                        tenant.getTenantId(),
+                        tenant.getTenantType().getName(),
+                        templateId,
+                        professionId ) );
+    }
 
     public static TemplateFolder findFolder( Tenant tenant, int templateId, int professionId, int folderId ) {
         return dao.findFirstByColumns(

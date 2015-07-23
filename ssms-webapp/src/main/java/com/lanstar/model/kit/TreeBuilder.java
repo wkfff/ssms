@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.common;
+package com.lanstar.model.kit;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -14,24 +14,24 @@ import com.google.common.collect.Iterables;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class TreeKit<T, E> {
+public abstract class TreeBuilder<T, E> {
     protected final List<E> list;
     protected final String parentField;
 
-    public TreeKit( List<E> list, String parentField ) {
+    public TreeBuilder( List<E> list, String parentField ) {
         this.list = list;
         this.parentField = parentField;
     }
 
-    public abstract T tree();
+    public abstract T build();
 
-    public abstract Object getValue( E item );
+    public abstract Object getKeyValue( E item );
 
     protected final Iterable<E> children( final Object parentKey ) {
         return Iterables.filter( list, new Predicate<E>() {
             @Override
             public boolean apply( E input ) {
-                return Objects.equals( parentKey, getValue( input ) );
+                return Objects.equals( parentKey, getKeyValue( input ) );
             }
         } );
     }
@@ -40,7 +40,7 @@ public abstract class TreeKit<T, E> {
         return Iterables.find( list, new Predicate<E>() {
             @Override
             public boolean apply( E input ) {
-                return Objects.equals( getValue( input ), key );
+                return Objects.equals( getKeyValue( input ), key );
             }
         } );
     }

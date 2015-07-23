@@ -6,7 +6,7 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.beans.system;
+package com.lanstar.model.kit.folder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,18 @@ public class FolderBean {
 
     public boolean addFolder( FolderBean bean ) {
         return children.add( bean );
+    }
+
+    public int getFileCount() {
+        return countFile( this );
+    }
+
+    private int countFile( FolderBean bean ) {
+        int count = bean.getFiles().size();
+        for ( FolderBean folderBean : bean.getChildren() ) {
+            count += countFile( folderBean );
+        }
+        return count;
     }
 
     public int getId() {

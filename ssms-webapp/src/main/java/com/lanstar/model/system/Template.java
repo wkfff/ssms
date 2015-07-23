@@ -9,7 +9,7 @@
 package com.lanstar.model.system;
 
 import com.alibaba.fastjson.JSON;
-import com.lanstar.beans.system.FolderBean;
+import com.lanstar.model.kit.folder.FolderBean;
 import com.lanstar.plugin.activerecord.ModelExt;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
@@ -32,11 +32,11 @@ public class Template extends ModelExt<Template> {
     }
 
     public List<TemplateFolder> listFolder() {
-        return TemplateFolder.list( getId() );
+        return TemplateFolder.listByTemplate( getId() );
     }
 
     public List<TemplateFolder> listFolder( int parentId ) {
-        return TemplateFolder.list( getId(), parentId );
+        return TemplateFolder.listByTemplateAndParent( getId(), parentId );
     }
 
     public int getVersion() {

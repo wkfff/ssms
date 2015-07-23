@@ -9,7 +9,7 @@
 package com.lanstar.plugin.jsconstants;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.lanstar.common.TreeKit;
+import com.lanstar.model.kit.TreeBuilder;
 import com.lanstar.model.system.AreaPara;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class AreaGetter implements ParametersGetter<List<AreaGetter.AreaParamete
     @Override
     public List<AreaParameter> getParameters() {
         List<AreaPara> fj = AreaPara.dao.findAll();
-        AreaParameter tree = new AreaTreeBuilder( fj ).tree();
+        AreaParameter tree = new AreaTreeBuilder( fj ).build();
         return tree.children;
     }
 
@@ -49,13 +49,13 @@ public class AreaGetter implements ParametersGetter<List<AreaGetter.AreaParamete
         }
     }
 
-    class AreaTreeBuilder extends TreeKit<AreaParameter, AreaPara> {
+    class AreaTreeBuilder extends TreeBuilder<AreaParameter, AreaPara> {
         public AreaTreeBuilder( List<AreaPara> list ) {
             super( list, null );
         }
 
         @Override
-        public AreaParameter tree() {
+        public AreaParameter build() {
             AreaParameter parameter = new AreaParameter();
             parameter.code = "350000";
             parameter.name = "福建";
@@ -76,7 +76,7 @@ public class AreaGetter implements ParametersGetter<List<AreaGetter.AreaParamete
         }
 
         @Override
-        public Object getValue( AreaPara item ) {
+        public Object getKeyValue( AreaPara item ) {
             return item.getParentCode();
         }
     }

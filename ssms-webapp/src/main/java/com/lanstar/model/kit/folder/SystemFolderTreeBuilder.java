@@ -6,27 +6,35 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.beans.system;
+package com.lanstar.model.kit.folder;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.lanstar.common.TreeKit;
+import com.lanstar.model.kit.TreeBuilder;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFolder;
 
 import java.util.List;
 import java.util.Objects;
 
-public class FolderTreeBuilder extends TreeKit<FolderBean, TemplateFolder> {
+public class SystemFolderTreeBuilder extends TreeBuilder<FolderBean, TemplateFolder> {
     private final List<TemplateFile> files;
 
-    public FolderTreeBuilder( List<TemplateFolder> folders, List<TemplateFile> files, String parentField ) {
+    public SystemFolderTreeBuilder( List<TemplateFolder> folders, List<TemplateFile> files, String parentField ) {
         super( folders, parentField );
         this.files = files;
     }
 
+    public static FolderBean tree(int template){
+        List<TemplateFolder> folders = TemplateFolder.listByTemplate( template );
+        List<TemplateFile> files = TemplateFile.listByTemplate( template );
+        // 根据目录信息构造树
+        SystemFolderTreeBuilder treeBuilder = new SystemFolderTreeBuilder( folders, files, "R_SID" );
+        return treeBuilder.build();
+    }
+
     @Override
-    public FolderBean tree() {
+    public FolderBean build() {
         final TemplateFolder first = first( 0 );
         FolderBean root = new FolderBean();
         putValues( first, root );
@@ -36,7 +44,7 @@ public class FolderTreeBuilder extends TreeKit<FolderBean, TemplateFolder> {
     }
 
     @Override
-    public Object getValue( TemplateFolder item ) {
+    public Object getKeyValue( TemplateFolder item ) {
         return item.get( parentField );
     }
 

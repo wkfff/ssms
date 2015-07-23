@@ -9,12 +9,11 @@
 package com.lanstar.controller.system;
 
 import com.google.common.collect.Maps;
-import com.lanstar.beans.system.FolderBean;
-import com.lanstar.beans.system.FolderTreeBuilder;
 import com.lanstar.common.Asserts;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.model.kit.folder.SystemFolderTreeBuilder;
 import com.lanstar.model.system.Template;
 import com.lanstar.model.system.TemplateFile;
 import com.lanstar.model.system.TemplateFolder;
@@ -24,7 +23,6 @@ import com.lanstar.service.system.template.PublishTask;
 import com.lanstar.service.system.template.PublishTaskFactory;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class TemplateFolderController extends Controller {
     public void manager() {
@@ -33,7 +31,7 @@ public class TemplateFolderController extends Controller {
         setAttr( "template", Template.dao.findById( template ) );
         setAttr( "SYS_CYCLE", CycleType.parameters() );
         setAttr( "tmpfiles", TemplatePropPlugin.me().listParameter() );
-        setAttr( "items", getTemplate( template ).getChildren() );
+        setAttr( "items", SystemFolderTreeBuilder.tree( template ).getChildren() );
     }
 
     // 保存文件目录
@@ -137,15 +135,7 @@ public class TemplateFolderController extends Controller {
         }
     }
 
-    public void finish(){
+    public void finish() {
         PublishTaskFactory.me().removeTask( getParaToInt() );
-    }
-
-    private FolderBean getTemplate( int template ) {
-        final List<TemplateFolder> folders = TemplateFolder.list( template );
-        List<TemplateFile> files = TemplateFile.listByTemplate( template );
-        // 根据目录信息构造树
-        FolderTreeBuilder treeBuilder = new FolderTreeBuilder( folders, files, "R_SID" );
-        return treeBuilder.tree();
     }
 }

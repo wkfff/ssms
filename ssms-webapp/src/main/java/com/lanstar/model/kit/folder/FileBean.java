@@ -6,7 +6,9 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.beans.system;
+package com.lanstar.model.kit.folder;
+
+import java.util.Date;
 
 public class FileBean {
     private int id;
@@ -18,6 +20,8 @@ public class FileBean {
     private Integer cycleValue;
     private String explain;
     private boolean remind;
+    private Integer count;
+    private Date lastUpdate;
 
     public int getId() {
         return id;
@@ -89,5 +93,21 @@ public class FileBean {
 
     public void setRemind( boolean remind ) {
         this.remind = remind;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount( Integer count ) {
+        this.count = count;
+    }
+
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate( Date lastUpdate ) {
+        this.lastUpdate = lastUpdate;
     }
 }

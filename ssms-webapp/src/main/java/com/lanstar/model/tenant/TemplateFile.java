@@ -10,6 +10,7 @@ package com.lanstar.model.tenant;
 
 import com.lanstar.common.ListKit;
 import com.lanstar.common.kit.StrKit;
+import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantType;
 import com.lanstar.model.TenantModel;
 import com.lanstar.model.system.archive.ArchiveModel;
@@ -19,9 +20,21 @@ import com.lanstar.plugin.template.TemplatePropPlugin;
 import com.lanstar.service.CycleType;
 import com.lanstar.service.enterprise.UniqueTag;
 
+import java.util.List;
+
 public class TemplateFile extends TenantModel<TemplateFile> {
     public static TemplateFile dao = new TemplateFile();
     private ArchiveModel<?> archiveModel;
+
+    public static List<TemplateFile> listFiles( Tenant tenant, int templateId, int professionId ) {
+        return dao.findByColumns(
+                ListKit.newArrayList( "R_TENANT", "P_TENANT", "R_TEMPLATE", "P_PROFESSION" ),
+                ListKit.newObjectArrayList(
+                        tenant.getTenantId(),
+                        tenant.getTenantType().getName(),
+                        templateId,
+                        professionId ) );
+    }
 
     public static TemplateFile findFirst( int templateId, int tenantId, int professionId, int srcId ) {
         return dao.findFirstByColumns(
@@ -191,11 +204,11 @@ public class TemplateFile extends TenantModel<TemplateFile> {
         set( "N_VERSION", version );
     }
 
-    public String getDesc() {
+    public String getDescript() {
         return getStr( "C_DESC" );
     }
 
-    public void setDesc( String desc ) {
+    public void setDescript( String desc ) {
         set( "C_DESC", desc );
     }
 

@@ -9,8 +9,8 @@
 package com.lanstar.service.system.template;
 
 import com.google.common.collect.Lists;
-import com.lanstar.beans.system.FolderBean;
-import com.lanstar.beans.system.FolderTreeBuilder;
+import com.lanstar.model.kit.folder.FolderBean;
+import com.lanstar.model.kit.folder.SystemFolderTreeBuilder;
 import com.lanstar.model.system.TemplateText;
 import com.lanstar.model.system.archive.ArchiveModel;
 import com.lanstar.model.system.archive.Template;
@@ -66,7 +66,7 @@ class PublishTaskImpl implements PublishTask {
                 Log( "开始发布模板:%s...", template.getName() );
                 if ( template == null ) Log( "无法找到模板，请确认模板有效。" );
                 else {
-                    folders = com.lanstar.model.system.TemplateFolder.list( templateId );
+                    folders = com.lanstar.model.system.TemplateFolder.listByTemplate( templateId );
                     files = com.lanstar.model.system.TemplateFile.listByTemplate( templateId );
 
                     Log( "正在归档模板..." );
@@ -93,8 +93,8 @@ class PublishTaskImpl implements PublishTask {
 
     private FolderBean getTemplate() {
         // 根据目录信息构造树
-        FolderTreeBuilder treeBuilder = new FolderTreeBuilder( folders, files, "R_SID" );
-        return treeBuilder.tree();
+        SystemFolderTreeBuilder treeBuilder = new SystemFolderTreeBuilder( folders, files, "R_SID" );
+        return treeBuilder.build();
     }
 
     @Override

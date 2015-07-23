@@ -16,16 +16,16 @@ import java.util.List;
 public class TemplateFolder extends Model<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
 
-    public static List<TemplateFolder> list( int template ) {
+    public static List<TemplateFolder> listByTemplate( int template ) {
         return dao.find( SqlKit.sql( "system.templateFolder.getFolders" ), template );
     }
 
-    public static List<TemplateFolder> list( int template, int parentId ) {
+    public static List<TemplateFolder> listByTemplateAndParent( int template, int parentId ) {
         return dao.find( SqlKit.sql( "system.templateFolder.getFoldersByParentId" ), template, parentId );
     }
 
     public List<TemplateFolder> listSubFolder() {
-        return list( getTemplateId(), getId() );
+        return listByTemplateAndParent( getTemplateId(), getId() );
     }
 
     public List<TemplateFile> listFile() {

@@ -73,6 +73,14 @@ public abstract class TenantModel<T extends TenantModel<T>> extends ModelExt<T> 
         }
     }
 
+    public Date getCreateTime(){
+        return getDate( "T_CREATE" );
+    }
+
+    public Date getLastUpdateTime(){
+        return getDate( "T_UPDATE" );
+    }
+
     private int getTenantId() {
         return getInt( "R_TENANT" );
     }

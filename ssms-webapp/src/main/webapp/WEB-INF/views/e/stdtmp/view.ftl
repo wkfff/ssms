@@ -29,43 +29,42 @@
             <th>操作</th>
         </tr>
         </thead>
-        <tbody>
-            <#list tree as map><@buildTree map.children true/></#list>
-        </tbody>
+        <tbody><@buildTree tree 1 true/></tbody>
     </table>
 
     <script><#if sid??>location.href = "#tr_${sid!}";</#if></script>
     </@>
 </@>
 
-<#macro buildTree list root=false>
+<#macro buildTree list level root=false>
     <#if (list?size>0)>
-        <#list list as r>
-        <tr id="tr_${r.attributes.ID!}" <#if r.attributes.ID==sid!"">class="activerow"</#if>>
-            <td>
-                <#if r.attributes.C_URL??>
-                <a href="/e/stdtmp/see/${r.attributes.P_TMPFILE!0}-${version!0}-${r.attributes.ID!0}">
-                    <#list 1..r.level as i>&nbsp;&nbsp;&nbsp;&nbsp;</#list>
-                    <#if r.level=1><img src="/resource/images/listico.png"/>
-                    <#else><img src="/resource/images/rmail.png" align="bottom"/></#if>
-                ${r.text}
-                <a>
-                <#else>
-                    <#list 1..r.level as i>&nbsp;&nbsp;&nbsp;&nbsp;</#list>
-                    <img src="/resource/images/foot02.png" align="bottom"/>
-                ${r.text}
-                </#if>
+        <#list list as folder>
+        <tr>
+            <td><#list 1..level as i>&nbsp;&nbsp;&nbsp;&nbsp;</#list>
+                <img src="/resource/images/foot02.png" align="bottom"/>${folder.name}
             </td>
-            <td class="td_center">${r.attributes.N_COUNT!}</td>
-            <td class="td_center"><#if r.attributes.C_URL??>${r.attributes.S_STATE!}</#if></td>
-            <td class="td_center">${r.attributes.T_UPDATE!}</td>
-            <td class="td_center">
-                <#if r.attributes.C_URL??>
-                    <a href="/e/stdtmp/see/${r.attributes.P_TMPFILE!0}-${version!0}-${r.attributes.ID!0}">查看</a>
-                </#if>
-            </td>
+            <td class="td_center">${folder.fileCount}</td>
+            <td class="td_center"></td>
+            <td class="td_center"></td>
+            <td class="td_center"></td>
         </tr>
-            <@buildTree r.children/>
+            <#if folder.files?size gt 0>
+                <#list folder.files as file>
+                <tr id="tr_${file.id}" <#if file.id==sid!"">class="activerow"</#if>>
+                    <td><#list 1..level+1 as i>&nbsp;&nbsp;&nbsp;&nbsp;</#list>
+                        <img src="/resource/images/rmail.png" align="bottom"/>
+                        <a href="/e/stdtmp/see/${file.templateFileCode}-${version!0}-${file.id}">${file.name}</a>
+                    </td>
+                    <td class="td_center">${file.count}</td>
+                    <td class="td_center"><#if file.count==0>未创建<#else>已创建</#if></td>
+                    <td class="td_center"><#if file.count gt 0>${file.lastUpdate}</#if></td>
+                    <td class="td_center">
+                        <a href="/e/stdtmp/see/${file.templateFileCode}-${version!0}-${file.id}">查看</a>
+                    </td>
+                </tr>
+                </#list>
+            </#if>
+            <@buildTree folder.children level+1/>
         </#list>
     </#if>
 </#macro>

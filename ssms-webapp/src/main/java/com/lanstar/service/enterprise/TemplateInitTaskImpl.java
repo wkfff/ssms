@@ -12,8 +12,8 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.lanstar.beans.system.FileBean;
-import com.lanstar.beans.system.FolderBean;
+import com.lanstar.model.kit.folder.FileBean;
+import com.lanstar.model.kit.folder.FolderBean;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.Tenant;
@@ -134,7 +134,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
         folder.setName( bean.getName() );
         folder.setDescript( bean.getDescript() );
         folder.setIndex( bean.getIndex() );
-        folder.setFileCount( countFile( bean ) );
+        folder.setFileCount( bean.getFileCount() );
         // 设置关键的信息
         folder.setParentId( parent == null ? 0 : parent.getId() );
         folder.setTenant( tenant );
@@ -154,14 +154,6 @@ class TemplateInitTaskImpl implements TemplateInitTask {
         }
     }
 
-    private int countFile( FolderBean bean ) {
-        int count = bean.getFiles().size();
-        for ( FolderBean folderBean : bean.getChildren() ) {
-            count += countFile( folderBean );
-        }
-        return count;
-    }
-
     private void cloneFile( FolderBean parent, FileBean bean ) {
         if ( bean == null ) return;
         Log( "✔ ♢拷贝文件【%s】...", bean.getName() );
@@ -169,7 +161,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
 
         file.setId( bean.getId() );
         file.setName( bean.getName() );
-        file.setDesc( bean.getDesc() );
+        file.setDescript( bean.getDesc() );
         file.setIndex( bean.getIndex() );
         file.setTemplateProp( TemplatePropPlugin.me().get( bean.getTemplateFileCode() ) );
         file.setCycleUnitCode( bean.getCycleUnitCode() );

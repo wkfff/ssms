@@ -9,21 +9,14 @@
 package com.lanstar.service.enterprise;
 
 import com.google.common.collect.Lists;
-import com.lanstar.beans.FolderBean;
-import com.lanstar.beans.FolderTreeBuilder;
 import com.lanstar.common.ListKit;
-import com.lanstar.common.ModelInjector;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantContext;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
-import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFolder;
-import com.lanstar.model.tenant.TemplateVersion;
-import com.lanstar.plugin.activerecord.Db;
-import com.lanstar.plugin.activerecord.ModelKit;
 
 import java.util.List;
 
@@ -94,7 +87,8 @@ public class ProfessionService {
 
     /** 归档当前专业的达标体系数据 */
     public void archive( IdentityContext identityContext ) {
-        Template systemTemplate = getSystemTemplate();
+        // TODO: 实现归档逻辑
+        /*Template systemTemplate = getSystemTemplate();
         // 获取所有的目录和文件，不包括文件内容
         List<TemplateFolder> folders = listTenantTemplateFolder();
         List<TemplateFile> files = TemplateFile.dao.find( "select * from ssm_stdtmp_file\n"
@@ -120,7 +114,7 @@ public class ProfessionService {
         int version = Integer.parseInt( (String) objects[2] );
         templateVersion.setVersion( version );
 
-        templateVersion.save();
+        templateVersion.save();*/
 
         /*for ( TemplateFile file : files ) {
             file.getTemplateProp().getTenantModelWrap().getDao().

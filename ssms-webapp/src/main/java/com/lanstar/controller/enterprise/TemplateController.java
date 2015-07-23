@@ -8,23 +8,17 @@
 
 package com.lanstar.controller.enterprise;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.lanstar.common.TreeNode;
-import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.identity.TenantType;
+import com.lanstar.model.kit.folder.FolderBean;
+import com.lanstar.model.kit.folder.TenantFolderTreeBuilder;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.plugin.activerecord.DbPro;
 import com.lanstar.plugin.activerecord.Record;
-import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.enterprise.ProfessionService;
 import com.lanstar.service.enterprise.UniqueTag;
 
 import java.util.List;
-import java.util.Map;
 
 public class TemplateController extends Controller {
     public void index() {
@@ -33,37 +27,18 @@ public class TemplateController extends Controller {
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
 
         // load template tree data
-        List<TreeNode> value = templateTree( identityContext, uniqueTag );
-        List<TreeNode> tmp = value;
-        TreeNode firstRec = null;
+        FolderBean value = TenantFolderTreeBuilder.tree( uniqueTag.getTenant(), uniqueTag.getTemplateId(), uniqueTag.getProfessionId() );
+        List<FolderBean> tmp = value.getChildren();
+        FolderBean firstRec = null;
         while ( tmp.size() > 0 ) {
             firstRec = tmp.get( 0 );
             tmp = firstRec.getChildren();
         }
 
-        this.setAttr( "R_SID", uniqueTag.getTemplateId() ).setAttr( "tree", value ).setAttr( "firstRec", firstRec );
+        this.setAttr( "R_SID", uniqueTag.getTemplateId() ).setAttr( "tree", value.getChildren() ).setAttr( "firstRec", firstRec );
+        render( "index.ftl" );
     }
 
-    private List<TreeNode> templateTree( IdentityContext identityContext, UniqueTag uniqueTag ) {
-        DbPro tenantDb = identityContext.getTenantDb();
-        List<Record> folder = tenantDb.find( SqlKit.sql( "tenant.templateFolder.getFolderByTemplateId" ),
-                uniqueTag.getTemplateId(), uniqueTag.getTenantId(), TenantType.ENTERPRISE.getName(), uniqueTag.getProfessionId(),
-                uniqueTag.getTemplateId(), uniqueTag.getTenantId(), TenantType.ENTERPRISE.getName(), uniqueTag.getProfessionId() );
-        List<Map<String, Object>> list = Lists.transform( folder, new Function<Record, Map<String, Object>>() {
-            @Override
-            public Map<String, Object> apply( Record input ) {
-                Map<String, Object> columns = input.getColumns();
-                columns = Maps.newHashMap( columns );
-                String url = input.getStr( "C_URL" );
-                if ( StrKit.isEmpty( url ) == false ) columns.put( "C_URL", "/e/" + url );
-                return columns;
-            }
-        } );
-
-        List<TreeNode> value = TreeNode.build( "D-0", list, "SID", "R_SID", "C_NAME" );
-        if ( value.size() == 1 ) return value.get( 0 ).getChildren();
-        return value;
-    }
 
     public void tree() {
         index();
@@ -87,21 +62,14 @@ public class TemplateController extends Controller {
      * 版本号为0时为当前版本
      */
     public void view() {
+        // FIXME: 修复重复体系文件的问题
         IdentityContext identityContext = IdentityContext.getIdentityContext( this );
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
-        DbPro tenantDb = identityContext.getTenantDb();
+
+        // load template tree data
+        FolderBean value = TenantFolderTreeBuilder.tree( uniqueTag.getTenant(), uniqueTag.getTemplateId(), uniqueTag.getProfessionId() );
         int version = this.getParaToInt( 0, 0 );
-        List<Record> folder = tenantDb.find( SqlKit.sql( "tenant.templateFolder.getFolderByTemplateIdAndVersion" ),
-                uniqueTag.getTemplateId(), uniqueTag.getTenantId(), TenantType.ENTERPRISE.getName(), uniqueTag.getProfessionId(),
-                uniqueTag.getTemplateId(), uniqueTag.getTenantId(), TenantType.ENTERPRISE.getName(), uniqueTag.getProfessionId() );
-        List<Map<String, Object>> list = Lists.transform( folder, new Function<Record, Map<String, Object>>() {
-            @Override
-            public Map<String, Object> apply( Record input ) {
-                return input.getColumns();
-            }
-        } );
-        List<TreeNode> value = TreeNode.build( "D-0", list, "SID", "R_SID", "C_NAME" );
-        this.setAttr( "tree", value );
+        this.setAttr( "tree", value.getChildren() );
         this.setAttr( "version", version );
         this.setAttr( "version_name", version == 0 ? "当前版本" : "版本【" + version + "】" );
 
