@@ -38,9 +38,9 @@
                     <em></em>
                     <label for="remember">记住密码</label>
                 </div>
-                <div class="forget ue-clear">
+                <#--<div class="forget ue-clear">
                     <a id="forget" href="/pwd">忘记密码？</a>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
