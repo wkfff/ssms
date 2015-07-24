@@ -9,7 +9,7 @@
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
--- 正在导出表  ssms.sys_nav 的数据：~0 rows (大约)
+-- 正在导出表  ssms.sys_nav 的数据：~57 rows (大约)
 DELETE FROM `sys_nav`;
 /*!40000 ALTER TABLE `sys_nav` DISABLE KEYS */;
 INSERT INTO `sys_nav` (`SID`, `R_SID`, `C_NAME`, `C_URL`, `C_DESC`, `C_ICON`, `R_CREATE`, `S_CREATE`, `T_CREATE`, `R_UPDATE`, `S_UPDATE`, `T_UPDATE`, `R_TENANT`, `S_TENANT`, `P_TENANT`, `N_STATE`, `B_DELETE`, `N_INDEX`, `N_VERSION`) VALUES
@@ -37,26 +37,26 @@ INSERT INTO `sys_nav` (`SID`, `R_SID`, `C_NAME`, `C_URL`, `C_DESC`, `C_ICON`, `R
 	(44, 13, '知识库', '/knowledge/', NULL, 'knowledge', 1, 'admin', '2015-05-16 10:50:39', 1, 'admin', '2015-06-12 15:30:14', 1, 'admin', 'S', 0, NULL, 7, 0),
 	(45, 13, '设置', NULL, NULL, 'config', 1, 'admin', '2015-05-16 10:50:39', 1, 'admin', '2015-06-14 14:14:29', 1, 'admin', 'S', 0, NULL, 8, 0),
 	(46, 14, '评审历史', '/r/reviewhistory/', NULL, 'history', 1, 'admin', '2015-05-15 09:47:25', 1, 'admin', '2015-06-29 11:36:09', 1, 'admin', 'S', NULL, NULL, 2, NULL),
-	(47, 14, '证书管理', '/static/carts.html', NULL, 'cert', 1, 'admin', '2015-05-15 09:47:25', 1, 'admin', '2015-06-11 17:33:31', 1, 'admin', 'S', NULL, NULL, 3, NULL),
+	(47, 14, '证书管理', '/r/reviewcert', NULL, 'cert', 1, 'admin', '2015-05-15 09:47:25', 1, 'admin', '2015-07-15 21:06:46', 1, 'admin', 'S', NULL, NULL, 3, NULL),
 	(48, 14, '通知公告', NULL, NULL, 'notice', 1, 'admin', '2015-05-15 09:47:25', 1, 'admin', '2015-06-10 16:50:08', 1, 'admin', 'S', NULL, NULL, 4, NULL),
 	(49, 14, '知识库', '/knowledge/', NULL, 'knowledge', 1, 'admin', '2015-05-15 09:47:25', 1, 'admin', '2015-06-13 15:56:00', 1, 'admin', 'S', NULL, NULL, 5, NULL),
 	(50, 14, '设置', NULL, NULL, 'config', 1, 'admin', '2015-05-15 09:47:25', 1, 'admin', '2015-06-11 09:09:46', 1, 'admin', 'S', NULL, NULL, 8, NULL),
 	(51, 13, '评审结果', '/e/reviewresult', NULL, 'history', NULL, NULL, NULL, 1, 'admin', '2015-06-29 11:35:39', NULL, NULL, NULL, NULL, NULL, 6, NULL),
-	(54, 13, '密码修改', '/e/tenant_eu/password', NULL, 'pwd', NULL, NULL, NULL, 1, 'admin', '2015-06-23 16:32:10', NULL, NULL, NULL, NULL, NULL, 9, NULL),
+	(54, 13, '密码修改', '/pwd/change', NULL, 'pwd', NULL, NULL, NULL, 1, 'admin', '2015-07-22 11:02:50', NULL, NULL, NULL, NULL, NULL, 9, NULL),
 	(62, 45, '企业信息维护', '/e/tenant_e/rec', '123', 'agency', NULL, NULL, NULL, 1, 'admin', '2015-06-09 14:59:31', NULL, NULL, NULL, NULL, NULL, 1, NULL),
 	(63, 45, '用户管理', '/e/tenant_eu/rec', '123', 'user', NULL, NULL, NULL, 1, 'admin', '2015-06-09 17:20:57', NULL, NULL, NULL, NULL, NULL, 2, NULL),
 	(64, 13, '13要素查看', '/e/stdtmp/view/0-0', NULL, 'read', NULL, NULL, NULL, 1, 'admin', '2015-06-24 13:25:36', NULL, NULL, NULL, NULL, NULL, 2, NULL),
 	(65, 14, '评审员管理', '/r/reviewer/', NULL, 'user', NULL, NULL, NULL, NULL, NULL, '2015-06-10 20:22:33', NULL, NULL, NULL, NULL, NULL, 6, NULL),
-	(66, 14, '密码修改', '/r/tenant_ru/password', NULL, 'pwd', NULL, NULL, NULL, 1, 'admin', '2015-06-23 16:31:46', NULL, NULL, NULL, NULL, NULL, 9, NULL),
+	(66, 14, '密码修改', '/pwd/change', NULL, 'pwd', NULL, NULL, NULL, 1, 'admin', '2015-07-22 11:02:35', NULL, NULL, NULL, NULL, NULL, 9, NULL),
 	(67, 48, '收到的公告', '/sys/notice/receives', NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2015-07-14 10:34:53', NULL, NULL, NULL, NULL, NULL, 2, NULL),
 	(68, 48, '发布公告', '/sys/notice/rec', NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2015-07-14 14:31:46', NULL, NULL, NULL, NULL, NULL, 1, NULL),
 	(69, 50, '评审信息维护', '/r/tenant_r/rec', '维护评审信息', 'agency', 1, 'admin', '2015-05-15 09:47:25', 1, 'admin', '2015-06-10 18:00:10', 1, 'admin', 'S', 0, NULL, 1, 0),
 	(70, 50, '用户管理', '/r/tenant_ru/rec', '用户信息管理', 'agency', NULL, NULL, NULL, NULL, NULL, '2015-06-10 18:00:34', NULL, NULL, NULL, NULL, NULL, 2, NULL),
 	(71, 15, '企业监管', '/g/grade/', NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2015-06-13 17:58:45', NULL, NULL, NULL, NULL, NULL, 1, NULL),
 	(72, 15, '监督统计', '/g/statistics/', NULL, NULL, NULL, NULL, NULL, 1, 'admin', '2015-06-13 14:30:03', NULL, NULL, NULL, NULL, NULL, 2, NULL),
-	(73, 15, '证书管理', '/static/carts.html', NULL, 'cert', NULL, NULL, NULL, 1, 'admin', '2015-06-12 10:38:33', NULL, NULL, NULL, NULL, NULL, 3, NULL),
+	(73, 15, '证书管理', '/r/reviewcert', NULL, 'cert', NULL, NULL, NULL, 1, 'admin', '2015-07-15 21:06:24', NULL, NULL, NULL, NULL, NULL, 3, NULL),
 	(74, 15, '知识库', '/knowledge/', NULL, 'knowledge', NULL, NULL, NULL, 1, 'admin', '2015-06-13 15:56:04', NULL, NULL, NULL, NULL, NULL, 4, NULL),
-	(75, 15, '密码修改', '/g/tenant_gu/password', NULL, 'pwd', NULL, NULL, NULL, 1, 'admin', '2015-06-23 16:32:20', NULL, NULL, NULL, NULL, NULL, 5, NULL),
+	(75, 15, '密码修改', '/pwd/change', NULL, 'pwd', NULL, NULL, NULL, 1, 'admin', '2015-07-22 11:02:42', NULL, NULL, NULL, NULL, NULL, 5, NULL),
 	(76, 15, '设置', NULL, NULL, 'config', NULL, NULL, NULL, NULL, NULL, '2015-06-12 10:06:23', NULL, NULL, NULL, NULL, NULL, 6, NULL),
 	(77, 76, '政府信息维护', '/g/tenant_g/rec', '123', 'agency', NULL, NULL, NULL, 1, 'admin', '2015-06-12 11:28:30', NULL, NULL, NULL, NULL, NULL, 1, NULL),
 	(78, 76, '用户管理', '/g/tenant_gu/rec', '123', 'agency', NULL, NULL, NULL, 1, 'admin', '2015-06-12 11:55:06', NULL, NULL, NULL, NULL, NULL, 2, NULL),
