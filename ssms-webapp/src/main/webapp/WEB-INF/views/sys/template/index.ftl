@@ -47,6 +47,7 @@
             padding: 10px 5px;
             text-align: center;
         }
+
         li .editArea * {
             text-align: left;
         }
@@ -131,10 +132,18 @@
                 this.name = ko.observable(name).extend({required: true});
                 this.editable = ko.observable(id == null);
 
-                this.templateUrl = '/sys/stdtmp/manager?template=' + id;
-                this.gradeUrl = '/sys/stdtmp_grade/index?R_SID=' + id;
-                this.reportUrl = '/sys/stdtmp_rep/rec?type=1&R_SID=' + id;
-                this.reviewReportUrl = '/sys/stdtmp_rep/rec?type=2&R_SID=' + id;
+                this.templateUrl = ko.computed(function () {
+                    return '/sys/stdtmp/manager?template=' + this.id();
+                }, this);
+                this.gradeUrl = ko.computed(function () {
+                    return '/sys/stdtmp_grade/index?R_SID=' + this.id();
+                }, this);
+                this.reportUrl = ko.computed(function () {
+                    return '/sys/stdtmp_rep/rec?type=1&R_SID=' + this.id();
+                }, this);
+                this.reviewReportUrl = ko.computed(function () {
+                    return '/sys/stdtmp_rep/rec?type=2&R_SID=' + this.id();
+                }, this);
             }
 
             self.lists = ko.observableArray(ko.utils.arrayMap(${json(templates)}, function (item) {

@@ -42,7 +42,7 @@
                 <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.addFolder" title="添加子目录">添加目录</a>
                 <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.addFile" title="添加文件">添加文件</a>
                 <a href="javascript:void(0);" class="icon-edit" data-bind="click: $root.editFolder">编辑</a>
-                <a href="javascript:void(0);" class="icon-remove" data-bind="click: $root.removeFolder, visible: children().length == 0 && files().length == 0">删除</a>
+                <a href="javascript:void(0);" class="icon-remove" data-bind="click: $root.removeFolder, visible: children().length == 0 && files().length == 0 && parent!=null">删除</a>
             </td>
         </tr>
         <!-- ko template: {name: 'folderTemplate', foreach: children} --><!-- /ko -->
@@ -67,7 +67,7 @@
                 目录名称: <input style="width:400px" type="text" data-bind="value: name"/>
             </p>
             <p>
-                目录排序: <span data-bind="text: parent._index()+'-'"></span><input type="number" data-bind="value: index" style="width: 50px"/>
+                目录排序: <span data-bind="text: parent==null?'':(parent._index()+'-')"></span><input type="number" data-bind="value: index" style="width: 50px"/>
             </p>
             <p>描述: </p>
             <textarea data-bind="value: desc" style="width:100%;height:150px;"></textarea>

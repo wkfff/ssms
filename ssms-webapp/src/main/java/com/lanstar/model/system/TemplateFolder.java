@@ -8,12 +8,12 @@
 
 package com.lanstar.model.system;
 
-import com.lanstar.plugin.activerecord.Model;
+import com.lanstar.model.TenantModel;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
 import java.util.List;
 
-public class TemplateFolder extends Model<TemplateFolder> {
+public class TemplateFolder extends TenantModel<TemplateFolder> {
     public static final TemplateFolder dao = new TemplateFolder();
 
     public static List<TemplateFolder> listByTemplate( int template ) {

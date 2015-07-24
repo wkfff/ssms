@@ -8,6 +8,7 @@
 
 package com.lanstar.controller.system;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.lanstar.common.Asserts;
 import com.lanstar.common.ModelInjector;
@@ -31,7 +32,7 @@ public class TemplateFolderController extends Controller {
         setAttr( "template", Template.dao.findById( template ) );
         setAttr( "SYS_CYCLE", CycleType.parameters() );
         setAttr( "tmpfiles", TemplatePropPlugin.me().listParameter() );
-        setAttr( "items", SystemFolderTreeBuilder.tree( template ).getChildren() );
+        setAttr( "items", Lists.newArrayList(SystemFolderTreeBuilder.tree( template )) );
     }
 
     // 保存文件目录

@@ -10,9 +10,12 @@ package com.lanstar.controller.system;
 
 import com.lanstar.common.ModelInjector;
 import com.lanstar.core.Controller;
+import com.lanstar.core.aop.Before;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.model.system.Template;
+import com.lanstar.model.system.TemplateFolder;
 import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.plugin.activerecord.tx.Tx;
 
 import java.util.List;
 
@@ -23,6 +26,7 @@ public class TemplateController extends Controller {
         setAttr( "templates", ModelKit.toMap( templates, "SID", "C_NAME" ) );
     }
 
+    @Before(Tx.class)
     public void save() {
         Integer sid = getParaToInt( "id" );
         String name = getPara( "name" );
@@ -35,13 +39,21 @@ public class TemplateController extends Controller {
         template.setName( name );
         ModelInjector.injectOpreator( template, context );
 
-        if ( sid == null ) template.save();
-        else template.update();
+        if ( sid == null ) {
+            template.save();
+            TemplateFolder rootFolder = new TemplateFolder();
+            rootFolder.setTemplateId( template.getId() );
+            rootFolder.setName( template.getName() + "达标体系模板" );
+            rootFolder.setTenant( context.getTenant() );
+            rootFolder.setOperator( context.getIdentity() );
+            rootFolder.save();
+        } else template.update();
         renderJson( template.getId() );
     }
 
     public void del() {
         Integer id = getParaToInt( "id" );
+        // TODO 添加删除判断，如果有模板了就不能删除了。
         if ( id != null ) renderJson( Template.dao.deleteById( id ) );
         else renderJson( false );
     }
