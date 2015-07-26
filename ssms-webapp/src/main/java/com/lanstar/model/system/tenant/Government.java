@@ -47,6 +47,12 @@ public class Government extends ModelExt<Government> implements Tenant {
         return TenantType.GOVERNMENT;
     }
 
+    @Override
+    public String getTenantDbCode() {
+        // TODO: 从数据库中读取DB_CODE
+        return "tenant01";
+    }
+
     public String getTenantCode() {
         return getStr( "C_CODE" );
     }

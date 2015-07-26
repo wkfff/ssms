@@ -11,6 +11,7 @@ package com.lanstar.controller.government;
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.Notice;
 import com.lanstar.plugin.activerecord.Record;
 
@@ -22,7 +23,7 @@ public class HomeController extends Controller {
     }
     
     public void home(){
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
 
         //接收的通知公告
         String sql = "SELECT * FROM V_NOTICE WHERE R_RECEIVER=? AND Z_TYPE=? ORDER BY T_PUBLISH DESC LIMIT 8";

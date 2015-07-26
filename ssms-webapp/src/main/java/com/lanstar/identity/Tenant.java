@@ -32,6 +32,11 @@ public interface Tenant {
         public TenantType getTenantType() {
             return TenantType.SYSTEM;
         }
+
+        @Override
+        public String getTenantDbCode() {
+            return null;
+        }
     };
 
     /**
@@ -53,4 +58,9 @@ public interface Tenant {
      * 获取租户类型
      */
     TenantType getTenantType();
+
+    /**
+     * 获取租户的数据库编码
+     */
+    String getTenantDbCode();
 }

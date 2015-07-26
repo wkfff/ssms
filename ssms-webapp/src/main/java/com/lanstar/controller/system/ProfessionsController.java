@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.Industry;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
@@ -69,7 +70,7 @@ public class ProfessionsController extends Controller {
         String name = getPara( "name" );
         Integer template = getParaToInt( "template" );
         Integer industryId = getParaToInt( "industryId" );
-        IdentityContext context = IdentityContext.getIdentityContext( this );
+        IdentityContext context = IdentityContextWrap.getIdentityContext( this );
         Profession profession;
         if ( id == null ) profession = new Profession();
         else profession = Profession.dao.findById( id );
@@ -109,7 +110,7 @@ public class ProfessionsController extends Controller {
         if ( id == null ) industry = new Industry();
         else industry = Industry.dao.findById( id );
 
-        IdentityContext context = IdentityContext.getIdentityContext( this );
+        IdentityContext context = IdentityContextWrap.getIdentityContext( this );
         industry.setName( name );
         ModelInjector.injectOpreator( industry, context );
 

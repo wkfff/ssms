@@ -12,12 +12,13 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.lanstar.model.kit.folder.FileBean;
-import com.lanstar.model.kit.folder.FolderBean;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.Tenant;
 import com.lanstar.identity.TenantContext;
+import com.lanstar.identity.TenantKit;
+import com.lanstar.model.kit.folder.FileBean;
+import com.lanstar.model.kit.folder.FolderBean;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.tenant.Template;
 import com.lanstar.model.tenant.TemplateFile;
@@ -53,7 +54,7 @@ class TemplateInitTaskImpl implements TemplateInitTask {
         this.profession = profession;
         this.systemTemplate = systemTemplate;
         this.opertaor = opertaor;
-        tenantContext = TenantContext.with( tenant );
+        tenantContext = TenantKit.getContext( tenant );
         cacheContent = systemTemplate.getCacheContent();
 
         batchs.put( TemplateFolder.class, new ArrayList<Model>() );

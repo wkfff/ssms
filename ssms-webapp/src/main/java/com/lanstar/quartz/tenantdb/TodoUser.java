@@ -54,4 +54,9 @@ public class TodoUser implements Identity {
     public TenantType getTenantType() {
         return getTenant().getTenantType();
     }
+
+    @Override
+    public String getTenantDbCode() {
+        return getTenant().getTenantDbCode();
+    }
 }

@@ -9,11 +9,16 @@
 package com.lanstar.controller.enterprise;
 
 import com.lanstar.controller.SimplateController;
+import com.lanstar.core.aop.Before;
 import com.lanstar.identity.TenantType;
+import com.lanstar.identity.interceptor.IdentityConfig;
+import com.lanstar.identity.interceptor.IdentitySwitch;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.service.enterprise.UniqueTag;
 
+@Before(IdentitySwitch.class)
+@IdentityConfig(fields = "identityContext")
 public abstract class TemplateFileController<T extends Model<T>> extends SimplateController<T> {
     @Override
     public void index() {

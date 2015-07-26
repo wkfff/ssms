@@ -6,17 +6,18 @@
  * 创建用户：张铮彬
  */
 
-package com.lanstar.identity;
+package com.lanstar.identity.interceptor;
 
 import com.lanstar.core.ActionInvocation;
 import com.lanstar.core.Controller;
 import com.lanstar.core.aop.Interceptor;
+import com.lanstar.identity.IdentityContextWrap;
 
 public class IdentityInterceptor implements Interceptor {
     @Override
     public final void intercept( ActionInvocation invocation ) {
         Controller controller = invocation.getController();
-        if ( IdentityContext.hasIdentityContext( controller ) == false ) {
+        if ( IdentityContextWrap.hasIdentityContext( controller ) == false ) {
             controller.redirect( "/login" );
             return;
         }

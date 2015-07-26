@@ -13,6 +13,7 @@ import com.lanstar.core.ActionInvocation;
 import com.lanstar.core.Controller;
 import com.lanstar.core.aop.Interceptor;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 
 public class AttachTokenValidator implements Interceptor {
     @Override
@@ -21,7 +22,7 @@ public class AttachTokenValidator implements Interceptor {
         if ( "SYSTEM".equals( controller.getCookie( Const.ATTACH_TEXT_TOKEN_KEY ) ) ) {
             controller.setAttr( Const.IDENTITY_KEY, IdentityContext.SYSTEM );
         } else {
-            IdentityContext context = IdentityContext.getIdentityContext( controller );
+            IdentityContext context = IdentityContextWrap.getIdentityContext( controller );
             controller.setAttr( Const.IDENTITY_KEY, context );
         }
         controller.removeCookie( Const.ATTACH_TEXT_TOKEN_KEY );

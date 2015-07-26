@@ -8,13 +8,74 @@
 
 package com.lanstar.identity;
 
+import com.lanstar.app.Const;
 import com.lanstar.common.Asserts;
+import com.lanstar.core.Controller;
 import com.lanstar.model.system.tenant.UserModel;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class IdentityKit {
     public static Identity toIdentity( final UserModel<?> user ) {
         Asserts.notNull( user, "用户信息不能为空" );
         return new User( user );
+    }
+
+    /**
+     * 将身份信息绑定到会话中
+     */
+    public static void bindIdentity( Controller controller, Identity identity ) {
+        controller.setSessionAttr( Const.IDENTITY_KEY, new IdentityHolder( identity ) );
+    }
+
+    /**
+     * 从会话中获取身份信息
+     */
+    public static IdentityHolder getIdentityHolder( Controller controller ) {
+        return controller.getSessionAttr( Const.IDENTITY_KEY );
+    }
+
+    /**
+     * 从会话中获取身份信息
+     */
+    public static IdentityHolder getIdentityHolder( HttpServletRequest request ) {
+        return (IdentityHolder) request.getSession().getAttribute( Const.IDENTITY_KEY );
+    }
+
+    /**
+     * 判断会话中是否存在身份信息
+     */
+    public static boolean hasIdentity( Controller controller ) {
+        return getIdentityHolder( controller ) != null;
+    }
+
+    /**
+     * 为身份标识附加租户信息，从而产生一个的身份标识。
+     */
+    public static Identity attachTenant( Identity identity, Tenant additional ) {
+        return new VirtualIdentity( identity, additional );
+    }
+
+    /**
+     * 切换默认的身份标识为指定租户
+     */
+    public static void switchIdentity( IdentityHolder holder, Tenant additional ) {
+        holder.switchIdentity( attachTenant( holder.getMaster(), additional ) );
+    }
+
+    /**
+     * 切换默认的身份标识为指定租户
+     */
+    public static void switchIdentity( Controller controller, Tenant additional ) {
+        switchIdentity( getIdentityHolder( controller ), additional );
+    }
+
+    public static void runAs( Controller controller, Tenant additional, IdentityHolder.Action action, boolean reset ) {
+        IdentityHolder holder = getIdentityHolder( controller );
+        holder.bindAdditional( attachTenant( holder.getMaster(), additional ) );
+        holder.switchIdentity();
+        holder.runAs( action );
+        if (reset) holder.resetDefaultIdentity();
     }
 }
 

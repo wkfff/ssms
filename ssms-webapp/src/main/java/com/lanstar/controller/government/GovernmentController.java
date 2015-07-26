@@ -10,6 +10,7 @@ package com.lanstar.controller.government;
 
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.tenant.Government;
 import com.lanstar.plugin.activerecord.ModelKit;
 
@@ -21,7 +22,7 @@ public class GovernmentController extends SimplateController<Government> {
     }
     
     public void rec(){
-        IdentityContext identityContext=IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext= IdentityContextWrap.getIdentityContext( this );
         //通过当前用户find出租户id
         int id=identityContext.getTenantId();
         Government model=Government.dao.findById( id );

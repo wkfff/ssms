@@ -15,6 +15,7 @@ import com.lanstar.common.log.Logger;
 import com.lanstar.core.Controller;
 import com.lanstar.core.upload.UploadFile;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.AttachFile;
 import com.lanstar.plugin.attachfile.FileResource;
 import com.lanstar.plugin.attachfile.Resource;
@@ -29,7 +30,7 @@ public class AttachFileController extends Controller {
     private final Logger log = Logger.getLogger( AttachFileController.class );
 
     public void list() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
 
         String module = getPara( "module" );
         Integer sid = getParaToInt( "recordSid" );
@@ -53,7 +54,7 @@ public class AttachFileController extends Controller {
     }
 
     public void upload() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         AttachFileService service = identityContext.getAttachFileService();
 
         List<UploadFile> files = getFiles();
@@ -71,7 +72,7 @@ public class AttachFileController extends Controller {
     }
 
     public void del() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         AttachFileService service = identityContext.getAttachFileService();
 
         String module = getPara( "module" );
@@ -81,7 +82,7 @@ public class AttachFileController extends Controller {
 
     public void down() {
         Integer id = getParaToInt( "id" );
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         AttachFileService service = identityContext.getAttachFileService();
         Resource file = service.getFile( id );
         render( new ResourceRender( file ) );

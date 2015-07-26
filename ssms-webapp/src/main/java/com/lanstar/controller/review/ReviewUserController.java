@@ -9,6 +9,7 @@ package com.lanstar.controller.review;
 
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.tenant.ReviewUser;
 import com.lanstar.plugin.activerecord.ModelKit;
 
@@ -23,7 +24,7 @@ public class ReviewUserController extends SimplateController<ReviewUser> {
     }
 
     public void rec() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         int id = identityContext.getId();
         String tenantName = identityContext.getTenantName();
         int tenantId = identityContext.getTenantId();

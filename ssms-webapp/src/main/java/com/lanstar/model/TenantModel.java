@@ -90,6 +90,7 @@ public abstract class TenantModel<T extends TenantModel<T>> extends ModelExt<T> 
     }
 
     private class Operator implements Identity {
+        // TODO: 从用户池中读取真实有效的数据
         private final Tenant tenant;
 
         public Operator( Tenant tenant ) {this.tenant = tenant;}
@@ -125,5 +126,10 @@ public abstract class TenantModel<T extends TenantModel<T>> extends ModelExt<T> 
 
         @Override
         public TenantType getTenantType() {return tenant.getTenantType();}
+
+        @Override
+        public String getTenantDbCode() {
+            return tenant.getTenantDbCode();
+        }
     }
 }

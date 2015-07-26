@@ -11,7 +11,7 @@ import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.core.render.JsonRender;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.model.tenant.GradeReport;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.tenant.ReviewReport;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.Record;
@@ -48,7 +48,7 @@ public class ReviewReportController extends SimplateController<ReviewReport> {
      */
     public void rep() {
         String sid = this.getPara( "sid" );
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         Record r = identityContext.getReviewService().getEnterpriseContext().getTenantDb().findFirst( "select * from SSM_GRADE_REPORT where r_sid=?", sid );
         if (r!=null)
             this.setAttr( "C_CONTENT", r.getStr( "C_CONTENT" ) );

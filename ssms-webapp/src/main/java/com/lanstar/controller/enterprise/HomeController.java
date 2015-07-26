@@ -11,6 +11,7 @@ package com.lanstar.controller.enterprise;
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.Profession;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.service.common.todo.TodoDataFetcher;
@@ -25,7 +26,7 @@ import java.util.Objects;
 
 public class HomeController extends Controller {
     public void index() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         EnterpriseService enterpriseService = identityContext.getEnterpriseService();
         // 如果专业服务还没初始化，那么就初始化服务。
         if ( enterpriseService.professionServiceInitialized() == false ) {
@@ -51,7 +52,7 @@ public class HomeController extends Controller {
     }
 
     public void home() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         int pro = identityContext.getEnterpriseService().getProfessionService().getId();
         int tmpId = identityContext.getEnterpriseService().getProfessionService().getSystemTemplate().getId();
         setAttr( "todo", new HomeTodo( identityContext ) );
@@ -94,7 +95,7 @@ public class HomeController extends Controller {
     }
 
     public void status() {
-        IdentityContext context = IdentityContext.getIdentityContext( this );
+        IdentityContext context = IdentityContextWrap.getIdentityContext( this );
         ProfessionService professionService = context.getEnterpriseService().getProfessionService();
         TemplateInitTask task = professionService.getTemplateInitTask();
         if ( task != null ) {
@@ -104,7 +105,7 @@ public class HomeController extends Controller {
     }
 
     public void finish() {
-        IdentityContext context = IdentityContext.getIdentityContext( this );
+        IdentityContext context = IdentityContextWrap.getIdentityContext( this );
         ProfessionService professionService = context.getEnterpriseService().getProfessionService();
         TemplateInitTask task = professionService.getTemplateInitTask();
         if ( task != null && task.status() == TemplateInitializerState.FINISH ) {
@@ -114,7 +115,7 @@ public class HomeController extends Controller {
     }
 
     private boolean setProfession( Profession profession ) {
-        IdentityContext context = IdentityContext.getIdentityContext( this );
+        IdentityContext context = IdentityContextWrap.getIdentityContext( this );
         EnterpriseService enterpriseService = context.getEnterpriseService();
         enterpriseService.initProfessionService( profession );
         ProfessionService professionService = enterpriseService.getProfessionService();

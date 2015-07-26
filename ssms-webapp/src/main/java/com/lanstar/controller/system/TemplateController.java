@@ -12,6 +12,7 @@ import com.lanstar.common.ModelInjector;
 import com.lanstar.core.Controller;
 import com.lanstar.core.aop.Before;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.Template;
 import com.lanstar.model.system.TemplateFolder;
 import com.lanstar.plugin.activerecord.ModelKit;
@@ -35,7 +36,7 @@ public class TemplateController extends Controller {
         if ( sid == null ) template = new Template();
         else template = Template.dao.findById( sid );
 
-        IdentityContext context = IdentityContext.getIdentityContext( this );
+        IdentityContext context = IdentityContextWrap.getIdentityContext( this );
         template.setName( name );
         ModelInjector.injectOpreator( template, context );
 

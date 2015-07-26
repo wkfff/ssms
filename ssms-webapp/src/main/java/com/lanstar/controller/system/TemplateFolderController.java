@@ -14,6 +14,7 @@ import com.lanstar.common.Asserts;
 import com.lanstar.common.ModelInjector;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.kit.folder.SystemFolderTreeBuilder;
 import com.lanstar.model.system.Template;
 import com.lanstar.model.system.TemplateFile;
@@ -47,7 +48,7 @@ public class TemplateFolderController extends Controller {
         if ( id == null ) model = new TemplateFolder();
         else model = TemplateFolder.dao.findById( id );
 
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         model.setName( name );
         model.setDescript( desc );
         model.setIndex( index );
@@ -80,7 +81,7 @@ public class TemplateFolderController extends Controller {
         if ( id == null ) model = new TemplateFile();
         else model = TemplateFile.dao.findById( id );
 
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         model.setTemplateId( template );
         model.setParentId( parentId );
         model.setParentName( parentName );

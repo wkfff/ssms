@@ -22,7 +22,7 @@ import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.config.*;
 import com.lanstar.core.Rapidware;
 import com.lanstar.core.render.FreeMarkerRender;
-import com.lanstar.identity.IdentityInterceptor;
+import com.lanstar.identity.interceptor.IdentityInterceptor;
 import com.lanstar.plugin.activerecord.ActiveRecordPlugin;
 import com.lanstar.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.lanstar.plugin.attachfile.ResourcePlugin;

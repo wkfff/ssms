@@ -1,72 +1,64 @@
 /*
  * 项目名称：安全生产标准化管理系统(Safety Standardization Management System)
  * 版权申明：福州市磬基电子有限公司、福州市蓝石电子有限公司所有，未经许可不得在任何软件中以任何形式使用全部或部分代码，不得更改本项目的代码。
- * 文件名称：User.java
- * 创建时间：2015-07-22
+ * 文件名称：VirtualIdentity.java
+ * 创建时间：2015-07-24
  * 创建用户：张铮彬
  */
 
 package com.lanstar.identity;
 
-import com.lanstar.model.system.tenant.UserModel;
+public class VirtualIdentity implements Identity {
+    private final Identity identity;
+    private final Tenant tenant;
 
-public class User implements Identity {
-    private final UserModel<?> user;
-    private Tenant tenant;
-
-    public User( UserModel<?> user ) {
-        this.user = user;
+    VirtualIdentity( Identity identity, Tenant tenant ) {
+        this.identity = identity;
+        this.tenant = tenant;
     }
 
     @Override
     public int getId() {
-        return user.getId();
+        return identity.getId();
     }
 
     @Override
     public String getName() {
-        return user.getName();
+        return identity.getName();
     }
 
     @Override
     public String getCode() {
-        return user.getUsername();
+        return identity.getCode();
     }
 
     @Override
     public Tenant getTenant() {
-        if ( tenant == null ) {
-            tenant = user.getOwner();
-        }
         return tenant;
     }
 
     @Override
     public int getTenantId() {
-        return getTenant().getTenantId();
+        return tenant.getTenantId();
     }
 
     @Override
     public String getTenantName() {
-        return getTenant().getTenantName();
+        return tenant.getTenantName();
     }
 
     @Override
     public String getTenantCode() {
-        return getTenant().getTenantCode();
+        return tenant.getTenantCode();
     }
 
     @Override
     public TenantType getTenantType() {
-        return getTenant().getTenantType();
+        return tenant.getTenantType();
     }
 
     @Override
     public String getTenantDbCode() {
-        return getTenant().getTenantDbCode();
-    }
-
-    public UserModel<?> getUser() {
-        return user;
+        return tenant.getTenantDbCode();
     }
 }

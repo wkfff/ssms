@@ -10,7 +10,10 @@ package com.lanstar.app;
 
 import com.lanstar.core.ActionInvocation;
 import com.lanstar.core.aop.Interceptor;
-import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.Identity;
+import com.lanstar.identity.IdentityHolder;
+import com.lanstar.identity.IdentityKit;
+import com.lanstar.identity.TenantKit;
 import com.lanstar.plugin.activerecord.IAtom;
 
 import java.sql.SQLException;
@@ -31,11 +34,15 @@ public class TxByActionMethods implements Interceptor {
     @Override
     public void intercept( final ActionInvocation ai ) {
         if ( actionMethodSet.contains( ai.getMethodName() ) ) {
-            IdentityContext identityContext = IdentityContext.getIdentityContext( ai.getController() );
-            identityContext.getTenantDb().tx( new IAtom() {
-                public boolean run() throws SQLException {
-                    ai.invoke();
-                    return true;
+            IdentityKit.getIdentityHolder( ai.getController() ).runAs( new IdentityHolder.Action() {
+                @Override
+                public void invoke( Identity identity ) {
+                    TenantKit.getTenantDb( identity.getTenant() ).tx( new IAtom() {
+                        public boolean run() throws SQLException {
+                            ai.invoke();
+                            return true;
+                        }
+                    } );
                 }
             } );
         } else {

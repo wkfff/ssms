@@ -7,17 +7,18 @@
  */
 package com.lanstar.controller.enterprise;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.common.base.Splitter;
 import com.google.common.primitives.Ints;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.model.system.tenant.Enterprise;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.EnterpriseProfession;
+import com.lanstar.model.system.tenant.Enterprise;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.service.enterprise.EnterpriseProfessionService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Administrator
@@ -31,7 +32,7 @@ public class EnterpriseController  extends SimplateController<Enterprise>{
     }
     
      public void rec(){
-         IdentityContext identityContext=IdentityContext.getIdentityContext( this );
+         IdentityContext identityContext= IdentityContextWrap.getIdentityContext( this );
          //通过当前用户find出租户id
          int id=identityContext.getTenantId();
          Enterprise model=Enterprise.dao.findById( id );

@@ -11,6 +11,7 @@ package com.lanstar.controller.enterprise.todo;
 import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.plugin.activerecord.Page;
 import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoDataFetcher;
@@ -30,7 +31,7 @@ public abstract class TodoController extends Controller {
     public void init( HttpServletRequest request, HttpServletResponse response, String urlPara ) {
         super.init( request, response, urlPara );
 
-        identityContext = IdentityContext.getIdentityContext( this );
+        identityContext = IdentityContextWrap.getIdentityContext( this );
     }
 
     public void list() {

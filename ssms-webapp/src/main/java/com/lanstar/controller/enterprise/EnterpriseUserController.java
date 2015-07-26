@@ -9,6 +9,7 @@ package com.lanstar.controller.enterprise;
 
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.tenant.EnterpriseUser;
 import com.lanstar.plugin.activerecord.ModelKit;
 
@@ -24,7 +25,7 @@ public class EnterpriseUserController extends SimplateController<EnterpriseUser>
     }
 
     public void rec() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         int id = identityContext.getId();
         String tenantName = identityContext.getTenantName();
         int tenantId = identityContext.getTenantId();
