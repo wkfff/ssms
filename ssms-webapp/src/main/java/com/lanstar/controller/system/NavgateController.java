@@ -8,14 +8,14 @@
 
 package com.lanstar.controller.system;
 
-import java.util.List;
-
 import com.lanstar.common.ModelInjector;
 import com.lanstar.core.Controller;
-import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.kit.navgate.NavgateBean;
 import com.lanstar.model.kit.navgate.NavgateTreeBuilder;
 import com.lanstar.model.system.Navgate;
+
+import java.util.List;
 
 public class NavgateController extends Controller {
     public void index() {
@@ -43,7 +43,7 @@ public class NavgateController extends Controller {
         model.setDesc( desc );
         model.setIndex( index );
         model.setParentId( parentId );
-        ModelInjector.injectOpreator( model, IdentityContext.getIdentityContext( this ) );
+        ModelInjector.injectOpreator( model, IdentityContextWrap.getIdentityContext( this ) );
 
         if ( id == null ) model.save();
         else model.update();
