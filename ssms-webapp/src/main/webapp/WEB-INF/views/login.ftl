@@ -1,137 +1,102 @@
-<#macro login>
-<!doctype html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>${_TITLE_}</title>
-    <link rel="stylesheet" href="/resource/css/base.css"/>
-    <link rel="stylesheet" href="/resource/css/login.css"/>
-</head>
-<body>
-<div id="container">
-    <div id="bd">
-        <div class="login1">
-            <div class="login-top"><h1 class="logo"></h1></div>
-            <div class="login-input">
-                <p class="user ue-clear">
-                    <label>用户名</label>
-                    <input id="username" type="text"/>
-                </p>
+<@layout.extends name="_layouts/base.ftl">
+    <@layout.put block="head">
+    <script type="text/javascript">
+        if (top != window) {
+            top.window.location.href = window.location.href;
+        }
+    </script>
+    <link rel="stylesheet" href="${RES}/css/base.css"/>
+    <link rel="stylesheet" href="${RES}/css/login.css"/>
+    </@>
 
-                <p class="password ue-clear">
-                    <label>密&nbsp;&nbsp;&nbsp;码</label>
-                    <input id="password" type="password"/>
-                </p>
-
-                <p class="yzm ue-clear">
-                    <label>验证码</label>
-                    <input id="yzm" type="text"/>
-                    <cite><a id="vcode" href="#"><img id="vcodeImg" src="/vcode"/></a></cite>
-                </p>
+    <@layout.put block="contents">
+    <div class="floater"></div>
+    <div class="container">
+        <div class="content">
+            <div class="logo">
+                <img src="${RES}/images/login/logo.png"/>
+                <img src="${RES}/images/login/title.png"/>
             </div>
-            <div class="login-btn ue-clear">
-                <a id="login" class="btn">登录</a>
+            <div class="loginForm">
+                <p>
+                    <label for="username">用户名</label>
+                    <input class="username" type="text" id="username"/>
+                </p>
 
-                <div class="remember ue-clear">
-                    <input type="checkbox" id="remember"/>
-                    <em></em>
-                    <label for="remember">记住密码</label>
-                </div>
-                <#--<div class="forget ue-clear">
-                    <a id="forget" href="/pwd">忘记密码？</a>
-                </div>-->
+                <p>
+                    <label for="password">密&nbsp;&nbsp;&nbsp;码</label>
+                    <input type="password" class="password" id="password"/>
+                </p>
+
+                <p>
+                    <label for="vcode">验证码</label>
+                    <input class="vcode" type="text" id="vcode" maxlength="4" style="width: 78px;"/>
+                    <img src="${WEBPATH}/vcode" class="vimg" title="看不清？点击刷新">
+                </p>
+
+                <p style="white-space:nowrap;">
+                    <button class="loginBtn">登录</button>
+                    <input class="checkbox" name="" type="checkbox" value="" id="checkbox"/>
+                    <label for="checkbox" class="remember">记住密码</label>
+                    <a href="/pwd" class="forget" style="font-size: 12px; color: #0000ff">忘记密码?</a>
+                </p>
             </div>
         </div>
+        <div class="footer">
+            CopyRight 2015 版权所有 福建永创意信息科技有限公司,福州蓝石电子有限公司 技术支持
+        </div>
     </div>
-</div>
+    </@>
 
-<div id="ft">CopyRight&nbsp;2015&nbsp;&nbsp;版权所有&nbsp;&nbsp;福建永创意信息科技有限公司,福州蓝石电子有限公司 技术支持</div>
-</body>
-<script type="text/javascript" src="/resource/js/jquery.min.js"></script>
-<script type="text/javascript" src="/resource/js/jquery.md5.js"></script>
-<script type="text/javascript" src="/resource/js/js.cookie-1.5.1.min.js"></script>
-<script type="text/javascript" src="/resource/js/common.js"></script>
-<script type="text/javascript">
-    var height = $(window).height();
-    $("#container").height(height);
-    $("#bd").css("padding-top", height / 2 - $("#bd").height() / 2);
-    $('#password').val(Cookies.get('pwd'));
-    $('#username').val(Cookies.get('usr'));
-    $('#remember').prop("checked", Cookies.get("remember") == 'true');
+    <@layout.put block="footer">
+    <script type="text/javascript" src="${RES}/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${RES}/js/jquery.md5.js"></script>
+    <script type="text/javascript" src="${RES}/js/js.cookie-1.5.1.min.js"></script>
+    <script type="text/javascript" src="${RES}/js/layui/layer.js"></script>
+    <script type="text/javascript" src="${RES}/js/core.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var $vimg = $('.vimg').click(function () {
+                $vimg.attr('src', '${WEBPATH}/vcode?_t=' + utils.uuid());
+            });
 
-    var nochange = true;
-    $('#password').change(function () {
-        nochange = false;
-    });
+            var nochange = true;
+            var $username = $('#username').val(Cookies.get('usr'));
+            var $password = $('#password').val(Cookies.get('pwd')).change(function () {
+                nochange = false;
+            });
+            var $remember = $('#remember').prop("checked", Cookies.get("remember") == 'true');
 
-    $(window).resize(function () {
-        var height = $(window).height();
-        $("#bd").css("padding-top", $(window).height() / 2 - $("#bd").height() / 2);
-        $("#container").height(height);
+            $('.loginBtn').click(function () {
+                try{
+                    var usr = $username.val();
+                    utils.asserts.notBlank(usr, '用户名不能为空!');
+                    Cookies.set('usr', usr, { expires: 7 });
 
-    });
+                    var pwd = nochange ? $password.val() : $.md5($password.val());
+                    if ($remember.prop("checked")) Cookies.set('pwd', pwd, {expires: 7});
+                    else Cookies.remove('pwd');
+                    utils.asserts.notBlank($password.val(), '密码不能为空!');
+                    Cookies.set('remember', $remember.prop("checked"), { expires: 7 });
 
-    $('#vcode').click(function () {
-        $('#vcodeImg').attr("src", '');
-        $('#vcodeImg').attr("src", '/vcode?_t='+new Date().valueOf());
+                    var yzm = $('#vcode').val();
+                    utils.asserts.notBlank(yzm, '验证码不能为空!');
 
-        return false;
-    });
+                    var parms = { username: usr, password: pwd, yzm: yzm};
+                    $.post('login', parms, function (result) {
+                        if (result.state == "success") window.location.href = "/";
+                        else {
+                            utils.messager.alert(result.msg);
+                            $vimg.click();
+                        }
+                    }, "json")
+                }catch(e){
+                    utils.messager.alert(e);
+                }
+            });
 
-    $('#remember').focus(function () {
-        $(this).blur();
-    });
 
-    $('#remember').click(function (e) {
-        checkRemember($(this));
-    });
-    function checkRemember($this) {
-        // TODO: 添加记住密码的逻辑
-        if (!-[1,]) {
-            if ($this.prop("checked")) {
-                $this.parent().addClass('checked');
-            } else {
-                $this.parent().removeClass('checked');
-            }
-        }
-    }
-
-    $(document).keypress(function(e) {
-        // 回车键事件
-        if(e.which == 13) {
-            jQuery("#login").click();
-        }
-    });
-
-    $('#login').click(function () {
-        var pwd = nochange ? $('#password').val() : $.md5($('#password').val());
-        var usr = $('#username').val();
-        if ($('#remember').prop("checked")) {
-            Cookies.set('pwd', pwd, { expires: 7 });
-        }
-        else Cookies.remove('pwd');
-        Cookies.set('usr', usr, { expires: 7 });
-        Cookies.set('remember', $('#remember').prop("checked"), { expires: 7 });
-        var parms = {
-            username: usr,
-            password: pwd,
-            yzm: $('#yzm').val()
-        };
-        $.post('login', parms, function (result) {
-            if (result.state == "success") window.location.href = "/";
-            else {
-                alert(result.msg);
-                //$('#vcodeImg').attr("src", '');
-                $('#vcodeImg').attr("src", '/vcode?_t='+new Date().valueOf());
-            }
-        }, "json")
-    });
-
-    if (top != window) {
-        top.window.location.href = window.location.href;
-    }
-</script>
-</html>
-</#macro>
-<@login/>
+        });
+    </script>
+    </@>
+</@>
