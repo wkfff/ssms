@@ -9,13 +9,14 @@
 package com.lanstar.controller.review;
 
 import com.lanstar.core.Controller;
-import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.*;
 import com.lanstar.model.kit.folder.FolderBean;
 import com.lanstar.model.kit.folder.TenantFolderTreeBuilder;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
 import com.lanstar.model.system.tenant.Enterprise;
 import com.lanstar.model.tenant.TemplateFile;
+import com.lanstar.service.enterprise.EnterpriseService;
 import com.lanstar.service.enterprise.ProfessionService;
 
 public class TemplateController extends Controller {
@@ -33,29 +34,35 @@ public class TemplateController extends Controller {
         // 企业编号-专业编号-是否显示返回
         this.setAttr( "viewUrl", eid + "-" + pro + "-" + showBack );
 
-        Enterprise enterprise = Enterprise.dao.findById( eid );
-        Profession profession = Profession.dao.findById( pro );
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
-        identityContext.initReviewService( enterprise, profession );
-        ProfessionService professionService = identityContext.getReviewService()
-                                                             .getEnterpriseContext()
-                                                             .getEnterpriseService()
-                                                             .getProfessionService();
-        Template template = professionService.getSystemTemplate();
+        final Enterprise enterprise = Enterprise.dao.findById( eid );
+        final Profession profession = Profession.dao.findById( pro );
 
-        FolderBean value = TenantFolderTreeBuilder.tree( enterprise, template.getId(), profession.getId() );
-        setAttr( "tree", value.getChildren() );
+        // 切换当前的默认身份为企业身份，并初始化基于该身份的上下文
+        IdentityKit.runAs( this, enterprise, new IdentityHolder.Action() {
+            @Override
+            public void invoke( Identity identity ) {
+                IdentityContext identityContext = IdentityContextWrap.getIdentityContext( TemplateController.this );
+                EnterpriseService enterpriseService = identityContext.getEnterpriseService();
+                enterpriseService.initProfessionService( profession );
+                ProfessionService professionService = enterpriseService.getProfessionService();
+                Template template = professionService.getSystemTemplate();
 
-        //当前选中的
-        int sid = this.getParaToInt( 3, 0 );
-        setAttr( "sid", sid );
-        setAttr( "template", template );
+                FolderBean value = TenantFolderTreeBuilder.tree( enterprise, template.getId(), profession.getId() );
+                setAttr( "tree", value.getChildren() );
+
+                //当前选中的
+                int sid = getParaToInt( 3, 0 );
+                setAttr( "sid", sid );
+                setAttr( "template", template );
+            }
+        }, true );
     }
 
     /**
      * 查看详细页面
      * 路径：see/企业编号-专业编号-是否显示返回-模板ID-模板文件编号-版本号-文件编号
      */
+    // 可以直接用 @Before(IdentitySwitch.class)
     public void see() {
         int eid = this.getParaToInt( 0, 0 );
         int pro = this.getParaToInt( 1, 0 );

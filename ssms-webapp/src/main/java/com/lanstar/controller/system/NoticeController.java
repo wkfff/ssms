@@ -7,15 +7,6 @@
  */
 package com.lanstar.controller.system;
 
-import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
-import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -25,10 +16,11 @@ import com.lanstar.common.EasyUIControllerHelper;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.identity.TenantType;
-import com.lanstar.model.system.tenant.Government;
 import com.lanstar.model.system.Notice;
 import com.lanstar.model.system.NoticeReceiver;
+import com.lanstar.model.system.tenant.Government;
 import com.lanstar.model.system.tenant.Review;
 import com.lanstar.plugin.activerecord.ModelKit;
 import com.lanstar.plugin.activerecord.Page;
@@ -36,6 +28,11 @@ import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.activerecord.statement.SQL;
 import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 import com.lanstar.plugin.activerecord.statement.SqlStatement;
+
+import java.util.*;
+
+import static com.lanstar.common.EasyUIControllerHelper.PAGE_INDEX;
+import static com.lanstar.common.EasyUIControllerHelper.PAGE_SIZE;
 
 /**
  * 通知公告
@@ -203,7 +200,7 @@ public class NoticeController extends SimplateController<Notice> {
         String sid = this.getPara( "sid" );
         if ( StrKit.isEmpty( sid ) ) sid = this.getPara( "SID" );
         if ( sid == null ) return;
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         Notice model = this.getModel();
         model.set( "R_PUBLISH", identityContext.getId() );
         model.set( "S_PUBLISH", identityContext.getTenantName() );
@@ -372,7 +369,7 @@ public class NoticeController extends SimplateController<Notice> {
         SqlBuilder from = new SqlBuilder().FROM( this.table.getName() );
         SqlBuilder where = new SqlBuilder();
 
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         where.WHERE( "R_TENANT=?", identityContext.getTenantId() );
         where.WHERE( "P_TENANT=?", identityContext.getTenantType().getName() );
         where.WHERE( "R_PUBLISH is not null" );
@@ -408,7 +405,7 @@ public class NoticeController extends SimplateController<Notice> {
         SqlBuilder from = new SqlBuilder().FROM( this.table.getName() );
         SqlBuilder where = new SqlBuilder();
 
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         // R_TENANT
         where.WHERE( "R_TENANT=?", identityContext.getTenantId() );
         where.WHERE( "P_TENANT=?", identityContext.getTenantType().getName() );
@@ -447,7 +444,7 @@ public class NoticeController extends SimplateController<Notice> {
         SqlBuilder from = new SqlBuilder().FROM( "V_NOTICE SYS_NOTICE" );
         SqlBuilder where = new SqlBuilder();
 
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         where.WHERE( "R_RECEIVER=?", identityContext.getTenantId() );
         where.WHERE( "Z_TYPE=?", identityContext.getTenantType().getName() );
 

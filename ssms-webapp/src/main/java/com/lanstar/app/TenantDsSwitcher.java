@@ -11,26 +11,27 @@ package com.lanstar.app;
 import com.lanstar.core.ActionInvocation;
 import com.lanstar.core.Controller;
 import com.lanstar.core.aop.Interceptor;
-import com.lanstar.identity.IdentityContext;
-import com.lanstar.identity.TenantType;
-import com.lanstar.plugin.activerecord.Config;
-import com.lanstar.plugin.activerecord.DbKit;
-import com.lanstar.plugin.tlds.DsKit;
+import com.lanstar.identity.Identity;
+import com.lanstar.identity.IdentityHolder;
+import com.lanstar.identity.IdentityKit;
+import com.lanstar.identity.TenantKit;
 
 public class TenantDsSwitcher implements Interceptor {
     @Override
     public void intercept( ActionInvocation ai ) {
         Controller controller = ai.getController();
-        IdentityContext context = IdentityContext.getIdentityContext( controller );
-        if ( context == null ) {
+        IdentityHolder holder = IdentityKit.getIdentityHolder( controller );
+        if ( holder == null ) {
             ai.invoke();
             return;
         }
 
-        if ( context.getTenantType() != TenantType.SYSTEM ) {
-            Config config = DbKit.getConfig( Const.TENANT_DB_NAME );
-            DsKit.switchDs( config.getDataSource(), context.getTenantDbCode() );
-        }
+        holder.runAs( new IdentityHolder.Action() {
+            @Override
+            public void invoke( Identity identity ) {
+                TenantKit.switchDs(identity.getTenant());
+            }
+        } );
         ai.invoke();
     }
 }

@@ -8,45 +8,14 @@
 
 package com.lanstar.identity;
 
-import com.lanstar.app.Const;
-import com.lanstar.core.Controller;
+public interface IdentityContext extends TenantContext {
 
-import javax.servlet.http.HttpServletRequest;
+    Identity getIdentity();
 
-public class IdentityContext extends TenantContext {
+    int getId();
 
-    private final Identity identity;
+    String getName();
 
-    private IdentityContext( Identity identity ) {
-        super( identity.getTenant() );
-        this.identity = identity;
-    }
-
-    public static IdentityContext getIdentityContext( Controller controller ) {
-        return controller.getSessionAttr( Const.IDENTITY_KEY );
-    }
-
-    public static IdentityContext getIdentityContext( HttpServletRequest request ) {
-        Object context = request.getSession().getAttribute( Const.IDENTITY_KEY );
-        if ( context instanceof IdentityContext ) return (IdentityContext) context;
-        return null;
-    }
-
-    public static void bindIdentityContext( Controller controller, Identity identity ) {
-        controller.setSessionAttr( Const.IDENTITY_KEY, new IdentityContext( identity ) );
-    }
-
-    public static boolean hasIdentityContext( Controller controller ) {
-        return getIdentityContext( controller ) != null;
-    }
-
-    public Identity getIdentity() {
-        return identity;
-    }
-
-    public int getId() {return identity.getId();}
-
-    public String getName() {return identity.getName();}
-
-    public String getCode() {return identity.getCode();}
+    String getCode();
 }
+

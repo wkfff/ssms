@@ -29,11 +29,18 @@ public class SystemModelMapping extends ActiveRecordMapping {
         // end tenant info
         ////////////////////////////////////////
 
+        ////////////////////////////////////////
+        // begin sys
         addMapping( "SYS_NAV", "SID", Navgate.class );
         addMapping( "SYS_PROFESSION", "SID", Profession.class );
 
         addMapping( "SYS_ATTACH_TEXT", "SID", AttachText.class );
         addMapping( "SYS_ATTACH_FILE", "SID", AttachFile.class );
+
+        addMapping( "SYS_HIS_PWDRESET", "SID", PasswordResetHistory.class );
+
+        // end sys
+        ////////////////////////////////////////
 
         addMapping( "SYS_TEMPLATE", "SID", Template.class );
         addMapping( "SYS_TEMPLATE_TEXT", "SID", TemplateText.class );

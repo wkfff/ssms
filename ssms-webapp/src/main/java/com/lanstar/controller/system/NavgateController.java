@@ -8,33 +8,57 @@
 
 package com.lanstar.controller.system;
 
-import com.lanstar.common.EasyUIControllerHelper;
-import com.lanstar.controller.SimplateController;
+import com.lanstar.common.ModelInjector;
+import com.lanstar.core.Controller;
+import com.lanstar.identity.IdentityContextWrap;
+import com.lanstar.model.kit.navgate.NavgateBean;
+import com.lanstar.model.kit.navgate.NavgateTreeBuilder;
 import com.lanstar.model.system.Navgate;
-import com.lanstar.plugin.activerecord.ModelKit;
-import com.lanstar.plugin.activerecord.statement.SqlBuilder;
 
 import java.util.List;
 
-public class NavgateController extends SimplateController<Navgate> {
-    @Override
-    protected Navgate getDao() {
-        return Navgate.dao;
-    }
-
-    public void tree() {
+public class NavgateController extends Controller {
+    public void index() {
         List<Navgate> list = Navgate.list();
-        renderJson( EasyUIControllerHelper.toTree( "0", ModelKit.toMap( list ), "SID", "R_SID", "C_NAME" ) );
+        NavgateTreeBuilder bulider = new NavgateTreeBuilder( list, "R_SID" );
+        List<NavgateBean> trees = bulider.build().getChildren();
+        setAttr( "items", trees );
     }
 
-    @Override
-    public void rec() {
-        super.rec();
-        renderJson();
+    public void save() {
+        Integer id = getParaToInt( "id" );
+        String name = getPara( "name" );
+        String icon = getPara( "icon" );
+        String url = getPara( "url" );
+        String desc = getPara( "desc" );
+        Integer index = getParaToInt( "index" );
+        Integer parentId = getParaToInt( "parentId" );
+        Navgate model = null;
+        if ( id != null ) model = Navgate.dao.findById( id );
+        else model = new Navgate();
+
+        model.setName( name );
+        model.setIcon( icon );
+        model.setUrl( url );
+        model.setDesc( desc );
+        model.setIndex( index );
+        model.setParentId( parentId );
+        ModelInjector.injectOpreator( model, IdentityContextWrap.getIdentityContext( this ) );
+
+        if ( id == null ) model.save();
+        else model.update();
+
+        renderJson( model.getId() );
     }
 
-    @Override
-    protected SqlBuilder buildWhere() {
-        return new SqlBuilder().WHERE( "R_SID=?", getPara( "R_SID" ) ).ORDER_BY( "N_INDEX, T_CREATE" );
+    public void remove() {
+        Integer id = getParaToInt( "id" );
+        Navgate model = null;
+        if ( id != null ) model = Navgate.dao.findById( id );
+        if ( model != null ) {
+            renderJson( model.delete() );
+        } else {
+            renderJson( false );
+        }
     }
 }

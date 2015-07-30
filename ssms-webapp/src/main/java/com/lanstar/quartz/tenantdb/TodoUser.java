@@ -15,6 +15,9 @@ import com.lanstar.identity.TenantType;
 public class TodoUser implements Identity {
     public static final Identity INST = new TodoUser();
 
+    private TodoUser() {
+    }
+
     @Override
     public int getId() {
         return 0;
@@ -53,5 +56,10 @@ public class TodoUser implements Identity {
     @Override
     public TenantType getTenantType() {
         return getTenant().getTenantType();
+    }
+
+    @Override
+    public String getTenantDbCode() {
+        return getTenant().getTenantDbCode();
     }
 }

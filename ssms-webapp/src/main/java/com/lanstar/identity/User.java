@@ -43,22 +43,27 @@ public class User implements Identity {
 
     @Override
     public int getTenantId() {
-        return tenant.getTenantId();
+        return getTenant().getTenantId();
     }
 
     @Override
     public String getTenantName() {
-        return tenant.getTenantName();
+        return getTenant().getTenantName();
     }
 
     @Override
     public String getTenantCode() {
-        return tenant.getTenantCode();
+        return getTenant().getTenantCode();
     }
 
     @Override
     public TenantType getTenantType() {
-        return tenant.getTenantType();
+        return getTenant().getTenantType();
+    }
+
+    @Override
+    public String getTenantDbCode() {
+        return getTenant().getTenantDbCode();
     }
 
     public UserModel<?> getUser() {

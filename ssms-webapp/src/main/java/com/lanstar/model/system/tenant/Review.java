@@ -47,6 +47,12 @@ public class Review extends ModelExt<Review> implements Tenant {
         return TenantType.REVIEW;
     }
 
+    @Override
+    public String getTenantDbCode() {
+        // TODO: 从数据库中读取DB_CODE
+        return "tenant01";
+    }
+
     public String getTenantCode() {
         return getStr( "C_CODE" );
     }

@@ -10,6 +10,7 @@ package com.lanstar.controller.government;
 
 import com.lanstar.controller.SimplateController;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.tenant.GovernmentUser;
 import com.lanstar.plugin.activerecord.ModelKit;
 
@@ -20,7 +21,7 @@ public class GovernmentUserController extends SimplateController<GovernmentUser>
     }
 
     public void rec() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         int id = identityContext.getId();
         String tenantName = identityContext.getTenantName();
         int tenantId = identityContext.getTenantId();

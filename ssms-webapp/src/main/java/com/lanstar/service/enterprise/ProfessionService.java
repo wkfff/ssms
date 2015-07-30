@@ -10,10 +10,7 @@ package com.lanstar.service.enterprise;
 
 import com.google.common.collect.Lists;
 import com.lanstar.common.ListKit;
-import com.lanstar.identity.Identity;
-import com.lanstar.identity.IdentityContext;
-import com.lanstar.identity.Tenant;
-import com.lanstar.identity.TenantContext;
+import com.lanstar.identity.*;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
 import com.lanstar.model.tenant.TemplateFolder;

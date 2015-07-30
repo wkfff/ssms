@@ -22,7 +22,7 @@ import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.config.*;
 import com.lanstar.core.Rapidware;
 import com.lanstar.core.render.FreeMarkerRender;
-import com.lanstar.identity.IdentityInterceptor;
+import com.lanstar.identity.interceptor.IdentityInterceptor;
 import com.lanstar.plugin.activerecord.ActiveRecordPlugin;
 import com.lanstar.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.lanstar.plugin.attachfile.ResourcePlugin;
@@ -31,6 +31,7 @@ import com.lanstar.plugin.druid.DruidPlugin;
 import com.lanstar.plugin.jsconstants.AreaGetter;
 import com.lanstar.plugin.jsconstants.JsConstantBuilder;
 import com.lanstar.plugin.jsconstants.ProfessionGetter;
+import com.lanstar.plugin.mail.MailerPlugin;
 import com.lanstar.plugin.quartz.QuartzPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
 import com.lanstar.plugin.staticcache.StaticCachePlugin;
@@ -63,6 +64,7 @@ public class WebAppConfig extends RapidwareConfig {
         configTemplate( FreeMarkerRender.getConfiguration(), devMode );
 
         // 配置错误页
+        me.setError403View( "403.html" );
         me.setError404View( "404.html" );
         me.setError500View( "404.html" );
     }
@@ -130,6 +132,9 @@ public class WebAppConfig extends RapidwareConfig {
         TemplatePropPlugin templatePropPlugin = TemplatePropPlugin.me().add( new TemplatePropsConfig() );
         me.add( templatePropPlugin );
 
+        // 发件邮箱配置
+        me.add( new MailerPlugin( "system.properties" ) );
+
         JsConstantBuilder.me()
                          .add( new AreaGetter() )
                          .add( new ProfessionGetter() )
@@ -171,7 +176,16 @@ public class WebAppConfig extends RapidwareConfig {
         try {
             me.setSharedVariable( "_TITLE_", "安全生产标准化服务平台" );
             me.setSharedVariable( "CONTEXT_PATH", Rapidware.me().getContextPath() );
+            me.setSharedVariable( "WEBPATH", Rapidware.me().getContextPath() );
             me.setSharedVariable( "DEV_MODE", devMode );
+            if ( devMode ) {
+                me.setSharedVariable( "RES", Rapidware.me().getContextPath() + "/resource" );
+                // me.setSharedVariable( "DEV_PATH", Rapidware.me().getContextPath() + "/dev" );
+            }
+            else {
+                me.setSharedVariable( "RES", Rapidware.me().getContextPath() + "/resource" );
+                // me.setSharedVariable( "DEV_PATH", Rapidware.me().getContextPath() );
+            }
             // 添加JSON扩展方法               by 张铮彬#2015-5-7
             me.setSharedVariable( "json", new JsonMethod() );
             me.setSharedVariable( "layout", BlockDirectiveUtils.directives() );
@@ -185,7 +199,7 @@ public class WebAppConfig extends RapidwareConfig {
         public Object exec( List arguments ) throws TemplateModelException {
             if ( arguments.size() != 1 ) return "";
             Object object = arguments.get( 0 );
-            if (object==null) return "";
+            if ( object == null ) return "";
             if ( object instanceof WrapperTemplateModel ) {
                 object = ((WrapperTemplateModel) object).getWrappedObject();
             }

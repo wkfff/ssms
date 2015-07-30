@@ -11,6 +11,7 @@ package com.lanstar.common;
 import com.lanstar.core.TypeConverter;
 import com.lanstar.identity.Identity;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.plugin.activerecord.ActiveRecordException;
 import com.lanstar.plugin.activerecord.Model;
 import com.lanstar.plugin.activerecord.Table;
@@ -42,7 +43,7 @@ public class ModelInjector {
             }
         }
 
-        IdentityContext context = IdentityContext.getIdentityContext( request );
+        IdentityContext context = IdentityContextWrap.getIdentityContext( request );
         if ( context != null ) injectOpreator( model, context );
     }
 

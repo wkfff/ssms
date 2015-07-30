@@ -12,9 +12,7 @@ import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
 import com.lanstar.core.aop.ClearInterceptor;
 import com.lanstar.core.aop.ClearLayer;
-import com.lanstar.identity.Identity;
-import com.lanstar.identity.IdentityContext;
-import com.lanstar.identity.TenantType;
+import com.lanstar.identity.*;
 import com.lanstar.render.CaptchaRender;
 
 public class HomeController extends Controller {
@@ -22,7 +20,7 @@ public class HomeController extends Controller {
     boolean bCheckCode = true;
 
     public void index() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         setAttr( "nav", identityContext.getSystemNavgate() );
 
         forwardAction( "/" + identityContext.getTenantType().getName().toLowerCase() );
@@ -54,7 +52,7 @@ public class HomeController extends Controller {
     }
 
     public void logout() {
-        if ( IdentityContext.hasIdentityContext( this ) ) {
+        if ( IdentityContextWrap.hasIdentityContext( this ) ) {
             // 直接将当前会话无效化掉
             getSession().invalidate();
         }
@@ -69,7 +67,7 @@ public class HomeController extends Controller {
     private static boolean login( Controller controller, String tenentCode, String username, String password ) {
         try {
             Identity identity = TenantType.getIdentity( tenentCode, username, password );
-            IdentityContext.bindIdentityContext( controller, identity );
+            IdentityKit.bindIdentity( controller, identity );
             return true;
         } catch ( Exception e ) {
             return false;

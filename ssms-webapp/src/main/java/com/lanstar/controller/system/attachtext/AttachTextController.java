@@ -13,6 +13,7 @@ import com.lanstar.core.Controller;
 import com.lanstar.core.aop.Before;
 import com.lanstar.core.render.JsonRender;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.identity.TenantContext;
 import com.lanstar.service.AttachTextService;
 
@@ -40,7 +41,7 @@ public class AttachTextController extends Controller {
         Integer sid = getParaToInt( "sid" );
         String content = getPara( "content" );
 
-        IdentityContext context = IdentityContext.getIdentityContext( this );
+        IdentityContext context = IdentityContextWrap.getIdentityContext( this );
         AttachTextService service = context.getAttachTextService();
         Integer id = service.save( table, field, sid, content, context );
 //        renderJson(id);

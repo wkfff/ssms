@@ -10,6 +10,7 @@ package com.lanstar.controller.enterprise;
 
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.kit.folder.FolderBean;
 import com.lanstar.model.kit.folder.TenantFolderTreeBuilder;
 import com.lanstar.model.tenant.TemplateFile;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class TemplateController extends Controller {
     public void index() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
 
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
 
@@ -49,7 +50,7 @@ public class TemplateController extends Controller {
      */
     public void versions() {
         String sql = "select distinct IFNULL(N_VERSION,0) N_VERSION from ssm_template_version where r_tenant=? ";
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         DbPro tenantDb = identityContext.getTenantDb();
         int tenantId = this.getParaToInt( "R_TENANT", identityContext.getTenantId() );
         List<Record> list = tenantDb.find( sql, tenantId );
@@ -63,7 +64,7 @@ public class TemplateController extends Controller {
      */
     public void view() {
         // FIXME: 修复重复体系文件的问题
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         UniqueTag uniqueTag = identityContext.getEnterpriseService().getUniqueTag();
 
         // load template tree data
@@ -89,7 +90,7 @@ public class TemplateController extends Controller {
         this.setAttr( "tmpfile", tmpfile );
         this.setAttr( "version", version );
         this.setAttr( "sid", sid );
-        IdentityContext identityContext=IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext=IdentityContextWrap.getIdentityContext( this );
         UniqueTag uniqueTag=identityContext.getEnterpriseService().getUniqueTag();
         TemplateFile file = TemplateFile.findFirst( uniqueTag, sid );
         if ( file != null )
@@ -101,7 +102,7 @@ public class TemplateController extends Controller {
      */
     public void archive() {
         //复制当前版本的所有要素到归档表，包括富文本、文件等
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         ProfessionService service = identityContext.getEnterpriseService().getProfessionService();
         service.archive( identityContext );
 

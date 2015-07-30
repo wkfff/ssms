@@ -8,9 +8,6 @@
 
 package com.lanstar.controller.government;
 
-import java.util.List;
-import java.util.Map;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -18,13 +15,17 @@ import com.lanstar.common.TreeNode;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
-import com.lanstar.model.system.tenant.Enterprise;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.Template;
+import com.lanstar.model.system.tenant.Enterprise;
 import com.lanstar.plugin.activerecord.DbPro;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.enterprise.ProfessionService;
+
+import java.util.List;
+import java.util.Map;
 
 public class TemplateController extends Controller {
     public void index() {
@@ -35,7 +36,7 @@ public class TemplateController extends Controller {
 
     }
     public void query2(){
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         // 企业
         int eid = this.getParaToInt( "sid" );
         // 专业
@@ -51,7 +52,7 @@ public class TemplateController extends Controller {
      * 查看企业当前生效的达标体系
      */
     public void query(){
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         ProfessionService professionService = identityContext.getReviewService().getEnterpriseContext().getEnterpriseService().getProfessionService();
         Template template = professionService.getSystemTemplate();
         int eid = identityContext.getReviewService().getEnterpriseContext().getTenantId();

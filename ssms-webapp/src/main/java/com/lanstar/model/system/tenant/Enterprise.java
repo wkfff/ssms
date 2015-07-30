@@ -69,6 +69,12 @@ public class Enterprise extends ModelExt<Enterprise> implements Tenant {
     }
 
     @Override
+    public String getTenantDbCode() {
+        // TODO: 从数据库中读取DB_CODE
+        return "tenant01";
+    }
+
+    @Override
     public boolean delete() {
         this.set( "B_DELETE", 1 );
         return this.update();

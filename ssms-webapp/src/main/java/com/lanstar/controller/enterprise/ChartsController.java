@@ -10,6 +10,7 @@ package com.lanstar.controller.enterprise;
 
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.tenant.TemplateFolder;
 import com.lanstar.plugin.activerecord.DbPro;
 import com.lanstar.render.jfreechart.JFreeChartRender;
@@ -18,7 +19,7 @@ import com.lanstar.service.enterprise.ProfessionService;
 
 public class ChartsController extends Controller {
     public void chart01() {
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         EnterpriseService enterpriseService = identityContext.getEnterpriseService();
         ProfessionService professionService = enterpriseService.getProfessionService();
         TemplateFolder folder = professionService.getTenantTemplateFolder();
@@ -39,7 +40,7 @@ public class ChartsController extends Controller {
 
     public void chart02() {
         // 当年已检
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         EnterpriseService enterpriseService = identityContext.getEnterpriseService();
         ProfessionService professionService = enterpriseService.getProfessionService();
 

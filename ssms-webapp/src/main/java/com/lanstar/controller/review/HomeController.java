@@ -11,6 +11,7 @@ package com.lanstar.controller.review;
 import com.lanstar.app.Const;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
+import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.Done;
 import com.lanstar.model.system.Notice;
 import com.lanstar.model.Todo;
@@ -23,7 +24,7 @@ public class HomeController extends Controller {
     }
 
     public void home(){
-        IdentityContext identityContext = IdentityContext.getIdentityContext( this );
+        IdentityContext identityContext = IdentityContextWrap.getIdentityContext( this );
         int tenantId = identityContext.getTenantId();
         int pageSize = 8;
         //接收的通知公告
