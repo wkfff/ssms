@@ -46,27 +46,27 @@ var utils;
         var indexArray = [];
 
         messager.showProgress = function (title) {
-            var index = parent.layer.msg(title || '加载中', {icon: 16, time: 0, shade: [0.3, '#000']});
+            var index = top.layer.msg(title || '加载中', {icon: 16, time: 0, shade: [0.3, '#000']});
             indexArray.push(index);
         };
         messager.closeProgress = function () {
             var index = indexArray.pop();
-            parent.layer.close(index);
+            top.layer.close(index);
         };
 
         messager.alert = function (msg, callback, icon) {
-            parent.layer.alert(msg, {icon: icon || 0}, function (index) {
+            top.layer.alert(msg, {icon: icon || 0}, function (index) {
                 if (typeof callback === 'function') callback(index);
-                parent.layer.close(index);
+                top.layer.close(index);
             });
         };
 
         messager.confirm = function (msg, callback) {
-            parent.layer.confirm(msg, {icon: 3}, callback);
+            top.layer.confirm(msg, {icon: 3}, callback);
         };
         
         messager.showDialog = function (type, width, height, title, id, callback) {
-            layer.open({
+            top.layer.open({
                 type: type, //page层
                 area: [width, height],
                 title: title,
@@ -75,6 +75,10 @@ var utils;
                 yes: callback,
                 content: $('#' + id)
             });
+        };
+
+        messager.close = function (index) {
+            top.layer.close(index);
         };
     })(messager = utils.messager || (utils.messager = {}));
 
@@ -93,14 +97,14 @@ var utils;
         dialog.open = function (options) {
             var opts = $.extend({}, defaultOptions, options);
             var template = opts.templateId ? $(opts.templateId).html() : opts.template;
-            parent.layer.confirm(template, {
+            top.layer.confirm(template, {
                 title: opts.title,
                 maxWidth: 980,
                 success: function (layero, index) {
                     opts.loaded(layero);
                 }
             }, function (index) {
-                if (opts.ok() !== false) layer.close(index);
+                if (opts.ok() !== false) top.layer.close(index);
             });
         };
     })(dialog = utils.dialog || (utils.dialog = {}));
