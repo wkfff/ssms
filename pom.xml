@@ -55,7 +55,7 @@
                 <version>2.2</version>
                 <configuration>
                     <path>/</path>
-                    <url>http://42.121.129.201:8123/manager/text</url>
+                    <url>http://120.24.56.237/manager/text</url>
                     <username>lanstar</username>
                     <password>lanstar110606</password>
                 </configuration>
