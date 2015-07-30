@@ -18,6 +18,10 @@ public class SystemUser extends UserModel<SystemUser> {
         return dao.findUser( null, name, password );
     }
 
+    public static SystemUser findUserByEmail( String email ) {
+        return dao.findFirstByColumn( "C_EMAIL", email );
+    }
+
     @Override
     protected SystemUser findUser( String tenantCode, String name, String password ) {
         return dao.findFirst( SqlKit.sql( "system.systemUser.getUserByNameAndPwd" ), name.toUpperCase(), password.toUpperCase() );
@@ -26,5 +30,10 @@ public class SystemUser extends UserModel<SystemUser> {
     @Override
     public Tenant getOwner() {
         return Tenant.SYSTEM_TENANT;
+    }
+
+    @Override
+    public String getUsername() {
+        return getStr( "C_NAME" );
     }
 }

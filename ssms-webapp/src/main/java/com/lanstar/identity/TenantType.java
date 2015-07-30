@@ -16,6 +16,11 @@ public enum TenantType {
      */
     SYSTEM( "S" ) {
         @Override
+        public UserModel<?> findUserById( int id ) {
+            return SystemUser.dao.findById( id );
+        }
+
+        @Override
         protected UserModel<?> findUser( String tenantCode, String username, String password ) {
             return SystemUser.getUser( username, password );
         }
@@ -24,6 +29,11 @@ public enum TenantType {
      * 政府
      */
     GOVERNMENT( "G" ) {
+        @Override
+        public UserModel<?> findUserById( int id ) {
+            return GovernmentUser.dao.findById( id );
+        }
+
         @Override
         protected UserModel<?> findUser( String tenantCode, String username, String password ) {
             return GovernmentUser.getUser( tenantCode, username, password );
@@ -34,6 +44,11 @@ public enum TenantType {
      */
     REVIEW( "R" ) {
         @Override
+        public UserModel<?> findUserById( int id ) {
+            return ReviewUser.dao.findById( id );
+        }
+
+        @Override
         protected UserModel<?> findUser( String tenantCode, String username, String password ) {
             return ReviewUser.getUser( tenantCode, username, password );
         }
@@ -42,6 +57,11 @@ public enum TenantType {
      * 企业
      */
     ENTERPRISE( "E" ) {
+        @Override
+        public UserModel<?> findUserById( int id ) {
+            return EnterpriseUser.dao.findById( id );
+        }
+
         @Override
         protected UserModel<?> findUser( String tenantCode, String username, String password ) {
             return EnterpriseUser.getUser( tenantCode, username, password );
@@ -67,6 +87,28 @@ public enum TenantType {
         UserModel<?> user = type.findUser( tenantCode, username, password );
         return IdentityKit.toIdentity( user );
     }
+
+    /**
+     * 根据E-MAIL找用户
+     */
+    public static UserModel<?> findUserByEmail( String email ) {
+        UserModel<?> user = EnterpriseUser.findUserByEmail( email );
+        if ( user != null ) return user;
+
+        user = ReviewUser.findUserByEmail( email );
+        if ( user != null ) return user;
+
+        user = GovernmentUser.findUserByEmail( email );
+        if ( user != null ) return user;
+
+        user = SystemUser.findUserByEmail( email );
+        return user;
+    }
+
+    /**
+     * 根据用户ID获取用户对象
+     */
+    public abstract UserModel<?> findUserById( int id );
 
     protected abstract UserModel<?> findUser( String tenantCode, String username, String password );
 

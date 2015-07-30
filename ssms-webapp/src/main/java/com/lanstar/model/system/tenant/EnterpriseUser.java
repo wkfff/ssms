@@ -21,6 +21,10 @@ public class EnterpriseUser extends UserModel<EnterpriseUser> {
         return dao.findUser( tenantCode, name, password );
     }
 
+    public static EnterpriseUser findUserByEmail( String email ) {
+        return dao.findFirstByColumn( "C_EMAIL", email );
+    }
+
     @Override
     protected EnterpriseUser findUser( String tenantCode, String name, String password ) {
         return dao.findFirst( SqlKit.sql( "system.enterpriseUser.getUserByNameAndPwd" ),
