@@ -130,7 +130,7 @@
         function ViewModel(template, folders) {
             this.publish = function () {
                 utils.messager.confirm("确定要发布模板吗？", function (_index) {
-                    layer.close(_index);
+                    utils.messager.close(_index);
                     var publishResult = {
                         status: ko.observable(),
                         logs: ko.observableArray(),

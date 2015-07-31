@@ -37,7 +37,7 @@ public class CaptchaRender extends Render {
 
     @Override
     public void render() {
-        ValidateCode vCode = new ValidateCode( 120, 40, 4, 50 );
+        ValidateCode vCode = new ValidateCode( 120, 40, 4, 0 );
 
         // 设置响应的类型格式为图片格式
         response.setContentType( "image/jpeg" );

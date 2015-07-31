@@ -75,5 +75,10 @@
         <sql id="listParaByName">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=?</sql>
         <sql id="listPara">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=(SELECT C_NAME FROM SYS_PARA_MULTI WHERE SID=?)</sql>
     </sqlGroup>
+
+    <sqlGroup name="passwordResetHistory">
+        <sql id="getValidHistoryWithEmail">SELECT * FROM SYS_HIS_PWDRESET WHERE DATE_ADD(T_APPLY,INTERVAL 1 HOUR) >= NOW() AND IFNULL(N_STATE, 0)=0 AND C_EMAIL=?</sql>
+        <sql id="getValidHistoryWithToken">SELECT * FROM SYS_HIS_PWDRESET WHERE DATE_ADD(T_APPLY,INTERVAL 1 HOUR) >= NOW() AND IFNULL(N_STATE, 0)=0 AND C_TOKEN=?</sql>
+    </sqlGroup>
     
 </sqlGroup>

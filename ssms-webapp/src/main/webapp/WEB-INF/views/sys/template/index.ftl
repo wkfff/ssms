@@ -1,8 +1,9 @@
 <@layout.extends name="../../_layouts/base.ftl">
     <@layout.put block="head">
-    <link rel="stylesheet" href="/resource/css/base.css">
-    <link rel="stylesheet" href="/resource/css/common.css">
-    <link rel="stylesheet" href="/resource/css/layout.css">
+    <link rel="stylesheet" href="${RES}/css/base.css">
+    <link rel="stylesheet" href="${RES}/css/common.css">
+    <link rel="stylesheet" href="${RES}/css/layout.css">
+    <link rel="stylesheet" href="${RES}/css/validate.css"/>
     <style type="text/css">
         a {
             line-height: 24px;
@@ -60,27 +61,27 @@
         }
 
         .icon-fresh {
-            background: url("/resource/css/easyui/themes/icons/reload.png") no-repeat 2px center;
+            background: url("${RES}/css/easyui/themes/icons/reload.png") no-repeat 2px center;
             padding-left: 20px;
         }
 
         .icon-add {
-            background: url("/resource/images/addico.png") no-repeat 2px center;
+            background: url("${RES}/images/addico.png") no-repeat 2px center;
             padding-left: 20px;
         }
 
         .icon-edit {
-            background: url("/resource/images/edtico.png") no-repeat 2px center;
+            background: url("${RES}/images/edtico.png") no-repeat 2px center;
             padding-left: 20px;
         }
 
         .icon-delete {
-            background: url("/resource/images/delico.png") no-repeat 2px center;
+            background: url("${RES}/images/delico.png") no-repeat 2px center;
             padding-left: 20px;
         }
 
         .icon-save {
-            background: url("/resource/images/saveicon.png") no-repeat 2px center;
+            background: url("${RES}/images/saveicon.png") no-repeat 2px center;
             padding-left: 20px;
         }
     </style>
@@ -88,7 +89,7 @@
 
     <@layout.put block="contents">
     <div class="container">
-        <header class="titlebar"><img src="/resource/images/titleico.png"/>模板管理</header>
+        <header class="titlebar"><img src="${RES}/images/titleico.png"/>模板管理</header>
         <div class="content ue-clear">
             <div class="z-toolbar">
                 <a href="javascript:void(0)" class="icon-add" data-bind="click : $root.addClick">添加模板</a>
@@ -119,10 +120,10 @@
     </@>
 
     <@layout.put block="footer">
-    <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/resource/js/layui/layer.js"></script>
-    <script type="text/javascript" src="/resource/js/core.js"></script>
-    <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
+    <script type="text/javascript" src="${RES}/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${RES}/js/layui/layer.js"></script>
+    <script type="text/javascript" src="${RES}/js/core.js"></script>
+    <script type="text/javascript" src="${RES}/js/knockout/knockout.min.js"></script>
     <script type="text/javascript">
         function ViewModel() {
             var self = this;

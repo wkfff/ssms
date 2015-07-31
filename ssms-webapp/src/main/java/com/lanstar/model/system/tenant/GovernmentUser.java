@@ -21,6 +21,10 @@ public class GovernmentUser extends UserModel<GovernmentUser> {
         return dao.findUser( tenantCode, name, password );
     }
 
+    public static GovernmentUser findUserByEmail( String email ) {
+        return dao.findFirstByColumn( "C_EMAIL", email );
+    }
+
     @Override
     protected GovernmentUser findUser( String tenantCode, String name, String password ) {
         return dao.findFirst( SqlKit.sql( "system.governmentUser.getUserByNameAndPwd" ),

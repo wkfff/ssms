@@ -62,7 +62,7 @@ public class ProfessionsController extends Controller {
 
         setAttr( "industries", Lists.newArrayList( pools.values() ) );
 
-        setAttr( "templates", Template.dao.find( "select SID code, C_NAME name from sys_template" ) );
+        setAttr( "templates", Template.dao.find( "select SID code, C_NAME name from sys_template where IFNULL(B_DELETE, 0)=0" ) );
     }
 
     public void saveProfession() {

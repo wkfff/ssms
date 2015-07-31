@@ -21,6 +21,13 @@ public abstract class UserModel<T extends UserModel<T>> extends TenantModel<T> {
         return update();
     }
 
+    public boolean ForceChangePassword( String newPassword ) {
+        set( "C_PASSWD", newPassword.toUpperCase() );
+        // 永远让密码变为已修改，否则没办法保存数据。            by 张铮彬#2015-7-22
+        modifyFlag.add( "C_PASSWD" );
+        return update();
+    }
+
     protected abstract T findUser( String tenantCode, String name, String password );
 
     public void initPassword() {

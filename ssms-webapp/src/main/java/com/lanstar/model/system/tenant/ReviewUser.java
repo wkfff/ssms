@@ -21,6 +21,10 @@ public class ReviewUser extends UserModel<ReviewUser> {
         return dao.findUser( tenantCode, name, password );
     }
 
+    public static ReviewUser findUserByEmail( String email ) {
+        return dao.findFirstByColumn( "C_EMAIL", email );
+    }
+
     @Override
     protected ReviewUser findUser( String tenantCode, String name, String password ) {
         return dao.findFirst( SqlKit.sql( "system.reviewUser.getUserByNameAndPwd" ),

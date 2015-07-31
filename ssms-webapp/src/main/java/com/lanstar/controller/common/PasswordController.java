@@ -7,168 +7,95 @@
  */
 package com.lanstar.controller.common;
 
-import com.lanstar.common.kit.DateKit;
 import com.lanstar.common.kit.StrKit;
+import com.lanstar.common.log.Logger;
 import com.lanstar.core.Controller;
 import com.lanstar.core.aop.ClearInterceptor;
 import com.lanstar.core.aop.ClearLayer;
-import com.lanstar.core.mail.EmailConst;
-import com.lanstar.core.mail.EmailUtils;
-import com.lanstar.identity.TenantType;
-import com.lanstar.model.system.tenant.EnterpriseUser;
-import com.lanstar.model.system.tenant.GovernmentUser;
-import com.lanstar.model.system.tenant.ReviewUser;
 import com.lanstar.render.CaptchaRender;
-import com.oreilly.servlet.Base64Decoder;
-import com.oreilly.servlet.Base64Encoder;
+import com.lanstar.service.PasswordResetService;
 
-import java.util.Date;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 密码
- *
  */
+@ClearInterceptor(ClearLayer.ALL)
 public class PasswordController extends Controller {
+    private final Logger log = Logger.getLogger( this.getClass() );
+
     /**
      * 重置密码发送邮件页面
      */
-    @ClearInterceptor(ClearLayer.ALL)
-    public void index(){
-//        render( "index.ftl" );
-    }
+    public void index() {}
+
     /**
      * 发送重置密码邮件
      */
-    @ClearInterceptor(ClearLayer.ALL)
-    public void send(){
-        String tenantType = "E";
-        int userId = -1;
+    public void send() {
+        String email = getPara( "email" );
+        String verify = getPara( "verify" );
         //验证码校验
-        String vCode = this.getPara("yzm");
-        if ( CaptchaRender.validate( this, vCode ) == false ) {
+        if ( CaptchaRender.validate( this, verify ) == false ) {
             setAttr( "state", "error" ).setAttr( "msg", "验证码不正确。" );
             this.renderJson();
             return;
         }
-        //后面如果启用多用户时要传用户名
-//        String userName = "ADMIN";
-        //邮件地址校验
-        String mail = this.getPara("C_EMAIL");
-        if (StrKit.isBlank( mail ) ) {
+        if ( StrKit.isBlank( email ) ) {
             setAttr( "state", "error" ).setAttr( "msg", "邮箱地址不正确。" );
             this.renderJson();
             return;
-        }else{
-            // TODO
-            //TenantUser user = TenantUser.dao.findFirst( "SELECT * FROM TENANT_USER WHERE C_EMAIL=? ",mail );
-            /*if (user==null){
-                setAttr( "state", "error" ).setAttr( "msg", "邮箱地址不正确。" );
-                this.renderJson();
-                return;
-            }else{
-                userId = user.getId();
-                tenantType = user.getTenantType().getName();
-            }*/
         }
 
-        String k = tenantType+"#"+userId+"#"+DateKit.toStr( new Date(), DateKit.timeFormat );
-        k = Base64Encoder.encode( k );
-        EmailUtils.sendHtml( EmailConst.SMTP_163, "flinsoft@163.com", "flin0000", mail, "安全生产标准化管理系统重置密码邮件", "尊敬的用户：<br>您的账号进行了重置密码操作,请点击以下链接设置新密码（1小时内有效）<br> <a href='http://localhost/pwd/reset/"+k+"'>http://localhost/pwd/reset/"+k+"</a> <br>若您没有做过此操作，请忽略此邮件，谢谢！<br>本邮件为系统邮件，请勿直接回复！" );
-        //this.render( new JsonRender( "OK" ).forIE() );
-        setAttr( "state", "success" ).setAttr( "msg", "发送成功。" );
-        this.renderJson();
-    }
-    /**
-     * 发送成功提示页面
-     */
-    @ClearInterceptor(ClearLayer.ALL)
-    public void success(){
-        this.render( "success.ftl" );
-    }
-    
-    /**
-     * 重置密码页面
-     */
-    @ClearInterceptor(ClearLayer.ALL)
-    public void reset(){
-        String k = this.getPara( 0 );
-        if (StrKit.isBlank( k )) {
-            setAttr( "state", "error" ).setAttr( "msg", "无效的重置密码链接。" );
-            this.render( "err.ftl" );
-            return;
+        // 需要记录的数据：
+        // 申请重置邮箱、申请重置的时间、IP地址、重置令牌、令牌有效性
+
+        // 第一步：先根据邮箱找到对应的用户，即验证用户的合法性，如果邮箱未找到那么就表示当前邮箱不合法。
+        // 第二步：记录申请时间，并为申请重置的邮箱生成重置令牌。
+        // 第三步：发送邮件（HTML内容根据freemarker模板生成）
+
+        try {
+            PasswordResetService service = PasswordResetService.withEmail( email );
+            // 发送邮件
+            service.sendEmail();
+            setAttr( "state", "success" ).setAttr( "msg", "发送成功。" );
+            this.renderJson();
+        } catch ( Exception e ) {
+            log.error( "发送重置密码的邮件时发生了异常", e );
+            setAttr( "state", "error" ).setAttr( "msg", "请确认邮箱地址正确。" );
+            this.renderJson();
         }
-        setAttr("token",k);
-        
-        k = Base64Decoder.decode( k );
-        String[] paras = StrKit.split( k, "#" );
-        if(paras.length!=3) {
-            setAttr( "state", "error" ).setAttr( "msg", "无效的链接。" );
-            this.render( "err.ftl" );
-            return;
-        }
-        Date t = DateKit.toDate( paras[2]);
-        Date now = new Date();
-        if ( (now.getTime()-t.getTime())/(1000*60*60)>1 ) {
-            setAttr( "state", "error" ).setAttr( "msg", "重置密码链接已经过期。" );
-            this.render( "err.ftl" );
-            return;
-        }
-        this.render( "reset.ftl" );
     }
+
+    public void reset() {
+        String token = getPara();
+        try {
+            setAttr( "token", token );
+            PasswordResetService.withToken( token );
+        } catch ( Exception e ) {
+            // TODO: 跳转到更正确的地址
+            renderError( HttpServletResponse.SC_FORBIDDEN );
+        }
+    }
+
     /**
      * 重置密码
      */
-    public void resetPassword(){
-        String pwd = this.getPara("pwd");
-        String k = this.getPara( "token" );
-        if (StrKit.isBlank( k )) {
-            setAttr( "state", "error" ).setAttr( "msg", "无效的链接。" );
-            this.render( "err.ftl" );
-            return;
+    public void save() {
+        String password = getPara( "password" );
+        String confirm = getPara( "confirm" );
+        String token = getPara( "token" );
+
+        try {
+            PasswordResetService service = PasswordResetService.withToken( token );
+            // 发送邮件
+            service.changePassword( password );
+            setAttr( "state", "success" ).setAttr( "msg", "密码修改成功。" );
+            this.renderJson();
+        } catch ( Exception e ) {
+            log.error( "修改密码时发生了异常", e );
+            setAttr( "state", "error" ).setAttr( "msg", "密码修改失败。" );
+            this.renderJson();
         }
-        k = Base64Decoder.decode( k );
-        String[] paras = StrKit.split( k, "#" );
-        if(paras.length!=3) {
-            setAttr( "state", "error" ).setAttr( "msg", "无效的链接。" );
-            this.render( "err.ftl" );
-            return;
-        }
-        Date t = DateKit.toDate( paras[2]);
-        Date now = new Date();
-        if ( (now.getTime()-t.getTime())/(1000*60*60)>1 ) {
-            setAttr( "state", "error" ).setAttr( "msg", "重置密码链接已经过期。" );
-            this.render( "err.ftl" );
-            return;
-        }
-        String tenantType = paras[0];
-        int userId = Integer.parseInt( paras[1] );
-        if (tenantType.equals( TenantType.ENTERPRISE.getName() )){
-            EnterpriseUser user = EnterpriseUser.dao.findById( userId );
-            if (user!=null) {
-                user.setPassword( pwd );
-                user.update();
-            }
-        }else if (tenantType.equals( TenantType.REVIEW.getName() )){
-            ReviewUser user = ReviewUser.dao.findById( userId );
-            if (user!=null) {
-                user.setPassword( pwd );
-                user.update();
-            }
-        }else if (tenantType.equals( TenantType.GOVERNMENT.getName() )){
-            GovernmentUser user = GovernmentUser.dao.findById( userId );
-            if (user!=null) {
-                user.setPassword( pwd );
-                user.update();
-            }
-        }
-        setAttr("state","success");
-        this.renderJson();
-    }
-    
-    /**
-     * 重置历史
-     */
-    public void list(){
-        render("historys.ftl");
     }
 }
