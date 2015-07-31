@@ -7,6 +7,7 @@
     </sqlGroup>
     <sqlGroup name="navgate">
         <sql id="list">SELECT * FROM SYS_NAV ORDER BY R_SID, N_INDEX</sql>
+        <sql id="listRoot">SELECT * FROM SYS_NAV WHERE R_SID=(SELECT SID FROM SYS_NAV WHERE R_SID = ?)</sql>
     </sqlGroup>
     <sqlGroup name="profession">
         <sql id="list">SELECT B.* FROM SYS_TENANT_E_PROFESSION A INNER JOIN SYS_PROFESSION B ON A.P_PROFESSION = B.SID WHERE A.R_TENANT = ?</sql>
