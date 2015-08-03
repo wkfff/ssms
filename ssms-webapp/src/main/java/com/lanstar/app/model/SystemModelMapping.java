@@ -72,7 +72,6 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_STDTMP_FILE_08_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile08.class );
         addMapping( "SYS_STDTMP_FILE_09_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile09.class );
 
-        addMapping( "SYS_PARA_MULTI", "SID", MultiPara.class );
         addMapping( "SYS_INDUSTRY", "SID", Industry.class );
         addMapping( "SYS_PARA_AREA", "SID", AreaPara.class );
 
