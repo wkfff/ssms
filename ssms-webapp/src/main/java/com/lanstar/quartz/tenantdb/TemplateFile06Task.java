@@ -7,8 +7,13 @@
  */
 package com.lanstar.quartz.tenantdb;
 
+import com.lanstar.app.Const;
 import com.lanstar.common.kit.DateKit;
 import com.lanstar.model.tenant.TemplateFile06;
+import com.lanstar.plugin.activerecord.Db;
+import com.lanstar.plugin.activerecord.Record;
+import com.lanstar.plugin.activerecord.RecordKit;
+import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.common.todo.TodoData;
 import com.lanstar.service.common.todo.TodoType;
 
@@ -22,7 +27,8 @@ import java.util.List;
 public class TemplateFile06Task extends TemplateFileTask<TemplateFile06> {
     @Override
     public List<TemplateFile06> list() {
-        return TemplateFile06.dao.find( "tenant.todo.06" );
+        List<Record> records = Db.use( Const.TENANT_DB_NAME ).find( SqlKit.sql( "tenant.todo.06" ) );
+        return RecordKit.toModel( TemplateFile06.class, records );
     }
 
     @Override

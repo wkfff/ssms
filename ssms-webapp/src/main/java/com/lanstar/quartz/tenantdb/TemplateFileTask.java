@@ -19,6 +19,7 @@ public abstract class TemplateFileTask<T extends TemplateFileModel<T>> implement
     @Override
     public final void execute( DataSource dataSource ) {
         List<T> list = list();
+        if ( list == null ) return;
         for ( T item : list ) {
             createTodo( item );
         }
