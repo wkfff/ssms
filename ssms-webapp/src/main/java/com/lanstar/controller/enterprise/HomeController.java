@@ -32,7 +32,12 @@ public class HomeController extends Controller {
         if ( enterpriseService.professionServiceInitialized() == false ) {
             List<Profession> professions = enterpriseService.getProfessions();
             // 先从cookie里取出，如果没有的话就直接设置第一个了。
-            Integer professionId = getCookieToInt( "profession" );
+            Integer professionId;
+            try {
+                professionId = getCookieToInt( "profession" );
+            } catch ( NumberFormatException e ) {
+                professionId = null;
+            }
             Profession currentProfession = null;
             if ( professionId == null ) currentProfession = professions.get( 0 );
             else {
