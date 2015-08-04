@@ -23,9 +23,6 @@
         <sql id="getFiles">SELECT * FROM SYS_STDTMP_FILE WHERE R_SID=?</sql>
         <sql id="getFilesByTemplate">SELECT * FROM SYS_STDTMP_FILE WHERE R_TEMPLATE=? ORDER BY N_INDEX, T_CREATE</sql>
     </sqlGroup>
-    <sqlGroup name="tenantUser">
-        <sql id="login">SELECT * FROM TENANT_USER WHERE UPPER(TENANT_CODE)=? AND UPPER(USER_CODE)=? AND UPPER(USER_PASSWORD)=?</sql>
-    </sqlGroup>
     <sqlGroup name="attachText">
         <sql id="get">SELECT * FROM SYS_ATTACH_TEXT WHERE R_TABLE=? and R_FIELD=? and R_SID=? and R_TENANT=? and P_TENANT=?</sql>
     </sqlGroup>
