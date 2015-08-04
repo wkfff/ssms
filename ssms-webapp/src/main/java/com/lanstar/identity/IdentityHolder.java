@@ -60,6 +60,13 @@ public class IdentityHolder {
     }
 
     /**
+     * 是否具有附加身份标识。
+     */
+    public boolean hasAdditional() {
+        return this.additional != null;
+    }
+
+    /**
      * 切换当前默认的身份标识为给定的身份标识对象
      *
      * @param additional 该参数将作为附加的身份标识
