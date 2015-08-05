@@ -8,8 +8,24 @@
 
 package com.lanstar.model.tenant;
 
+import java.util.List;
+
+import com.lanstar.common.ListKit;
+import com.lanstar.identity.TenantType;
+import com.lanstar.service.enterprise.UniqueTag;
+
 public class TemplateFile01 extends TemplateFileModel<TemplateFile01> {
     public static TemplateFile01 dao = new TemplateFile01();
+
+    public List<TemplateFile01> list( UniqueTag opertion ) {
+        return dao.findByColumns(
+            ListKit.newArrayList( "R_TENANT", "P_TENANT", "P_PROFESSION", "R_TEMPLATE" ),
+            ListKit.newObjectArrayList(
+                opertion.getTenantId(),
+                TenantType.ENTERPRISE.getName(),
+                opertion.getProfessionId(),
+                opertion.getTemplateId() ) );
+    }
 
     public String getName() {
         return getStr( "C_NAME" );

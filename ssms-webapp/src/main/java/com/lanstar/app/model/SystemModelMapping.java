@@ -53,6 +53,7 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_STDTMP_FILE_02", "SID", TemplateFile02.class );
         addMapping( "SYS_STDTMP_FILE_03", "SID", TemplateFile03.class );
         addMapping( "SYS_STDTMP_FILE_04", "SID", TemplateFile04.class );
+        addMapping( "SYS_STDTMP_FILE_05", "SID", TemplateFile05.class );
         addMapping( "SYS_STDTMP_FILE_06", "SID", TemplateFile06.class );
         addMapping( "SYS_STDTMP_FILE_07", "SID", TemplateFile07.class );
         addMapping( "SYS_STDTMP_FILE_08", "SID", TemplateFile08.class );
@@ -67,6 +68,7 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_STDTMP_FILE_02_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile02.class );
         addMapping( "SYS_STDTMP_FILE_03_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile03.class );
         addMapping( "SYS_STDTMP_FILE_04_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile04.class );
+        addMapping( "SYS_STDTMP_FILE_05_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile05.class );
         addMapping( "SYS_STDTMP_FILE_06_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile06.class );
         addMapping( "SYS_STDTMP_FILE_07_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile07.class );
         addMapping( "SYS_STDTMP_FILE_08_ARCH", "UID", com.lanstar.model.system.archive.TemplateFile08.class );

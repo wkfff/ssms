@@ -31,6 +31,7 @@ public class EnterpriseRoutes extends Routes {
         add( "/e/stdtmp_file_02", TemplateFile02Controller.class );
         add( "/e/stdtmp_file_03", TemplateFile03Controller.class );
         add( "/e/stdtmp_file_04", TemplateFile04Controller.class );
+        add( "/e/stdtmp_file_05", TemplateFile05Controller.class );
         add( "/e/stdtmp_file_06", TemplateFile06Controller.class );
 
         add( "/e/stdtmp_file_07", TemplateFile07Controller.class );
