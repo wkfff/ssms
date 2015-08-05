@@ -54,4 +54,18 @@ public class TemplateFile05Controller extends Controller {
         return model;
     }
 
+    public void view() {
+        Integer templatefileId = getParaToInt( "sid" );
+        Asserts.notNull( templatefileId, "发现非法的参数请求" );
+        UniqueTag opertion = IdentityContextWrap.getIdentityContext( this ).getEnterpriseService().getUniqueTag();
+        TemplateFile file = TemplateFile.findFirst( opertion, templatefileId );
+        TemplateFile05 model = getModel( opertion );
+        List<TemplateFile01> list01 = TemplateFile01.dao.list( opertion );
+        if ( model != null ) {
+            setAttr( "SID", model.getId() );
+        }
+        setAttr( "title", file.getName() );
+        setAttr( "files", list01 );
+    }
+
 }
