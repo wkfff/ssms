@@ -21,14 +21,16 @@ public class UserAgentInterceptor implements Interceptor {
     @Override
     public void intercept( ActionInvocation invocation ) {
         Controller controller = invocation.getController();
-        UserAgent userAgent = UserAgent.parseUserAgentString( controller.getRequest().getHeader( USER_AGENT ) );
-        Browser browser = userAgent.getBrowser();
-        if ( browser.getGroup() == Browser.IE ) {
-            if ( browser.getId() < Browser.IE8.getId() ) {
-                controller.redirect( "/browsers" );
-                return;
-            }
+        if ( isValidBrowser( controller ) == false) {
+            controller.redirect( "/browsers" );
+            return;
         }
         invocation.invoke();
+    }
+
+    public static boolean isValidBrowser( Controller controller ) {
+        UserAgent userAgent = UserAgent.parseUserAgentString( controller.getRequest().getHeader( USER_AGENT ) );
+        Browser browser = userAgent.getBrowser();
+        return browser.getGroup() != Browser.IE || browser.getId() < Browser.IE8.getId();
     }
 }
