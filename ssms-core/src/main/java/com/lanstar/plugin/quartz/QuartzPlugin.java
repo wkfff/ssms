@@ -7,20 +7,6 @@
  */
 package com.lanstar.plugin.quartz;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
-
-import org.quartz.CronTrigger;
-import org.quartz.Job;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
-import org.quartz.impl.JobDetailImpl;
-import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.triggers.CronTriggerImpl;
-
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.lanstar.common.kit.BeanKit;
@@ -28,6 +14,14 @@ import com.lanstar.common.kit.ResourceKit;
 import com.lanstar.common.kit.StrKit;
 import com.lanstar.common.log.Logger;
 import com.lanstar.plugin.IPlugin;
+import org.quartz.*;
+import org.quartz.impl.JobDetailImpl;
+import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.triggers.CronTriggerImpl;
+
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 任务调度
@@ -108,7 +102,7 @@ public class QuartzPlugin implements IPlugin {
                 JobDetail jobDetail = new JobDetailImpl( jobClassName, Scheduler.DEFAULT_GROUP, job.getClass() );
                 CronTrigger trigger = new CronTriggerImpl( jobClassName + "__Trigger", null, jobCronExp );
                 Date ft = scheduler.scheduleJob( jobDetail, trigger );
-                logger.debug("载入调度任务"+jobDesc + "(" + ft.toLocaleString() + ");执行周期: " + trigger.getCronExpression());
+                logger.info("载入调度任务"+jobDesc + "(" + ft.toLocaleString() + ");执行周期: " + trigger.getCronExpression());
             }
             scheduler.start();
         } catch (Exception e) {

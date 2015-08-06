@@ -62,9 +62,9 @@ public class JsConstantBuilder implements IPlugin {
 
     @Override
     public boolean start() {
-        log.debug( "正在生成常量脚本..." );
+        log.info( "正在生成常量脚本..." );
         boolean success = build();
-        if ( success ) log.debug( "生成常量脚本完成..." );
+        if ( success ) log.info( "生成常量脚本完成..." );
         return success;
     }
 
