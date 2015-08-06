@@ -32,6 +32,11 @@ public class TemplatePropsConfig extends TemplateProps {
                 .putModel( ModelType.SYSTEM, com.lanstar.model.system.TemplateFile04.class )
                 .putModel( ModelType.SYSTEM_ARCHIVE, com.lanstar.model.system.archive.TemplateFile04.class )
                 .putModel( ModelType.TENANT, com.lanstar.model.tenant.TemplateFile04.class );
+        
+        with( "05", "制度文件汇编" )
+        .putModel( ModelType.SYSTEM, com.lanstar.model.system.TemplateFile05.class )
+        .putModel( ModelType.SYSTEM_ARCHIVE, com.lanstar.model.system.archive.TemplateFile05.class )
+        .putModel( ModelType.TENANT, com.lanstar.model.tenant.TemplateFile05.class );
 
         with( "06", "隐患汇总登记台帐" )
                 .putModel( ModelType.SYSTEM, com.lanstar.model.system.TemplateFile06.class )

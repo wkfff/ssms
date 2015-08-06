@@ -47,13 +47,13 @@ public class IdentitySwitch implements Interceptor {
                 fields.add( f );
             }
         }
-        type.switchIdentity( holder );
+        if ( type == IdentityType.ADDITIONAL && holder.hasAdditional() ) type.switchIdentity( holder );
         try {
             holder.runAs( new IdentityHolder.Action() {
                 @Override
                 public void invoke( Identity identity ) {
                     for ( String fieldName : fields ) {
-                        Field field = getDeclaredField(ai.getController(), fieldName);
+                        Field field = getDeclaredField( ai.getController(), fieldName );
                         if ( field != null ) {
                             if ( field.getType().isAssignableFrom( IdentityContextWrap.class ) ) {
                                 try {
@@ -76,21 +76,23 @@ public class IdentitySwitch implements Interceptor {
 
     /**
      * 循环向上转型, 获取对象的 DeclaredField
-     * @param object : 子类对象
+     *
+     * @param object    : 子类对象
      * @param fieldName : 父类中的属性名
+     *
      * @return 父类中的属性对象
      */
 
-    private static Field getDeclaredField(Object object, String fieldName){
-        Field field = null ;
+    private static Field getDeclaredField( Object object, String fieldName ) {
+        Field field = null;
 
-        Class<?> clazz = object.getClass() ;
+        Class<?> clazz = object.getClass();
 
-        for(; clazz != Object.class ; clazz = clazz.getSuperclass()) {
+        for (; clazz != Object.class; clazz = clazz.getSuperclass() ) {
             try {
-                field = clazz.getDeclaredField(fieldName) ;
-                return field ;
-            } catch (Exception e) {
+                field = clazz.getDeclaredField( fieldName );
+                return field;
+            } catch ( Exception e ) {
                 //这里甚么都不要做！并且这里的异常必须这样写，不能抛出去。
                 //如果这里的异常打印或者往外抛，则就不会执行clazz = clazz.getSuperclass(),最后就不会进入到父类中了
             }

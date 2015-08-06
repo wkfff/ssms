@@ -22,9 +22,6 @@
         <sql id="getFiles">SELECT * FROM SYS_STDTMP_FILE WHERE R_SID=?</sql>
         <sql id="getFilesByTemplate">SELECT * FROM SYS_STDTMP_FILE WHERE R_TEMPLATE=? ORDER BY N_INDEX, T_CREATE</sql>
     </sqlGroup>
-    <sqlGroup name="tenantUser">
-        <sql id="login">SELECT * FROM TENANT_USER WHERE UPPER(TENANT_CODE)=? AND UPPER(USER_CODE)=? AND UPPER(USER_PASSWORD)=?</sql>
-    </sqlGroup>
     <sqlGroup name="attachText">
         <sql id="get">SELECT * FROM SYS_ATTACH_TEXT WHERE R_TABLE=? and R_FIELD=? and R_SID=? and R_TENANT=? and P_TENANT=?</sql>
     </sqlGroup>
@@ -69,11 +66,6 @@
         <sql id="getUserByNameAndPwd">SELECT * FROM SYS_USER WHERE IFNULL(B_DELETE, 0)=0 AND UPPER(C_NAME)=? and UPPER(C_PASSWD)=?</sql>
     </sqlGroup>
     <!-- end 用户信息相关的SQL -->
-
-    <sqlGroup name="multiPara">
-        <sql id="listParaByName">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=?</sql>
-        <sql id="listPara">SELECT * FROM SYS_PARA_MULTI WHERE C_NAME=(SELECT C_NAME FROM SYS_PARA_MULTI WHERE SID=?)</sql>
-    </sqlGroup>
 
     <sqlGroup name="passwordResetHistory">
         <sql id="getValidHistoryWithEmail">SELECT * FROM SYS_HIS_PWDRESET WHERE DATE_ADD(T_APPLY,INTERVAL 1 HOUR) >= NOW() AND IFNULL(N_STATE, 0)=0 AND C_EMAIL=?</sql>

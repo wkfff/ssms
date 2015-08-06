@@ -8,21 +8,48 @@
 
 package com.lanstar.controller.system;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.lanstar.common.ModelInjector;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.kit.navgate.NavgateBean;
 import com.lanstar.model.kit.navgate.NavgateTreeBuilder;
 import com.lanstar.model.system.Navgate;
-
-import java.util.List;
+import com.lanstar.plugin.activerecord.ModelKit;
+import com.lanstar.plugin.sqlinxml.SqlKit;
 
 public class NavgateController extends Controller {
+    @SuppressWarnings("unchecked")
     public void index() {
+        List<Navgate> list = Navgate.dao.find( SqlKit.sql( "system.navgate.listRoot" ), 0 );
+        Map<String, Object> root = null;
+        @SuppressWarnings("rawtypes")
+        List roots = new ArrayList<HashMap>();
+        for ( Navgate tree : list ) {
+            root = new HashMap<String, Object>();
+            root.put( "name", tree.getName() );
+            root.put( "id", tree.getId() );
+            roots.add( root );
+        }
+        setAttr( "root", roots );
+    }
+
+    public void tree() {
+        Integer parentId = getParaToInt( "parentId" );
         List<Navgate> list = Navgate.list();
         NavgateTreeBuilder bulider = new NavgateTreeBuilder( list, "R_SID" );
         List<NavgateBean> trees = bulider.build().getChildren();
-        setAttr( "items", trees );
+        for ( NavgateBean tree : trees ) {
+            if ( tree.getId() == parentId ) {
+                setAttr( "item", tree.getChildren() );
+                setAttr( "title", tree.getName() );
+                break;
+            }
+        }
     }
 
     public void save() {
@@ -41,8 +68,12 @@ public class NavgateController extends Controller {
         model.setIcon( icon );
         model.setUrl( url );
         model.setDesc( desc );
-        model.setIndex( index );
-        model.setParentId( parentId );
+        if ( index != null ) {
+            model.setIndex( index );
+        }
+        if ( parentId != null ) {
+            model.setParentId( parentId );
+        }
         ModelInjector.injectOpreator( model, IdentityContextWrap.getIdentityContext( this ) );
 
         if ( id == null ) model.save();
@@ -60,5 +91,32 @@ public class NavgateController extends Controller {
         } else {
             renderJson( false );
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void move() {
+        Integer currId = getParaToInt( "currId" );
+        Integer currIndex = getParaToInt( "currIndex" );
+        Integer replaceId = getParaToInt( "replaceId" );
+        Integer replaceIndex = getParaToInt( "replaceIndex" );
+        @SuppressWarnings("rawtypes")
+        List indexs = new ArrayList<Integer>();
+        Navgate currModel = null;
+        Navgate replaceModel = null;
+        if ( currId != null && replaceId != null ) {
+            currModel = Navgate.dao.findById( currId );
+            replaceModel = Navgate.dao.findById( replaceId );
+        }
+        if ( currModel != null && replaceModel != null ) {
+            currModel.setIndex( replaceIndex );
+            currModel.update();
+            replaceModel.setIndex( currIndex );
+            replaceModel.update();
+            indexs.add( currModel.getIndex() );
+            indexs.add( replaceModel.getIndex() );
+        }
+
+        renderJson( indexs );
+
     }
 }

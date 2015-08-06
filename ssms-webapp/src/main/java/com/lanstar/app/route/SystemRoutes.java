@@ -35,11 +35,11 @@ public class SystemRoutes extends Routes {
         add( "/sys/stdtmp_file_02", TemplateFile02Controller.class );
         add( "/sys/stdtmp_file_03", TemplateFile03Controller.class );
         add( "/sys/stdtmp_file_04", TemplateFile04Controller.class );
+        add( "/sys/stdtmp_file_05", TemplateFile05Controller.class );
         add( "/sys/stdtmp_file_06", TemplateFile06Controller.class );
         add( "/sys/stdtmp_file_07", TemplateFile07Controller.class );
         add( "/sys/stdtmp_file_08", TemplateFile08Controller.class );
         add( "/sys/stdtmp_file_09", TemplateFile09Controller.class );
-        add( "/sys/para_multi", MultiParaController.class );
         add( "/sys/industry", IndustryController.class );
         add( "/sys/profession", ProfessionController.class );
         add( "/sys/para_area", AreaParaController.class );

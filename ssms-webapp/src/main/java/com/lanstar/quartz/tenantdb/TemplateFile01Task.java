@@ -8,9 +8,13 @@
 
 package com.lanstar.quartz.tenantdb;
 
+import com.lanstar.app.Const;
 import com.lanstar.common.kit.DateKit;
 import com.lanstar.model.tenant.TemplateFile;
 import com.lanstar.model.tenant.TemplateFile01;
+import com.lanstar.plugin.activerecord.Db;
+import com.lanstar.plugin.activerecord.Record;
+import com.lanstar.plugin.activerecord.RecordKit;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.CycleType;
 import com.lanstar.service.common.todo.TodoData;
@@ -29,7 +33,8 @@ public class TemplateFile01Task extends TemplateFileTask<TemplateFile01> {
 
     @Override
     public List<TemplateFile01> list() {
-        return TemplateFile01.dao.find( SqlKit.sql( "tenant.todo.01" ) );
+        List<Record> records = Db.use( Const.TENANT_DB_NAME ).find( SqlKit.sql( "tenant.todo.01" ) );
+        return RecordKit.toModel( TemplateFile01.class, records );
     }
 
     @Override
@@ -40,6 +45,7 @@ public class TemplateFile01Task extends TemplateFileTask<TemplateFile01> {
     @Override
     public boolean validate( TemplateFile01 item ) {
         Date date = getDate( item );
+        if (date == null) return false;
         return DateKit.toStr( date ).compareTo( NOW ) >= 0;
     }
 
@@ -47,6 +53,7 @@ public class TemplateFile01Task extends TemplateFileTask<TemplateFile01> {
         TemplateFile file = item.getTemplateFile();
         CycleType cycleType = file.getCycleUnit();
         Date date = item.getDate( "T_DATE_04" );
+        if (date == null) return null;
         if ( cycleType != null ) {
             date = cycleType.advance( file.getCycleValue(), date );
         } else { // 制度文件默认一年一更新

@@ -7,6 +7,9 @@
     <@layout.put block="contents">
        <header class="titlebar">
            <@layout.block name="panel_title"/>
+           <span style="position: absolute; right: 15px;">
+                <@layout.block name="panel_tools"><img src="/resource/images/undo.png"><a href="/sys/nav/">返回导航端</a></@>
+           </span>
        </header>
        
        <div class="content">

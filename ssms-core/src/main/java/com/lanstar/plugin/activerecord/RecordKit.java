@@ -12,6 +12,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.lanstar.common.log.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,17 +21,36 @@ public class RecordKit {
     protected final static Logger logger = Logger.getLogger( RecordKit.class );
 
     public static Model<?> toModel( Class<? extends Model<?>> clazz, Record record ) {
-        Model<?> model = null;
+        Model<?> model;
         try {
             model = clazz.newInstance();
         } catch ( Exception e ) {
             logger.error( e.getMessage(), e );
-            return model;
+            return null;
         }
         for ( String columnName : record.getColumnNames() ) {
-            model.set( columnName, record.get( "columnName" ) );
+            model.set( columnName, record.get( columnName ) );
         }
         return model;
+    }
+
+    public static <T extends Model<T>> List<T> toModel( Class<T> clazz, List<Record> records ) {
+        List<T> models = new ArrayList<>();
+        for ( Record record : records ) {
+            T model;
+            try {
+                model = clazz.newInstance();
+            } catch ( Exception e ) {
+                logger.error( e.getMessage(), e );
+                return models;
+            }
+
+            for ( String columnName : record.getColumnNames() ) {
+                model.set( columnName, record.get( columnName ) );
+            }
+            models.add( model );
+        }
+        return models;
     }
 
     public static Map<String, Object> toMap( Record record ) {

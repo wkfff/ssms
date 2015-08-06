@@ -17,7 +17,7 @@
                 <img src="${RES}/images/login/logo.png"/>
                 <img src="${RES}/images/login/title.png"/>
             </div>
-            <div class="loginForm">
+            <form class="loginForm">
                 <p>
                     <label for="username">用户名</label>
                     <input class="username" type="text" id="username"/>
@@ -40,7 +40,7 @@
                     <label for="checkbox" class="remember">记住密码</label>
                     <a href="/pwd" class="forget" style="font-size: 12px; color: #0000ff">忘记密码?</a>
                 </p>
-            </div>
+            </form>
         </div>
         <div class="footer">
             CopyRight 2015 版权所有 福建永创意信息科技有限公司,福州蓝石电子有限公司 技术支持
@@ -93,6 +93,7 @@
                 }catch(e){
                     utils.messager.alert(e);
                 }
+                return false;
             });
         });
     </script>
