@@ -8,13 +8,19 @@
 
 package com.lanstar.controller.common;
 
+import com.lanstar.app.UserAgentInterceptor;
 import com.lanstar.core.Controller;
+import com.lanstar.core.Rapidware;
 import com.lanstar.core.aop.ClearInterceptor;
 import com.lanstar.core.aop.ClearLayer;
 
 @ClearInterceptor(ClearLayer.ALL)
 public class BrowerController extends Controller {
     public void index() {
-        
+        if ( Rapidware.me().getConstants().getDevMode() != false ) return;
+
+        if ( UserAgentInterceptor.isValidBrowser( this ) ) {
+            redirect( "/" );
+        }
     }
 }
