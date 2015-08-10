@@ -7,24 +7,19 @@
  */
 package com.lanstar.quartz.hiddenDanger;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
-import org.quartz.JobDataMap;
-
 import com.lanstar.app.Const;
 import com.lanstar.model.system.HiddenDangerModel;
-import com.lanstar.plugin.activerecord.Config;
-import com.lanstar.plugin.activerecord.Db;
-import com.lanstar.plugin.activerecord.DbKit;
-import com.lanstar.plugin.activerecord.IDataSourceProvider;
-import com.lanstar.plugin.activerecord.Record;
+import com.lanstar.plugin.activerecord.*;
 import com.lanstar.plugin.quartz.AbstractTask;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.plugin.tlds.DsKit;
 import com.lanstar.plugin.tlds.IDataSourceProviderContainer;
+import org.quartz.JobDataMap;
+
+import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 隐患排查定时任务
@@ -41,6 +36,8 @@ public class HiddenDangerTask extends AbstractTask {
             for ( String dsName : allProvider.keySet() ) {
                 DsKit.switchDs( dataSource, dsName );
                 List<Record> records = Db.use( config.getName() ).find( SqlKit.sql( "tenant.hiddenDanger.list" ) );
+                List<HiddenDangerModel> batch = new ArrayList<>(  );
+
                 for ( Record record : records ) {
                     HiddenDangerModel model = new HiddenDangerModel();
                     model.setTemplateId( record.getInt( "R_TEMPLATE" ) );
@@ -49,8 +46,10 @@ public class HiddenDangerTask extends AbstractTask {
                     model.setTenantName( record.getStr( "S_TENANT" ) );
                     model.setTenantType( record.getStr( "P_TENANT" ) );
                     model.setCreateTime( record.getDate( "T_CREATE" ) );
-                    model.save();
+                    batch.add( model );
                 }
+
+                ModelKit.batchSave( Db.use( Const.TENANT_DB_NAME ), batch );
             }
         }
     }
