@@ -13,7 +13,7 @@ import com.lanstar.model.system.tenant.*;
 
 public class SystemModelMapping extends ActiveRecordMapping {
     public SystemModelMapping() {
-        ////////////////////////////////////////
+        // //////////////////////////////////////
         // begin tenant info
         addMapping( "SYS_TENANT_E_USER", "SID", EnterpriseUser.class );
         addMapping( "SYS_TENANT_E", "SID", Enterprise.class );
@@ -27,9 +27,9 @@ public class SystemModelMapping extends ActiveRecordMapping {
 
         addMapping( "SYS_USER", "SID", SystemUser.class );
         // end tenant info
-        ////////////////////////////////////////
+        // //////////////////////////////////////
 
-        ////////////////////////////////////////
+        // //////////////////////////////////////
         // begin sys
         addMapping( "SYS_NAV", "SID", Navgate.class );
         addMapping( "SYS_PROFESSION", "SID", Profession.class );
@@ -40,14 +40,14 @@ public class SystemModelMapping extends ActiveRecordMapping {
         addMapping( "SYS_HIS_PWDRESET", "SID", PasswordResetHistory.class );
 
         // end sys
-        ////////////////////////////////////////
+        // //////////////////////////////////////
 
         addMapping( "SYS_TEMPLATE", "SID", Template.class );
         addMapping( "SYS_TEMPLATE_TEXT", "SID", TemplateText.class );
         addMapping( "SYS_STDTMP_FOLDER", "SID", TemplateFolder.class );
         addMapping( "SYS_STDTMP_FILE", "SID", TemplateFile.class );
         addMapping( "SYS_GRADE_STD", "SID", TemplateGrade.class );
-        //addMapping( "SYS_GRADE_REPORT_TMP", "SID", TemplateRep.class );
+        // addMapping( "SYS_GRADE_REPORT_TMP", "SID", TemplateRep.class );
         addMapping( "SYS_REPORT_TEMPLATE", "SID", TemplateRep.class );
         addMapping( "SYS_STDTMP_FILE_01", "SID", TemplateFile01.class );
         addMapping( "SYS_STDTMP_FILE_02", "SID", TemplateFile02.class );
@@ -82,5 +82,9 @@ public class SystemModelMapping extends ActiveRecordMapping {
 
         addMapping( "SSM_KNOWLEDGE_SORT", "SID", KnowledgeSort.class );
         addMapping( "SSM_KNOWLEDGE_FILE", "SID", KnowledgeFile.class );
+        
+        // 隐患排查提醒
+        addMapping( "SYS_TASK_HIDDEN_DANGER", "SID",HiddenDangerModel.class );
+        addMapping( "SYS_HIS_TASK_HIDDEN_DANGER", "SID",HiddenDangerHistory.class );
     }
 }

@@ -72,4 +72,27 @@
         <sql id="getValidHistoryWithToken">SELECT * FROM SYS_HIS_PWDRESET WHERE DATE_ADD(T_APPLY,INTERVAL 1 HOUR) >= NOW() AND IFNULL(N_STATE, 0)=0 AND C_TOKEN=?</sql>
     </sqlGroup>
     
+    <!-- 隐患排查提醒  -->
+    <sqlGroup name="hiddenDanger">
+        <sql id="listEnterprise">
+            SELECT * FROM `sys_task_hidden_danger` WHERE `SID` NOT IN(SELECT `R_SID` FROM `sys_his_task_hidden_danger` WHERE `R_TENANT`=? AND `P_TENANT`=?) 
+            AND `R_TENANT`=? AND `P_TENANT`=? AND `R_TEMPLATE`=? AND `P_PROFESSION`=?
+         </sql>
+        <sql id="listGovernment1">
+            SELECT * FROM `sys_task_hidden_danger` WHERE `R_TENANT` IN (SELECT `SID` FROM `sys_tenant_e` 
+            WHERE  `P_AT_PROVINCE` = (SELECT `P_PROVINCE`
+            FROM `sys_tenant_g` WHERE `SID`=?)) AND `SID` NOT IN ( SELECT `R_SID` FROM `sys_his_task_hidden_danger` WHERE `R_TENANT`=? AND `P_TENANT`=?) 
+         </sql>
+        <sql id="listGovernment2">
+            SELECT * FROM `sys_task_hidden_danger` WHERE `R_TENANT` IN (SELECT `SID` FROM `sys_tenant_e` 
+            WHERE  `P_AT_CITY` = (SELECT `P_CITY`
+            FROM `sys_tenant_g` WHERE `SID`=?)) AND `SID` NOT IN ( SELECT `R_SID` FROM `sys_his_task_hidden_danger` WHERE `R_TENANT`=? AND `P_TENANT`=?) 
+         </sql>
+        <sql id="listGovernment3">
+            SELECT * FROM `sys_task_hidden_danger` WHERE `R_TENANT` IN (SELECT `SID` FROM `sys_tenant_e` 
+            WHERE  `P_AT_COUNTY` = (SELECT `P_COUNTY`
+            FROM `sys_tenant_g` WHERE `SID`=?)) AND `SID` NOT IN ( SELECT `R_SID` FROM `sys_his_task_hidden_danger` WHERE `R_TENANT`=? AND `P_TENANT`=?) 
+         </sql>
+    </sqlGroup>
+    
 </sqlGroup>

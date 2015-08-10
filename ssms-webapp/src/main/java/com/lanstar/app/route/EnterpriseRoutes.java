@@ -13,6 +13,7 @@ import com.lanstar.controller.enterprise.*;
 import com.lanstar.controller.enterprise.todo.TemplateFile06TodoController;
 import com.lanstar.controller.enterprise.todo.TemplateFile07TodoController;
 import com.lanstar.controller.enterprise.todo.TemplateFile08TodoController;
+import com.lanstar.controller.system.HiddenDangerController;
 
 public class EnterpriseRoutes extends Routes {
     private static final Routes me = new EnterpriseRoutes();
@@ -55,5 +56,8 @@ public class EnterpriseRoutes extends Routes {
         add( "/e/todo/stdtmp06", TemplateFile06TodoController.class );
         add( "/e/todo/stdtmp07", TemplateFile07TodoController.class );
         add( "/e/todo/stdtmp08", TemplateFile08TodoController.class );
+        
+        //隐患排查提醒
+        add("/e/hidden_danger", HiddenDangerController.class);
     }
 }

@@ -69,4 +69,8 @@ public class Government extends ModelExt<Government> implements Tenant {
         return getStr( "C_NAME" );
     }
 
+    public String getLevel() {
+        return getStr( "P_LEVEL" );
+    }
+
 }
