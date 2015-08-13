@@ -106,9 +106,6 @@
                         <H3 class=title>
                             ${C_TITLE!}
                         </H3>
-                        <DIV id=arttext class=bort>
-                            ${C_CONTENT!}
-                        </DIV>
                         <H5 class=data>
                             <SPAN class=fl>
                                 <SPAN id=pubtime>
@@ -128,6 +125,9 @@
                                 </A>
                             </SPAN>
                         </H5>
+                        <DIV id=arttext class=bort>
+                            ${C_CONTENT!}
+                        </DIV>
                     </DIV>
                 </DIV>
             </DIV>
