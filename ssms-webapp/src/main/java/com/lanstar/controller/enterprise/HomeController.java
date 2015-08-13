@@ -14,6 +14,7 @@ import com.lanstar.identity.IdentityContext;
 import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.Profession;
 import com.lanstar.model.system.ReviewNotice;
+import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.common.todo.TodoDataFetcher;
@@ -98,13 +99,12 @@ public class HomeController extends Controller {
                                           .withTemplateId( tmpId )
                                           .fetch( 10 ) );
         // 接收评审端发送通知公告
-        List<ReviewNotice> rs_review_notice = ReviewNotice.dao.find( SqlKit.sql( "system.reviewNotice.list" ), 1, identityContext.getTenant().getTenantId(), pro );
-        if ( rs_review_notice.size() != 0 ) {
-            if ( rs_review_notice.size() >= 7 ) setAttr( "rs_review_notice", rs_review_notice.subList( rs_review_notice.size() - 7, rs_review_notice.size() ) );
-            else setAttr( "rs_review_notice", rs_review_notice );
-            setAttr( "eid", identityContext.getTenant().getTenantId() );
-            setAttr( "pro", pro );
-        }
+        String reviewSql = "SELECT * FROM sys_review_notice WHERE N_STATE=? AND R_RECEIVER=? AND P_PROFESSION=? ORDER BY T_PUBLISH DESC LIMIT 7";
+        List<Record> rs_review_notice = Db.find( reviewSql, 1, identityContext.getTenant().getTenantId(), pro );
+        setAttr( "rs_review_notice", rs_review_notice );
+        setAttr( "eid", identityContext.getTenant().getTenantId() );
+        setAttr( "pro", pro );
+
     }
 
     public void setTemplate() {
