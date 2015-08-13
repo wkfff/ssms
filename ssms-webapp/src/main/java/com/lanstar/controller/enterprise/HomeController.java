@@ -99,7 +99,7 @@ public class HomeController extends Controller {
                                           .fetch( 10 ) );
         // 接收评审端发送通知公告
         List<ReviewNotice> rs_review_notice = ReviewNotice.dao.find( SqlKit.sql( "system.reviewNotice.list" ), 1, identityContext.getTenant().getTenantId(), pro );
-        setAttr( "rs_review_notice", rs_review_notice );
+        setAttr( "rs_review_notice", rs_review_notice.subList( 0, 7 ) );
         setAttr( "eid", identityContext.getTenant().getTenantId() );
         setAttr( "pro", pro );
     }

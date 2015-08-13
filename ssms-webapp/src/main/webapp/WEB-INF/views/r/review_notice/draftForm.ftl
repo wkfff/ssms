@@ -116,7 +116,7 @@
                    utils.messager.closeProgress();
                    if(result!=null){
                        utils.messager.alert("发布成功");
-                       window.location.href="${BASE_PATH}/publishForm?eid=${eid}&pro=${pro}&sid="+result;
+                       window.location.href="${BASE_PATH}/publishs?eid=${eid}&pro=${pro}";
                    }else{
                        utils.messager.alert("发布失败");
                    }
