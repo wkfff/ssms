@@ -94,8 +94,4 @@
             FROM `sys_tenant_g` WHERE `SID`=?)) AND `SID` NOT IN ( SELECT `R_SID` FROM `sys_his_task_hidden_danger` WHERE `R_TENANT`=? AND `P_TENANT`=?) 
          </sql>
     </sqlGroup>
-    <!-- 评审通知公告 -->
-    <sqlGroup name="reviewNotice">
-        <sql id="list">SELECT * FROM sys_review_notice WHERE N_STATE=? AND R_RECEIVER=? AND P_PROFESSION=?</sql>
-    </sqlGroup>
 </sqlGroup>

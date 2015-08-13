@@ -42,7 +42,10 @@ public class ReviewNoticeController extends Controller {
         Integer tenantId = getParaToInt( "eid" );
         Integer professionId = getParaToInt( "pro" );
         Integer state = getParaToInt( "state" );// 发布 为发布 状态值
-        List<ReviewNotice> list = ReviewNotice.dao.find( SqlKit.sql( "system.reviewNotice.list" ), state, tenantId, professionId );
+        String sql;
+        if ( state == 1 ) sql = "SELECT * FROM sys_review_notice WHERE N_STATE=? AND R_RECEIVER=? AND P_PROFESSION=?  ORDER BY T_PUBLISH DESC";
+        else sql = "SELECT * FROM sys_review_notice WHERE N_STATE=? AND R_RECEIVER=? AND P_PROFESSION=? ORDER BY T_CREATE DESC";
+        List<ReviewNotice> list = ReviewNotice.dao.find( sql, state, tenantId, professionId );
         renderJson( list );
     };
 

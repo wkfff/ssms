@@ -22,6 +22,7 @@
                   ]]
         });
     });
+
     function lookPublish(sid){
         var reader = '${reader!}';
         if(reader!=null){
