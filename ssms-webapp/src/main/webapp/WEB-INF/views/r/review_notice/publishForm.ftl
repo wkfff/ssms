@@ -1,0 +1,137 @@
+<@layout.extends name="../../_layouts/base.ftl">
+<@layout.put block="head">
+<link rel="stylesheet" href="/resource/css/layout.css"/>
+<style>
+    BODY {
+        margin: 0;
+        padding: 0;
+    }
+    BODY {
+        font-size: 12px;
+    }
+    BODY {
+        background: #fff;
+    }
+    HTML BODY {
+        height: 100%;
+    }
+    .layout {
+        width: 990px;
+        margin: 0 auto;
+        overflow: hidden;
+        zoom: 1;
+    }
+    .mt19 {
+        margin-top: 11px;
+    }
+    .layoutleft {
+        width: 990px;
+        float: left;
+    }
+    #artcon {
+        width: 990px;
+        padding-right: 25px;
+        border-right: #e6e6e6 solid 1px;
+    }
+    H3 {
+        margin: 0;
+        padding: 0;
+    }
+    #artcon H3.title {
+        font: 700 30px/40px "Microsoft Yahei";
+        padding: 2px 0 0;
+        text-align:center;
+    }
+    H5 {
+        margin: 0;
+        padding: 0;
+    }
+    #artcon H5.data {
+        height: 24px;
+        font-size: 12px;
+        font-weight: normal;
+        line-height: 24px;
+        padding: 10px 0;
+        color: #999;
+        border-bottom: #d2d2d2 solid 2px;
+    }
+    #arttext {
+        font: 16px/30px "Microsoft Yahei";
+        position: relative;
+        overflow: hidden;
+    }
+    .fl {
+        float: left;
+    }
+    #artcon H5.data .fl {
+        padding-right: 14px;
+    }
+    .fr {
+        float: right;
+    }
+    #artcon H5.data SPAN.fontzoom {
+        width: 55px;
+        padding-left: 10px;
+    }
+    A {
+        text-decoration: none;
+    }
+    #artcon H5.data SPAN.fontzoom A {
+        display: block;
+        float: left;
+        height: 24px;
+        width: 24px;
+        text-indent: -999em;
+    }
+    #artcon H5.data SPAN.fontzoom A.small {
+        margin-right: 7px;
+    }
+    #artcon H5.data SPAN.fontzoom A.big {
+        background-position: 0 -24px;
+    }
+</style>
+</@>
+<@layout.put block="contents">
+<DIV class="content" style="padding-bottom:10px;">
+        <div id="tb" class="titlebar_noborder">
+                <img src="/resource/images/blue/star.png"/>&nbsp;通知公告
+                <span class="backing">
+                    <a href="#" class="easyui-linkbutton" data-options="plain: true" iconCls="icon-back" onclick="window.location.href='${referer!}'">返回</a>
+                </span>
+        </div>
+        <DIV id=container>
+            <DIV id=content>
+                <DIV class="layout mt19">
+                    <DIV id=artcon class=layout>
+                        <H3 class=title>
+                            ${C_TITLE!}
+                        </H3>
+                        <DIV id=arttext class=bort>
+                            ${C_CONTENT!}
+                        </DIV>
+                        <H5 class=data>
+                            <SPAN class=fl>
+                                <SPAN id=pubtime>
+                                    发布时间：${T_CREATE!}
+                                </SPAN>
+                                     发布人：
+                                <SPAN id=source>
+                                   ${S_PUBLISH!}(${S_CREATE!})
+                                </SPAN>
+                            </SPAN>
+                            <SPAN class="fontzoom fr">
+                                <A class=small href="javascript:doZoom(16)">
+                                    小
+                                </A>
+                                <A class=big href="javascript:doZoom(18)">
+                                    中
+                                </A>
+                            </SPAN>
+                        </H5>
+                    </DIV>
+                </DIV>
+            </DIV>
+        </DIV>
+    </DIV>
+</@>
+</@layout.extends >

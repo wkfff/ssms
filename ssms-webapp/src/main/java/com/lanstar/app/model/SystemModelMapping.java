@@ -79,6 +79,10 @@ public class SystemModelMapping extends ActiveRecordMapping {
 
         addMapping( "SYS_NOTICE", "SID", Notice.class );
         addMapping( "SYS_NOTICE_RECEIVER", "SID", NoticeReceiver.class );
+        
+        //评审通知功告
+        addMapping( "SYS_REVIEW_NOTICE", "SID", ReviewNotice.class );
+        
 
         addMapping( "SSM_KNOWLEDGE_SORT", "SID", KnowledgeSort.class );
         addMapping( "SSM_KNOWLEDGE_FILE", "SID", KnowledgeFile.class );
