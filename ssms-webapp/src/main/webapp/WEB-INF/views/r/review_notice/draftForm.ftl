@@ -70,7 +70,7 @@
            var self=this;
            self.SID=ko.observable('${SID!}');
            self.C_TITLE=ko.observable('${C_TITLE!}');
-           self.htmlContent=ko.observable('${C_CONTENT!}');
+           self.htmlContent=ko.observable('${json(C_CONTENT)!}');
            self.htmleditSettings = {
                    table: 'SYS_REVIEW_NOTICE',
                    field: 'C_CONTENT',
