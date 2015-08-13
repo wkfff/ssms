@@ -42,8 +42,6 @@ public class ReviewNoticeController extends Controller {
         Integer tenantId = getParaToInt( "eid" );
         Integer professionId = getParaToInt( "pro" );
         Integer state = getParaToInt( "state" );// 发布 为发布 状态值
-        Asserts.notNull( tenantId, "存在非法参数" );
-        Asserts.notNull( professionId, "存在非法参数" );
         List<ReviewNotice> list = ReviewNotice.dao.find( SqlKit.sql( "system.reviewNotice.list" ), state, tenantId, professionId );
         renderJson( list );
     };
