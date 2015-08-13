@@ -100,10 +100,8 @@ public class HomeController extends Controller {
         // 接收评审端发送通知公告
         List<ReviewNotice> rs_review_notice = ReviewNotice.dao.find( SqlKit.sql( "system.reviewNotice.list" ), 1, identityContext.getTenant().getTenantId(), pro );
         if ( rs_review_notice.size() != 0 ) {
-            if(rs_review_notice.size()>=7)
-                setAttr( "rs_review_notice", rs_review_notice.subList( rs_review_notice.size() - 7, rs_review_notice.size() ) );
-            else
-                setAttr( "rs_review_notice", rs_review_notice );
+            if ( rs_review_notice.size() >= 7 ) setAttr( "rs_review_notice", rs_review_notice.subList( rs_review_notice.size() - 7, rs_review_notice.size() ) );
+            else setAttr( "rs_review_notice", rs_review_notice );
             setAttr( "eid", identityContext.getTenant().getTenantId() );
             setAttr( "pro", pro );
         }
