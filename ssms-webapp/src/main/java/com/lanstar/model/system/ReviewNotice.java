@@ -52,12 +52,8 @@ public class ReviewNotice extends Model<ReviewNotice> {
 
     public boolean getReader() {
         String reader = getStr( "B_READER" );
-        if ( reader != null ) {
-            if ( reader.equals( "1" ) ) return true;
-            else return false;
-        } else {
-            return false;
-        }
+        if ( reader.equals( "1" ) ) return true;
+        else return false;
     }
 
     public void setReader( boolean reader ) {
