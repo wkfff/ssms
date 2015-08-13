@@ -93,12 +93,8 @@ public class ReviewNoticeController extends Controller {
     }
 
     public void publish() {
-        Integer sid;
-        sid = getParaToInt( "sid" );
-        if ( sid == null ) {
-            this.save();
-            sid = getAttr( "id" );
-        }
+        this.save();
+        Integer sid = getAttr( "id" );
         Review tenant = (Review) IdentityContextWrap.getIdentityContext( this ).getTenant();
         ReviewNotice model = ReviewNotice.dao.findById( sid );
         model.setPublishId( tenant.getId() );
