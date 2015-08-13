@@ -43,9 +43,9 @@ public class ReviewNoticeController extends Controller {
         Integer professionId = getParaToInt( "pro" );
         Integer state = getParaToInt( "state" );// 发布 为发布 状态值
         String sql;
-        if ( state == 1 ) sql = "SELECT * FROM sys_review_notice WHERE N_STATE=? AND R_RECEIVER=? AND P_PROFESSION=?  ORDER BY T_PUBLISH DESC";
-        else sql = "SELECT * FROM sys_review_notice WHERE N_STATE=? AND R_RECEIVER=? AND P_PROFESSION=? ORDER BY T_CREATE DESC";
-        List<ReviewNotice> list = ReviewNotice.dao.find( sql, state, tenantId, professionId );
+        if ( state == 1 ) sql = "SELECT * FROM sys_review_notice WHERE N_STATE=1 AND R_RECEIVER=? AND P_PROFESSION=?  ORDER BY T_PUBLISH DESC";
+        else sql = "SELECT * FROM sys_review_notice WHERE N_STATE=0 AND R_RECEIVER=? AND P_PROFESSION=? ORDER BY T_CREATE DESC";
+        List<ReviewNotice> list = ReviewNotice.dao.find( sql, tenantId, professionId );
         renderJson( list );
     };
 

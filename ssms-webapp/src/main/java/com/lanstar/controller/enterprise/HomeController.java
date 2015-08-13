@@ -99,8 +99,8 @@ public class HomeController extends Controller {
                                           .withTemplateId( tmpId )
                                           .fetch( 10 ) );
         // 接收评审端发送通知公告
-        String reviewSql = "SELECT * FROM sys_review_notice WHERE N_STATE=? AND R_RECEIVER=? AND P_PROFESSION=? ORDER BY T_PUBLISH DESC LIMIT 7";
-        List<Record> rs_review_notice = Db.find( reviewSql, 1, identityContext.getTenant().getTenantId(), pro );
+        String reviewSql = "SELECT * FROM sys_review_notice WHERE N_STATE=1 AND R_RECEIVER=? AND P_PROFESSION=? ORDER BY T_PUBLISH DESC LIMIT 7";
+        List<Record> rs_review_notice = Db.find( reviewSql, identityContext.getTenant().getTenantId(), pro );
         setAttr( "rs_review_notice", rs_review_notice );
         setAttr( "eid", identityContext.getTenant().getTenantId() );
         setAttr( "pro", pro );
