@@ -94,5 +94,4 @@
             FROM `sys_tenant_g` WHERE `SID`=?)) AND `SID` NOT IN ( SELECT `R_SID` FROM `sys_his_task_hidden_danger` WHERE `R_TENANT`=? AND `P_TENANT`=?) 
          </sql>
     </sqlGroup>
-    
 </sqlGroup>
