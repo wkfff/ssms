@@ -111,6 +111,14 @@
                                 <SPAN id=pubtime>
                                     发布时间：${T_CREATE!}
                                 </SPAN>
+                                     企业阅读：
+                                <A id=count_show>
+                                   <#if B_READER?? && B_READER=='1'>
+                                      (已阅)
+                                   <#else>
+                                      (未阅)
+                                   </#if> 
+                                </A>
                                      发布人：
                                 <SPAN id=source>
                                    ${S_PUBLISH!}(${S_CREATE!})
@@ -133,5 +141,7 @@
             </DIV>
         </DIV>
     </DIV>
+</@>
+<@layout.put block="footer">
 </@>
 </@layout.extends >
