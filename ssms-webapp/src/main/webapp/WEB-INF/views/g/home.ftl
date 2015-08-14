@@ -69,21 +69,6 @@
             <a href="/r/statistics/index" class="more">更多</a>
         </div>
         <div class="content">
-            <div id="statistics" style="padding-top: 10px; padding-left:20px; padding-bottom: 10px; border-bottom: 1px solid #CCCCCC">
-                查询统计区域:
-                <label>
-                    <select data-bind="options: availableCities, optionsText: 'name', value: selectedCity, optionsCaption: '选择地区...'"></select>市
-                </label>
-                <label>
-                    <select data-bind="options: availableCountries, optionsText: 'name', value: selectedCountry, optionsCaption: '选择地区...'"></select>区/县城
-                </label>
-                <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: search">查询</a>
-            </div>
-            <div class="images">
-                <img src="/resource/1.png" alt=""/>
-                <img src="/resource/2.png" alt=""/>
-                <img src="/resource/3.png" alt=""/>
-            </div>
         </div>
     </div>
     </@>
@@ -92,28 +77,5 @@
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
     <script type="text/javascript" src="/resource/js/costants.js"></script>
-    <script type="text/javascript">
-        function ViewModel() {
-            var self = this;
-
-            self.selectedCity = ko.observable();
-            self.selectedCountry = ko.observable();
-
-            self.availableCities = ko.observableArray($areas);
-            self.availableCountries = ko.observableArray();
-            self.selectedCity.subscribe(function (value) {
-                self.availableCountries(value ? value.children : []);
-            });
-
-            self.search = function () {
-
-            };
-        }
-
-        $(function () {
-            viewModel = new ViewModel();
-            ko.applyBindings(viewModel, document.getElementById('statistics'));
-        });
-    </script>
     </@>
 </@>
