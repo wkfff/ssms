@@ -9,9 +9,7 @@
 package com.lanstar.controller.system;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.lanstar.common.ModelInjector;
 import com.lanstar.core.Controller;
@@ -19,23 +17,10 @@ import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.kit.navgate.NavgateBean;
 import com.lanstar.model.kit.navgate.NavgateTreeBuilder;
 import com.lanstar.model.system.Navgate;
-import com.lanstar.plugin.activerecord.ModelKit;
-import com.lanstar.plugin.sqlinxml.SqlKit;
 
 public class NavgateController extends Controller {
-    @SuppressWarnings("unchecked")
     public void index() {
-        List<Navgate> list = Navgate.dao.find( SqlKit.sql( "system.navgate.listRoot" ), 0 );
-        Map<String, Object> root = null;
-        @SuppressWarnings("rawtypes")
-        List roots = new ArrayList<HashMap>();
-        for ( Navgate tree : list ) {
-            root = new HashMap<String, Object>();
-            root.put( "name", tree.getName() );
-            root.put( "id", tree.getId() );
-            roots.add( root );
-        }
-        setAttr( "root", roots );
+
     }
 
     public void tree() {
@@ -93,14 +78,13 @@ public class NavgateController extends Controller {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    
     public void move() {
         Integer currId = getParaToInt( "currId" );
         Integer currIndex = getParaToInt( "currIndex" );
         Integer replaceId = getParaToInt( "replaceId" );
         Integer replaceIndex = getParaToInt( "replaceIndex" );
-        @SuppressWarnings("rawtypes")
-        List indexs = new ArrayList<Integer>();
+        List<Integer> indexs = new ArrayList<Integer>();
         Navgate currModel = null;
         Navgate replaceModel = null;
         if ( currId != null && replaceId != null ) {
