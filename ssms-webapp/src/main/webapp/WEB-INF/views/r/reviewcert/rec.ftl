@@ -143,7 +143,7 @@
             C_PRINTED_NUMBER: self.C_PRINTED_NUMBER,
             T_ISSUING_DATE: self.T_ISSUING_DATE,
             T_VALIDITY: self.T_VALIDITY,
-            SID: '${sid!}'
+            SID: '${SID!}'
         };
         
         self.comboState = ko.observableArray([
