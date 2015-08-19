@@ -69,11 +69,11 @@
     <@layout.put block="footer">
     <script type="text/javascript" src="/resource/js/plupload/plupload.min.js"></script>
     <link rel="stylesheet" href="/resource/js/kindeditor/themes/default/default.css"/>
+    <script type="text/javascript" src="/resource/js/My97DatePicker/WdatePicker.js"></script>
         <#if DEV_MODE>
         <script type="text/javascript" src="/resource/js/kindeditor/kindeditor.js"></script>
         <script type="text/javascript" src="/resource/js/kindeditor/plugins/autoheight/autoheight.js"></script>
         <script type="text/javascript" src="/resource/js/kindeditor/lang/zh_CN.js"></script>
-        <script type="text/javascript" src="/resource/js/My97DatePicker/WdatePicker.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
         <script type="text/javascript" src="/resource/js/knockout/knockout.validation.js"></script>
