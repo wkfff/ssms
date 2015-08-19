@@ -1,10 +1,5 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <title>${_TITLE_!"安全生产标准化管理系统"}</title>
+<@layout.extends name="../../_layouts/base.ftl">
+    <@layout.put block="head">
     <link rel="stylesheet" href="/resource/css/base.css"/>
     <link rel="stylesheet" href="/resource/css/layout.css"/>
     <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
@@ -23,35 +18,40 @@
             margin-top:50px;
          }
     </style>
-</head>
-<body>
+    </@>
+    <@layout.put block="contents">
     <div class="contents">
-        <ul data-bind="template: {name: 'treeNodeTemplate', foreach: treesNode}"></ul>
-        <script type="text/html" id="treeNodeTemplate">
-            <li>
-                <input type="button" class="btn" data-bind="value: name,click :$root.chosePort"/>
+        <ul >
+             <li>
+                <input type="button" class="btn" onclick="chosePort(13)" value="企业端导航"/>
             </li>
-        </script>
+        </ul>
+        <ul >
+             <li>
+                <input type="button" class="btn" onclick="chosePort(14)" value="评审端导航"/>
+            </li>
+        </ul>
+        <ul >
+             <li>
+                <input type="button" class="btn" onclick="chosePort(15)" value="政府端导航"/>
+            </li>
+        </ul>
+        <ul >
+             <li>
+                <input type="button" class="btn" onclick="chosePort(16)" value="系统端导航"/>
+            </li>
+        </ul>
     </div>
-</body>
+    </@>
+    <@layout.put block="footer">
     <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
     <script type="text/javascript">
-        function ViewModel(root) {
-            function treeModel(root) {
-                var self = this;
-                this.id = ko.observable(root.id);
-                this.name = ko.observable(root.name);
-            };
-            this.chosePort = function(model){
-                window.location.href="${BASE_PATH}/tree?parentId="+model.id;
-            };
-            this.treesNode = ko.observableArray(root);
-        }
-        $(function () {
-            var root = ${json(root)};
-            ko.applyBindings(new ViewModel(root));
-        });
+        function chosePort(id){
+            window.location.href="${BASE_PATH}/tree?parentId="+id;
+        };
     </script>
-</html>
+    </@>
+</@layout.extends>
+
 
 
