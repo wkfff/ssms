@@ -90,5 +90,8 @@ public class SystemModelMapping extends ActiveRecordMapping {
         // 隐患排查提醒
         addMapping( "SYS_TASK_HIDDEN_DANGER", "SID",HiddenDangerModel.class );
         addMapping( "SYS_HIS_TASK_HIDDEN_DANGER", "SID",HiddenDangerHistory.class );
+        
+        // 隐患监管
+        addMapping( "SYS_TASK_TROUBLE_SUPERVISION","SID",TroubleSupervision.class );
     }
 }

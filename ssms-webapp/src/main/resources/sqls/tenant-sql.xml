@@ -16,7 +16,7 @@
         </sql>
         <sql id="insertToReview">insert into ssm_grade_r_d (R_SID,C_DESC,N_SCORE_REAL) values(?,?,?,?)</sql>
     </sqlGroup>
-    
+    <!--隐患排查工作提醒-->
     <sqlGroup name="hiddenDanger">
         <sql id="list">
             SELECT A.`R_TENANT`,A.`S_TENANT`,A.`P_TENANT`,A.`R_TEMPLATE`,A.`P_PROFESSION`, NOW() AS `T_CREATE`
@@ -25,6 +25,19 @@
             AND A.`R_TEMPLATE`=B.`R_TEMPLATE` 
             AND A.`P_PROFESSION`=B.`P_PROFESSION`
             WHERE B.`SID` IS NULL
+        </sql>
+    </sqlGroup>
+    
+    <!-- 隐患监督工作提醒 -->
+    <sqlGroup name="troubleSupervision">
+        <sql id="list">
+            SELECT COUNT(CASE WHEN B.B_FINISH='1' THEN '*' END) AS `N_FINISH_TROUBLE` , COUNT(CASE WHEN B.SID IS NOT NULL THEN '*' END)
+            AS `N_ALL_TROUBLE`,A.`R_TENANT`,A.`S_TENANT`,A.`P_TENANT`,A.`R_TEMPLATE`,A.`P_PROFESSION`, NOW() AS `T_CREATE`
+            FROM `ssm_template` A LEFT JOIN (SELECT *FROM `ssm_stdtmp_file_06` WHERE YEAR(`T_CREATE`) = YEAR(NOW()) AND MONTH(`T_CREATE`)=MONTH(NOW())) B 
+            ON  A.`R_TENANT`=B.`R_TENANT` 
+            AND A.`R_TEMPLATE`=B.`R_TEMPLATE` 
+            AND A.`P_PROFESSION`=B.`P_PROFESSION`
+            GROUP BY A.`R_TENANT` , A.`R_TEMPLATE`,A.`P_PROFESSION`
         </sql>
     </sqlGroup>
     
