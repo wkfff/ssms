@@ -1,39 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>安全生产标准化管理系统</title>
-    <link rel="stylesheet" href="/resource/css/base.css"/>
-    <link rel="stylesheet" href="/resource/css/common.css"/>
-    <link rel="stylesheet" href="/resource/css/fix.css"/>
-    <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
-    <script type="text/javascript" src="/resource/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/resource/js/jquery.json.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/metro-blue/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/resource/css/easyui/themes/icon.css">
-    <script type="text/javascript" src="/resource/js/easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/resource/js/easyui/locale/easyui-lang-zh_CN.js"></script>
-    <script type="text/javascript" src="/resource/js/core.js"></script>
-    <script type="text/javascript" src="/resource/js/common.js"></script>
-    <script type="text/javascript" src="/resource/js/plupload/plupload.min.js"></script>
-    <script type="text/javascript" src="/resource/js/kindeditor/kindeditor.js"></script>
-    <script type="text/javascript" src="/resource/js/kindeditor/plugins/autoheight/autoheight.js"></script>
-    <script type="text/javascript" src="/resource/js/knockout/knockout.debug.js"></script>
-    <script type="text/javascript" src="/resource/js/knockout/knockout.mapping.debug.js"></script>
-    <script type="text/javascript" src="/resource/js/knockout/component.js"></script>
-    <script type="text/javascript" src="/resource/js/knockout/upload.js"></script>
-    <script type="text/javascript" src="/resource/js/knockout/dataPager.js"></script>
-</head>
-<body>
-<div class="easyui-panel" border="false" fit="true">
-    <div id="toolbar" class="z-toolbar">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
-    </div>
-    <table data-bind="datagridValue:selectItem, easyuiOptions: viewSettings"></table>
-</div>
-</body>
+<#import "../../layout/_list.ftl" as layout>
+<#assign script>
 <script type="text/javascript">
     function ViewModel() {
         var self = this;
@@ -90,4 +56,13 @@
         ko.applyBindings(new ViewModel());
     })
 </script>
-</html>
+</#assign>
+<@layout.doLayout script=script>
+<div class="easyui-panel" border="false" fit="true">
+    <div id="toolbar" class="z-toolbar">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" data-bind="click:refreshClick">刷新</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" data-bind="click: editClick">编辑</a>
+    </div>
+    <table data-bind="datagridValue:selectItem, easyuiOptions: viewSettings"></table>
+</div>
+</@>

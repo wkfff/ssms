@@ -64,7 +64,7 @@
             <tr>
                 <td>学时:</td>
                 <td>
-                    <input type="text" style="width:90%"  class="readonly" value="${N_TIME!}" readonly/>
+                    <input type="text" style="width:90%"  class="readonly" value="${C_TIME!}" readonly/>
                 </td>
 
                 <td>记录人:</td>

@@ -34,7 +34,7 @@ function ViewModel(catalogId,path) {
                     {field: 'C_USER_01', title: '讲师', width: 80},
                     {field: 'C_ADDR', title: '培训地点', width: 80},
                     {field: 'S_TYPE', title: '培训种类', width: 80},
-                    {field: 'N_TIME', title: '学时', width: 80}
+                    {field: 'C_TIME', title: '学时', width: 80}
                 ]
             ],
             onDblClickRow: function (index, row) {
