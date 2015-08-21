@@ -16,6 +16,7 @@ import com.lanstar.controller.government.HomeController;
 import com.lanstar.controller.government.StatisticsController;
 import com.lanstar.controller.government.TemplateController;
 import com.lanstar.controller.system.HiddenDangerController;
+import com.lanstar.controller.system.TroubleSupervisionController;
 
 public class GovernmentRoutes extends Routes {
     private static Routes me = new GovernmentRoutes();
@@ -35,5 +36,8 @@ public class GovernmentRoutes extends Routes {
 
         // 隐患排查提醒
         this.add( "/g/hidden_danger", HiddenDangerController.class );
+
+        // 隐患监管提醒
+        this.add( "/g/trouble_supervision", TroubleSupervisionController.class );
     }
 }
