@@ -2,6 +2,25 @@
     <@layout.put block="head">
     <link rel="stylesheet" href="/resource/css/base.css"/>
     <link rel="stylesheet" href="/resource/css/home.css"/>
+    <style>
+        ul.tabn li {
+            height: 20px;
+            line-height: 20px;
+            list-style-type: none;
+            display: block;
+            float: left;
+            padding: 3px 8px 0 8px;
+            margin-right: 2px;
+            margin-top: 6px;
+            -moz-border-radius: 4px 4px 0 0;
+            -webkit-border-radius: 4px 4px 0 0;
+            cursor: pointer;
+        }
+        ul.tabn li.current {
+             border-bottom: 2px solid #43b0ce;
+             background-color: #43b0ce;
+       }
+    </style>
     </@>
 
     <#include "todo.ftl">
@@ -50,31 +69,68 @@
             </ul>
         </div>
     </div>
+
     <div class="article hleft notice">
         <div class="wrap-l">
             <div class="title ue-clear">
                 <h2>通知公告</h2>
-                <a href="/sys/notice/publics" class="more">更多</a>
+                <div style="float: right">
+                    <ul class="tabn"><li id="tabn1" target="#tcn2"  >评审端发布的通知公告</li></ul>
+                </div>
+                <div style="float: right">
+                    <ul class="tabn"><li id="tn1" target="#tcn1" class="current" >接收到的通知公告</li></ul>
+                </div>
             </div>
-            <div class="content">
-                <table class="notice-list">
+            <div class="content" id="tbn">
+              <div id="tcn1">
+                <table class="matter-list">
                     <#if rs_notice?? && rs_notice?size!=0>
                         <#list rs_notice as rs>
                             <tr>
                                 <td class="more">
-                                    <a href="/sys/notice/view?sid=${rs.SID}" title="${rs.C_TITLE!}" class="notice-title">${rs.C_TITLE!}</a>
+                                    <a href="/sys/notice/view?sid=${rs.SID}" title="${rs.C_TITLE!}" class="matter-title">${rs.C_TITLE!}</a>
                                 </td>
-                                <td class="notice-time">${rs.T_PUBLISH!}</td>
+                                <td class="matter-time">${(rs.T_PUBLISH?date)!}</td>
                             </tr>
                         </#list>
+                            <tr>
+                                <td colspan="2" style="text-align: right; padding-right: 10px">
+                                        <a href="/sys/notice/publics"  target="_top"  style="color: #ff0000;" class="more">>>更多</a>
+                                </td>
+                           </tr>
                     <#else>
                         <tr>
-                            <td colspan="2"><span style="padding-left:5px;">暂时还没有通知公告。</span></td>
+                            <td colspan="2" style="padding-left:5px;">暂时还没有通知公告。</td>
                         </tr>
                     </#if>
                 </table>
+              </div>
+                    <div id="tcn2" style="display: none">
+                        <table class="matter-list">
+                            <#if rs_review_notice?? && rs_review_notice?size!=0>
+                            <#list rs_review_notice as rs>
+                                <tr>
+                                    <td class="more">
+                                        <a href="/r/review_notice/publishForm?eid=${eid}&pro=${pro}&sid=${rs.SID!}&reader=true"  class="matter-title">${rs.C_TITLE!}</a>
+                                    </td>
+                                    <td class="matter-time">${(rs.T_PUBLISH?date)!}</td>
+                               </tr>
+                            </#list>
+                               <tr>
+                                    <td colspan="2" style="text-align: right; padding-right: 10px">
+                                        <a href="/r/review_notice/publishs?eid=${eid}&pro=${pro}&reader=true"   style="color: #ff0000;" class="more">>>更多</a>
+                                    </td>
+                               </tr>
+                           <#else>
+                               <tr>
+                                  <td colspan="2" style="padding-left:5px;">>暂时还没有通知公告。</td>
+                               </tr>
+                          </#if>
+                  </table>
+              </div>
             </div>
         </div>
+
         <div class="wrap-l" style="margin-top:6px;">
             <div class="title ue-clear">
                 <h2 style="margin-right:10px;width:200px;">工作提醒</h2>
@@ -109,6 +165,12 @@
             $('.title .tabs>li').click(function () {
                 $('#tbc>div').hide();
                 $('.title .tabs>li').removeClass('current');
+                $($(this).addClass('current').attr('target')).show();
+            });
+            
+            $('.title .tabn>li').click(function () {
+                $('#tbn>div').hide();
+                $('.title .tabn>li').removeClass('current');
                 $($(this).addClass('current').attr('target')).show();
             });
         });

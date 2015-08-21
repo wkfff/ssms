@@ -63,7 +63,7 @@
         <tr>
             <td>学时:</td>
             <td>
-                <input data-bind="disable: readonly,textboxValue: N_TIME"/>
+                <input data-bind="disable: readonly,textboxValue: C_TIME"/>
             </td>
 
             <td>记录人:</td>
@@ -87,7 +87,7 @@
         C_USER_01: ko.observable('${C_USER_01!}'),
         C_ADDR: ko.observable('${C_ADDR!}'),
         S_TYPE: ko.observable('${S_TYPE!}'),
-        N_TIME: ko.observable('${N_TIME!}'),
+        C_TIME: ko.observable('${C_TIME!}'),
         C_USER_02: ko.observable('${C_USER_02!}'),
         htmlContent: ko.observable(${json(C_CONTENT)}),
         SID: '${SID!}',

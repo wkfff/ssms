@@ -1,9 +1,14 @@
-DROP TABLE IF EXISTS GEN_SEQUENCE;
-CREATE TABLE GEN_SEQUENCE(
-    C_NAME VARCHAR(32) PRIMARY KEY,
-    N_VALUE INT DEFAULT 1,
-    N_STEP INT DEFAULT 1
+--------------------------------------------------------
+-- 序列表
+--------------------------------------------------------
+DROP TABLE IF EXISTS `GEN_SEQUENCE`;
+CREATE TABLE `GEN_SEQUENCE` (
+    `C_NAME` VARCHAR(32) NOT NULL,
+    `N_VALUE` INT(11) DEFAULT 1,
+    `N_STEP` INT(11) DEFAULT 1,
+    PRIMARY KEY (`C_NAME`)
 );
+
 
 DELIMITER $$
 
@@ -21,7 +26,7 @@ BEGIN
 
     -- 查询当前的值
     SELECT CAST(A.N_VALUE AS CHAR) INTO STR_RESULT FROM GEN_SEQUENCE A WHERE A.C_NAME=STR_NAME;
-    
+
 
     -- 如果当前值不存在则应该要插入数据
     IF STR_RESULT IS NULL THEN

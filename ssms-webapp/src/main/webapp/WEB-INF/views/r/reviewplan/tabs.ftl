@@ -58,6 +58,8 @@
                 <div id="tab4" title="企业基本信息" style="overflow:hidden;" url="/sys/tenant_e/view?sid=${eid!}"></div>
                 <div id="tab5" title="达标体系查看" style="overflow:hidden;" url="/r/stdtmp/view/${eid!}-${pro}-0"></div>
                 <div id="tab6" title="企业自评报告" style="overflow:hidden;" url="/r/reviewreport/rep?sid=${gradePlanId!}"></div>
+                
+                <div id="tab7" title="通知公告" style="overflow:hidden;" url="/r/review_notice/index?eid=${eid!}&pro=${pro}"></div>
          </div>
          </#if>
      </div>

@@ -81,7 +81,7 @@
         </tr>
         <tr>
             <td>等级</td>
-            <td><input type="text" data-bind="textboxValue: N_LEVEL"/></td>
+            <td><input type="text" data-bind="textboxValue: C_LEVEL"/></td>
             <td>行业</td>
             <td><input type="text" data-bind="value: S_INSDUTRY" readonly/></td>
             <td>专业</td>
@@ -122,7 +122,7 @@
         var self = this;
 
         self.C_ENTERPRISE = ko.observable('${C_ENTERPRISE!}');
-        self.N_LEVEL = ko.observable('${N_LEVEL!}');
+        self.C_LEVEL = ko.observable('${C_LEVEL!}');
         self.S_INSDUTRY = ko.observable('${S_INSDUTRY!}');
         self.S_PROFESSION = ko.observable('${S_PROFESSION!}');
         self.N_STATE = ko.observable(${N_STATE!0});
@@ -134,7 +134,7 @@
 
         var model = {
             C_ENTERPRISE: self.C_ENTERPRISE,
-            N_LEVEL: self.N_LEVEL,
+            C_LEVEL: self.C_LEVEL,
             S_INSDUTRY: self.S_INSDUTRY,
             S_PROFESSION: self.S_PROFESSION,
             N_STATE: self.N_STATE,
@@ -143,7 +143,7 @@
             C_PRINTED_NUMBER: self.C_PRINTED_NUMBER,
             T_ISSUING_DATE: self.T_ISSUING_DATE,
             T_VALIDITY: self.T_VALIDITY,
-            SID: '${sid!}'
+            SID: '${SID!}'
         };
         
         self.comboState = ko.observableArray([

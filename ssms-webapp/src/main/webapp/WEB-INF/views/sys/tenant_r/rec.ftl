@@ -22,7 +22,7 @@
         C_ZIP: ko.observable('${C_ZIP!}'),
         C_NUMBER: ko.observable('${C_NUMBER!}'),
         C_ORG: ko.observable('${C_ORG!}'),
-        N_FULLTIME: ko.observable('${N_FULLTIME!}'),
+        C_FULLTIME: ko.observable('${C_FULLTIME!}'),
         S_LEVEL: ko.observable('${S_LEVEL!}'),
         P_LEVEL: ko.observable('${P_LEVEL!}'),
         SID: '${SID!}'
@@ -191,7 +191,7 @@
             <p class="ue-clear">
                 <label>专职人员</label>
                 <span class="control">
-                    <input data-bind="textboxValue: N_FULLTIME"/>
+                    <input data-bind="textboxValue: C_FULLTIME"/>
                 </span>
             </p>
 

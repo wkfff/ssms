@@ -25,7 +25,7 @@
         <a class="easyui-linkbutton" onclick="" plain="true" iconCls="icon-pdf" data-bind="click: function(){window.location.href='${BASE_PATH}/export/${SID}'}">导出</a>
         </#if>
         <a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-back" onclick="panelLoad('${BASE_PATH}/?fileid=${file.id}');">返回列表</a>
-        <#if file.templateModel.id??>
+        <#if file.templateModel??>
         <a class="easyui-linkbutton" plain="true" iconCls="icon-search" data-bind="click: function(){window.open('/sys/stdtmp/file/view/${file.sourceFile.id}')}">查看模板</a>
         </#if>
         
@@ -75,7 +75,7 @@
             <tr>
                 <td>学时:</td>
                 <td>
-                    <input data-bind="disable: readonly,textboxValue: N_TIME"/>
+                    <input data-bind="disable: readonly,textboxValue: C_TIME"/>
                 </td>
 
                 <td>记录人:</td>
@@ -123,7 +123,7 @@
         C_USER_01: ko.observable('${C_USER_01!}'),
         C_ADDR: ko.observable('${C_ADDR!}'),
         S_TYPE: ko.observable('${S_TYPE!}'),
-        N_TIME: ko.observable('${N_TIME!}'),
+        C_TIME: ko.observable('${C_TIME!}'),
         C_USER_02: ko.observable('${C_USER_02!}'),
         htmlContent: ko.observable(${json(C_CONTENT)}),
         SID: '${SID!}',

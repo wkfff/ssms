@@ -30,7 +30,7 @@
         N_SPECIAL: ko.observable('${N_SPECIAL!}'),
         N_EMPLOYEE: ko.observable('${N_EMPLOYEE!}'),
         C_SUMMARY: ko.observable('${C_SUMMARY!}'),
-        T_EXAMINE: ko.observable('${T_EXAMINE!}'),
+        S_LEVEL: ko.observable('${S_LEVEL!}'),
         T_EXAMINE_NEXT: ko.observable('${T_EXAMINE_NEXT!}'),
         SID: '${SID!}'
     };
@@ -308,7 +308,7 @@
             <p class="ue-clear">
                 <label>达标等级</label>
                 <span class="control">
-                    <input data-bind="textareaValue: T_EXAMINE"/>
+                    <input data-bind="textareaValue: S_LEVEL"/>
                 </span>
             </p>
 

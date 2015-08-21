@@ -13,7 +13,10 @@ import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.identity.IdentityContextWrap;
 import com.lanstar.model.system.Profession;
+import com.lanstar.model.system.ReviewNotice;
+import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.Record;
+import com.lanstar.plugin.sqlinxml.SqlKit;
 import com.lanstar.service.common.todo.TodoDataFetcher;
 import com.lanstar.service.common.todo.TodoType;
 import com.lanstar.service.enterprise.EnterpriseService;
@@ -62,35 +65,46 @@ public class HomeController extends Controller {
         int tmpId = identityContext.getEnterpriseService().getProfessionService().getSystemTemplate().getId();
         setAttr( "todo", new HomeTodo( identityContext ) );
 
-//        List<Notice> rs_notice = Notice.dao.find( "select * from sys_notice" );
-//        setAttr( "rs_notice", rs_notice );
-//
-//        setAttr( "rs_dev", TemplateFile08.dao.find( "select * from ssm_stdtmp_file_08 limit 10" ) );
-//        setAttr( "rs_yh", TemplateFile06.dao.find( "select * from ssm_stdtmp_file_06 limit 10" ) );
-//        setAttr( "rs_ry", TemplateFile07.dao.find( "select * from SSM_STDTMP_FILE_07 limit 10" ) );
+        // List<Notice> rs_notice = Notice.dao.find( "select * from sys_notice"
+        // );
+        // setAttr( "rs_notice", rs_notice );
+        //
+        // setAttr( "rs_dev", TemplateFile08.dao.find(
+        // "select * from ssm_stdtmp_file_08 limit 10" ) );
+        // setAttr( "rs_yh", TemplateFile06.dao.find(
+        // "select * from ssm_stdtmp_file_06 limit 10" ) );
+        // setAttr( "rs_ry", TemplateFile07.dao.find(
+        // "select * from SSM_STDTMP_FILE_07 limit 10" ) );
 
-        //接收的通知公告
+        // 接收的通知公告
         String sql = "SELECT * FROM V_NOTICE WHERE R_RECEIVER=? AND Z_TYPE=? ORDER BY T_PUBLISH DESC LIMIT 8";
         List<Record> rs_notice = identityContext.getTenantDb().find( sql, identityContext.getTenantId(), identityContext
-                .getTenantType()
-                .getName() );
+                                                                                                                        .getTenantType()
+                                                                                                                        .getName() );
         setAttr( "rs_notice", rs_notice );
 
-        //隐患排查
+        // 隐患排查
         setAttr( "rs_yh", TodoDataFetcher.with( identityContext.getTenant(), TodoType.STDFILE06 )
                                          .withProfessionId( pro )
                                          .withTemplateId( tmpId )
                                          .fetch( 10 ) );
-        //特种人员
+        // 特种人员
         setAttr( "rs_ry", TodoDataFetcher.with( identityContext.getTenant(), TodoType.STDFILE07 )
                                          .withProfessionId( pro )
                                          .withTemplateId( tmpId )
                                          .fetch( 10 ) );
-        //特种设备
+        // 特种设备
         setAttr( "rs_dev", TodoDataFetcher.with( identityContext.getTenant(), TodoType.STDFILE08 )
                                           .withProfessionId( pro )
                                           .withTemplateId( tmpId )
                                           .fetch( 10 ) );
+        // 接收评审端发送通知公告
+        String reviewSql = "SELECT * FROM sys_review_notice WHERE N_STATE=1 AND R_RECEIVER=? AND P_PROFESSION=? ORDER BY T_PUBLISH DESC LIMIT 7";
+        List<Record> rs_review_notice = Db.find( reviewSql, identityContext.getTenant().getTenantId(), pro );
+        setAttr( "rs_review_notice", rs_review_notice );
+        setAttr( "eid", identityContext.getTenant().getTenantId() );
+        setAttr( "pro", pro );
+
     }
 
     public void setTemplate() {

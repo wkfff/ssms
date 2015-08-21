@@ -10,6 +10,8 @@ package com.lanstar.app.route;
 
 import com.lanstar.config.Routes;
 import com.lanstar.controller.review.*;
+import com.lanstar.controller.system.ReviewNoticeController;
+import com.lanstar.model.system.ReviewNotice;
 
 public class ReviewRoutes extends Routes {
     private static Routes me = new ReviewRoutes();
@@ -37,6 +39,8 @@ public class ReviewRoutes extends Routes {
         add( "/r/reviewcert", ReviewCertController.class );
         add( "/r/reviewhistory", ReviewHistoryController.class );
         add( "/r/reviewmember", ReviewMemberController.class );
+        
+        add( "/r/review_notice", ReviewNoticeController.class );
         
 
     }
