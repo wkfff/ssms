@@ -17,8 +17,11 @@
         filters: {
             max_file_size: '3mb',
             mime_types: [
-                {title: "Image files", extensions: "jpg,gif,png"},
-                {title: "Zip files", extensions: "zip"}
+                {title: "Image files", extensions: "jpg,gif,png,bpm"},
+                {title: "Word files", extensions: "doc,docx,wps"},
+                {title: "Excel files", extensions: "xls,xlsx,et"},
+                {title: "PPT files", extensions: "ppt,pptx,dps"},
+                {title: "Archive files", extensions: "rar,zip,7z"}
             ]
         }
     };
@@ -34,7 +37,7 @@
             // 添加容器元素
             var $container = $('<table class="container">');
             $element.before($container);
-            $container.before('<div class="title">附件:</div>')
+            $container.before('<div class="title">附件:</div>');
 
             // 添加上传按钮
             var $uploadBtn = $('<a class="btn_upload" href="javascript:void(0);">[上传文件]</a>');
