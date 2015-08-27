@@ -57,7 +57,7 @@
     ko.bindingHandlers.htmleditValue = {
         init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var value = ko.unwrap(valueAccessor());
-            if (typeof element.value !== "undefined") element.value = value;
+            if (value && typeof element.value !== "undefined") element.value = value;
             getEditor(element, valueAccessor, allBindingsAccessor);
         },
         update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
