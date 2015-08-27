@@ -31,7 +31,7 @@
     <script type="text/javascript" src="/resource/js/knockout/upload.js"></script>
     <script type="text/javascript" src="/resource/js/knockout/dataPager.js"></script>
     <#else>
-    <script type="text/javascript" src="/resource/js/knockout/knockout.min.js"></script>
+    <script type="text/javascript" src="/resource/js/knockout/knockout.min.js?v=1440657618"></script>
     </#if>
     <script type="text/javascript" src="/resource/js/layui/layer.js"></script>
     <script type="text/javascript" src="/resource/js/core.js"></script>
