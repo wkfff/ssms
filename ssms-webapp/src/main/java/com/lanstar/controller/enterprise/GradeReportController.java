@@ -44,9 +44,10 @@ public class GradeReportController extends SimplateController<GradeReport> {
     public void save() {
         GradeReport model = this.getModel();
         Integer sid = model.getInt( "SID" );
-        if ( sid == null ) model.save();
-        else {
+        if ( sid == null ) {
             model.setState( 1 );
+            model.save();
+        } else {
             model.update();
         }
         sid = model.getInt( "SID" );
