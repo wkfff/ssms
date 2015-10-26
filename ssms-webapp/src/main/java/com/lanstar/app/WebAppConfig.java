@@ -11,12 +11,12 @@ package com.lanstar.app;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
+import com.alibaba.fastjson.JSON;
 import com.lanstar.app.model.SystemModelMapping;
 import com.lanstar.app.model.TenantModelMapping;
 import com.lanstar.app.route.*;
 import com.lanstar.app.template.TemplatePropsConfig;
 import com.lanstar.common.freemarker.BlockDirectiveUtils;
-import com.lanstar.common.kit.JsonKit;
 import com.lanstar.common.kit.ServletKit;
 import com.lanstar.common.staticcache.TenantCache;
 import com.lanstar.config.*;
@@ -28,9 +28,7 @@ import com.lanstar.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.lanstar.plugin.attachfile.ResourcePlugin;
 import com.lanstar.plugin.attachfile.SimpleResourceService;
 import com.lanstar.plugin.druid.DruidPlugin;
-import com.lanstar.plugin.jsconstants.AreaGetter;
-import com.lanstar.plugin.jsconstants.JsConstantBuilder;
-import com.lanstar.plugin.jsconstants.ProfessionGetter;
+import com.lanstar.plugin.jsconstants.*;
 import com.lanstar.plugin.mail.MailerPlugin;
 import com.lanstar.plugin.quartz.QuartzPlugin;
 import com.lanstar.plugin.sqlinxml.SqlInXmlPlugin;
@@ -39,9 +37,7 @@ import com.lanstar.plugin.template.TemplatePropPlugin;
 import com.lanstar.plugin.tlds.ThreadLocalDataSourcePlugin;
 import com.lanstar.quartz.tenantdb.*;
 import freemarker.ext.util.WrapperTemplateModel;
-import freemarker.template.Configuration;
-import freemarker.template.TemplateMethodModelEx;
-import freemarker.template.TemplateModelException;
+import freemarker.template.*;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
@@ -203,7 +199,7 @@ public class WebAppConfig extends RapidwareConfig {
             if ( object instanceof WrapperTemplateModel ) {
                 object = ((WrapperTemplateModel) object).getWrappedObject();
             }
-            return JsonKit.toJson( object );
+            return JSON.toJSONString( object );
         }
     }
 }
