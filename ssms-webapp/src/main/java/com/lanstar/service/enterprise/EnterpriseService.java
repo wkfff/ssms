@@ -102,7 +102,7 @@ public class EnterpriseService {
      */
     public int syncContent( int pro, final int planId ) {
         List<TemplateGrade> list = TemplateGrade.dao.getTemplateByPro( pro );
-        
+        int sumNumber=0;
         List<GradeContent> models = Lists.transform( list, new Function<TemplateGrade, GradeContent>(){
             @Override
             public GradeContent apply( TemplateGrade input ) {
@@ -117,9 +117,13 @@ public class EnterpriseService {
                 return gc; 
             }
         } );
+        for(GradeContent model:models){
+            if(model.getProjiec().equals( "小计" ) || model.getProjiec().equals( "总计" ))
+                sumNumber++;
+        }
         models = Lists.newArrayList(models);
         ModelKit.batchSave( this.tenantContext.getTenantDb(), models);
-        return models.size();
+        return models.size()-sumNumber;
     }
 
     /**
