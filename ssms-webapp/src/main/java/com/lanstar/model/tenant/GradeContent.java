@@ -15,7 +15,7 @@ import com.lanstar.model.TenantModel;
  */
 public class GradeContent extends TenantModel<GradeContent> {
     public static GradeContent dao = new GradeContent();
-    public String getProjiec(){
+    public String getProject(){
         return this.getStr( "C_PROJECT" );
     }
     

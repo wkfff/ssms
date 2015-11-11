@@ -117,8 +117,11 @@ public class EnterpriseService {
                 return gc; 
             }
         } );
+        /*评分的条数总和=得分项条数+扣分项条数+缺项条数
+        满足这条件才能完成评审
+        计算评分条数总和时候把小计和总计去掉*/
         for(GradeContent model:models){
-            if(model.getProjiec().equals( "小计" ) || model.getProjiec().equals( "总计" ))
+            if(model.getProject().equals( "小计" ) || model.getProject().equals( "总计" ))
                 sumNumber++;
         }
         models = Lists.newArrayList(models);
