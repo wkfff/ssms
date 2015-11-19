@@ -107,13 +107,13 @@ public class EnterpriseService {
             @Override
             public GradeContent apply( TemplateGrade input ) {
                 GradeContent gc = new GradeContent();
-                ModelKit.copyColumns( input, gc, "C_CATEGORY","C_PROJECT","C_REQUEST","C_CONTENT","N_SCORE","C_METHOD" );
+                ModelKit.copyColumns( input, gc, "C_CATEGORY", "C_PROJECT", "C_REQUEST", "C_CONTENT", "N_SCORE", "C_METHOD", "N_INDEX" );//复制索引N_INDEX使数据能按正常顺序排序
                 gc.set("R_SID", planId );
                 gc.set( "R_STD", input.getInt( "SID" ) );
                 gc.set( "R_TENANT", tenantContext.getTenantId() );
                 gc.set( "S_TENANT", tenantContext.getTenantName() );
                 gc.set( "P_TENANT", tenantContext.getTenantType().getName() );
-                
+
                 return gc; 
             }
         } );
