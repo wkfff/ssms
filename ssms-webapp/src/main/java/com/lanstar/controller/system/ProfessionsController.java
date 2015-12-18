@@ -13,18 +13,13 @@ import com.lanstar.common.ModelInjector;
 import com.lanstar.core.Controller;
 import com.lanstar.identity.IdentityContext;
 import com.lanstar.identity.IdentityContextWrap;
-import com.lanstar.model.system.Industry;
-import com.lanstar.model.system.Profession;
-import com.lanstar.model.system.Template;
+import com.lanstar.model.system.*;
 import com.lanstar.plugin.activerecord.Db;
 import com.lanstar.plugin.activerecord.Record;
 import com.lanstar.plugin.jsconstants.JsConstantBuilder;
 import com.lanstar.plugin.sqlinxml.SqlKit;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ProfessionsController extends Controller {
     public void index() {
@@ -61,8 +56,20 @@ public class ProfessionsController extends Controller {
         }
 
         setAttr( "industries", Lists.newArrayList( pools.values() ) );
-
-        setAttr( "templates", Template.dao.find( "select SID code, C_NAME name from sys_template where IFNULL(B_DELETE, 0)=0" ) );
+        //原先的setAttr( "templates"，Template.dao.find( "select SID code, C_NAME name from sys_template where IFNULL(B_DELETE, 0)=0" )） 这个不行会出现空指针异常
+        //重新构造数据才行
+        List<Template> templatesList = Template.dao.find( "select SID code, C_NAME name from sys_template where IFNULL(B_DELETE, 0)=0" );
+        List<Map<String,Object>> templatesRulsult = new ArrayList<>();
+        Map<String,Object> templateMap;
+        for(Template template : templatesList){
+            templateMap = new HashMap<>();
+            Integer code= template.getInt( "code" );
+            String name= template.getStr( "name" );
+            templateMap.put( "CODE", code);
+            templateMap.put( "NAME" , name );
+            templatesRulsult.add(templateMap );
+        }
+        setAttr( "templates",templatesRulsult );
     }
 
     public void saveProfession() {
